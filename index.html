@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
+   
     <head>
-        <meta charset="UTF-8">
-        <title>Logix</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
         
-
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <title>Logix</title>
     </head>
     
     <style>
@@ -22,22 +24,27 @@
      }
 
      button {
-       background-color: ;
+       font-family: mukta mahee;
+       background-color: rgb(240,240,240);
        border: 1px solid rgba(27, 31, 35, .15);
        border-radius: 6px;
        box-shadow: rgba(27, 31, 35, .1) 0 3px 0;
        cursor: pointer;
-       font-size: 15px;
+       font-size: 20px;
        line-height: 20px;
-       padding: 45px 60px;
+       width: 200px;
+       height: 80px;
        position: relative;
        text-align: center;
        margin-top: auto;
        display: block;
        margin: 1.0em auto;
        margin-bottom: auto;
-       transition-duration: 0.4s;
+     }
 
+     button:hover {
+       background-color: rgb(215,215,215);
+       transition-duration: 0.42s;
      }
      
     </style>
@@ -46,9 +53,11 @@
 
     <body>
         <h1 id="main-header">- LOGIX -</h1>
-        <button type="button" id="beginner" onclick="">Beginner</button>
-        <button type="button" id="intermediate" onclick="">Intermediate</button>
-        <button type="button" id="advanced" onclick="">Advanced</button>
+        <button type="button" id="beginner" onclick="">Beginner<br>...</button>
+        <br>
+        <button type="button" id="intermediate" onclick="">Intermediate<br>...</button>
+        <br>
+        <button type="button" id="advanced" onclick="">Advanced<br>...</button>
     </body>
     
 </html>

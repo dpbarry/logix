@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
-   
+    
     <head>
         <!-- COMPUTER MODERN SERIF -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
@@ -18,13 +18,13 @@
      
      #main-header {
        text-align: center;
-       font-weight: lighter;
+       font-weight: normal;
        font-size: 50px;
      }
 
      button {
-       font-family: trebuchet ms;
        font-size: 1.5em;
+       font-weight: bold;
        background-color: rgb(240,240,240);
        border: 1px solid rgba(27, 31, 35, .15);
        border-radius: 6px;
@@ -39,6 +39,7 @@
        display: block;
        margin: 1.0em auto;
        margin-bottom: auto;
+       line-height: 30px;
      }
 
      button:hover {
@@ -47,8 +48,10 @@
      }
 
      .button-caption {
-       font-family: trebuchet ms;
-       font-size: 0.65em;
+       display: inline-block;
+       font-size: 0.6em;
+       font-weight: normal;
+       line-height: 15px
      }
      
     </style>
@@ -63,10 +66,25 @@
             <span class="button-caption">
                 First-Order Logic: Quantifiers, predicates
             </span>
+        </button>
+
         <br>
-        <button type="button" id="intermediate" onclick="">Intermediate<br>...</button>
+        
+        <button type="button" id="intermediate" onclick="">
+            Intermediate <br>
+            <span class="button-caption">
+                ...
+            </span>
+        </button>
+
         <br>
-        <button type="button" id="advanced" onclick="">Advanced<br>...</button>
+        
+        <button type="button" id="advanced" onclick="">
+            Advanced <br>
+            <span class="button-caption">
+                ...
+            </span>
+        </button>
     </body>
     
 </html>

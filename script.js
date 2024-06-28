@@ -1,3 +1,3 @@
 document.getElementById("beginner").onclick = function () {
-    location.href = "beginner";
+    location.href = "beginner.html";
 }

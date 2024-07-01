@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <link rel="stylesheet" href="main.css">
+
+        <!-- COMPUTER MODERN SERIF -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
+
+        
+        <title>Logix</title>    
+        <style>
+         @view-transition {
+           navigation: auto;
+         }
+
+         * {
+           font-family: computer modern serif;
+         }
+         
+         #level {
+           text-align: left;
+           font-weight: lighter;
+           font-size: 2em;
+           margin-left: 25px;
+         }
+         td {
+           border: 1px solid #000000;
+           text-align: center;
+           vertical-align: middle;  
+         }
+
+         input {
+           color: #000000;
+           padding: 0;
+           border: 0;
+           text-align: center;
+           width: 48px;
+           height: 48px;
+           font-size: 24px;
+           background-color: #FFFFFF;
+           outline: none;
+         }
+
+         input:disabled {
+           background-color: #EEEEEE;
+         }
+         
+        </style>
+    </head>
+
+    <body>
+        <h1 id="level">1.1</h1>
+        
+        <table id="grid" style="margin: auto;   display: flex;
+                   align-items: center;      justify-content: center;
+                   ">
+
+            <tr>
+                <td><input type="text" value="1" disabled></td>
+                <td><input type="text"></td>
+                <td><input type="text" value="0" disabled></td>
+                <td><input type="text"></td>
+            </tr>
+
+        </table>
+
+          </div>
+          
+          
+
+          <script>
+           const inputList = document.querySelectorAll('input[type=text]');
+           const regex = new RegExp("^[0-9]*$");
+
+           inputList.forEach((input) => {
+             input.addEventListener("beforeinput", (event) => {
+               if (event.data != null && !regex.test(event.data)) 
+                 event.preventDefault();
+             });
+           });
+             
+          </script>
+
+          
+</html>

@@ -25,13 +25,14 @@
          #level {
            text-align: left;
            font-weight: lighter;
-           font-size: 2em;
-           margin-left: 25px;
+           font-size: 2rem;
+           margin-top: 4vh;
+           margin-left: 4vw;
          }
          td {
            border: 1px solid #000000;
            text-align: center;
-           vertical-align: middle;  
+           border-radius: 2px;
          }
 
          input {
@@ -39,9 +40,9 @@
            padding: 0;
            border: 0;
            text-align: center;
-           width: 48px;
-           height: 48px;
-           font-size: 24px;
+           width: 10vmin;
+           height: 10vmin;
+           font-size: 5vmin;
            background-color: #FFFFFF;
            outline: none;
          }
@@ -49,42 +50,87 @@
          input:disabled {
            background-color: #EEEEEE;
          }
+
+         input:focus {
+           background-color: #f3f9ef ;
+         }
+
+         #wrap {
+           margin-top: 20vh;
+           float: left;
+           position: relative;
+           left: 50%;
+         }
+         #grid {
+           float: left;
+           position: relative;
+           left: -60%;
+         }
+
+         .x-axis {
+           font-size: 3vmin;
+           font-style: italic;
+           border: 0px;
+           height: 8vmin;
+         }
+         .y-axis {
+           font-size: 3vmin;
+           font-style: italic;
+           border: 0px;
+           width: 8vmin;
+         }
          
         </style>
     </head>
 
     <body>
         <h1 id="level">1.1</h1>
-        
-        <table id="grid" style="margin: auto;   display: flex;
-                   align-items: center;      justify-content: center;
-                   ">
+        <div id="wrap">
+            <table id="grid">
+                
+                <tr>
+                    <td class="y-axis">1</td>
+                    <td><input type="text" value="1" disabled></td>
+                    <td><input type="text"></td>
+                    <td><input type="text" value="0" disabled></td>
+                </tr>
+                <tr>
+                    <td class="y-axis">2</td>
+                    <td><input type="text"></td>
+                    <td><input type="text" value="1" disabled></td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="y-axis">3</td>
+                    <td><input type="text"></td>
+                    <td><input type="text" value="1" disabled></td>
+                    <td><input type="text"></td>
+                </tr>
+                
+                <tr>
+                    <td class="x-axis"></td>
+                    <td class="x-axis">1</td>
+                    <td class="x-axis">2</td>
+                    <td class="x-axis">3</td>
+                </tr>
+                
 
-            <tr>
-                <td><input type="text" value="1" disabled></td>
-                <td><input type="text"></td>
-                <td><input type="text" value="0" disabled></td>
-                <td><input type="text"></td>
-            </tr>
+            </table>
 
-        </table>
+        </div>  
 
-          </div>
-          
-          
+        <script>
+         const inputList = document.querySelectorAll('input[type=text]');
+         const regex = new RegExp("^[0-9]*$");
 
-          <script>
-           const inputList = document.querySelectorAll('input[type=text]');
-           const regex = new RegExp("^[0-9]*$");
-
-           inputList.forEach((input) => {
-             input.addEventListener("beforeinput", (event) => {
-               if (event.data != null && !regex.test(event.data)) 
-                 event.preventDefault();
-             });
+         inputList.forEach((input) => {
+           input.addEventListener("beforeinput", (event) => {
+             if (event.data != null && !regex.test(event.data)) 
+               event.preventDefault();
            });
-             
-          </script>
+         });
+         
+        </script>
 
-          
+        
 </html>

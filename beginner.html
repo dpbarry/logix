@@ -30,6 +30,7 @@
            margin-left: 4vw;
          }
          td {
+           padding: 1px;
            border: 1px solid #000000;
            text-align: center;
            border-radius: 2px;
@@ -37,6 +38,7 @@
 
          input {
            color: #000000;
+           background: transparent;
            padding: 0;
            border: 0;
            text-align: center;
@@ -87,21 +89,21 @@
                 
                 <tr>
                     <td class="y-axis">3</td>
-                    <td class="given" id ="3.1"><input id="i3.1" type="text" value="1" disabled id></td>
-                    <td id="3.2"><input id="i3.2" type="text"></td>
-                    <td class="given" id="3.3"><input id="i3.3" type="text" value="0" disabled></td>
+                    <td class="given"><input type="text" value="1" disabled id></td>
+                    <td><input type="text"></td>
+                    <td class="given"><input type="text" value="0" disabled></td>
                 </tr>
                 <tr>
                     <td class="y-axis">2</td>
-                    <td id="2.1"><input id="i2.1" type="text"></td>
-                    <td id="2.2" class="given"><input id="i2.2" type="text" value="1" disabled></td>
-                    <td id="2.3"><input id="i2.3" type="text"></td>
+                    <td><input id="i2.1" type="text"></td>
+                    <td class="given"><input type="text" value="1" disabled></td>
+                    <td><input type="text"></td>
                 </tr>
                 <tr>
                     <td class="y-axis">1</td>
-                    <td id="1.1"><input id="i1.1" type="text"></td>
-                    <td id="1.2" class="given"><input id="i1.2" type="text" value="1" disabled></td>
-                    <td id="1.3"><input id="i1.3" type="text"></td>
+                    <td><input type="text"></td>
+                    <td class="given"><input type="text" value="1" disabled></td>
+                    <td><input type="text"></td>
                 </tr>
                 
                 <tr>
@@ -118,26 +120,26 @@
 
         <script>
 
-         function crosshairs(id) {
-           console.log(id);
-           var cells = document.querySelectorAll('td');
-           for (var i = 0; i < cells.length; i++) {
-             if (cells[i].id.slice(0,1) == id.slice(0,1) || cells[i].id.slice(2) == id.slice(2)) {
-               cells[i].style.backgroundColor = "red";
-             }
-           }
-         }
-         
-         var inputs = document.querySelectorAll('input');
-         for(var i = 0; i < inputs.length; i++){
-           if (inputs[i].id == undefined) {
-             continue;
-           }
-           inputs[i].onfocus = function () { crosshairs(this.id.slice(1)) };
-         }
-         
-         
+         // fetch all inputs and cells
          const inputList = document.querySelectorAll('input[type=text]');
+         const cellList = document.querySelectorAll('td');
+
+         // id them with their coordinates
+         for (let i=0; i < inputList.length; i++) {
+           inputList[i].id = `i${3-(Math.floor(i/3))}.${1+i%3}`;
+           
+         }
+
+         var j=0;
+         for (let i=0; i < cellList.length; i++) {
+           if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
+             cellList[i].id = `c${3-(Math.floor(j/3))}.${1+j%3}`;
+             j++;
+           }
+           
+         }
+
+         
          const regex = new RegExp("^[0-9]*$");
 
          inputList.forEach((input) => {
@@ -146,6 +148,40 @@
                event.preventDefault();
            });
          });
+         
+         
+         for(var i = 0; i < inputList.length; i++){
+           if (inputList[i].id == undefined) {
+             continue;
+           }
+           inputList[i].onfocus = function () { crosshairs(this.id); };
+         }
+         
+         
+         
+
+
+         // given the id of a cell, emphasize borders of cells in that row and column
+         function crosshairs(id) {
+           for (var i = 0; i < cellList.length; i++) {
+             if (cellList[i].id.slice(1) == id.slice(1)) {
+               cellList[i].style.backgroundColor = "#F1EEDC";
+             } else if (cellList[i].className != "given"){
+               cellList[i].style.backgroundColor = "#FFFFFF";
+             }
+             // check that the cell matches in row or column
+             if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
+               cellList[i].style.border = "2px solid #000000";
+               cellList[i].style.padding = "0px";
+             }
+             // reset the styles of other cells without messing up the axis labels
+             else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
+               cellList[i].style.border = "1px solid #000000";
+               cellList[i].style.padding = "0px";
+               
+             }
+           }
+         }
 
          
         </script>

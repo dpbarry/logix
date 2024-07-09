@@ -38,7 +38,7 @@
 
          input {
            color: #000000;
-           background: transparent;
+           background: transparent; /* Otherwise clashes with td color */
            padding: 0;
            border: 0;
            text-align: center;
@@ -53,19 +53,18 @@
          }
 
          
-
-         #wrap {
-           margin-top: 20vh;
-           float: left;
-           position: relative;
-           left: 50%;
-         }
          #grid {
-           float: left;
+           margin: auto;
+           margin-top: 10vmin;
            position: relative;
-           left: -60%;
+           left: -4vmin; /* Compensates for the y-axis */
          }
-
+         
+         #propositions {
+           text-align: center;
+           font-weight: bolder;
+         }
+         
          .x-axis {
            font-size: 3vmin;
            font-style: italic;
@@ -80,44 +79,47 @@
          }
          
         </style>
-    </head>
 
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+    
     <body>
         <h1 id="level">1.1</h1>
-        <div id="wrap">
-            <table id="grid">
-                
-                <tr>
-                    <td class="y-axis">3</td>
-                    <td class="given"><input type="text" value="1" disabled id></td>
-                    <td><input type="text"></td>
-                    <td class="given"><input type="text" value="0" disabled></td>
-                </tr>
-                <tr>
-                    <td class="y-axis">2</td>
-                    <td><input id="i2.1" type="text"></td>
-                    <td class="given"><input type="text" value="1" disabled></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td class="y-axis">1</td>
-                    <td><input type="text"></td>
-                    <td class="given"><input type="text" value="1" disabled></td>
-                    <td><input type="text"></td>
-                </tr>
-                
-                <tr>
-                    <td class="x-axis"></td>
-                    <td class="x-axis">1</td>
-                    <td class="x-axis">2</td>
-                    <td class="x-axis">3</td>
-                </tr>
-                
+        <div id="propositions">
+            <p>\(\begin{bmatrix} 1 \\ 2 \end{bmatrix} > \begin{bmatrix} 2 \\ 3 \end{bmatrix}\)</p>
+        </div>
+        
+        <table id="grid">
+            
+            <tr>
+                <td class="y-axis">3</td>
+                <td><input type="text"></td>
+                <td class="given"><input type="text" value="2" disabled id></td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td class="y-axis">2</td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td class="given"><input type="text" value="3" disabled></td>
+            </tr>
+            <tr>
+                <td class="y-axis">1</td>
+                <td class="given"><input type="text" value="1" disabled></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+            </tr>
+            
+            <tr>
+                <td class="x-axis"></td>
+                <td class="x-axis">1</td>
+                <td class="x-axis">2</td>
+                <td class="x-axis">3</td>
+            </tr>
+        </table>
 
-            </table>
 
-        </div>  
-
+        
         <script>
 
          // fetch all inputs and cells

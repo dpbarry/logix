@@ -14,10 +14,7 @@
         
         <title>Logix</title>    
         <style>
-         @view-transition {
-           navigation: auto;
-         }
-
+         
          * {
            font-family: computer modern serif;
          }
@@ -77,16 +74,31 @@
            border: 0px;
            width: 8vmin;
          }
-         
         </style>
-
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js" integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+                onload="renderMathInElement(document.body);"></script>
     </head>
     
     <body>
+        
         <h1 id="level">1.1</h1>
         <div id="propositions">
-            <p>\(\begin{bmatrix} 1 \\ 2 \end{bmatrix} > \begin{bmatrix} 2 \\ 3 \end{bmatrix}\)</p>
+            <p>\(\begin{bmatrix}
+                2 \\
+                1
+                \end{bmatrix}     >
+
+                \begin{bmatrix}
+                1 \\
+                2
+                \end{bmatrix}
+                \)
+
+                
+
+            </p>
         </div>
         
         <table id="grid">

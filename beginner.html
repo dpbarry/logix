@@ -15,18 +15,8 @@
         <title>Logix</title>    
         <style>
          
-         * {
-           font-family: computer modern serif;
-         }
-         
-         #level {
-           text-align: left;
-           font-weight: lighter;
-           font-size: 2rem;
-           margin-top: 4vh;
-           margin-left: 4vw;
-         }
          td {
+           font-family: computer modern serif;
            padding: 1px;
            border: 1px solid #000000;
            text-align: center;
@@ -34,6 +24,7 @@
          }
 
          input {
+           font-family: computer modern serif;
            color: #000000;
            background: transparent; /* Otherwise clashes with td color */
            padding: 0;
@@ -49,19 +40,6 @@
            background-color: #EEEEEE;
          }
 
-         
-         #grid {
-           margin: auto;
-           margin-top: 10vmin;
-           position: relative;
-           left: -4vmin; /* Compensates for the y-axis */
-         }
-         
-         #propositions {
-           text-align: center;
-           font-weight: bolder;
-         }
-         
          .x-axis {
            font-size: 3vmin;
            font-style: italic;
@@ -74,6 +52,38 @@
            border: 0px;
            width: 8vmin;
          }
+
+         
+         #grid {
+           margin: auto;
+           margin-top: 10vmin;
+           position: relative;
+           left: -4vmin; /* Compensates for the y-axis */
+         }
+         
+         #level {
+           font-family: computer modern serif;
+           text-align: left;
+           font-weight: lighter;
+           font-size: 2rem;
+           margin-top: 4vh;
+           margin-left: 4vw;
+         }
+         
+         #propositions {
+           text-align: left;
+           list-style-type: none;
+           margin-left: 15vmin;
+           font-size: 1.3rem;
+         }
+
+         #propositions > li {
+            + li {
+             margin-top: 2.5vmin;
+           }
+         }
+         
+         
         </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js" integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p" crossorigin="anonymous"></script>
@@ -84,22 +94,30 @@
     <body>
         
         <h1 id="level">1.1</h1>
-        <div id="propositions">
-            <p>\(\begin{bmatrix}
+        <ul id="propositions">
+            <li>\(\lang	
+                \begin{smallmatrix}
                 2 \\
                 1
-                \end{bmatrix}     >
+                \end{smallmatrix} \rang   > 
 
-                \begin{bmatrix}
+                \lang	
+                \begin{smallmatrix}
                 1 \\
                 2
-                \end{bmatrix}
+                \end{smallmatrix} \rang
                 \)
+            </li>
 
-                
+            <li>\(\forall \scriptsize x,y \; \normalsize \lang	
+                \begin{smallmatrix}
+                x \\
+                y
+                \end{smallmatrix} \rang  = 2\)
+            </li>
 
-            </p>
-        </div>
+            
+        </ul>
         
         <table id="grid">
             

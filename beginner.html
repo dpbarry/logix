@@ -14,13 +14,16 @@
         
         <title>Logix</title>    
         <style>
-         
+         html, body {
+           margin: 0;
+           height: 100%;
+         }
          td {
            font-family: computer modern serif;
            padding: 1px;
            border: 1px solid #000000;
            text-align: center;
-           border-radius: 2px;
+           border-radius: 3px;
          }
 
          input {
@@ -30,36 +33,30 @@
            padding: 0;
            border: 0;
            text-align: center;
-           width: 10vmin;
-           height: 10vmin;
-           font-size: 5vmin;
+           width: 13vh;
+           height: 13vh;
+           font-size: 7vh;
            outline: none;
          }
 
          td.given {
-           background-color: #EEEEEE;
+           background-color: #D0D0D0;
          }
 
          .x-axis {
-           font-size: 3vmin;
+           font-size: 4vh;
            font-style: italic;
            border: 0px;
-           height: 8vmin;
+           height: 8vh;
          }
          .y-axis {
-           font-size: 3vmin;
+           font-size: 4vh;
            font-style: italic;
            border: 0px;
-           width: 8vmin;
+           width: 8vh;
          }
 
          
-         #grid {
-           margin: auto;
-           margin-top: 10vmin;
-           position: relative;
-           left: -4vmin; /* Compensates for the y-axis */
-         }
          
          #level {
            font-family: computer modern serif;
@@ -71,16 +68,37 @@
          }
          
          #propositions {
+           padding: 0;
+           align-self: top;
            text-align: left;
            list-style-type: none;
-           margin-left: 15vmin;
-           font-size: 1.3rem;
+           font-size: 1.75rem;
          }
 
          #propositions > li {
-            + li {
-             margin-top: 2.5vmin;
+           padding: 10px;
+           + li {
+             border-top: 1px solid black;
            }
+         }
+
+         #wrapper {
+           margin-top: 10vh;
+           display: flex;
+           gap: 6vw;
+           flex-wrap: wrap;
+           justify-content: center;
+         }
+
+         @media (max-width: 700px) {
+           #wrapper {
+             flex-direction: column;
+             flex-wrap: wrap;
+             align-content:center;
+
+           }
+           
+           
          }
          
          
@@ -92,131 +110,133 @@
     </head>
     
     <body>
-        
         <h1 id="level">1.1</h1>
-        <ul id="propositions">
-            <li>\(\lang	
-                \begin{smallmatrix}
-                2 \\
-                1
-                \end{smallmatrix} \rang   > 
 
-                \lang	
-                \begin{smallmatrix}
-                1 \\
-                2
-                \end{smallmatrix} \rang
-                \)
-            </li>
+        <div id="wrapper">
+            <ul id="propositions">
+                <li>\(\lang	
+                    \begin{smallmatrix}
+                    2 \\
+                    1
+                    \end{smallmatrix} \rang   > 
 
-            <li>\(\forall \scriptsize x,y \; \normalsize \lang	
-                \begin{smallmatrix}
-                x \\
-                y
-                \end{smallmatrix} \rang  = 2\)
-            </li>
+                    \lang	
+                    \begin{smallmatrix}
+                    1 \\
+                    2
+                    \end{smallmatrix} \rang
+                    \)
+                </li>
 
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>
+
+                
+            </ul>
             
-        </ul>
-        
-        <table id="grid">
-            
-            <tr>
-                <td class="y-axis">3</td>
-                <td><input type="text"></td>
-                <td class="given"><input type="text" value="2" disabled id></td>
-                <td><input type="text"></td>
-            </tr>
-            <tr>
-                <td class="y-axis">2</td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td class="given"><input type="text" value="3" disabled></td>
-            </tr>
-            <tr>
-                <td class="y-axis">1</td>
-                <td class="given"><input type="text" value="1" disabled></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-            </tr>
-            
-            <tr>
-                <td class="x-axis"></td>
-                <td class="x-axis">1</td>
-                <td class="x-axis">2</td>
-                <td class="x-axis">3</td>
-            </tr>
-        </table>
+            <table id="grid">
+                
+                <tr>
+                    <td class="y-axis">3</td>
+                    <td><input type="text"></td>
+                    <td class="given"><input type="text" value="2" disabled id></td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="y-axis">2</td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td class="given"><input type="text" value="3" disabled></td>
+                </tr>
+                <tr>
+                    <td class="y-axis">1</td>
+                    <td class="given"><input type="text" value="1" disabled></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+                
+                <tr>
+                    <td class="x-axis"></td>
+                    <td class="x-axis">1</td>
+                    <td class="x-axis">2</td>
+                    <td class="x-axis">3</td>
+                </tr>
+            </table>
+
+        </div>
+    </body>
+    
+    <script>
+
+     // fetch all inputs and cells
+     const inputList = document.querySelectorAll('input[type=text]');
+     const cellList = document.querySelectorAll('td');
+
+     // id them with their coordinates
+     for (let i=0; i < inputList.length; i++) {
+       inputList[i].id = `i${3-(Math.floor(i/3))}.${1+i%3}`;
+       
+     }
+
+     var j=0;
+     for (let i=0; i < cellList.length; i++) {
+       if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
+         cellList[i].id = `c${3-(Math.floor(j/3))}.${1+j%3}`;
+         j++;
+       }
+       
+     }
+
+     
+     const regex = new RegExp("^[0-9]*$");
+
+     inputList.forEach((input) => {
+       input.addEventListener("beforeinput", (event) => {
+         if (event.data != null && !regex.test(event.data)) 
+           event.preventDefault();
+       });
+     });
+     
+     
+     for(var i = 0; i < inputList.length; i++){
+       if (inputList[i].id == undefined) {
+         continue;
+       }
+       inputList[i].onfocus = function () { crosshairs(this.id); };
+     }
+     
+     
+     
 
 
-        
-        <script>
-
-         // fetch all inputs and cells
-         const inputList = document.querySelectorAll('input[type=text]');
-         const cellList = document.querySelectorAll('td');
-
-         // id them with their coordinates
-         for (let i=0; i < inputList.length; i++) {
-           inputList[i].id = `i${3-(Math.floor(i/3))}.${1+i%3}`;
+     // given the id of a cell, emphasize borders of cells in that row and column
+     function crosshairs(id) {
+       for (var i = 0; i < cellList.length; i++) {
+         if (cellList[i].id.slice(1) == id.slice(1)) {
+           cellList[i].style.backgroundColor = "#F1EEDC";
+         } else if (cellList[i].className != "given"){
+           cellList[i].style.backgroundColor = "#FFFFFF";
+         }
+         // check that the cell matches in row or column
+         if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
+           cellList[i].style.border = "2px solid #000000";
+           cellList[i].style.padding = "0px";
+         }
+         // reset the styles of other cells without messing up the axis labels
+         else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
+           cellList[i].style.border = "1px solid #000000";
+           cellList[i].style.padding = "0px";
            
          }
+       }
+     }
 
-         var j=0;
-         for (let i=0; i < cellList.length; i++) {
-           if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
-             cellList[i].id = `c${3-(Math.floor(j/3))}.${1+j%3}`;
-             j++;
-           }
-           
-         }
+     
+    </script>
 
-         
-         const regex = new RegExp("^[0-9]*$");
-
-         inputList.forEach((input) => {
-           input.addEventListener("beforeinput", (event) => {
-             if (event.data != null && !regex.test(event.data)) 
-               event.preventDefault();
-           });
-         });
-         
-         
-         for(var i = 0; i < inputList.length; i++){
-           if (inputList[i].id == undefined) {
-             continue;
-           }
-           inputList[i].onfocus = function () { crosshairs(this.id); };
-         }
-         
-         
-         
-
-
-         // given the id of a cell, emphasize borders of cells in that row and column
-         function crosshairs(id) {
-           for (var i = 0; i < cellList.length; i++) {
-             if (cellList[i].id.slice(1) == id.slice(1)) {
-               cellList[i].style.backgroundColor = "#F1EEDC";
-             } else if (cellList[i].className != "given"){
-               cellList[i].style.backgroundColor = "#FFFFFF";
-             }
-             // check that the cell matches in row or column
-             if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
-               cellList[i].style.border = "2px solid #000000";
-               cellList[i].style.padding = "0px";
-             }
-             // reset the styles of other cells without messing up the axis labels
-             else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
-               cellList[i].style.border = "1px solid #000000";
-               cellList[i].style.padding = "0px";
-               
-             }
-           }
-         }
-
-         
-        </script>
-
-        
+    
 </html>

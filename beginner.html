@@ -12,9 +12,9 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
 
         
-        <title>Logix</title>    
+        <title>Logix</title>
+        
         <style>
-
          html, body {
            padding: 0;
            margin: 0;
@@ -37,8 +37,7 @@
          #wrapper {
            margin-top: 15vh;
            display: flex;
-           gap: 6vw;
-           flex-wrap: wrap;
+           gap: 10vw;
            justify-content: center;
          }
 
@@ -86,6 +85,7 @@
            padding: 0;
            
            height: 45vh;
+           width: 25vw;
            
            text-align: left;
            list-style-type: none; /* no bullet points */
@@ -119,10 +119,13 @@
          }
 
          #domain {
-           display: flex;
+           padding: 0;
            margin: auto;
+           display: flex;
+           align-items: center;
            justify-content: center;
            gap: 10px;
+           width: 30vw;
 
            button {
              font-family: computer modern serif;
@@ -133,13 +136,29 @@
              border-radius: 12px;
              box-shadow: rgba(27, 31, 35, .1) 0 2px 0;
              cursor: pointer;
-             width: 195px;
-
-             position: relative;
+             width: 100%;
              text-align: center;
            }
-         }
+           
+           button:hover {
+             font-weight: bold;
+             background-color: rgb(215,215,215);
+             transition-duration: 0.42s;
+           }
 
+           button:active {
+             transform: translateY(3px);
+           }
+           
+           button::before {
+             margin: -0.5ch;
+             content: attr(data-value);
+             font-weight: bold;
+             visibility: hidden;
+           }
+
+         }
+         
          /* Rearrange layout for mobile ratios */
          @media (max-width: 700px) {
            #wrapper {
@@ -147,29 +166,39 @@
              flex-direction: column;
              flex-wrap: wrap;
              align-content:center;
-             gap: 4.5vh;
+             align-items: center;
+             gap: 2.5vh;
            }
            #propositions {
              align-self: unset;
              text-align: center;
-             height: 30vh;
+             width: 80vw;
+             height: 15vh;
            }
            #grid {
              position: relative;
-             left: -4.3vw;
-             
+             left: -5vw;
+
+             input {
+               width: 19vh;
+               height: 19vh;
+               
+             }
            }
-           button {
-             width: 20vw;
+           #domain {
+             gap: 0.8vw;
+             width: 90vw;
            }
          }
          
          /* Tighten up grid for very skinny ratios */ 
-         @media (max-width: 500px) {
-
+         @media (max-width: 550px) {
            #grid input {
-             width: 23.85vmin;
-             height: 23.85vmin;
+             width: 26vw;
+             height: 26vw;
+           }
+           #grid {
+             margin-bottom: calc((550px - 100vw) / 2);
            }
          }
          
@@ -188,103 +217,111 @@
         <h1 id="level">1.1</h1>
 
         <div id="wrapper">
-            <div id="test">
-                <ul id="propositions">
-                    <li>\(\lang	
-                        \begin{smallmatrix}
-                        2 \\
-                        1
-                        \end{smallmatrix} \rang   > 
+            <ul id="propositions">
+                <li>\(\lang	
+                    \begin{smallmatrix}
+                    2 \\
+                    1
+                    \end{smallmatrix} \rang   > 
 
-                        \lang	
-                        \begin{smallmatrix}
-                        1 \\
-                        2
-                        \end{smallmatrix} \rang
-                        \)
-                    </li>
+                    \lang	
+                    \begin{smallmatrix}
+                    1 \\
+                    2
+                    \end{smallmatrix} \rang
+                    \)
+                </li>
 
-                    <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                        \begin{smallmatrix}
-                        x \\
-                        y
-                        \end{smallmatrix} \rang  \small = 2\)
-                    </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                        \begin{smallmatrix}
-                        x \\
-                        y
-                        \end{smallmatrix} \rang  \small = 2\)
-                    </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                        \begin{smallmatrix}
-                        x \\
-                        y
-                        \end{smallmatrix} \rang  \small = 2\)
-                    </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                        \begin{smallmatrix}
-                        x \\
-                        y
-                        \end{smallmatrix} \rang  \small = 2\)
-                    </li>
-                    <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                        \begin{smallmatrix}
-                        x \\
-                        y
-                        \end{smallmatrix} \rang  \small = 2\)
-                    </li>
-                    <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                        \begin{smallmatrix}
-                        x \\
-                        y
-                        \end{smallmatrix} \rang  \small = 2\)
-                    </li>
-                    <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                        \begin{smallmatrix}
-                        x \\
-                        y
-                        \end{smallmatrix} \rang  \small = 2\)
-                    </li>
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>
 
+                
+            </ul>
+
+            <div id="right-pane">
+                <table id="grid">
                     
-                </ul>
+                    <tr>
+                        <td class="y-axis">3</td>
+                        <td><input type="text"></td>
+                        <td class="given"><input type="text" value="2" disabled id></td>
+                        <td><input type="text"></td>
+                    </tr>
+                    <tr>
+                        <td class="y-axis">2</td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td class="given"><input type="text" value="3" disabled></td>
+                    </tr>
+                    <tr>
+                        <td class="y-axis">1</td>
+                        <td class="given"><input type="text" value="1" disabled></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="x-axis"></td>
+                        <td class="x-axis">1</td>
+                        <td class="x-axis">2</td>
+                        <td class="x-axis">3</td>
+                    </tr>
+                </table>
+
+             
             </div>
-            <table id="grid">
-                
-                <tr>
-                    <td class="y-axis">3</td>
-                    <td><input type="text"></td>
-                    <td class="given"><input type="text" value="2" disabled id></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td class="y-axis">2</td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                    <td class="given"><input type="text" value="3" disabled></td>
-                </tr>
-                <tr>
-                    <td class="y-axis">1</td>
-                    <td class="given"><input type="text" value="1" disabled></td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                
-                <tr>
-                    <td class="x-axis"></td>
-                    <td class="x-axis">1</td>
-                    <td class="x-axis">2</td>
-                    <td class="x-axis">3</td>
-                </tr>
-            </table>
 
         </div>
-
-        <div id="domain">
-            
-            <button>1 </button>
-            <button>2 </button>
-            <button>3 </button>
-        </div>
-        
+           <div id="domain">
+                    
+                    <button data-value="1">1</button>
+                    <button data-value="2">2</button>
+                    <button data-value="3">3</button>
+                    <button data-value="4">4</button>
+                    <button data-value="5">5</button>
+                    <button data-value="6">6</button>
+                    <button data-value="7">7</button>
+                    <button data-value="8">8</button>
+                    <button data-value="9">9</button>
+           </div>
+           
     </body>
     
     <script>

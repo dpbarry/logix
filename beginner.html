@@ -14,67 +14,103 @@
         
         <title>Logix</title>    
         <style>
+
          html, body {
+           padding: 0;
            margin: 0;
            height: 100%;
          }
-         td {
-           font-family: computer modern serif;
-           padding: 1px;
-           border: 1px solid #000000;
-           text-align: center;
-           border-radius: 3px;
-         }
 
-         input {
-           font-family: computer modern serif;
-           color: #000000;
-           background: transparent; /* Otherwise clashes with td color */
-           padding: 0;
-           border: 0;
-           text-align: center;
-           width: 13vh;
-           height: 13vh;
-           font-size: 7vh;
-           outline: none;
-         }
-
-         td.given {
-           background-color: #D0D0D0;
-         }
-
-         .x-axis {
-           font-size: 4vh;
-           font-style: italic;
-           border: 0px;
-           height: 8vh;
-         }
-         .y-axis {
-           font-size: 4vh;
-           font-style: italic;
-           border: 0px;
-           width: 8vh;
-         }
-
-         
-         
          #level {
            font-family: computer modern serif;
            text-align: left;
            font-weight: lighter;
            font-size: 2rem;
-           margin-top: 4vh;
-           margin-left: 4vw;
-         }
-         
-         #propositions {
-           padding: 0;
-           align-self: top;
-           text-align: left;
-           list-style-type: none;
-           font-size: 1.75rem;
+           width: 10vw;
+           position: relative;
+           margin: 0;
+           top: 4vh;
+           left: 4vw;
+           
          }
 
+         #wrapper {
+           margin-top: 15vh;
+           display: flex;
+           gap: 6vw;
+           flex-wrap: wrap;
+           justify-content: center;
+         }
+
+         #grid {
+           td {
+             font-family: computer modern serif;
+             padding: 1px;
+             border: 1px solid #000000;
+             text-align: center;
+             border-radius: 3px;
+           }
+           td.given {
+             background-color: #D0D0D0;
+
+           }
+           .x-axis {
+             font-size: 4vh;
+             font-style: italic;
+             border: 0px;
+             height: 8vh;
+           }
+           .y-axis {
+             font-size: 4vh;
+             font-style: italic;
+             border: 0px;
+             width: 8vh;
+           }
+           input {
+             font-family: computer modern serif;
+             color: #000000;
+             background: transparent; /* Otherwise clashes with td color */
+             padding: 0;
+             border: 0;
+             text-align: center;
+             width: 13vh;
+             height: 13vh;
+             font-size: 7vh;
+             outline: none;
+           }
+         }
+         
+         
+         #propositions {
+           margin: 0;
+           padding: 0;
+           
+           height: 45vh;
+           
+           text-align: left;
+           list-style-type: none; /* no bullet points */
+           font-size: 1.5rem;
+           
+           overflow-y: auto;
+
+           -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
+           mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
+           --top-mask-size: 0px;
+           --bottom-mask-size: 0px;
+         }
+         
+         #propositions.is-top-overflowing {
+           --top-mask-size: 48px !important;
+         }
+
+         #propositions.is-bottom-overflowing {
+           --bottom-mask-size: 48px !important;
+         }
+         
+         #propositions::-webkit-scrollbar { 
+           display: none; 
+         }
+         
          #propositions > li {
            padding: 10px;
            + li {
@@ -82,24 +118,63 @@
            }
          }
 
-         #wrapper {
-           margin-top: 10vh;
+         #domain {
            display: flex;
-           gap: 6vw;
-           flex-wrap: wrap;
+           margin: auto;
            justify-content: center;
+           gap: 10px;
+
+           button {
+             font-family: computer modern serif;
+             font-size: 2.5rem;
+             font-weight: lighter;
+             background-color: rgb(240,240,240);
+             border: 1px solid rgba(27, 31, 35, .15);
+             border-radius: 12px;
+             box-shadow: rgba(27, 31, 35, .1) 0 2px 0;
+             cursor: pointer;
+             width: 195px;
+
+             position: relative;
+             text-align: center;
+           }
          }
 
+         /* Rearrange layout for mobile ratios */
          @media (max-width: 700px) {
            #wrapper {
+             margin-top: 0vh;
              flex-direction: column;
              flex-wrap: wrap;
              align-content:center;
-
+             gap: 4.5vh;
            }
-           
-           
+           #propositions {
+             align-self: unset;
+             text-align: center;
+             height: 30vh;
+           }
+           #grid {
+             position: relative;
+             left: -4.3vw;
+             
+           }
+           button {
+             width: 20vw;
+           }
          }
+         
+         /* Tighten up grid for very skinny ratios */ 
+         @media (max-width: 500px) {
+
+           #grid input {
+             width: 23.85vmin;
+             height: 23.85vmin;
+           }
+         }
+         
+
+         
          
          
         </style>
@@ -113,31 +188,65 @@
         <h1 id="level">1.1</h1>
 
         <div id="wrapper">
-            <ul id="propositions">
-                <li>\(\lang	
-                    \begin{smallmatrix}
-                    2 \\
-                    1
-                    \end{smallmatrix} \rang   > 
+            <div id="test">
+                <ul id="propositions">
+                    <li>\(\lang	
+                        \begin{smallmatrix}
+                        2 \\
+                        1
+                        \end{smallmatrix} \rang   > 
 
-                    \lang	
-                    \begin{smallmatrix}
-                    1 \\
-                    2
-                    \end{smallmatrix} \rang
-                    \)
-                </li>
+                        \lang	
+                        \begin{smallmatrix}
+                        1 \\
+                        2
+                        \end{smallmatrix} \rang
+                        \)
+                    </li>
 
-                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                    \begin{smallmatrix}
-                    x \\
-                    y
-                    \end{smallmatrix} \rang  \small = 2\)
-                </li>
+                    <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                        \begin{smallmatrix}
+                        x \\
+                        y
+                        \end{smallmatrix} \rang  \small = 2\)
+                    </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                        \begin{smallmatrix}
+                        x \\
+                        y
+                        \end{smallmatrix} \rang  \small = 2\)
+                    </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                        \begin{smallmatrix}
+                        x \\
+                        y
+                        \end{smallmatrix} \rang  \small = 2\)
+                    </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                        \begin{smallmatrix}
+                        x \\
+                        y
+                        \end{smallmatrix} \rang  \small = 2\)
+                    </li>
+                    <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                        \begin{smallmatrix}
+                        x \\
+                        y
+                        \end{smallmatrix} \rang  \small = 2\)
+                    </li>
+                    <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                        \begin{smallmatrix}
+                        x \\
+                        y
+                        \end{smallmatrix} \rang  \small = 2\)
+                    </li>
+                    <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                        \begin{smallmatrix}
+                        x \\
+                        y
+                        \end{smallmatrix} \rang  \small = 2\)
+                    </li>
 
-                
-            </ul>
-            
+                    
+                </ul>
+            </div>
             <table id="grid">
                 
                 <tr>
@@ -168,6 +277,14 @@
             </table>
 
         </div>
+
+        <div id="domain">
+            
+            <button>1 </button>
+            <button>2 </button>
+            <button>3 </button>
+        </div>
+        
     </body>
     
     <script>
@@ -210,7 +327,30 @@
      }
      
      
-     
+     function setClasses(el) {
+       const isScrollable = el.scrollHeight > el.clientHeight;
+       
+       // GUARD: If element is not scrollable, remove all classes
+       if (!isScrollable) {
+         el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
+         return;
+       }
+       
+       // Otherwise, the element is overflowing!
+       // Now we just need to find out which direction it is overflowing to (can be both).
+       // One pixel is added to the height to account for non-integer heights.
+       const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+       const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
+       el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
+       el.classList.toggle('is-top-overflowing', !isScrolledToTop);
+     }
+
+     document.querySelector('#propositions').addEventListener('scroll', (e) => {
+       const el = e.currentTarget;
+       setClasses(el);
+     });
+
+     setClasses(document.querySelector('#propositions'));
 
 
      // given the id of a cell, emphasize borders of cells in that row and column

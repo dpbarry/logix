@@ -43,6 +43,7 @@
 
          #grid {
            margin-right: 5vw;
+           margin-top: 2vh;
            align-self: center;           
            td {
              font-family: computer modern serif;
@@ -88,7 +89,7 @@
 
            
            width: 35vw;
-           max-height: 60vh;
+           max-height: 59vh;
            
            text-align: left;
            list-style-type: none; /* no bullet points */
@@ -127,21 +128,19 @@
 
          #domain {
            padding: 0;
-           padding-bottom: 3px;
            display: flex;
            align-items: center;
            
            gap: 0.8vw;
            margin: auto;
            position: relative;
-           top: 7.5vh;
+           top: 4.5vh;
 
 
            button {
              width: 100%;
-             font-family: computer modern serif;
+             font-family:  computer modern serif;
              font-size: 2.5rem;
-             font-weight: lighter;
              background-color: rgb(240,240,240);
              border: 1px solid rgba(27, 31, 35, .15);
              border-radius: 12px;
@@ -161,7 +160,10 @@
          }
          
 
+
+         /* Landscape layout */
          @media (width > 820px) {
+           
            #grid input {
              width: calc(13.5vh + ((100vw - 700px) / 40));
              height: calc(13.5vh + ((100vw - 700px) / 40));
@@ -171,64 +173,85 @@
              font-size: calc(1.5rem + ((100vw - 700px) / 100));
            }
            #wrapper {
-             gap: calc((100vw - 700px) / 10)
+             gap: calc((100vw - 700px) / 10);
            }
            #domain {
              margin-left: 12vw;
              margin-right: calc(7vw + ((100vw - 880px) / 4));
            }
-         }
-         
-         
-         /* Rearrange layout for mobile ratios */
-         @media (width <= 820px) {
-           #wrapper {
-             margin-top: 0vh;
-             flex-direction: column;
-             flex-wrap: wrap;
-             align-content:center;
-             align-items: center;
-             gap: 4vh;
-           }
-           #propositions {
-             margin: 0;
-             align-self: unset;
-             text-align: center;
-             width: 70vw;
-             height: 19vh;
-           }
-           #grid {
-             padding: 0;
-             margin: 0;
-             margin-right: 8vw;
 
-             input {
-               width: 17vh;
-               height: 17vh;
+           @media (height < 745px) {
+             #propositions {
+               margin-left: calc((10vh + ((100vw - 700px) / 7)) + (745px - 100vh)/4.5);
+             }
+             #wrapper {
+               margin-top: calc(10vh - (745px - 100vh) / 6);
+               gap: calc((100vw - 700px) / 10 + (745px - 100vh) / 7)
              }
            }
-           #domain {
-             gap: 0.8vw;
-             width: 90vw;
-             flex-wrap: nowrap;
-             top: unset;
+           @media (height < 490px) {
+             #wrapper {
+               margin-top: calc(49px - (745px - 490px) / 6);
+             }
+             #domain button {
+               font-size: calc(2.5rem - (490px - 100vh) / 20);
+             }
+
            }
          }
-         
-         /* If ratio gets too narrow, adjust scaling */ 
-         @media (width <= 600px) {
-           #grid input {
-             width: 21vw;
-             height: 21vw;
-             
+           
+           
+           /* Mobile layout */
+           @media (width <= 820px) {
+             #wrapper {
+               margin-top: 0vh;
+               flex-direction: column;
+               flex-wrap: wrap;
+               align-content:center;
+               align-items: center;
+               gap: 4vh;
+             }
+             #propositions {
+               margin: 0;
+               align-self: unset;
+               text-align: center;
+               width: 70vw;
+               height: 19vh;
+             }
+             #grid {
+               padding: 0;
+               margin: 0;
+               margin-right: 8vw;
+               margin-right: calc(8vw + (820px - 100vw) / 14);
+               
+
+               input {
+                 width: 17vh;
+                 height: 17vh;
+               }
+             }
+             #domain {
+               gap: 0.8vw;
+               width: 90vw;
+               flex-wrap: nowrap;
+               top: unset;
+             }
            }
-           #propositions {
-             height: calc(19vh + (600px - 100vw) / 1.6);
+           
+           /* If ratio gets too narrow, adjust scaling */ 
+           @media (width <= 600px) {
+             #grid input {
+               width: 21vw;
+               height: 21vw;
+               
+             }
+             #propositions {
+               height: calc(19vh + (600px - 100vw) / 1.6);
+             }
+             #domain {
+               margin-top: calc((600px - 100vw) / 40);
+             }
            }
-           #domain {
-             margin-top: calc((600px - 100vw) / 40);
-           }
-         }
          
         </style>
         

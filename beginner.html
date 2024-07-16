@@ -35,13 +35,15 @@
          }
 
          #wrapper {
-           margin-top: 15vh;
+           margin-top: 12vh;
            display: flex;
-           gap: 10vw;
-           justify-content: center;
+           justify-content: flex-start;
          }
 
+
          #grid {
+           margin-right: 5vw;
+           align-self: center;           
            td {
              font-family: computer modern serif;
              padding: 1px;
@@ -53,6 +55,7 @@
              background-color: #D0D0D0;
 
            }
+           
            .x-axis {
              font-size: 4vh;
              font-style: italic;
@@ -72,8 +75,6 @@
              padding: 0;
              border: 0;
              text-align: center;
-             width: 13vh;
-             height: 13vh;
              font-size: 7vh;
              outline: none;
            }
@@ -82,10 +83,12 @@
          
          #propositions {
            margin: 0;
+           margin-left: 12.5vw;
            padding: 0;
+
            
-           height: 45vh;
-           width: 25vw;
+           width: 35vw;
+           max-height: 60vh;
            
            text-align: left;
            list-style-type: none; /* no bullet points */
@@ -110,6 +113,10 @@
          #propositions::-webkit-scrollbar { 
            display: none; 
          }
+         #domain::-webkit-scrollbar { 
+           display: none; 
+         }
+         
          
          #propositions > li {
            padding: 10px;
@@ -120,93 +127,111 @@
 
          #domain {
            padding: 0;
-           margin: auto;
+           padding-bottom: 3px;
            display: flex;
            align-items: center;
-           justify-content: center;
-           gap: 10px;
-           width: 30vw;
+           
+           gap: 0.8vw;
+           margin: auto;
+           position: relative;
+           top: 7.5vh;
+
 
            button {
+             width: 100%;
              font-family: computer modern serif;
              font-size: 2.5rem;
              font-weight: lighter;
              background-color: rgb(240,240,240);
              border: 1px solid rgba(27, 31, 35, .15);
              border-radius: 12px;
-             box-shadow: rgba(27, 31, 35, .1) 0 2px 0;
+             box-shadow: rgba(27, 31, 35, .1) 0 2.5px 0;
              cursor: pointer;
-             width: 100%;
              text-align: center;
            }
            
            button:hover {
-             font-weight: bold;
-             background-color: rgb(215,215,215);
-             transition-duration: 0.42s;
+             background-color: rgb(195,195,195);
+             transition-duration: 0.3s;
            }
 
            button:active {
              transform: translateY(3px);
            }
-           
-           button::before {
-             margin: -0.5ch;
-             content: attr(data-value);
-             font-weight: bold;
-             visibility: hidden;
-           }
-
          }
          
+
+         @media (width > 820px) {
+           #grid input {
+             width: calc(13.5vh + ((100vw - 700px) / 40));
+             height: calc(13.5vh + ((100vw - 700px) / 40));
+           }
+           #propositions {
+             margin-left: calc(10vh + ((100vw - 700px) / 7));
+             font-size: calc(1.5rem + ((100vw - 700px) / 100));
+           }
+           #wrapper {
+             gap: calc((100vw - 700px) / 10)
+           }
+           #domain {
+             margin-left: 12vw;
+             margin-right: calc(7vw + ((100vw - 880px) / 4));
+           }
+         }
+         
+         
          /* Rearrange layout for mobile ratios */
-         @media (max-width: 700px) {
+         @media (width <= 820px) {
            #wrapper {
              margin-top: 0vh;
              flex-direction: column;
              flex-wrap: wrap;
              align-content:center;
              align-items: center;
-             gap: 2.5vh;
+             gap: 4vh;
            }
            #propositions {
+             margin: 0;
              align-self: unset;
              text-align: center;
-             width: 80vw;
-             height: 15vh;
+             width: 70vw;
+             height: 19vh;
            }
            #grid {
-             position: relative;
-             left: -5vw;
+             padding: 0;
+             margin: 0;
+             margin-right: 8vw;
 
              input {
-               width: 19vh;
-               height: 19vh;
-               
+               width: 17vh;
+               height: 17vh;
              }
            }
            #domain {
              gap: 0.8vw;
              width: 90vw;
+             flex-wrap: nowrap;
+             top: unset;
            }
          }
          
-         /* Tighten up grid for very skinny ratios */ 
-         @media (max-width: 550px) {
+         /* If ratio gets too narrow, adjust scaling */ 
+         @media (width <= 600px) {
            #grid input {
-             width: 26vw;
-             height: 26vw;
+             width: 21vw;
+             height: 21vw;
+             
            }
-           #grid {
-             margin-bottom: calc((550px - 100vw) / 2);
+           #propositions {
+             height: calc(19vh + (600px - 100vw) / 1.6);
+           }
+           #domain {
+             margin-top: calc((600px - 100vw) / 40);
            }
          }
-         
-
-         
-         
          
         </style>
+        
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js" integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p" crossorigin="anonymous"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
@@ -242,17 +267,7 @@
                     x \\
                     y
                     \end{smallmatrix} \rang  \small = 2\)
-                </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                    \begin{smallmatrix}
-                    x \\
-                    y
-                    \end{smallmatrix} \rang  \small = 2\)
-                </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                    \begin{smallmatrix}
-                    x \\
-                    y
-                    \end{smallmatrix} \rang  \small = 2\)
-                </li>
+                </li>  
                 <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
                     \begin{smallmatrix}
                     x \\
@@ -271,57 +286,49 @@
                     y
                     \end{smallmatrix} \rang  \small = 2\)
                 </li>
-
+                
+                
                 
             </ul>
-
-            <div id="right-pane">
-                <table id="grid">
-                    
-                    <tr>
-                        <td class="y-axis">3</td>
-                        <td><input type="text"></td>
-                        <td class="given"><input type="text" value="2" disabled id></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td class="y-axis">2</td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                        <td class="given"><input type="text" value="3" disabled></td>
-                    </tr>
-                    <tr>
-                        <td class="y-axis">1</td>
-                        <td class="given"><input type="text" value="1" disabled></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="x-axis"></td>
-                        <td class="x-axis">1</td>
-                        <td class="x-axis">2</td>
-                        <td class="x-axis">3</td>
-                    </tr>
-                </table>
-
-             
-            </div>
-
+            <table id="grid">            
+                <tr>
+                    <td class="y-axis">3</td>
+                    <td><input type="text"></td>
+                    <td class="given"><input type="text" value="2" disabled id></td>
+                    <td> <input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="y-axis">2</td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td class="given"><input type="text" value="3" disabled></td>
+                </tr>
+                <tr>
+                    <td class="y-axis">1</td>
+                    <td class="given"><input type="text" value="1" disabled></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+                
+                <tr>
+                    <td class="x-axis"></td>
+                    <td class="x-axis">1</td>
+                    <td class="x-axis">2</td>
+                    <td class="x-axis">3</td>
+                </tr>
+            </table>            
         </div>
-           <div id="domain">
-                    
-                    <button data-value="1">1</button>
-                    <button data-value="2">2</button>
-                    <button data-value="3">3</button>
-                    <button data-value="4">4</button>
-                    <button data-value="5">5</button>
-                    <button data-value="6">6</button>
-                    <button data-value="7">7</button>
-                    <button data-value="8">8</button>
-                    <button data-value="9">9</button>
-           </div>
-           
+        <div id="domain">
+            <button data-value="1">1</button>
+            <button data-value="2">2</button>
+            <button data-value="3">3</button>
+            <button data-value="4">4</button>
+            <button data-value="5">5</button>
+            <button data-value="6">6</button>
+            <button data-value="7">7</button>
+            <button data-value="8">8</button>
+            <button data-value="9">9</button>
+        </div>
     </body>
     
     <script>
@@ -354,18 +361,19 @@
            event.preventDefault();
        });
      });
-     
+
      
      for(var i = 0; i < inputList.length; i++){
        if (inputList[i].id == undefined) {
          continue;
        }
        inputList[i].onfocus = function () { crosshairs(this.id); };
+       inputList[i].onblur = function () { crosshairs("not-a-cell"); };
      }
      
      
-     function setClasses(el) {
-       const isScrollable = el.scrollHeight > el.clientHeight;
+     function verticalScroll(el) {
+       const isScrollable = (el.scrollHeight > el.clientHeight);
        
        // GUARD: If element is not scrollable, remove all classes
        if (!isScrollable) {
@@ -382,12 +390,40 @@
        el.classList.toggle('is-top-overflowing', !isScrolledToTop);
      }
 
+     
+
+     function horizontalScroll(el) {
+       const isScrollable = (el.scrollWidth > el.clientWidth);
+
+       // GUARD: If element is not scrollable, remove all classes
+       if (!isScrollable) {
+         el.classList.remove('is-left-overflowing', 'is-right-overflowing');
+         return;
+       }
+       
+       // Otherwise, the element is overflowing!
+       // Now we just need to find out which direction it is overflowing to (can be both).
+       // One pixel is added to the height to account for non-integer heights.
+       const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
+       const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
+       el.classList.toggle('is-right-overflowing', !isScrolledToRight);
+       el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
+     }
+
      document.querySelector('#propositions').addEventListener('scroll', (e) => {
        const el = e.currentTarget;
-       setClasses(el);
+       verticalScroll(el);
      });
 
-     setClasses(document.querySelector('#propositions'));
+     document.querySelector('#domain').addEventListener('scroll', (e) => {
+       const el = e.currentTarget;
+       horizontalScroll(el);
+     });
+
+     
+     verticalScroll(document.querySelector('#propositions'));
+     horizontalScroll(document.querySelector('#domain'));
+
 
 
      // given the id of a cell, emphasize borders of cells in that row and column
@@ -406,12 +442,11 @@
          // reset the styles of other cells without messing up the axis labels
          else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
            cellList[i].style.border = "1px solid #000000";
-           cellList[i].style.padding = "0px";
+           cellList[i].style.padding = "1px";
            
          }
        }
      }
-
      
     </script>
 

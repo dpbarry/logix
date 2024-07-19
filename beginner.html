@@ -29,8 +29,9 @@
            width: 10vw;
            position: relative;
            margin: 0;
-           top: 4vh;
-           left: 4vw;
+           top: 4vmin;
+           left: 4vmin;
+           cursor: pointer;
            
          }
 
@@ -121,6 +122,7 @@
          
          #propositions > li {
            padding: 10px;
+
            + li {
              border-top: 1px solid black;
            }
@@ -163,14 +165,13 @@
 
          /* Landscape layout */
          @media (width > 820px) {
-           
            #grid input {
              width: calc(13.5vh + ((100vw - 700px) / 40));
              height: calc(13.5vh + ((100vw - 700px) / 40));
            }
            #propositions {
              margin-left: calc(10vh + ((100vw - 700px) / 7));
-             font-size: calc(1.5rem + ((100vw - 700px) / 100));
+             font-size: calc(1.15rem + ((100vw - 700px) / 100));
            }
            #wrapper {
              gap: calc((100vw - 700px) / 10);
@@ -199,43 +200,48 @@
 
            }
          }
-           
-           
-           /* Mobile layout */
-           @media (width <= 820px) {
-             #wrapper {
-               margin-top: 0vh;
-               flex-direction: column;
-               flex-wrap: wrap;
-               align-content:center;
-               align-items: center;
-               gap: 4vh;
-             }
-             #propositions {
-               margin: 0;
-               align-self: unset;
-               text-align: center;
-               width: 70vw;
-               height: 19vh;
-             }
-             #grid {
-               padding: 0;
-               margin: 0;
-               margin-right: 8vw;
-               margin-right: calc(8vw + (820px - 100vw) / 14);
-               
+         
+         
+         /* Mobile layout */
+         @media (width <= 820px) {
+           #wrapper {
+             margin-top: 0vh;
+             flex-direction: column;
+             flex-wrap: wrap;
+             align-content:center;
+             align-items: center;
+             gap: 4vh;
+           }
+           #propositions {
+             margin: 0;
+             align-self: unset;
+             text-align: center;
+             width: 70vw;
+             height: 17vh; /* NOTE: In case of a short prop list, increase height and decrease
+                              wrapper gap to avoid unnecessary bottom fade. Prorate li line height
+                              to vertically align propositions */
+           }
+           #grid {
+             padding: 0;
+             margin: 0;
+             margin-right: 5.9vw;
+             margin-right: calc(5.9vw + (820px - 100vw) / 14);
 
-               input {
-                 width: 17vh;
-                 height: 17vh;
-               }
+             input {
+               width: 17vh;
+               height: 17vh;
              }
-             #domain {
-               gap: 0.8vw;
-               width: 90vw;
-               flex-wrap: nowrap;
-               top: unset;
-             }
+           }
+           #domain {
+             gap: 0.8vw;
+             width: 90vw;
+             flex-wrap: nowrap;
+             top: unset;
+             position: absolute;
+             left: 50%;
+             bottom: 3vh;
+             transform: translate(-50%); 
+             
            }
            
            /* If ratio gets too narrow, adjust scaling */ 
@@ -249,10 +255,13 @@
                height: calc(19vh + (600px - 100vw) / 1.6);
              }
              #domain {
-               margin-top: calc((600px - 100vw) / 40);
+               position: absolute;
+               left: 50%;
+               bottom: 3vh;
+               transform: translate(-50%); 
              }
            }
-         
+           
         </style>
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
@@ -262,7 +271,7 @@
     </head>
     
     <body>
-        <h1 id="level">1.1</h1>
+        <h1 id="level" onClick="">1.1</h1>
 
         <div id="wrapper">
             <ul id="propositions">
@@ -279,38 +288,48 @@
                     \end{smallmatrix} \rang
                     \)
                 </li>
+                <li>\(\lang	
+                    \begin{smallmatrix}
+                    2 \\
+                    1
+                    \end{smallmatrix} \rang   > 
 
-                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \lang	
                     \begin{smallmatrix}
-                    x \\
-                    y
-                    \end{smallmatrix} \rang  \small = 2\)
-                </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                    \begin{smallmatrix}
-                    x \\
-                    y
-                    \end{smallmatrix} \rang  \small = 2\)
-                </li>  
-                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
-                    \begin{smallmatrix}
-                    x \\
-                    y
-                    \end{smallmatrix} \rang  \small = 2\)
+                    1 \\
+                    2
+                    \end{smallmatrix} \rang
+                    \)
                 </li>
-                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                <li>\(\lang	
                     \begin{smallmatrix}
-                    x \\
-                    y
-                    \end{smallmatrix} \rang  \small = 2\)
-                </li>
-                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    2 \\
+                    1
+                    \end{smallmatrix} \rang   > 
+
+                    \lang	
                     \begin{smallmatrix}
-                    x \\
-                    y
-                    \end{smallmatrix} \rang  \small = 2\)
+                    1 \\
+                    2
+                    \end{smallmatrix} \rang
+                    \)
                 </li>
+                <li>\(\lang	
+                    \begin{smallmatrix}
+                    2 \\
+                    1
+                    \end{smallmatrix} \rang   > 
+
+                    \lang	
+                    \begin{smallmatrix}
+                    1 \\
+                    2
+                    \end{smallmatrix} \rang
+                    \)
+                </li>
+
                 
-                
+
                 
             </ul>
             <table id="grid">            
@@ -345,12 +364,6 @@
             <button data-value="1">1</button>
             <button data-value="2">2</button>
             <button data-value="3">3</button>
-            <button data-value="4">4</button>
-            <button data-value="5">5</button>
-            <button data-value="6">6</button>
-            <button data-value="7">7</button>
-            <button data-value="8">8</button>
-            <button data-value="9">9</button>
         </div>
     </body>
     
@@ -470,6 +483,11 @@
          }
        }
      }
+
+     document.getElementById("level").onclick = function () {
+       location.href = "beginner.html";
+     }
+
      
     </script>
 

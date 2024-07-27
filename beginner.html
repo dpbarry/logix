@@ -25,18 +25,18 @@
            font-family: computer modern serif;
            text-align: left;
            font-weight: lighter;
-           font-size: 2rem;
+           font-size: max(2rem, calc(2rem + (100vmax - 1000px) / 50));
            width: 10vw;
            position: relative;
            margin: 0;
-           top: 4vmin;
-           left: 4vmin;
+           top: 4.5vmin;
+           left: 4.5vmin;
            cursor: pointer;
            
          }
 
          #wrapper {
-           margin-top: 12vh;
+           margin-top: max(calc(12vh + (1200px - 100vw) / 10), calc(12vh + (100vh - 800px) / 5));
            display: flex;
            justify-content: flex-start;
          }
@@ -58,18 +58,13 @@
 
            }
            
-           .x-axis {
-             font-size: 4vh;
+           .x-axis, .y-axis {
              font-style: italic;
              border: 0px;
-             height: 8vh;
+             
            }
-           .y-axis {
-             font-size: 4vh;
-             font-style: italic;
-             border: 0px;
-             width: 8vh;
-           }
+
+           
            input {
              font-family: computer modern serif;
              color: #000000;
@@ -77,7 +72,7 @@
              padding: 0;
              border: 0;
              text-align: center;
-             font-size: 7vh;
+             font-size: min(8vh, 6.5vw);
              outline: none;
            }
          }
@@ -165,13 +160,23 @@
 
          /* Landscape layout */
          @media (width > 820px) {
-           #grid input {
-             width: calc(13.5vh + ((100vw - 700px) / 40));
-             height: calc(13.5vh + ((100vw - 700px) / 40));
+           #grid {
+             input {
+               width: min(calc(13.5vh + ((100vw - 700px) / 40)), calc(9vw + ((100vw - 700px) / 40)));
+               height: min(calc(13.5vh + ((100vw - 700px) / 40)), calc(9vw + ((100vw - 700px) / 40)));
+             }
+             .x-axis {
+               font-size: min(6vh, 4vw);
+               height: min(8vh, 7vw);
+             }
+             .y-axis {
+               font-size: min(6vh, 4vw);
+               width: min(8vh, 7vw);
+             }
            }
            #propositions {
-             margin-left: calc(10vh + ((100vw - 700px) / 7));
-             font-size: calc(1.15rem + ((100vw - 700px) / 100));
+             margin-left: calc(75px + (100vw - 700px) / 7);
+             font-size: calc(1.5rem + ((100vw - 700px) / 100));
            }
            #wrapper {
              gap: calc((100vw - 700px) / 10);
@@ -227,10 +232,22 @@
            #grid {
              padding: 0;
              margin: 0;
-             margin-right: calc(8.01vw + (820px - 100vw) / 14 - (740px - 100vh) / 15);
+             margin-right: calc(8.01vw + (820px - 100vw) / 14);
+             @media (height <= 740px) {
+               margin-right: calc(8.01vw + (820px - 100vw) / 14 - (740px - 100vh) / 15);
+             }
              input {
-               width: 17vh;
-               height: 17vh;
+               width: min(17vh, 23vw);
+               height: min(17vh, 23vw);
+               font-size: 8vh;
+             }
+             .x-axis {
+               font-size: min(6vh, 7vw);
+               height: 8vh;
+             }
+             .y-axis {
+               font-size: min(6vh, 7vw);
+               width: 8vh;
              }
              @media (height <= 740px) {
                input {
@@ -240,7 +257,6 @@
              }
            }
            #domain {
-             gap: 0.8vw;
              width: 90vw;
              flex-wrap: nowrap;
              top: unset;
@@ -255,6 +271,7 @@
              #grid input {
                width: 21vw;
                height: 21vw;
+               font-size: calc(10vw - (740px - 100vh) / 12.5);
              }
              @media (height <= 740px) {
                #grid input {
@@ -271,6 +288,14 @@
                left: 50%;
                bottom: 3vh;
                transform: translate(-50%); 
+             }
+             @media (width <= 450px) {
+               #propositions {
+                 height: calc(19vh + (150px) / 1.6 + (450px - 100vw) / 6);
+               }
+               #wrapper {
+                 gap: calc(4vh + (450px - 100vw) / 7);
+               }
              }
            }
          }
@@ -340,7 +365,6 @@
                     \end{smallmatrix} \rang
                     \)
                 </li>
-
                 
 
                 

@@ -55,7 +55,6 @@
            }
            td.given {
              background-color: #D0D0D0;
-
            }
            
            .x-axis, .y-axis {
@@ -72,8 +71,10 @@
              padding: 0;
              border: 0;
              text-align: center;
-             font-size: min(8vh, 6.5vw);
+             font-size: min(8vh, 5.5vw);
              outline: none;
+             min-width: 24px;
+             min-height: 24px;
            }
          }
          
@@ -166,12 +167,12 @@
                height: min(calc(13.5vh + ((100vw - 700px) / 40)), calc(9vw + ((100vw - 700px) / 40)));
              }
              .x-axis {
-               font-size: min(6vh, 4vw);
-               height: min(8vh, 7vw);
+               font-size: min(5vh, 3vw);
+               height: min(9vh, 6vw);
              }
              .y-axis {
-               font-size: min(6vh, 4vw);
-               width: min(8vh, 7vw);
+               font-size: min(5vh, 3vw);
+               width: min(9vh, 6vw);
              }
            }
            #propositions {
@@ -191,8 +192,8 @@
                margin-left: calc((10vh + ((100vw - 700px) / 7)) + (745px - 100vh)/4.5);
              }
              #wrapper {
-               margin-top: calc(10vh - (745px - 100vh) / 6);
-               gap: calc((100vw - 700px) / 10 + (745px - 100vh) / 7)
+               margin-top: calc(12vh + (1200px - 100vw) / 10 - (740px - 100vh) / 5);
+               gap: calc((100vw - 700px) / 10 + (745px - 100vh) / 7);
              }
            }
            @media (height < 490px) {
@@ -215,14 +216,14 @@
              flex-wrap: wrap;
              align-content:center;
              align-items: center;
-             gap: 4vh;
+             gap: max(3.3vh, calc(3.3vh + (100vh - 1200px) / 6));
            }
            #propositions {
              margin: 0;
              align-self: unset;
              text-align: center;
              width: 70vw;
-             height: calc(19vh);
+             height: 19vh;
              /*
                 NOTE: In case of a short prop list, increase height and decrease
                 wrapper gap to avoid unnecessary bottom fade. Prorate li line height
@@ -232,22 +233,22 @@
            #grid {
              padding: 0;
              margin: 0;
-             margin-right: calc(8.01vw + (820px - 100vw) / 14);
+             margin-right: calc(10vw + (820px - 100vw) / 14);
              @media (height <= 740px) {
-               margin-right: calc(8.01vw + (820px - 100vw) / 14 - (740px - 100vh) / 15);
+               margin-right: min(calc(10vw + (820px - 100vw) / 14  - (740px - 100vh) / 15), calc(10vw + (820px - 600px)));
              }
              input {
                width: min(17vh, 23vw);
                height: min(17vh, 23vw);
-               font-size: 8vh;
+               font-size: min(9vh, 12vw);
              }
              .x-axis {
-               font-size: min(6vh, 7vw);
-               height: 8vh;
+               font-size: min(5vh, 6vw);
+               height: min(10.25vh, 13.1vw);
              }
              .y-axis {
-               font-size: min(6vh, 7vw);
-               width: 8vh;
+               font-size: min(5vh, 6vw);
+               width: min(10.25vh, 13.1vw);
              }
              @media (height <= 740px) {
                input {
@@ -268,15 +269,19 @@
 
            /* Tighten up scaling for mobile ratios */ 
            @media (width <= 600px) {
+             #wrapper {
+               gap: max(3.3vh, calc(3.3vh + (100vh - 1200px) / 6));
+             }
              #grid input {
-               width: 21vw;
-               height: 21vw;
-               font-size: calc(10vw - (740px - 100vh) / 12.5);
+               width:calc(21vw - (600px - 100vw) / 40);
+               height:calc(21vw - (600px - 100vw) / 40);
+
+               font-size: min(calc(11vw - (740px - 100vh) / 10), 12vw);
              }
              @media (height <= 740px) {
                #grid input {
-                 width: calc(21vw - (740px - 100vh) / 4.4);
-                 height: calc(21vw - (740px - 100vh) / 4.4);
+                 width: calc(21vw - (600px - 100vw) / 40 - (740px - 100vh) / 4);
+                 height: calc(21vw - (600px - 100vw) / 40 - (740px - 100vh) / 4);
                }
              }
              
@@ -291,10 +296,13 @@
              }
              @media (width <= 450px) {
                #propositions {
-                 height: calc(19vh + (150px) / 1.6 + (450px - 100vw) / 6);
+                 height: calc(19vh + (150px) / 1.6 + (450px - 100vw) / 10);
                }
                #wrapper {
-                 gap: calc(4vh + (450px - 100vw) / 7);
+                 gap: max(calc(3.3vh + (450px - 100vw) / 7), calc(3.3vh + (450px - 100vw) / 7 + (100vh - 740px) / 6));
+               }
+               #grid {
+                 margin-right: calc(8.01vw + (820px - 450px) / 14);
                }
              }
            }

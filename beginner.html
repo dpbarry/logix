@@ -216,7 +216,7 @@
              flex-wrap: wrap;
              align-content:center;
              align-items: center;
-             gap: max(3.3vh, calc(3.3vh + (100vh - 1200px) / 6));
+             gap: max(2.5vh, calc(2.5vh + (100vh - 900px) / 5), calc(2.5vh + (100vh - 900px) / 5 + (820px - 100vw) / 11));
            }
            #propositions {
              margin: 0;
@@ -233,7 +233,7 @@
            #grid {
              padding: 0;
              margin: 0;
-             margin-right: calc(10vw + (820px - 100vw) / 14);
+             margin-right: calc(10vw + (820px - 100vw) / 12);
              @media (height <= 740px) {
                margin-right: min(calc(10vw + (820px - 100vw) / 14  - (740px - 100vh) / 15), calc(10vw + (820px - 600px)));
              }
@@ -267,47 +267,45 @@
              transform: translate(-50%); 
            }
 
+
            /* Tighten up scaling for mobile ratios */ 
            @media (width <= 600px) {
              #wrapper {
-               gap: max(3.3vh, calc(3.3vh + (100vh - 1200px) / 6));
+               gap: max(2.5vh, calc(2.5vh + (450px - 100vw) / 2.8));
              }
-             #grid input {
-               width:calc(21vw - (600px - 100vw) / 40);
-               height:calc(21vw - (600px - 100vw) / 40);
-
-               font-size: min(calc(11vw - (740px - 100vh) / 10), 12vw);
-             }
-             @media (height <= 740px) {
-               #grid input {
-                 width: calc(21vw - (600px - 100vw) / 40 - (740px - 100vh) / 4);
-                 height: calc(21vw - (600px - 100vw) / 40 - (740px - 100vh) / 4);
-               }
-             }
-             
-             #propositions {
-               height: calc(19vh + (600px - 100vw) / 1.6);
-             }
-             #domain {
-               position: absolute;
-               left: 50%;
-               bottom: 3vh;
-               transform: translate(-50%); 
-             }
-             @media (width <= 450px) {
-               #propositions {
-                 height: calc(19vh + (150px) / 1.6 + (450px - 100vw) / 10);
-               }
+             @media (height > 750px) {
                #wrapper {
-                 gap: max(calc(3.3vh + (450px - 100vw) / 7), calc(3.3vh + (450px - 100vw) / 7 + (100vh - 740px) / 6));
+                 gap: calc(2.5vh + (100vh - 800px) / 6 + (820px - 100vw) / 40 + (600px - 100vw) / 20);
+               }
+             }
+               #grid input {
+                 width: min(calc(17vh - ((740px - 100vh) / 17) - ((600px - 100vw) / 5)), calc(23vw - ((600px - 100vw) / 15)));
+                 height: min(calc(17vh - ((740px - 100vh) / 17) - ((600px - 100vw) / 5)), calc(23vw - ((600px - 100vw) / 15)));
+
+                 font-size: min(calc(11vw - (740px - 100vh) / 10), 12vw);
+               }
+               
+               #propositions {
+                 height: calc(19vh + (600px - 100vw) / 1.6);
+               })
+               #domain {
+                 position: absolute;
+                 left: 50%;
+                 bottom: 3vh;
+                 transform: translate(-50%); 
                }
                #grid {
-                 margin-right: calc(8.01vw + (820px - 450px) / 14);
+                 margin-right: calc(10vw + (820px - 600px) / 12);
+               }
+               @media (width <= 450px) {
+                 #propositions {
+                   height: calc(19vh + (150px) / 1.6 + (450px - 100vw) / 10);
+                 }
+
                }
              }
            }
-         }
-         
+           
         </style>
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">

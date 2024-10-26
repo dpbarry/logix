@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
 
         
+        
         <title>Logix</title>
         
         <style>
@@ -62,7 +63,6 @@
 
            }
 
-           
            input {
              font-family: computer modern serif;
              color: #000000;
@@ -134,24 +134,42 @@
 
 
            button {
+             transition: background 400ms;
+
              width: 100%;
              font-family:  computer modern serif;
              font-size: 2.5rem;
-             background-color: #E0E0E0;
+             background-color: #D0D0D0;
              border: 1px solid #101010;
              cursor: pointer;
              text-align: center;
            }
            
-           button:hover {
-             background-color: #D0D0D0;
-             transition-duration: 0.3s;
-           }
            button:focus {
-             box-shadow: inset 0px 0px 0px 1px #000000;
-             background-color: #B0B0B0;
+             background: #F1EEDC;
            }
 
+           .ripple {
+             background: #F1EEDC;
+             width: 3px;
+             height: 3px;
+             border-radius: 100%;
+             opacity: 0.4;
+             position: absolute;
+             transition: all 0.7s ease-out;
+             pointer-events: none;
+             will-change: transform;
+           }
+
+           .ripple.run {
+             opacity: 0;
+             transform: scale(200);
+           }
+
+           [ripple] {
+             position: relative;
+             overflow: hidden;
+           }
          }
 
 
@@ -215,7 +233,7 @@
              align-self: center;
              text-align: center;
              width: 70vw;
-             height: 28.5vh;
+             height: 28vh;
 
              li {
                width: unset;
@@ -338,9 +356,9 @@
                 </tr>
             </table>            
             <div id="domain">
-                <button data-value="1">1</button>
-                <button data-value="2">2</button>
-                <button data-value="3">3</button>
+                <button ripple data-value="1">1</button>
+                <button ripple data-value="2">2</button>
+                <button ripple data-value="3">3</button>
             </div>
         </div>
 
@@ -349,6 +367,7 @@
     <script>
      const ROWS = 3;
      const COLS = 3;
+     const MAXLENGTH = 1;
      const REGEX = new RegExp("^[1-3]*$");
 
      
@@ -377,10 +396,11 @@
          if (event.data != null && !REGEX.test(event.data)) 
            event.preventDefault();
        });
+       input.maxLength = MAXLENGTH;
      });
 
 
-     for(var i = 0; i < inputList.length; i++){
+     for (var i = 0; i < inputList.length; i++){
        if (inputList[i].id == undefined) {
          continue;
        }
@@ -388,9 +408,27 @@
        inputList[i].onblur = function () { crosshairs("not-a-cell"); };
      }
 
-     for (var i = 0; i < domainList.length; i++) {
-       domainList[i].onfocus = function () {  };
-       domainList[i].onblur = function () {  };
+     for (let i = 0; i < domainList.length; i++) {
+       domainList[i].onfocus = function () {
+         inputList.forEach((input) => {
+           input.style.cursor = "pointer";
+           input.readOnly = true;
+           input.onfocus = function () {
+             this.value = domainList[i].textContent;
+           };
+         });
+       };
+
+       domainList[i].onblur = function () {
+         setTimeout(function () {
+           inputList.forEach((input) => {
+             input.style.cursor = "";
+             input.readOnly = false;
+             input.onfocus = function () {crosshairs(this.id);};
+             input.blur();
+           });
+         }, 5); // Without slowdown, onfocus may get reset before it actually fires
+       };
 
      }
      
@@ -469,6 +507,35 @@
        }
      }
 
+
+     const elementsWithRipple = document.querySelectorAll('[ripple]');
+
+     elementsWithRipple.forEach(elementWithRipple => {
+       elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
+         // Create a ripple element <div class="ripple">
+         const rippleEl = document.createElement('div');
+         rippleEl.classList.add('ripple');
+         
+         // Position the ripple
+         const x = mouseEvent.offsetX;
+         const y = mouseEvent.offsetY;
+         
+         rippleEl.style.left = `${x}px`;
+         rippleEl.style.top = `${y}px`;
+         
+         elementWithRipple.appendChild(rippleEl);
+         
+         requestAnimationFrame(() => {
+           rippleEl.classList.add('run');
+         });
+         
+         // Remove ripple element when the transition is done
+         rippleEl.addEventListener('transitionend', () => {
+           rippleEl.remove();
+         });
+       });
+     })
+     
      document.getElementById("level").onclick = function () {
        location.href = "beginner.html";
      }

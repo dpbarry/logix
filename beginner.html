@@ -25,7 +25,7 @@
            font-family: computer modern serif;
            text-align: left;
            font-weight: lighter;
-           font-size: max(2rem, calc(2rem + (100vmax - 1000px) / 50));
+           font-size: 2rem;
            width: 10vw;
            position: relative;
            margin: 0;
@@ -36,22 +36,21 @@
          }
 
          #wrapper {
-           margin-top: max(calc(12vh + (1200px - 100vw) / 10), calc(12vh + (100vh - 800px) / 5));
+           margin-top: 20vh;
            display: flex;
            justify-content: flex-start;
          }
 
 
          #grid {
-           margin-right: 5vw;
-           margin-top: 2vh;
-           align-self: center;           
+           align-self: center;
+           border-spacing: 3px;
            td {
              font-family: computer modern serif;
-             padding: 1px;
              border: 1px solid #000000;
+             outline: 1px solid white;
              text-align: center;
-             border-radius: 3px;
+             border-radius: 2px;
            }
            td.given {
              background-color: #D0D0D0;
@@ -60,7 +59,7 @@
            .x-axis, .y-axis {
              font-style: italic;
              border: 0px;
-             
+
            }
 
            
@@ -71,7 +70,6 @@
              padding: 0;
              border: 0;
              text-align: center;
-             font-size: min(8vh, 5.5vw);
              outline: none;
              min-width: 24px;
              min-height: 24px;
@@ -84,11 +82,10 @@
            margin-left: 12.5vw;
            padding: 0;
 
-           
            width: 35vw;
-           max-height: 59vh;
+           max-height: 40vh;
            
-           text-align: left;
+           text-align: center;
            list-style-type: none; /* no bullet points */
            font-size: 1.5rem;
            
@@ -118,6 +115,7 @@
          
          #propositions > li {
            padding: 10px;
+           width: 100%;
 
            + li {
              border-top: 1px solid black;
@@ -127,103 +125,101 @@
          #domain {
            padding: 0;
            display: flex;
-           align-items: center;
+           align-items: flex-end;
+           flex-direction: row;
            
            gap: 0.8vw;
            margin: auto;
            position: relative;
-           top: 4.5vh;
 
 
            button {
              width: 100%;
              font-family:  computer modern serif;
              font-size: 2.5rem;
-             background-color: rgb(240,240,240);
-             border: 1px solid rgba(27, 31, 35, .15);
-             border-radius: 12px;
-             box-shadow: rgba(27, 31, 35, .1) 0 2.5px 0;
+             background-color: #E0E0E0;
+             border: 1px solid #101010;
              cursor: pointer;
              text-align: center;
            }
            
            button:hover {
-             background-color: rgb(195,195,195);
+             background-color: #D0D0D0;
              transition-duration: 0.3s;
            }
-
-           button:active {
-             transform: translateY(3px);
+           button:focus {
+             box-shadow: inset 0px 0px 0px 1px #000000;
+             background-color: #B0B0B0;
            }
+
          }
-         
 
 
          /* Landscape layout */
-         @media (width > 820px) {
+         @media (width > 850px) {
            #grid {
              input {
-               width: min(calc(13.5vh + ((100vw - 700px) / 40)), calc(9vw + ((100vw - 700px) / 40)));
-               height: min(calc(13.5vh + ((100vw - 700px) / 40)), calc(9vw + ((100vw - 700px) / 40)));
+               font-size: 3rem;
+               width: 100px;
+               height: 100px;
              }
              .x-axis {
-               font-size: min(5vh, 3vw);
-               height: min(9vh, 6vw);
+               font-size: 2rem;
+               height: 50px;
              }
              .y-axis {
-               font-size: min(5vh, 3vw);
-               width: min(9vh, 6vw);
+               font-size: 2rem;
+               width: 50px;
              }
            }
            #propositions {
-             margin-left: calc(75px + (100vw - 700px) / 7);
-             font-size: calc(1.5rem + ((100vw - 700px) / 100));
+             margin-left: 0;
+             font-size: 1.85rem;
+             display: flex;
+             justify-content: center;
+             flex-direction: column;
+             min-height: 50vh;
+             align-items: center;
+             flex-grow: 0.8;
            }
            #wrapper {
-             gap: calc((100vw - 700px) / 10);
+             flex-wrap: wrap;
+             width: 80%;
+             max-width: 1000px;
+             justify-content: space-between;
+             position: absolute;
+             left: 50%;
+             transform: translate(-50%);
            }
            #domain {
-             margin-left: 12vw;
-             margin-right: calc(7vw + ((100vw - 880px) / 4));
+             width: 100%;
+             flex-wrap: nowrap;
+             flex-basis: 100%;
+             margin-top: 45px;
            }
 
-           @media (height < 745px) {
-             #propositions {
-               margin-left: calc((10vh + ((100vw - 700px) / 7)) + (745px - 100vh)/4.5);
-             }
-             #wrapper {
-               margin-top: calc(12vh + (1200px - 100vw) / 10 - (740px - 100vh) / 5);
-               gap: calc((100vw - 700px) / 10 + (745px - 100vh) / 7);
-             }
-           }
-           @media (height < 490px) {
-             #wrapper {
-               margin-top: calc(49px - (745px - 490px) / 6);
-             }
-             #domain button {
-               font-size: calc(2.5rem - (490px - 100vh) / 20);
-             }
-
-           }
-         }
+         }         
          
          
          /* Portrait layout */
-         @media (width <= 820px) {
+         @media (width <= 850px) {
            #wrapper {
              margin-top: 0vh;
              flex-direction: column;
              flex-wrap: wrap;
-             align-content:center;
+             align-content: center;
              align-items: center;
-             gap: max(2.5vh, calc(2.5vh + (100vh - 900px) / 5), calc(2.5vh + (100vh - 900px) / 5 + (820px - 100vw) / 11));
            }
            #propositions {
              margin: 0;
-             align-self: unset;
+             align-self: center;
              text-align: center;
              width: 70vw;
-             height: 19vh;
+             height: 28.5vh;
+
+             li {
+               width: unset;
+             }
              /*
                 NOTE: In case of a short prop list, increase height and decrease
                 wrapper gap to avoid unnecessary bottom fade. Prorate li line height
@@ -233,79 +229,32 @@
            #grid {
              padding: 0;
              margin: 0;
-             margin-right: calc(10vw + (820px - 100vw) / 12);
-             @media (height <= 740px) {
-               margin-right: min(calc(10vw + (820px - 100vw) / 14  - (740px - 100vh) / 15), calc(10vw + (820px - 600px)));
-             }
+             margin-right: 50px;
              input {
-               width: min(17vh, 23vw);
-               height: min(17vh, 23vw);
-               font-size: min(9vh, 12vw);
+               font-size: 3rem;
+               width: 100px;
+               height: 100px;
              }
              .x-axis {
-               font-size: min(5vh, 6vw);
-               height: min(10.25vh, 13.1vw);
+               font-size: 2rem;
+               height: 50px;
              }
              .y-axis {
-               font-size: min(5vh, 6vw);
-               width: min(10.25vh, 13.1vw);
-             }
-             @media (height <= 740px) {
-               input {
-                 width: calc(17vh - (740px - 100vh) / 17);
-                 height: calc(17vh - (740px - 100vh) / 17);
-               }
-             }
-           }
-           #domain {
-             width: 90vw;
-             flex-wrap: nowrap;
-             top: unset;
-             position: absolute;
-             left: 50%;
-             bottom: 3vh;
-             transform: translate(-50%); 
-           }
-
-
-           /* Tighten up scaling for mobile ratios */ 
-           @media (width <= 600px) {
-             #wrapper {
-               gap: max(2.5vh, calc(2.5vh + (450px - 100vw) / 3.5));
-             }
-             @media (height > 750px) {
-               #wrapper {
-                 gap: calc(2.5vh + (100vh - 800px) / 6 + (820px - 100vw) / 40 + (600px - 100vw) / 20);
-               }
-             }
-               #grid input {
-                 width: min(calc(17vh - ((740px - 100vh) / 17) - ((600px - 100vw) / 5)), calc(23vw - ((600px - 100vw) / 15)));
-                 height: min(calc(17vh - ((740px - 100vh) / 17) - ((600px - 100vw) / 5)), calc(23vw - ((600px - 100vw) / 15)));
-
-                 font-size: min(calc(11vw - (740px - 100vh) / 10), 12vw);
-               }
-               
-               #propositions {
-                 height: calc(19vh + (600px - 100vw) / 2);
-               }
-               #domain {
-                 position: absolute;
-                 left: 50%;
-                 bottom: 3vh;
-                 transform: translate(-50%); 
-               }
-               #grid {
-                 margin-right: calc(10vw + (820px - 600px) / 12);
-               }
-               @media (width <= 450px) {
-                 #propositions {
-                   height: calc(19vh + (150px) / 1.6 + (450px - 100vw) / 8);
-                 }
-
-               }
+               font-size: 2rem;
+               width: 50px;
              }
            }
            
+           #domain {
+             width: 90%;
+             position: absolute;
+             bottom: 3vh;
+
+           }
+           
+         }
+         
+         
         </style>
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
@@ -358,20 +307,6 @@
                     \end{smallmatrix} \rang
                     \)
                 </li>
-                <li>\(\lang	
-                    \begin{smallmatrix}
-                    2 \\
-                    1
-                    \end{smallmatrix} \rang   > 
-
-                    \lang	
-                    \begin{smallmatrix}
-                    1 \\
-                    2
-                    \end{smallmatrix} \rang
-                    \)
-                </li>
-                
 
                 
             </ul>
@@ -402,52 +337,61 @@
                     <td class="x-axis">3</td>
                 </tr>
             </table>            
+            <div id="domain">
+                <button data-value="1">1</button>
+                <button data-value="2">2</button>
+                <button data-value="3">3</button>
+            </div>
         </div>
-        <div id="domain">
-            <button data-value="1">1</button>
-            <button data-value="2">2</button>
-            <button data-value="3">3</button>
-        </div>
+
     </body>
     
     <script>
+     const ROWS = 3;
+     const COLS = 3;
+     const REGEX = new RegExp("^[1-3]*$");
 
+     
      // fetch all inputs and cells
      const inputList = document.querySelectorAll('input[type=text]');
      const cellList = document.querySelectorAll('td');
-
+     const domainList = document.querySelectorAll('button');
      // id them with their coordinates
      for (let i=0; i < inputList.length; i++) {
-       inputList[i].id = `i${3-(Math.floor(i/3))}.${1+i%3}`;
+       inputList[i].id = `i${3-(Math.floor(i/ROWS))}.${1+i%COLS}`;
        
      }
 
      var j=0;
      for (let i=0; i < cellList.length; i++) {
        if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
-         cellList[i].id = `c${3-(Math.floor(j/3))}.${1+j%3}`;
+         cellList[i].id = `c${3-(Math.floor(j/ROWS))}.${1+j%COLS}`;
          j++;
        }
        
      }
 
-     
-     const regex = new RegExp("^[0-9]*$");
-
+     // All inputs will now ensure only domain elements can be entered
      inputList.forEach((input) => {
        input.addEventListener("beforeinput", (event) => {
-         if (event.data != null && !regex.test(event.data)) 
+         if (event.data != null && !REGEX.test(event.data)) 
            event.preventDefault();
        });
      });
 
-     
+
      for(var i = 0; i < inputList.length; i++){
        if (inputList[i].id == undefined) {
          continue;
        }
        inputList[i].onfocus = function () { crosshairs(this.id); };
        inputList[i].onblur = function () { crosshairs("not-a-cell"); };
+     }
+
+     for (var i = 0; i < domainList.length; i++) {
+       domainList[i].onfocus = function () {  };
+       domainList[i].onblur = function () {  };
+
      }
      
      
@@ -515,13 +459,11 @@
          }
          // check that the cell matches in row or column
          if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
-           cellList[i].style.border = "2px solid #000000";
-           cellList[i].style.padding = "0px";
+           cellList[i].style.boxShadow = "inset 0px 0px 0px 1px #000000";
          }
          // reset the styles of other cells without messing up the axis labels
          else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
-           cellList[i].style.border = "1px solid #000000";
-           cellList[i].style.padding = "1px";
+           cellList[i].style.boxShadow = "";
            
          }
        }

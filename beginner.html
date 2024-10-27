@@ -31,10 +31,85 @@
            position: relative;
            margin: 0;
            top: 4.5vmin;
-           left: 4.5vmin;
+           left: 4vmin;
            cursor: pointer;
+         }
+
+         #menu {
+           position: absolute;
+           top: 4.5vmin;
+           right: 4vmin;
+           text-align:center;
+
+           input {
+             display: block;
+             width: 40px;
+             height: 32px;
+             position: absolute;
+             top: -7px;
+             left: -5px;
+             
+             cursor: pointer;
+             
+             opacity: 0; /* hide this */
+             z-index: 2; /* and place it over the hamburger */
+             
+             -webkit-touch-callout: none;
+           }
+
+           span:before {
+             content: ' ';
+             display: inline-block;
+             border-bottom: 3px solid #000;
+             border-right: 3px solid #000;
+             border-radius: 0px;
+             height: 20px;
+             width: 20px;
+             rotate: 45deg;
+             transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
+           }
+
+           input:checked ~ span:before {
+             transform: rotate(180deg);
+           }
+
+           ul {
+             width: 100%;
+             padding:0;
+             
+             list-style-type: none;
+             
+             transform-origin: 0% 0%;
+             transform: translate(0, -500%);
+             
+             transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+           }
+           input:checked ~ ul {
+             transform: none;
+           }
+           li {
+             display: block;
+             height: 40px;
+             width: 40px;
+             text-align:center;
+             margin-bottom: 15px;
+             cursor: pointer;
+           }
+           #settings {
+             content: url("SETTINGS.svg");
+           }
+           #info {
+             content: url("INFO.svg");
+           }
+           #dictionary {
+             content: url("BOOK.svg");
+           }
+           #notepad {
+             content: url("NOTEPAD.svg");
+           }
            
          }
+
 
          #wrapper {
            margin-top: 20vh;
@@ -156,7 +231,7 @@
              border-radius: 100%;
              opacity: 0.4;
              position: absolute;
-             transition: all 0.7s ease-out;
+             transition: all 1s ease-out;
              pointer-events: none;
              will-change: transform;
            }
@@ -283,6 +358,16 @@
     
     <body>
         <h1 id="level" onClick="">1.1</h1>
+        <div id="menu">
+            <input type ="checkbox">
+            <span></span>
+            <ul>
+                <li id="settings"></li>
+                <li id="info"></li>
+                <li id="dictionary"></li>
+                <li id="notepad"></li>
+            </ul>
+        </div>
 
         <div id="wrapper">
             <ul id="propositions">
@@ -410,16 +495,21 @@
 
      for (let i = 0; i < domainList.length; i++) {
        domainList[i].onfocus = function () {
-         inputList.forEach((input) => {
-           input.style.cursor = "pointer";
-           input.readOnly = true;
-           input.onfocus = function () {
-             this.value = domainList[i].textContent;
-           };
-         });
+         // Slowdown ensures that, when switching from button A to button B, the blur handler
+         // for B will wrap up before the focus handler for A fires
+         setTimeout(function () {
+           inputList.forEach((input) => {
+             input.style.cursor = "pointer";
+             input.readOnly = true;
+             input.onfocus = function () {
+               this.value = domainList[i].textContent;
+             };
+           }); 
+         }, 5);
        };
 
        domainList[i].onblur = function () {
+         // Tiny slowdown to avoid resetting input.onfocus before we can actually use it!
          setTimeout(function () {
            inputList.forEach((input) => {
              input.style.cursor = "";
@@ -427,7 +517,7 @@
              input.onfocus = function () {crosshairs(this.id);};
              input.blur();
            });
-         }, 5); // Without slowdown, onfocus may get reset before it actually fires
+         }, 1); 
        };
 
      }

@@ -39,7 +39,7 @@
            position: absolute;
            top: 4.5vmin;
            right: 4vmin;
-           text-align:center;
+           text-align: center;
 
            input {
              display: block;
@@ -52,9 +52,11 @@
              cursor: pointer;
              
              opacity: 0; /* hide this */
-             z-index: 2; /* and place it over the hamburger */
+             z-index: 2; 
              
-             -webkit-touch-callout: none;
+           }
+           span {
+             margin-left: 1px;
            }
 
            span:before {
@@ -63,19 +65,22 @@
              border-bottom: 3px solid #000;
              border-right: 3px solid #000;
              border-radius: 0px;
-             height: 20px;
-             width: 20px;
+             height: 24px;
+             width: 24px;
              rotate: 45deg;
              transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
            }
+
 
            input:checked ~ span:before {
              transform: rotate(180deg);
            }
 
+
            ul {
              width: 100%;
              padding:0;
+             margin-top: 5px;
              
              list-style-type: none;
              
@@ -89,12 +94,30 @@
            }
            li {
              display: block;
-             height: 40px;
-             width: 40px;
+             height: 39px;
+             width: 100%;
              text-align:center;
              margin-bottom: 15px;
              cursor: pointer;
+             transition: all 100ms linear;
            }
+
+           
+           #info:hover {
+             filter: invert(20%) sepia(55%) saturate(1086%) hue-rotate(83deg) brightness(94%) contrast(98%);
+           }
+           #dictionary:hover {
+             filter: invert(9%) sepia(52%) saturate(4466%) hue-rotate(349deg) brightness(77%) contrast(102%);
+           }
+           
+           #settings:hover {
+             filter: invert(40%) sepia(0%) saturate(1%) hue-rotate(163deg) brightness(98%) contrast(101%);
+             transform: rotate(45deg);
+           }
+           #notepad:hover {
+             filter: invert(81%) sepia(6%) saturate(4707%) hue-rotate(7deg) brightness(85%) contrast(72%);
+           }
+
            #settings {
              content: url("SETTINGS.svg");
            }
@@ -219,7 +242,10 @@
              cursor: pointer;
              text-align: center;
            }
-           
+
+           button:hover {
+             background-color: #B0B0B0;
+           }
            button:focus {
              background: #F1EEDC;
            }
@@ -296,6 +322,9 @@
          
          /* Portrait layout */
          @media (width <= 850px) {
+           #menu {
+             right: 3.5vmin;
+           }
            #wrapper {
              margin-top: 0vh;
              flex-direction: column;
@@ -362,10 +391,10 @@
             <input type ="checkbox">
             <span></span>
             <ul>
-                <li id="settings"></li>
                 <li id="info"></li>
                 <li id="dictionary"></li>
                 <li id="notepad"></li>
+                <li id="settings"></li>
             </ul>
         </div>
 

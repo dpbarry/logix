@@ -102,22 +102,15 @@
              transition: all 100ms linear;
            }
 
+           @media(hover: hover) and (pointer: fine) {
+             li:hover {
+               filter: invert(30%) sepia(0%) saturate(1%) hue-rotate(163deg) brightness(98%) contrast(101%);
+             }
+             #settings:hover {
+               transform: rotate(45deg);
+             }
+           }
            
-           #info:hover {
-             filter: invert(20%) sepia(55%) saturate(1086%) hue-rotate(83deg) brightness(94%) contrast(98%);
-           }
-           #dictionary:hover {
-             filter: invert(9%) sepia(52%) saturate(4466%) hue-rotate(349deg) brightness(77%) contrast(102%);
-           }
-           
-           #settings:hover {
-             filter: invert(40%) sepia(0%) saturate(1%) hue-rotate(163deg) brightness(98%) contrast(101%);
-             transform: rotate(45deg);
-           }
-           #notepad:hover {
-             filter: invert(81%) sepia(6%) saturate(4707%) hue-rotate(7deg) brightness(85%) contrast(72%);
-           }
-
            #settings {
              content: url("SETTINGS.svg");
            }
@@ -185,7 +178,7 @@
            
            text-align: center;
            list-style-type: none; /* no bullet points */
-           font-size: 1.5rem;
+           font-size: 3.5vh;
            
            overflow-y: auto;
 
@@ -212,7 +205,7 @@
          
          
          #propositions > li {
-           padding: 10px;
+           padding: 1vh;
            width: 100%;
 
            + li {
@@ -236,7 +229,7 @@
 
              width: 100%;
              font-family:  computer modern serif;
-             font-size: 2.5rem;
+             font-size: 5.35vh;
              background-color: #D0D0D0;
              border: 1px solid #101010;
              cursor: pointer;
@@ -278,22 +271,22 @@
          @media (width > 850px) {
            #grid {
              input {
-               font-size: 3rem;
-               width: 100px;
-               height: 100px;
+               font-size: 7vh;
+               width: 13vh;
+               height: 13vh;
              }
              .x-axis {
-               font-size: 2rem;
-               height: 50px;
+               font-size: 4.6vh;
+               height: 6vh;
              }
              .y-axis {
-               font-size: 2rem;
-               width: 50px;
+               font-size: 4.6vh;
+               width: 6vh;
              }
            }
            #propositions {
              margin-left: 0;
-             font-size: 1.85rem;
+             font-size: 4vh;
              display: flex;
              justify-content: center;
              flex-direction: column;
@@ -314,7 +307,7 @@
              width: 100%;
              flex-wrap: nowrap;
              flex-basis: 100%;
-             margin-top: 45px;
+             margin-top: 3.75vh;
            }
 
          }         
@@ -351,19 +344,20 @@
            #grid {
              padding: 0;
              margin: 0;
-             margin-right: 50px;
+             
+             margin-right: 42px;
              input {
-               font-size: 3rem;
-               width: 100px;
-               height: 100px;
+               font-size: 7vh;
+               width: 14vh;
+               height: 14vh;
              }
              .x-axis {
-               font-size: 2rem;
-               height: 50px;
+               font-size: 4.6vh;
+               height: 6vh;
              }
              .y-axis {
-               font-size: 2rem;
-               width: 50px;
+               font-size: 4.6vh;
+               width: 6vh;
              }
            }
            
@@ -415,8 +409,8 @@
                 </li>
                 <li>\(\lang	
                     \begin{smallmatrix}
-                    2 \\
-                    1
+                    x \\
+                    y
                     \end{smallmatrix} \rang   > 
 
                     \lang	
@@ -444,7 +438,7 @@
             </ul>
             <table id="grid">            
                 <tr>
-                    <td class="y-axis">3</td>
+                    <td class="y-axis">1</td>
                     <td><input type="text"></td>
                     <td class="given"><input type="text" value="2" disabled id></td>
                     <td> <input type="text"></td>
@@ -456,7 +450,7 @@
                     <td class="given"><input type="text" value="3" disabled></td>
                 </tr>
                 <tr>
-                    <td class="y-axis">1</td>
+                    <td class="y-axis">3</td>
                     <td class="given"><input type="text" value="1" disabled></td>
                     <td><input type="text"></td>
                     <td><input type="text"></td>
@@ -479,187 +473,187 @@
     </body>
     
     <script>
-     const ROWS = 3;
-     const COLS = 3;
-     const MAXLENGTH = 1;
-     const REGEX = new RegExp("^[1-3]*$");
+        const ROWS = 3;
+        const COLS = 3;
+        const MAXLENGTH = 1;
+        const REGEX = new RegExp("^[1-3]*$");
 
-     
-     // fetch all inputs and cells
-     const inputList = document.querySelectorAll('input[type=text]');
-     const cellList = document.querySelectorAll('td');
-     const domainList = document.querySelectorAll('button');
-     // id them with their coordinates
-     for (let i=0; i < inputList.length; i++) {
-       inputList[i].id = `i${3-(Math.floor(i/ROWS))}.${1+i%COLS}`;
-       
-     }
+        
+        // fetch all inputs and cells
+        const inputList = document.querySelectorAll('input[type=text]');
+        const cellList = document.querySelectorAll('td');
+        const domainList = document.querySelectorAll('button');
+        // id them with their coordinates
+        for (let i=0; i < inputList.length; i++) {
+        inputList[i].id = `i${3-(Math.floor(i/ROWS))}.${1+i%COLS}`;
+        
+        }
 
-     var j=0;
-     for (let i=0; i < cellList.length; i++) {
-       if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
-         cellList[i].id = `c${3-(Math.floor(j/ROWS))}.${1+j%COLS}`;
-         j++;
-       }
-       
-     }
+        var j=0;
+        for (let i=0; i < cellList.length; i++) {
+        if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
+        cellList[i].id = `c${3-(Math.floor(j/ROWS))}.${1+j%COLS}`;
+        j++;
+        }
+        
+        }
 
-     // All inputs will now ensure only domain elements can be entered
-     inputList.forEach((input) => {
-       input.addEventListener("beforeinput", (event) => {
-         if (event.data != null && !REGEX.test(event.data)) 
-           event.preventDefault();
-       });
-       input.maxLength = MAXLENGTH;
-     });
-
-
-     for (var i = 0; i < inputList.length; i++){
-       if (inputList[i].id == undefined) {
-         continue;
-       }
-       inputList[i].onfocus = function () { crosshairs(this.id); };
-       inputList[i].onblur = function () { crosshairs("not-a-cell"); };
-     }
-
-     for (let i = 0; i < domainList.length; i++) {
-       domainList[i].onfocus = function () {
-         // Slowdown ensures that, when switching from button A to button B, the blur handler
-         // for B will wrap up before the focus handler for A fires
-         setTimeout(function () {
-           inputList.forEach((input) => {
-             input.style.cursor = "pointer";
-             input.readOnly = true;
-             input.onfocus = function () {
-               this.value = domainList[i].textContent;
-             };
-           }); 
-         }, 5);
-       };
-
-       domainList[i].onblur = function () {
-         // Tiny slowdown to avoid resetting input.onfocus before we can actually use it!
-         setTimeout(function () {
-           inputList.forEach((input) => {
-             input.style.cursor = "";
-             input.readOnly = false;
-             input.onfocus = function () {crosshairs(this.id);};
-             input.blur();
-           });
-         }, 1); 
-       };
-
-     }
-     
-     
-     function verticalScroll(el) {
-       const isScrollable = (el.scrollHeight > el.clientHeight);
-       
-       // GUARD: If element is not scrollable, remove all classes
-       if (!isScrollable) {
-         el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
-         return;
-       }
-       
-       // Otherwise, the element is overflowing!
-       // Now we just need to find out which direction it is overflowing to (can be both).
-       // One pixel is added to the height to account for non-integer heights.
-       const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
-       const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
-       el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
-       el.classList.toggle('is-top-overflowing', !isScrolledToTop);
-     }
-
-     
-
-     function horizontalScroll(el) {
-       const isScrollable = (el.scrollWidth > el.clientWidth);
-
-       // GUARD: If element is not scrollable, remove all classes
-       if (!isScrollable) {
-         el.classList.remove('is-left-overflowing', 'is-right-overflowing');
-         return;
-       }
-       
-       // Otherwise, the element is overflowing!
-       // Now we just need to find out which direction it is overflowing to (can be both).
-       // One pixel is added to the height to account for non-integer heights.
-       const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
-       const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
-       el.classList.toggle('is-right-overflowing', !isScrolledToRight);
-       el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
-     }
-
-     document.querySelector('#propositions').addEventListener('scroll', (e) => {
-       const el = e.currentTarget;
-       verticalScroll(el);
-     });
-
-     document.querySelector('#domain').addEventListener('scroll', (e) => {
-       const el = e.currentTarget;
-       horizontalScroll(el);
-     });
-
-     
-     verticalScroll(document.querySelector('#propositions'));
-     horizontalScroll(document.querySelector('#domain'));
+        // All inputs will now ensure only domain elements can be entered
+        inputList.forEach((input) => {
+        input.addEventListener("beforeinput", (event) => {
+        if (event.data != null && !REGEX.test(event.data)) 
+        event.preventDefault();
+        });
+        input.maxLength = MAXLENGTH;
+        });
 
 
+        for (var i = 0; i < inputList.length; i++){
+        if (inputList[i].id == undefined) {
+        continue;
+        }
+        inputList[i].onfocus = function () { crosshairs(this.id); };
+        inputList[i].onblur = function () { crosshairs("not-a-cell"); };
+        }
 
-     // given the id of a cell, emphasize borders of cells in that row and column
-     function crosshairs(id) {
-       for (var i = 0; i < cellList.length; i++) {
-         if (cellList[i].id.slice(1) == id.slice(1)) {
-           cellList[i].style.backgroundColor = "#F1EEDC";
-         } else if (cellList[i].className != "given"){
-           cellList[i].style.backgroundColor = "#FFFFFF";
-         }
-         // check that the cell matches in row or column
-         if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
-           cellList[i].style.boxShadow = "inset 0px 0px 0px 1px #000000";
-         }
-         // reset the styles of other cells without messing up the axis labels
-         else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
-           cellList[i].style.boxShadow = "";
-           
-         }
-       }
-     }
+        for (let i = 0; i < domainList.length; i++) {
+        domainList[i].onfocus = function () {
+        // Slowdown ensures that, when switching from button A to button B, the blur handler
+        // for B will wrap up before the focus handler for A fires
+        setTimeout(function () {
+        inputList.forEach((input) => {
+        input.style.cursor = "pointer";
+        input.readOnly = true;
+        input.onfocus = function () {
+        this.value = domainList[i].textContent;
+        };
+        }); 
+        }, 5);
+        };
+
+        domainList[i].onblur = function () {
+        // Tiny slowdown to avoid resetting input.onfocus before we can actually use it!
+        setTimeout(function () {
+        inputList.forEach((input) => {
+        input.style.cursor = "";
+        input.readOnly = false;
+        input.onfocus = function () {crosshairs(this.id);};
+        input.blur();
+        });
+        }, 1); 
+        };
+
+        }
+        
+        
+        function verticalScroll(el) {
+        const isScrollable = (el.scrollHeight > el.clientHeight);
+        
+        // GUARD: If element is not scrollable, remove all classes
+        if (!isScrollable) {
+        el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
+        return;
+        }
+        
+        // Otherwise, the element is overflowing!
+        // Now we just need to find out which direction it is overflowing to (can be both).
+        // One pixel is added to the height to account for non-integer heights.
+        const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+        const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
+        el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
+        el.classList.toggle('is-top-overflowing', !isScrolledToTop);
+        }
+
+        
+
+        function horizontalScroll(el) {
+        const isScrollable = (el.scrollWidth > el.clientWidth);
+
+        // GUARD: If element is not scrollable, remove all classes
+        if (!isScrollable) {
+        el.classList.remove('is-left-overflowing', 'is-right-overflowing');
+        return;
+        }
+        
+        // Otherwise, the element is overflowing!
+        // Now we just need to find out which direction it is overflowing to (can be both).
+        // One pixel is added to the height to account for non-integer heights.
+        const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
+        const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
+        el.classList.toggle('is-right-overflowing', !isScrolledToRight);
+        el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
+        }
+
+        document.querySelector('#propositions').addEventListener('scroll', (e) => {
+        const el = e.currentTarget;
+        verticalScroll(el);
+        });
+
+        document.querySelector('#domain').addEventListener('scroll', (e) => {
+        const el = e.currentTarget;
+        horizontalScroll(el);
+        });
+
+        
+        verticalScroll(document.querySelector('#propositions'));
+        horizontalScroll(document.querySelector('#domain'));
 
 
-     const elementsWithRipple = document.querySelectorAll('[ripple]');
 
-     elementsWithRipple.forEach(elementWithRipple => {
-       elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
-         // Create a ripple element <div class="ripple">
-         const rippleEl = document.createElement('div');
-         rippleEl.classList.add('ripple');
-         
-         // Position the ripple
-         const x = mouseEvent.offsetX;
-         const y = mouseEvent.offsetY;
-         
-         rippleEl.style.left = `${x}px`;
-         rippleEl.style.top = `${y}px`;
-         
-         elementWithRipple.appendChild(rippleEl);
-         
-         requestAnimationFrame(() => {
-           rippleEl.classList.add('run');
-         });
-         
-         // Remove ripple element when the transition is done
-         rippleEl.addEventListener('transitionend', () => {
-           rippleEl.remove();
-         });
-       });
-     })
-     
-     document.getElementById("level").onclick = function () {
-       location.href = "beginner.html";
-     }
+        // given the id of a cell, emphasize borders of cells in that row and column
+        function crosshairs(id) {
+        for (var i = 0; i < cellList.length; i++) {
+        if (cellList[i].id.slice(1) == id.slice(1)) {
+        cellList[i].style.backgroundColor = "#F1EEDC";
+        } else if (cellList[i].className != "given"){
+        cellList[i].style.backgroundColor = "#FFFFFF";
+        }
+        // check that the cell matches in row or column
+        if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
+        cellList[i].style.boxShadow = "inset 0px 0px 0px 1px #000000";
+        }
+        // reset the styles of other cells without messing up the axis labels
+        else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
+        cellList[i].style.boxShadow = "";
+        
+        }
+        }
+        }
 
-     
+
+        const elementsWithRipple = document.querySelectorAll('[ripple]');
+
+        elementsWithRipple.forEach(elementWithRipple => {
+        elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
+        // Create a ripple element <div class="ripple">
+        const rippleEl = document.createElement('div');
+        rippleEl.classList.add('ripple');
+        
+        // Position the ripple
+        const x = mouseEvent.offsetX;
+        const y = mouseEvent.offsetY;
+        
+        rippleEl.style.left = `${x}px`;
+        rippleEl.style.top = `${y}px`;
+        
+        elementWithRipple.appendChild(rippleEl);
+        
+        requestAnimationFrame(() => {
+        rippleEl.classList.add('run');
+        });
+        
+        // Remove ripple element when the transition is done
+        rippleEl.addEventListener('transitionend', () => {
+        rippleEl.remove();
+        });
+        });
+        })
+        
+        document.getElementById("level").onclick = function () {
+        location.href = "beginner.html";
+        }
+
+        
     </script>
 
     

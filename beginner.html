@@ -111,19 +111,19 @@
              }
            }
            
-           #settings {
-             content: url("SETTINGS.svg");
-           }
+
            #info {
              content: url("INFO.svg");
            }
            #dictionary {
-             content: url("BOOK.svg");
+             content: url("DICTIONARY.svg");
            }
-           #notepad {
-             content: url("NOTEPAD.svg");
+           #notes {
+             content: url("NOTES.svg");
            }
-           
+           #settings {
+             content: url("SETTINGS.svg");
+           }
          }
 
 
@@ -153,8 +153,8 @@
              font-style: italic;
              border: 0px;
              font-size: min(4.6vh, 2rem);
-             width: min(6vh, 50px);
-             height: min(6vh, 50px);
+             width: min(5vh, 50px);
+             height: min(5vh, 50px);
            }
 
            input {
@@ -317,7 +317,7 @@
              align-self: center;
              text-align: center;
              width: 70vw;
-             height: 28vh;
+             height: 30vh;
              li {
                width: unset;
              }
@@ -335,12 +335,13 @@
            #domain {
              width: 90%;
              position: absolute;
-             bottom: 3vh;
+             bottom: 2vh;
            }
            
          }
 
          dialog {
+           position: fixed;
            font-family: computer modern serif;
            width: 70vw;
            height: 85vh;
@@ -352,7 +353,12 @@
          dialog[open] {
            visibility: visible;
            transform: scale(1);
-           box-shadow: 0 0 10vw  rgba(0, 0, 0, 0.35);
+           box-shadow: 0 0 10vw 5vw rgba(0, 0, 0, 0.35);
+         }
+         dialog.hide {
+           visibility: visible;
+           transform: scale(0);
+           box-shadow: unset;
          }
          dialog::backdrop {
            opacity: 0;
@@ -374,12 +380,24 @@
             <input type ="checkbox">
             <span></span>
             <ul>
-                <li id="info" onclick="showModal()"></li>
-                <li id="dictionary"></li>
-                <li id="notepad"></li>
-                <li id="settings"></li>
+                <li id="info" onclick="showModal('info_dialog')"></li>
+                <li id="dictionary" onclick="showModal('dictionary_dialog')"></li>
+                <li id="notes" onclick="showModal('notes_dialog')"></li>
+                <li id="settings" onclick="showModal('settings_dialog')"></li>
             </ul>
-            <dialog id="dialog">
+            <dialog id="info_dialog">
+                <h1> - INFO - </h1>
+            </dialog>
+
+            <dialog id="dictionary_dialog">
+                <h1> - DICTIONARY - </h1>
+            </dialog>
+
+            <dialog id="notes_dialog">
+                <h1> - NOTES - </h1>
+            </dialog>
+
+            <dialog id="settings_dialog">
                 <h1> - SETTINGS - </h1>
             </dialog>
         </div>
@@ -640,30 +658,33 @@
        });
      })
 
-     function showModal() {
-       document.getElementById('dialog').showModal();
+     function showModal(id) {
+       document.getElementById(id).showModal();
      }
-     function performClose() {
-       document.getElementById('dialog').close();
-     }
-     const dialog = document.getElementById('dialog');
+
+     const dialogList = document.querySelectorAll('dialog');
      
-     dialog.addEventListener('click', (e) => {
-       if (e.target.tagName !== 'DIALOG')
-         return;
+     dialogList.forEach((dialog) => {
+       dialog.addEventListener('click', (e) => {
+         if (e.target.tagName !== 'DIALOG')
+           return;
 
-       const rect = e.target.getBoundingClientRect();
+         const rect = e.target.getBoundingClientRect();
 
-       const clickedInDialog = (
-         rect.top <= e.clientY &&
-         e.clientY <= rect.top + rect.height &&
-         rect.left <= e.clientX &&
-         e.clientX <= rect.left + rect.width
-       );
+         const clickedInDialog = (
+           rect.top <= e.clientY &&
+           e.clientY <= rect.top + rect.height &&
+           rect.left <= e.clientX &&
+           e.clientX <= rect.left + rect.width
+         );
 
-       if (clickedInDialog === false) {
-         e.target.close();
-       }
+         if (clickedInDialog === false) {
+           e.target.classList.add("hide");
+           setTimeout(function () {
+             e.target.close();
+             e.target.classList.remove("hide");
+           }, 200);
+       }});
      });
 
 

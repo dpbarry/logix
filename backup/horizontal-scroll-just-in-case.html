@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <link rel="stylesheet" href="main.css">
+
+        <!-- COMPUTER MODERN SERIF -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
+
+        
+        <title>Logix</title>
+        
+        <style>
+         html, body {
+           padding: 0;
+           margin: 0;
+           height: 100%;
+         }
+
+         #level {
+           font-family: computer modern serif;
+           text-align: left;
+           font-weight: lighter;
+           font-size: 2rem;
+           width: 10vw;
+           position: relative;
+           margin: 0;
+           top: 4vh;
+           left: 4vw;
+           
+         }
+
+         #wrapper {
+           margin-top: 12vh;
+           display: flex;
+           justify-content: flex-start;
+         }
+
+
+         #grid {
+           margin-right: 5vw;
+           align-self: center;           
+           td {
+             font-family: computer modern serif;
+             padding: 1px;
+             border: 1px solid #000000;
+             text-align: center;
+             border-radius: 3px;
+           }
+           td.given {
+             background-color: #D0D0D0;
+
+           }
+           
+           .x-axis {
+             font-size: 4vh;
+             font-style: italic;
+             border: 0px;
+             height: 8vh;
+           }
+           .y-axis {
+             font-size: 4vh;
+             font-style: italic;
+             border: 0px;
+             width: 8vh;
+           }
+           input {
+             font-family: computer modern serif;
+             color: #000000;
+             background: transparent; /* Otherwise clashes with td color */
+             padding: 0;
+             border: 0;
+             text-align: center;
+             font-size: 7vh;
+             outline: none;
+           }
+         }
+         
+         
+         #propositions {
+           margin: 0;
+           margin-left: 12.5vw;
+           padding: 0;
+
+           
+           width: 35vw;
+           max-height: 60vh;
+           
+           text-align: left;
+           list-style-type: none; /* no bullet points */
+           font-size: 1.5rem;
+           
+           overflow-y: auto;
+
+           -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
+           mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
+           --top-mask-size: 0px;
+           --bottom-mask-size: 0px;
+         }
+         
+         #propositions.is-top-overflowing {
+           --top-mask-size: 48px !important;
+         }
+
+         #propositions.is-bottom-overflowing {
+           --bottom-mask-size: 48px !important;
+         }
+         
+         #propositions::-webkit-scrollbar { 
+           display: none; 
+         }
+         #domain::-webkit-scrollbar { 
+           display: none; 
+         }
+         
+         
+         #propositions > li {
+           padding: 10px;
+           + li {
+             border-top: 1px solid black;
+           }
+         }
+
+         #domain {
+           padding: 0;
+           padding-bottom: 3px;
+           display: flex;
+           align-items: center;
+           width: 40vw;
+           
+           gap: 0.8vw;
+           margin: auto;
+           position: relative;
+           overflow: auto;
+           top: 7.5vh;
+
+
+           button {
+             width: 100%;
+             font-family: computer modern serif;
+             font-size: 2.5rem;
+             font-weight: lighter;
+             background-color: rgb(240,240,240);
+             border: 1px solid rgba(27, 31, 35, .15);
+             border-radius: 12px;
+             box-shadow: rgba(27, 31, 35, .1) 0 2.5px 0;
+             cursor: pointer;
+             text-align: center;
+           }
+           
+           button:hover {
+             background-color: rgb(195,195,195);
+             transition-duration: 0.3s;
+           }
+
+           button:active {
+             transform: translateY(3px);
+           }
+           
+           -webkit-mask-image: linear-gradient(to right, transparent 0, black var(--left-mask-size, 0), black calc(100% - var(--right-mask-size, 0)), transparent 100%);
+           
+           mask-image: linear-gradient(to right, transparent 0, black var(--left-mask-size, 0), black calc(100% - var(--right-mask-size, 0)), transparent 100%);
+           --left-mask-size: 0px;
+           --right-mask-size: 0px;
+         }
+         
+         #domain.is-left-overflowing {
+           --left-mask-size: 48px !important;
+         }
+
+         #domain.is-right-overflowing {
+           --right-mask-size: 48px !important;
+         }
+         
+
+         
+
+         @media (width > 820px) {
+           #grid input {
+             width: calc(13.5vh + ((100vw - 700px) / 40));
+             height: calc(13.5vh + ((100vw - 700px) / 40));
+           }
+           #propositions {
+             font-size: calc(1.5rem + ((100vw - 700px) / 100));
+           }
+           #wrapper {
+             gap: calc((100vw - 700px) / 10)
+           }
+         }
+         
+         
+         /* Rearrange layout for mobile ratios */
+         @media (width <= 820px) {
+           #wrapper {
+             margin-top: 0vh;
+             flex-direction: column;
+             flex-wrap: wrap;
+             align-content:center;
+             align-items: center;
+             gap: 4vh;
+           }
+           #propositions {
+             margin: 0;
+             align-self: unset;
+             text-align: center;
+             width: 70vw;
+             height: 19vh;
+           }
+           #grid {
+             padding: 0;
+             margin: 0;
+             margin-right: 8vw;
+
+             input {
+               width: 17vh;
+               height: 17vh;
+             }
+           }
+           #domain {
+             gap: 0.8vw;
+             width: 90vw;
+             flex-wrap: nowrap;
+             top: unset;
+           }
+         }
+         
+         /* If ratio gets too narrow, adjust scaling */ 
+         @media (width <= 600px) {
+           #grid input {
+             width: 21vw;
+             height: 21vw;
+             
+           }
+           #propositions {
+             height: calc(19vh + (600px - 100vw) / 2.5);
+           }
+           #domain {
+             margin-top: calc((600px - 100vw) / 3.8);
+           }
+         }
+         
+        </style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js" integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+                onload="renderMathInElement(document.body);"></script>
+    </head>
+    
+    <body>
+        <h1 id="level">1.1</h1>
+
+        <div id="wrapper">
+            <ul id="propositions">
+                <li>\(\lang	
+                    \begin{smallmatrix}
+                    2 \\
+                    1
+                    \end{smallmatrix} \rang   > 
+
+                    \lang	
+                    \begin{smallmatrix}
+                    1 \\
+                    2
+                    \end{smallmatrix} \rang
+                    \)
+                </li>
+
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>  <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>  
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>
+                <li>\(\forall \scriptsize x,y \, \, \normalsize \lang	
+                    \begin{smallmatrix}
+                    x \\
+                    y
+                    \end{smallmatrix} \rang  \small = 2\)
+                </li>
+                
+                
+                
+            </ul>
+            <table id="grid">            
+                <tr>
+                    <td class="y-axis">3</td>
+                    <td><input type="text"></td>
+                    <td class="given"><input type="text" value="2" disabled id></td>
+                    <td> <input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="y-axis">2</td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td class="given"><input type="text" value="3" disabled></td>
+                </tr>
+                <tr>
+                    <td class="y-axis">1</td>
+                    <td class="given"><input type="text" value="1" disabled></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+                
+                <tr>
+                    <td class="x-axis"></td>
+                    <td class="x-axis">1</td>
+                    <td class="x-axis">2</td>
+                    <td class="x-axis">3</td>
+                </tr>
+            </table>            
+        </div>
+        <div id="domain">
+            <button data-value="1">1</button>
+            <button data-value="2">2</button>
+            <button data-value="3">3</button>
+            <button data-value="4">4</button>
+            <button data-value="5">5</button>
+            <button data-value="6">6</button>
+            <button data-value="7">7</button>
+            <button data-value="8">8</button>
+            <button data-value="9">9</button>
+        </div>
+    </body>
+    
+    <script>
+
+     // fetch all inputs and cells
+     const inputList = document.querySelectorAll('input[type=text]');
+     const cellList = document.querySelectorAll('td');
+
+     // id them with their coordinates
+     for (let i=0; i < inputList.length; i++) {
+       inputList[i].id = `i${3-(Math.floor(i/3))}.${1+i%3}`;
+       
+     }
+
+     var j=0;
+     for (let i=0; i < cellList.length; i++) {
+       if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
+         cellList[i].id = `c${3-(Math.floor(j/3))}.${1+j%3}`;
+         j++;
+       }
+       
+     }
+
+     
+     const regex = new RegExp("^[0-9]*$");
+
+     inputList.forEach((input) => {
+       input.addEventListener("beforeinput", (event) => {
+         if (event.data != null && !regex.test(event.data)) 
+           event.preventDefault();
+       });
+     });
+
+     
+     for(var i = 0; i < inputList.length; i++){
+       if (inputList[i].id == undefined) {
+         continue;
+       }
+       inputList[i].onfocus = function () { crosshairs(this.id); };
+       inputList[i].onblur = function () { crosshairs("not-a-cell"); };
+     }
+     
+     
+     function verticalScroll(el) {
+       const isScrollable = (el.scrollHeight > el.clientHeight);
+       
+       // GUARD: If element is not scrollable, remove all classes
+       if (!isScrollable) {
+         el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
+         return;
+       }
+       
+       // Otherwise, the element is overflowing!
+       // Now we just need to find out which direction it is overflowing to (can be both).
+       // One pixel is added to the height to account for non-integer heights.
+       const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+       const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
+       el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
+       el.classList.toggle('is-top-overflowing', !isScrolledToTop);
+     }
+
+     
+
+     function horizontalScroll(el) {
+       const isScrollable = (el.scrollWidth > el.clientWidth);
+
+       // GUARD: If element is not scrollable, remove all classes
+       if (!isScrollable) {
+         el.classList.remove('is-left-overflowing', 'is-right-overflowing');
+         return;
+       }
+       
+       // Otherwise, the element is overflowing!
+       // Now we just need to find out which direction it is overflowing to (can be both).
+       // One pixel is added to the height to account for non-integer heights.
+       const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
+       const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
+       el.classList.toggle('is-right-overflowing', !isScrolledToRight);
+       el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
+     }
+
+     document.querySelector('#propositions').addEventListener('scroll', (e) => {
+       const el = e.currentTarget;
+       verticalScroll(el);
+     });
+
+     document.querySelector('#domain').addEventListener('scroll', (e) => {
+       const el = e.currentTarget;
+       horizontalScroll(el);
+     });
+
+     
+     verticalScroll(document.querySelector('#propositions'));
+     horizontalScroll(document.querySelector('#domain'));
+
+
+
+     // given the id of a cell, emphasize borders of cells in that row and column
+     function crosshairs(id) {
+       for (var i = 0; i < cellList.length; i++) {
+         if (cellList[i].id.slice(1) == id.slice(1)) {
+           cellList[i].style.backgroundColor = "#F1EEDC";
+         } else if (cellList[i].className != "given"){
+           cellList[i].style.backgroundColor = "#FFFFFF";
+         }
+         // check that the cell matches in row or column
+         if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
+           cellList[i].style.border = "2px solid #000000";
+           cellList[i].style.padding = "0px";
+         }
+         // reset the styles of other cells without messing up the axis labels
+         else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
+           cellList[i].style.border = "1px solid #000000";
+           cellList[i].style.padding = "1px";
+           
+         }
+       }
+     }
+     
+    </script>
+
+    
+</html>

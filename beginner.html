@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="style.css">
 
         <!-- COMPUTER MODERN SERIF -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
@@ -113,16 +113,16 @@
            
 
            #info {
-             content: url("INFO.svg");
+             content: url("images/INFO.svg");
            }
            #dictionary {
-             content: url("DICTIONARY.svg");
+             content: url("images/DICTIONARY.svg");
            }
            #notes {
-             content: url("NOTES.svg");
+             content: url("images/NOTES.svg");
            }
            #settings {
-             content: url("SETTINGS.svg");
+             content: url("images/SETTINGS.svg");
            }
          }
 
@@ -162,7 +162,7 @@
            input {
              font-family: computer modern serif;
              color: #000000;
-             background: transparent; /* Otherwise clashes with td color */
+             background: transparent; 
              padding: 0;
              border: 0;
              text-align: center;
@@ -172,6 +172,10 @@
              width: min(14vh, 100px);
              height: min(14vh, 100px);
              font-size: min(8vh, 3rem);
+             
+             /* Makes sure ripple effect doesn't cover number */
+             position: relative;
+             z-index: 222;
            }
 
            td.selected {
@@ -246,6 +250,11 @@
              border: 1px solid #101010;
              cursor: pointer;
              text-align: center;
+
+             /* Makes sure ripple effect doesn't cover number */
+             p { margin:0;
+               position: relative;
+               z-index: 5;}
            }
 
            button:hover {
@@ -257,16 +266,18 @@
 
            
          }
+
          .ripple {
            background: #F1EEDC;
            width: 3px;
            height: 3px;
            border-radius: 100%;
-           opacity: 0.4;
+           opacity: 0.7;
            position: absolute;
            transition: all 0.3s linear;
            pointer-events: none;
            will-change: transform;
+           z-index: 1;
          }
 
          .ripple.run {
@@ -509,9 +520,9 @@
                 </tr>
             </table>            
             <div id="domain">
-                <button ripple data-value="1">1</button>
-                <button ripple data-value="2">2</button>
-                <button ripple data-value="3">3</button>
+                <button ripple data-value="1"><p>1</p></button>
+                <button ripple data-value="2"><p>2</p></button>
+                <button ripple data-value="3"><p>3</p></button>
             </div>
         </div>
     </body>

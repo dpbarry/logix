@@ -144,6 +144,8 @@
              outline: 1px solid white;
              text-align: center;
              border-radius: 2px;
+             background:transparent;
+             transition: all 0.3s;
            }
            td.given {
              background-color: #D0D0D0;
@@ -170,6 +172,10 @@
              width: min(14vh, 100px);
              height: min(14vh, 100px);
              font-size: min(8vh, 3rem);
+           }
+
+           td.selected {
+             background-color: #F1EEDC !important;
            }
          }
          
@@ -249,27 +255,28 @@
              background: #F1EEDC;
            }
 
-           .ripple {
-             background: #F1EEDC;
-             width: 3px;
-             height: 3px;
-             border-radius: 100%;
-             opacity: 0.4;
-             position: absolute;
-             transition: all 1s ease-out;
-             pointer-events: none;
-             will-change: transform;
-           }
+           
+         }
+         .ripple {
+           background: #F1EEDC;
+           width: 3px;
+           height: 3px;
+           border-radius: 100%;
+           opacity: 0.4;
+           position: absolute;
+           transition: all 0.3s linear;
+           pointer-events: none;
+           will-change: transform;
+         }
 
-           .ripple.run {
-             opacity: 0;
-             transform: scale(200);
-           }
+         .ripple.run {
+           opacity: 0;
+           transform: scale(200);
+         }
 
-           [ripple] {
-             position: relative;
-             overflow: hidden;
-           }
+         [ripple] {
+           position: relative;
+           overflow: hidden;
          }
 
 
@@ -479,7 +486,7 @@
                     <td class="y-axis">1</td>
                     <td><input type="text"></td>
                     <td class="given"><input type="text" value="2" disabled id></td>
-                    <td> <input type="text"></td>
+                    <td ripple> <input type="text"></td>
                 </tr>
                 <tr>
                     <td class="y-axis">2</td>
@@ -530,6 +537,7 @@
      for (let i=0; i < cellList.length; i++) {
        if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
          cellList[i].id = `c${3-(Math.floor(j/ROWS))}.${1+j%COLS}`;
+         cellList[i].setAttribute("ripple", true);
          j++;
        }
        
@@ -631,6 +639,10 @@
        horizontalScroll(el);
      });
 
+     window.onresize = function(event) {
+       verticalScroll(document.querySelector('#propositions'));
+     }
+
      
      verticalScroll(document.querySelector('#propositions'));
      horizontalScroll(document.querySelector('#domain'));
@@ -641,9 +653,15 @@
      function crosshairs(id) {
        for (var i = 0; i < cellList.length; i++) {
          if (cellList[i].id.slice(1) == id.slice(1)) {
-           cellList[i].style.backgroundColor = "#F1EEDC";
+           cellList[i].classList.add("selected");
+           var thing = cellList[i];
+           cellList[i].addEventListener('transitionend', function end() {
+             thing.classList.remove("selected");
+             thing.style.backgroundColor = "#F1EEDC";
+             thing.removeEventListener('transitionend', end);
+           });
          } else if (cellList[i].className != "given"){
-           cellList[i].style.backgroundColor = "#FFFFFF";
+           cellList[i].style.backgroundColor = "transparent";
          }
          // check that the cell matches in row or column
          if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
@@ -651,8 +669,7 @@
          }
          // reset the styles of other cells without messing up the axis labels
          else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
-           cellList[i].style.boxShadow = "";
-           
+           cellList[i].style.boxShadow = "";         
          }
        }
      }
@@ -711,7 +728,7 @@
            setTimeout(function () {
              e.target.close();
              e.target.classList.remove("hide");
-           }, 200);
+           }, 600);
        }});
      });
 

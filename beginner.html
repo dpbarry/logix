@@ -143,14 +143,28 @@
              border: 1px solid #000000;
              outline: 1px solid white;
              text-align: center;
-             border-radius: 2px;
+             border-radius: 3px;
              background:transparent;
-             transition: all 0.3s;
+             transition: all 0.25s linear;
            }
            td.given {
              background-color: #D0D0D0;
            }
+
+           td {
+             background-image: linear-gradient(#80AF81, #80AF81);
+             background-repeat: no-repeat;
+             background-size: 100% 0;
+             background-position: bottom;
+           }
            
+
+           td.correct {
+             background-size: 100% 100%;
+             box-shadow: unset !important;  
+           }
+
+
            .x-axis, .y-axis {
              font-style: italic;
              border: 0px;
@@ -494,6 +508,7 @@
             </ul>
             <table id="grid">            
                 <tr>
+                    
                     <td class="y-axis">1</td>
                     <td><input type="text"></td>
                     <td class="given"><input type="text" value="2" disabled id></td>
@@ -518,7 +533,7 @@
                     <td class="x-axis">2</td>
                     <td class="x-axis">3</td>
                 </tr>
-            </table>            
+            </table>
             <div id="domain">
                 <button ripple data-value="1"><p>1</p></button>
                 <button ripple data-value="2"><p>2</p></button>
@@ -532,7 +547,11 @@
      const COLS = 3;
      const MAXLENGTH = 1;
      const REGEX = new RegExp("^[1-3]*$");
+     const SOLUTION = [[3, null, 2], [1, 3, null], [null, 3, 1]];
+     var tabdCells = [[null, null, null], [null, null, null], [null, null, null]];
 
+
+     var values = new Map();
      
      // fetch all inputs and cells
      const inputList = document.querySelectorAll('input[type=text]');
@@ -540,14 +559,18 @@
      const domainList = document.querySelectorAll('button');
      // id them with their coordinates
      for (let i=0; i < inputList.length; i++) {
-       inputList[i].id = `i${3-(Math.floor(i/ROWS))}.${1+i%COLS}`;
-       
+       let row = 1+Math.floor(i/ROWS);
+       let col = 1+i%COLS;
+       inputList[i].id = `i${row}.${col}`;
      }
 
      var j=0;
      for (let i=0; i < cellList.length; i++) {
        if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
-         cellList[i].id = `c${3-(Math.floor(j/ROWS))}.${1+j%COLS}`;
+         let row = 1+Math.floor(j/ROWS);
+         let col = 1+j%COLS;
+         cellList[i].id = `c${row}.${col}`;
+         tabdCells[row-1][col-1] = cellList[i];
          cellList[i].setAttribute("ripple", true);
          j++;
        }
@@ -556,6 +579,7 @@
 
      // All inputs will now ensure only domain elements can be entered
      inputList.forEach((input) => {
+       input.autocomplete="off";
        input.addEventListener("beforeinput", (event) => {
          if (event.data != null && !REGEX.test(event.data)) 
            event.preventDefault();
@@ -563,6 +587,49 @@
        input.maxLength = MAXLENGTH;
      });
 
+
+     function checkGrid() {
+       var flag = true;
+
+       values.forEach((value, key) => {
+         var row = parseInt(key.id.charAt(1));
+         var col = parseInt(key.id.charAt(3));
+         
+         if (value != SOLUTION[row - 1][col - 1]) {
+           flag = false;
+         }
+       });
+
+       if (flag) {
+         crosshairs("not-a-cell");
+         tabdCells[ROWS-1].forEach((td) => {
+           if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
+             td.classList.add("correct");
+           }
+         });
+         let i = 1;
+         setInterval (function () {
+           i++
+           if (i > ROWS) { clearInterval (this); }
+           tabdCells[ROWS-i].forEach((td) => {
+             if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
+               td.classList.add("correct");
+             }
+           });
+         }, 250);
+         inputList.forEach((inp) => {
+           inp.readOnly = true;
+         });
+       }
+     }
+     
+     inputList.forEach((input) => {
+       values.set(input, null);
+       input.addEventListener("input", (event) => {
+         values.set(event.target, event.data);
+         checkGrid();
+       });
+     });
 
      for (var i = 0; i < inputList.length; i++){
        if (inputList[i].id == undefined) {
@@ -582,6 +649,8 @@
              input.readOnly = true;
              input.onfocus = function () {
                this.value = domainList[i].textContent;
+               values.set(this, domainList[i].textContent);
+               checkGrid();
              };
            }); 
          }, 5);

@@ -49,8 +49,10 @@
            box-shadow: inset 0 -50px 10vh -50px rgba(180,150,10,20%);
          }
 
-         section:hover >  .stage-content {
-           font-size: 1.2rem;
+         @media (hover: hover) and (pointer: fine) {
+           section:hover >  .stage-content {
+             font-size: 1.2rem;
+           }
          }
          p {
            margin: 0;
@@ -73,7 +75,7 @@
            left: 75px;
            
          }
-              
+         
 
          button:active {
            transform: translateY(3px);
@@ -95,12 +97,12 @@
         <div id="stage-list">
             <section id ="beginner">
                 <p class="stage-number"> 1 </p>
-                <p class="stage-content"> Basic propositions, arithmetic relations</p>
+                <p class="stage-content">Basic arithmetic propositions</p>
             </section>
 
             <section id ="beginner">
                 <p class="stage-number"> 2 </p>
-                <p class="stage-content"> Elementary logical connectives  </p>
+                <p class="stage-content"> Logical connectives  </p>
             </section>
 
             <section id ="beginner">
@@ -115,7 +117,7 @@
 
             <section id ="beginner">
                 <p class="stage-number"> 4 </p>
-                <p class="stage-content"> More definitions; functions </p>
+                <p class="stage-content"> Functions </p>
             </section>
 
             <section id ="beginner">

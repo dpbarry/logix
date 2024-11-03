@@ -18,12 +18,12 @@
          * {
            font-family: computer modern serif;
          }
-         
+
          #main-header {
            text-align: center;
            font-weight: normal;
            font-size: 50px;
-           margin-bottom: 14px;
+           margin-bottom: 25px;
          }
 
          #stage-list {
@@ -31,109 +31,134 @@
            align-items: center;
            justify-content: center;
            flex-direction: column;
-
            position: absolute;
            left: 50%;
            transform: translate(-50%);
            width: 80%;
            max-width: 400px;
+           padding: 0;
          }
-         section {
+         
+         li {
+           margin-bottom: 20px;
            display: flex;
            width: 100%;
-           height: 10vh;
-           border-top: 2px solid;
-           border-left: 2px solid;
-           border-right: 2px solid;
-           flex-direction: column;
-           box-shadow: inset 0 -50px 10vh -50px rgba(180,150,10,20%);
+           height: 6.75vh;
+           border-top: none;
+           flex-direction: row;
+           list-style-type: none;
+           cursor: pointer;
+           background-repeat: no-repeat;
+           background-position: center center;
+           transition: all .2s ease-out;
+
+           box-shadow: 0 2px 3px rgba(154,154,154,.3), 0 0 2px rgba(154,154,154,.2);
          }
 
+         li#s1 { background-color: rgb(115,195,90,0.3); }
+
+         li#s2 { background-color: rgb(145,190,85, 0.3); }
+
+         li#s3 { background-color: rgb(175,185,80,0.3); }
+
+         li#s4 { background-color: rgb(205,180,75,0.3); }
+         
+         li#s5 { background-color: rgb(235, 175, 70, 0.3); }
+         
+         li#s6 { background-color: rgb(255, 140, 50, 0.3); }
+
+         li#s7 { background-color: rgb(255, 80, 30, 0.3); }
+         
+         li#s8 { background-color: rgb(255, 10, 0, 0.3); }
+
+
+         
+
          @media (hover: hover) and (pointer: fine) {
-           section:hover >  .stage-content {
-             font-size: 1.2rem;
+
+           li:hover {
+             font-size: 1.25rem;
+             width: min(85vw, 425px);
            }
+
+           li:active {
+             transform: translateY(2px);
+           }
+
          }
+
+         
          p {
            margin: 0;
          }
          .stage-number {
            position: relative;
            width: min-content;
-           top: 3px;
+           top: -13px;
            left: 8px;
            font-weight: bold;
            font-size: 1.5rem;
+           transition: all 0.1s;
          }
 
          .stage-content {
-           font-size: 1.1rem;
-           transition: all 0.3s;
            align-self: center;
-           width: 85%;
-           font-style: italic;
-           left: 75px;
-           
+           position: relative;
+           font-size: 1.1rem;
+           transition: all 0.1s;
+           left: 20px;
+           white-space: nowrap;
          }
          
 
-         button:active {
-           transform: translateY(3px);
-         }
-
-         .button-caption {
-           display: inline-block;
-           font-size: 0.6em;
-           font-weight: normal;
-           line-height: 15px
-         } 
          
         </style>
     </head>
 
     <body>
+        <div ></div>
         <h1 id="main-header">→ LOGIX ←</h1>
 
-        <div id="stage-list">
-            <section id ="beginner">
+        <ul id="stage-list">
+            <li id ="s1" class="animated-border-box">
                 <p class="stage-number"> 1 </p>
-                <p class="stage-content">Basic arithmetic propositions</p>
-            </section>
+                <p class="stage-content">Propositions</p>
+            </li>
 
-            <section id ="beginner">
+            <li id ="s2">
                 <p class="stage-number"> 2 </p>
                 <p class="stage-content"> Logical connectives  </p>
-            </section>
+            </li>
 
-            <section id ="beginner">
-                <p class="stage-number"> 2 </p>
-                <p class="stage-content"> Quantifiers & first-order logic </p>
-            </section>
-
-            <section id ="beginner">
+            <li id ="s3">
                 <p class="stage-number"> 3 </p>
-                <p class="stage-content"> Set theory, operations, definitions </p>
-            </section>
+                <p class="stage-content"> Quantifiers</p>
+            </li>
 
-            <section id ="beginner">
+            <li id ="s4">
                 <p class="stage-number"> 4 </p>
-                <p class="stage-content"> Functions </p>
-            </section>
+                <p class="stage-content"> Set theory </p>
+            </li>
 
-            <section id ="beginner">
+            <li id ="s5">
                 <p class="stage-number"> 5 </p>
-                <p class="stage-content">Higher-order logic </p>
-            </section>
+                <p class="stage-content"> Functions </p>
+            </li>
 
-            <section id ="beginner">
+            <li id ="s6">
                 <p class="stage-number"> 6 </p>
-                <p class="stage-content">Semantics, metalogic</p>
-            </section>
-            
-            <section id ="beginner" style="border-bottom: 2px solid">
+                <p class="stage-content">Higher-order logic </p>
+            </li>
+
+            <li id ="s7">
                 <p class="stage-number"> 7 </p>
-                <p class="stage-content"> ???</p>
-            </section>
+                <p class="stage-content">Semantics</p>
+            </li>
+            
+            <li id ="s8">
+                <p class="stage-number"> 8 </p>
+                <p class="stage-content"> Metalogic</p>
+            </li>
 
 
 
@@ -168,7 +193,7 @@
              <-->
     </body>
 
-    <script>document.getElementById("beginner").onclick = function () {
+    <script>document.getElementById("s1").onclick = function () {
        location.href = "beginner.html";
      }
     </script>

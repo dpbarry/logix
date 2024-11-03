@@ -23,32 +23,57 @@
            text-align: center;
            font-weight: normal;
            font-size: 50px;
+           margin-bottom: 14px;
          }
 
-         button {
-           font-size: 1.5em;
-           font-weight: bold;
-           background-color: rgb(240,240,240);
-           border: 1px solid rgba(27, 31, 35, .15);
-           border-radius: 6px;
-           box-shadow: rgba(27, 31, 35, .1) 0 2px 0;
-           cursor: pointer;
-           line-height: 20px;
-           width: 200px;
-           height: 80px;
+         #stage-list {
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           flex-direction: column;
+
+           position: absolute;
+           left: 50%;
+           transform: translate(-50%);
+           width: 80%;
+           max-width: 400px;
+         }
+         section {
+           display: flex;
+           width: 100%;
+           height: 10vh;
+           border-top: 2px solid;
+           border-left: 2px solid;
+           border-right: 2px solid;
+           flex-direction: column;
+           box-shadow: inset 0 -50px 10vh -50px rgba(180,150,10,20%);
+         }
+
+         section:hover >  .stage-content {
+           font-size: 1.2rem;
+         }
+         p {
+           margin: 0;
+         }
+         .stage-number {
            position: relative;
-           text-align: center;
-           margin-top: auto;
-           display: block;
-           margin: 1.0em auto;
-           margin-bottom: auto;
-           line-height: 30px;
+           width: min-content;
+           top: 3px;
+           left: 8px;
+           font-weight: bold;
+           font-size: 1.5rem;
          }
 
-         button:hover {
-           background-color: rgb(215,215,215);
-           transition-duration: 0.42s;
+         .stage-content {
+           font-size: 1.1rem;
+           transition: all 0.3s;
+           align-self: center;
+           width: 85%;
+           font-style: italic;
+           left: 75px;
+           
          }
+              
 
          button:active {
            transform: translateY(3px);
@@ -59,40 +84,86 @@
            font-size: 0.6em;
            font-weight: normal;
            line-height: 15px
-         }
-
-         
+         } 
          
         </style>
     </head>
 
     <body>
-        <h1 id="main-header">- LOGIX -</h1>
+        <h1 id="main-header">→ LOGIX ←</h1>
 
-        <button type="button" id="beginner" onclick="">
-            Beginner <br>
-            <span class="button-caption">
-                First-Order Logic: Quantifiers, predicates
-            </span>
-        </button>
+        <div id="stage-list">
+            <section id ="beginner">
+                <p class="stage-number"> 1 </p>
+                <p class="stage-content"> Basic propositions, arithmetic relations</p>
+            </section>
 
-        <br>
-        
-        <button type="button" id="intermediate" onclick="">
-            Intermediate <br>
-            <span class="button-caption">
-                ...
-            </span>
-        </button>
+            <section id ="beginner">
+                <p class="stage-number"> 2 </p>
+                <p class="stage-content"> Elementary logical connectives  </p>
+            </section>
 
-        <br>
-        
-        <button type="button" id="advanced" onclick="">
-            Advanced <br>
-            <span class="button-caption">
-                ...
-            </span>
-        </button>
+            <section id ="beginner">
+                <p class="stage-number"> 2 </p>
+                <p class="stage-content"> Quantifiers & first-order logic </p>
+            </section>
+
+            <section id ="beginner">
+                <p class="stage-number"> 3 </p>
+                <p class="stage-content"> Set theory, operations, definitions </p>
+            </section>
+
+            <section id ="beginner">
+                <p class="stage-number"> 4 </p>
+                <p class="stage-content"> More definitions; functions </p>
+            </section>
+
+            <section id ="beginner">
+                <p class="stage-number"> 5 </p>
+                <p class="stage-content">Higher-order logic </p>
+            </section>
+
+            <section id ="beginner">
+                <p class="stage-number"> 6 </p>
+                <p class="stage-content">Semantics, metalogic</p>
+            </section>
+            
+            <section id ="beginner" style="border-bottom: 2px solid">
+                <p class="stage-number"> 7 </p>
+                <p class="stage-content"> ???</p>
+            </section>
+
+
+
+        </div>
+
+
+        <!-- 
+             <button type="button" id="beginner" onclick="">
+             Beginner <br>
+             <span class="button-caption">
+             First-Order Logic: Quantifiers, predicates
+             </span>
+             </button>
+
+             <br>
+             
+             <button type="button" id="intermediate" onclick="">
+             Intermediate <br>
+             <span class="button-caption">
+             ...
+             </span>
+             </button>
+
+             <br>
+             
+             <button type="button" id="advanced" onclick="">
+             Advanced <br>
+             <span class="button-caption">
+             ...
+             </span>
+             </button>
+             <-->
     </body>
 
     <script>document.getElementById("beginner").onclick = function () {

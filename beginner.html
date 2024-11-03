@@ -152,7 +152,7 @@
            }
 
            td {
-             background-image: linear-gradient(#80AF81, #80AF81);
+             background-image: linear-gradient(#A4C1A0 , #A4C1A0);
              background-repeat: no-repeat;
              background-size: 100% 0;
              background-position: bottom;
@@ -566,7 +566,7 @@
 
      var j=0;
      for (let i=0; i < cellList.length; i++) {
-       if (cellList[i].className != "x-axis" && cellList[i].className != "y-axis") {
+       if (! cellList[i].classList.contains("x-axis") && ! cellList[i].classList.contains("y-axis")) {
          let row = 1+Math.floor(j/ROWS);
          let col = 1+j%COLS;
          cellList[i].id = `c${row}.${col}`;
@@ -608,9 +608,9 @@
            }
          });
          let i = 1;
-         setInterval (function () {
-           i++
-           if (i > ROWS) { clearInterval (this); }
+         var interval = setInterval (function () {
+           i++;
+           if (i == ROWS) { clearInterval (interval); }
            tabdCells[ROWS-i].forEach((td) => {
              if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
                td.classList.add("correct");
@@ -618,7 +618,7 @@
            });
          }, 250);
          inputList.forEach((inp) => {
-           inp.readOnly = true;
+           inp.disabled = true;
          });
        }
      }
@@ -740,7 +740,7 @@
              thing.style.backgroundColor = "#F1EEDC";
              thing.removeEventListener('transitionend', end);
            });
-         } else if (cellList[i].className != "given"){
+         } else if (! cellList[i].classList.contains("given")){
            cellList[i].style.backgroundColor = "transparent";
          }
          // check that the cell matches in row or column
@@ -748,7 +748,7 @@
            cellList[i].style.boxShadow = "inset 0px 0px 0px 1px #000000";
          }
          // reset the styles of other cells without messing up the axis labels
-         else if (cellList[i].className != "y-axis" && cellList[i].className != "x-axis") {
+         else if (! cellList[i].classList.contains("y-axis") && ! cellList[i].classList.contains("x-axis")) {
            cellList[i].style.boxShadow = "";         
          }
        }

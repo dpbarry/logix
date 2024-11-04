@@ -128,7 +128,6 @@
 
 
          #wrapper {
-           margin-top: 20vh;
            display: flex;
            flex-wrap: wrap;
            justify-content: flex-start;
@@ -308,6 +307,16 @@
 
          /* Landscape layout */
          @media (width > 850px) {
+           #wrapper {
+             margin-top: 17vh;
+             width: 80%;
+             max-width: 1000px;
+             justify-content: space-between;
+             position: absolute;
+             left: 50%;
+             transform: translate(-50%);
+           }
+           
            #propositions {
              margin: 0;
              display: flex;
@@ -317,14 +326,7 @@
              align-items: center;
              flex-grow: 0.8;
            }
-           #wrapper {
-             width: 80%;
-             max-width: 1000px;
-             justify-content: space-between;
-             position: absolute;
-             left: 50%;
-             transform: translate(-50%);
-           }
+
            #domain {
              width: 100%;
              flex-wrap: nowrap;

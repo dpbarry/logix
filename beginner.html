@@ -22,14 +22,12 @@
            height: 100%;
          }
          body {
-           transition: all 0.8s linear;
+           transition: all 0.7s linear;
            background-image: linear-gradient(#ECF2EC, #ECF2EC);
            background-repeat: no-repeat;
            background-size: 100% 0;
            background-position: bottom;        
          }
-
-
 
          body.correct {
            background-size: 100% 100%;
@@ -46,6 +44,7 @@
            top: 4.5vmin;
            left: 4vmin;
            cursor: pointer;
+           user-select: none;
          }
 
          #menu {
@@ -53,6 +52,7 @@
            top: 4.5vmin;
            right: 4vmin;
            text-align: center;
+           tabindex: 0; /* Only gets :active with SPC on Chrome for now */
 
            input {
              display: block;
@@ -100,7 +100,7 @@
              transform-origin: 0% 0%;
              transform: translate(0, -500%);
              
-             transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+             transition: transform 0.35s cubic-bezier(0.77,0.2,0.05,1.0);
            }
            input:checked ~ ul {
              transform: none;
@@ -113,6 +113,7 @@
              margin-bottom: 15px;
              cursor: pointer;
              transition: all 100ms linear;
+             user-select: none;
            }
 
            @media(hover: hover) and (pointer: fine) {
@@ -151,26 +152,25 @@
            align-self: center;
            border-spacing: 3px;
            td {
+             user-select: none;
              font-family: computer modern serif;
              border: 1px solid #000000;
              outline: 1px solid transparent;
              text-align: center;
              border-radius: 3px;
              background:transparent;
-             transition: all 0.2s linear;
+             transition: all 0.2s ease, background-size 0.2s linear;
            }
-           td.given {
-             background-color: #D0D0D0;
-           }
-
            td {
              background-image: linear-gradient(#A4C1A0 , #A4C1A0);
              background-repeat: no-repeat;
              background-size: 100% 0;
              background-position: bottom;
            }
+           td.given {
+             background-color: #D0D0D0;
+           }
 
-           
 
            td.correct {
              background-size: 100% 100%;
@@ -215,7 +215,8 @@
            font-size: max(4vh, 1.5rem);
 
            cursor: default;
-
+           user-select: none;
+           
            margin: 0;
            margin-left: 12.5vw;
            padding: 0;
@@ -224,8 +225,9 @@
            
            text-align: center;
            list-style-type: none; /* no bullet points */
-           
-           overflow-y: auto;
+
+           scrollbar-width: none;
+           overflow-x: auto;
 
            -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
            mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
@@ -249,7 +251,6 @@
 
              span.entry.spotlight {
                background-color: #F1EEDC;
-               box-shadow: 0 1px 2px rgba(154,154,154,.3), 0 0 1px rgba(154,154,154,.2);
              }
 
              
@@ -257,7 +258,6 @@
            
            li:hover {
              background-color: ;
-
            }
          }
 
@@ -291,12 +291,13 @@
 
            button {
              transition: background 400ms;
-
+             user-select: none;
              width: 100%;
              font-family:  computer modern serif;
              font-size: min(5.35vh, 2.3rem);
-             background-color: #D0D0D0;
+             background-color: #D5D5D5;
              border: 1px solid #101010;
+             box-shadow: 0 2px 3px rgba(154,154,154,.3), 0 0 2px rgba(154,154,154,.2);
              cursor: pointer;
              text-align: center;
 

@@ -11,6 +11,10 @@
         <!-- COMPUTER MODERN SERIF -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+
         
         <title>Logix</title>
         
@@ -56,7 +60,7 @@
            text-align: center;
            tabindex: 1; /* Only gets :active with SPC on Chrome for now */
 
-           input {
+           #menu_input {
              display: block;
              width: 40px;
              height: 32px;
@@ -250,13 +254,12 @@
 
              span.entry.spotlight {
                background-color: #F1EEDC;
+               box-shadow: 0 2px 2px rgba(154, 154, 154, .4), 0 0 2px rgba(154, 154, 154, .5);
+
              }
              
            }
            
-           li:hover > .entry {
-             background-color: #E0E0E0;
-           }
          }
 
          
@@ -453,8 +456,63 @@
          dialog::backdrop {
            opacity: 0;
          }
-         
-         
+
+         dialog {
+           h1 {
+             margin-top:0;
+           }
+           input {
+             appearance: none;
+             height: 26px;
+             width: 60px;
+             background-color: #C0C0C0;
+             position: relative;
+             border-radius: 15px;
+             cursor: pointer;
+             transition: 0.2s ease;
+           }
+
+           input::before {
+             content: '';
+             display: block;
+             height: 18px;
+             width: 21px;
+             transform: translate(-50%, -50%);
+             position: absolute;
+             top: 50%;
+             left: 14px;
+             background-color: #3f3f3f;
+             border-radius: 18px;
+             transition: .2s ease;
+           }
+           input:hover {
+             filter: brightness(95%);
+           }
+
+           input:checked {
+             background-color: #A4C1A0;
+           }
+
+           input:checked::before {
+             background-color: #3e4d3c;
+             left: calc(100% - 14px);
+           }
+           #configs {
+             margin-left: 3vw;
+             font-family: Computer Modern Serif;
+             font-size: 1.4rem;
+             display:flex;
+             align-items: flex-end;
+             justify-content: center;
+             flex-wrap: wrap;
+             gap: 10px;
+           }
+           p {
+             margin: 0;
+             font-style: italic;
+             font-size: 1rem;
+             flex-basis:100%;}
+         }
          
         </style>
         
@@ -467,7 +525,7 @@
     <body>
         <h1 id="level" onClick="">1.1</h1>
         <div id="menu">
-            <input type ="checkbox">
+            <input id="menu_input" type ="checkbox">
             <span></span>
             <ul>
                 <li id="info" onclick="showModal('info_dialog')"></li>
@@ -476,19 +534,24 @@
                 <li id="settings" onclick="showModal('settings_dialog')"></li>
             </ul>
             <dialog id="info_dialog">
-                <h1> - INFO - </h1>
+                <h1>INFO</h1>
             </dialog>
 
             <dialog id="dictionary_dialog">
-                <h1> - DICTIONARY - </h1>
+                <h1>DICTIONARY</h1>
             </dialog>
 
             <dialog id="notes_dialog">
-                <h1> - NOTES - </h1>
+                <h1>NOTES</h1>
             </dialog>
 
             <dialog id="settings_dialog">
-                <h1> - SETTINGS - </h1>
+                <h1>SETTINGS</h1>
+                <div id="configs">
+                    <label> Crosshairs </label>
+                    <input id="crosshairs_check" type="checkbox" checked>
+                    <p>When selecting a cell, emphasize its row and column </p>
+                </div>
             </dialog>
         </div>
 
@@ -630,6 +693,7 @@
                     </tr>
                 </table>
                 <div id="domain">
+
                     <button ripple data-value="1"><p>1</p></button>
                     <button ripple data-value="2"><p>2</p></button>
                     <button ripple data-value="3"><p>3</p></button>

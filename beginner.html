@@ -294,9 +294,9 @@
              transition: background 400ms;
              user-select: none;
              width: 100%;
-             height: 7vh;
+             height: clamp(40px, 7vh, 55px);
              font-family:  computer modern serif;
-             font-size: min(5.35vh, 2.3rem);
+             font-size: clamp(1.5rem, 5.35vh, 2.4rem);
              background-color: #FFFFFF;
              border: 1px solid #000;
              box-shadow: 0 2px 2px rgba(154, 154, 154, .2), 0 0 2px rgba(154, 154, 154, .2);
@@ -407,11 +407,11 @@
              }
            }
            @media (height < 750px) {
-             #wrapper { gap: calc((750px - 100vh)/15); }
+             #wrapper { gap: calc((750px - 100vh)/20); }
              #grid input {
-               width: clamp(24px, calc(13vh - (750px - 100vh)/10), 100px);
-               height: clamp(24px, calc(13vh - (750px - 100vh)/10), 100px);
-               font-size: clamp(1rem, calc(8vh - (750px - 100vh)/12), 3rem);
+               width: clamp(24px, calc(13vh - (750px - 100vh)/15), 100px);
+               height: clamp(24px, calc(13vh - (750px - 100vh)/15), 100px);
+               font-size: clamp(1rem, calc(8vh - (750px - 100vh)/17), 3rem);
              }
            }
            #grid {
@@ -423,7 +423,7 @@
              width: 90vw;
              flex-direction: row;
              flex-basis: 100%;
-             margin-top: 1.75vh;
+             margin-top: 1.5vh;
              gap: 5px;
            }
            

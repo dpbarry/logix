@@ -12,7 +12,6 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
 
         
-        
         <title>Logix</title>
         
         <style>
@@ -184,9 +183,8 @@
 
 
            .x-axis, .y-axis {
-             font-style: italic;
              border: 0px;
-             font-size: min(4.6vh, 2rem);
+             font-size: min(3vh, 1.7rem);
              width: min(5vh, 50px);
              height: min(5vh, 50px);
            }
@@ -296,12 +294,13 @@
              transition: background 400ms;
              user-select: none;
              width: 100%;
+             height: 7vh;
              font-family:  computer modern serif;
              font-size: min(5.35vh, 2.3rem);
-             background-color: #F6F6F6;
-             box-shadow: 0 1.5px 2px rgba(154,154,154,.15), 0 0 2px rgba(154,154,154,.1);
-             border: 1px solid #707070;
-             border-radius: 5px;
+             background-color: #FFFFFF;
+             border: 1px solid #000;
+             box-shadow: 0 2px 2px rgba(154, 154, 154, .2), 0 0 2px rgba(154, 154, 154, .2);
+             border-radius: 2px;
              cursor: pointer;
              text-align: center;
 
@@ -312,7 +311,7 @@
            }
 
            button:hover {
-             background-color: #D0D0D0;
+             background-color: #E0E0E0;
            }
            button:focus {
              background: #F1EEDC;
@@ -351,19 +350,21 @@
            #wrapper {
              gap: 2vw;
 
-             margin-top: 20vh;
+             margin-top: 18vh;
              width: 90%;
              max-width: 1500x;
-             align-items: center;
              position: absolute;
              left: 50%;
              transform: translate(-50.1%);
            }
+
+           @media (height < 700px) {#wrapper { margin-top: calc(18vh - (700px - 100vh)/10);}}
            
            #propositions {
              margin: 0;
+             margin-top: 4.75vh;
+
              display: flex;
-             justify-content: center;
              flex-direction: column;
              min-height: 50vh;
              max-height: 80vh;
@@ -374,12 +375,12 @@
            
 
            #domain {
-             margin-left: calc(1.2 * min(5vh, 50px));
-             width: calc(100% - 1.2 * min(5vh, 50px));
+             margin-left: calc(1.18 * min(5vh, 50px));
+             width: calc(100% - 1.24 * min(5vh, 50px));
              flex-wrap: nowrap;
              flex-basis: 100%;
-             margin-top: 4vh;
-             gap: 0.5vw;
+             margin-top: 1.75vh;
+             gap: 5px;
            }
          }         
          
@@ -394,14 +395,13 @@
              flex-direction: column;
              align-content: center;
              align-items: center;
-             gap: 2vh;
            }
            #propositions {
              margin: 0;
              align-self: center;
              text-align: center;
              width: 70vw;
-             height: 34vh;
+             height: 36vh;
              li {
                width: unset;
              }
@@ -418,15 +418,13 @@
              margin-right: 42px;
            }
            
-           #wrap_grid_domain {
-             flex-direction: row;
-           }
+
            #domain {
+             width: 90vw;
              flex-direction: row;
-             margin:0;
-             width: 90%;
-             position: absolute;
-             bottom: 2vh;
+             flex-basis: 100%;
+             margin-top: 1.75vh;
+             gap: 5px;
            }
            
          }

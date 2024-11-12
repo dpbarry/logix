@@ -156,9 +156,10 @@
            position: relative;
 
            align-self: center;
-           border-spacing: 3px;
+           border-spacing: 4px;
 
            td {
+             position: relative;
              user-select: none;
              font-family: computer modern serif;
              border: 1px solid #000000;
@@ -237,7 +238,7 @@
            --bottom-mask-size: 0px;
            
            li {
-
+             visibility: hidden;
              padding: 1vh;
              width: 95%;
 
@@ -251,7 +252,7 @@
                transition: all 0.3s ease;
              }
 
-             span.entry.spotlight {
+             span.entry.highlight {
                background-color: #F1EEDC;
                box-shadow: 0 2px 2px rgba(154, 154, 154, .4), 0 0 2px rgba(154, 154, 154, .5);
 
@@ -293,15 +294,15 @@
            transition: opacity 1s;
 
            button {
-             transition: background 400ms;
+             transition: background 0.4s, box-shadow 0.2s;
              user-select: none;
              width: 100%;
              height: clamp(40px, 7vh, 55px);
              font-family:  computer modern serif;
              font-size: clamp(1.5rem, 5.35vh, 2.4rem);
-             background-color: #F9F9F9;
+             background-color: #FFFFFF;
              border: 1px solid #000;
-             box-shadow: 0 2px 2px rgba(154, 154, 154, .2), 0 0 2px rgba(154, 154, 154, .2);
+             box-shadow: 0 4px 4px -4px rgba(154, 154, 154, .6), 0 0 1px rgba(154, 154, 154, .1);
              border-radius: 2px;
              cursor: pointer;
              text-align: center;
@@ -311,14 +312,13 @@
                position: relative;
                z-index: 2; }
            }
-
+           
            button:hover {
-             background-color: #E0E0E0;
+             box-shadow: 0 6px 4px -4px rgba(154, 154, 154, .65), 0 0 1px 1px rgba(154, 154, 154, .1);
            }
            button:focus {
-             background: #F1EEDC;
+             background-color: #F1EEDC;
            }
-
            
          }
 
@@ -327,9 +327,9 @@
            width: 3px;
            height: 3px;
            border-radius: 100%;
-           opacity: 0.7;
+           opacity: 0.5;
            position: absolute;
-           transition: all 0.35s linear;
+           transition: all 0.7s ease;
            pointer-events: none;
            will-change: transform;
            z-index: 1;
@@ -340,7 +340,8 @@
            transform: scale(200);
          }
 
-         [ripple] {
+         /* For ripple */
+         td, #domain button {
            position: relative;
            overflow: hidden;
          }
@@ -434,7 +435,7 @@
            position: fixed;
            font-family: computer modern serif;
            width: 67vw;
-           height: 90vh;
+           height: 70vh;
            display: block;
            visibility: hidden;
            transition: transform ease 0.2s, box-shadow ease 0.2s;
@@ -445,7 +446,7 @@
              opacity: 0;
            }
            to {
-             opacity: 0.4;
+             opacity: 0.3;
            }
          }
 
@@ -455,7 +456,8 @@
          dialog[open] {
            visibility: visible;
            transform: scale(1);
-           box-shadow:0 0 1.5vmin 0.5vmin rgba(0, 0, 0, 0.35);
+           box-shadow:0 0 5px 3px rgba(0, 0, 0, 0.15),
+           0 0 30px 15px rgb(0,0,0,0.1);
          }
          dialog.hide {
            transform: scale(0);
@@ -466,8 +468,6 @@
            animation: backdrop-fade 0.2s ease-in forwards;
            animation-direction: reverse;
          }
-
-         
 
          dialog {
            h1 {
@@ -510,7 +510,8 @@
              left: calc(100% - 16px);
            }
            #configs {
-             margin-left: 3vw;
+             margin-left: 2vw;
+             margin-right: 2vw;
              font-family: Computer Modern Serif;
              font-size: 1.4rem;
              display:flex;
@@ -526,12 +527,11 @@
              flex-basis:100%;
              text-align: left;
            }
-         }
 
-         #settings_dialog {
-           max-width: 500px;
+           #settings_dialog {
+             max-width: 500px;
+           }
          }
-         
         </style>
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
@@ -569,8 +569,8 @@
                     <label> Crosshairs </label>
                     <input id="crosshairs_toggle" type="checkbox" checked>
                     <p>Emphasize row and column of selected cell</p>
-                    <label> Spotlight </label>
-                    <input id="spotlight_toggle" type="checkbox" checked>
+                    <label> Highlight </label>
+                    <input id="highlight_toggle" type="checkbox" checked>
                     <p>Highlight appearances of selected cell in propositions</p>
                     <label> Keyboard Support </label>
                     <input id="keyboard_toggle" type="checkbox">
@@ -697,7 +697,7 @@
                         <td class="y-axis">1</td>
                         <td><input type="text"></td>
                         <td class="given"><input type="text" value="2" disabled id></td>
-                        <td ripple> <input type="text"></td>
+                        <td> <input type="text"></td>
                     </tr>
                     <tr>
                         <td class="y-axis">2</td>
@@ -721,9 +721,9 @@
                 </table>
                 <div id="domain">
 
-                    <button ripple data-value="1"><p>1</p></button>
-                    <button ripple data-value="2"><p>2</p></button>
-                    <button ripple data-value="3"><p>3</p></button>
+                    <button data-value="1"><p>1</p></button>
+                    <button data-value="2"><p>2</p></button>
+                    <button data-value="3"><p>3</p></button>
                 </div>
             </div>
         </div>
@@ -740,18 +740,60 @@
      var values = new Map();
 
      const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");
-     
-     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
+     const HIGHLIGHT_TOGGLE = document.getElementById("highlight_toggle");
+     const STICKY_TOGGLE = document.getElementById("sticky_toggle");
+     const KEYBOARD_TOGGLE = document.getElementById("keyboard_toggle");
 
-     CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
-       use_crosshairs = CROSSHAIRS_TOGGLE.checked;
-     });
-     
      // fetch all inputs and cells
      const inputList = document.querySelectorAll('input[type=text]');
      const cellList = document.querySelectorAll('td');
      const domainList = document.querySelectorAll('button');
-     // id them with their coordinates
+     
+     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
+     var use_highlight = HIGHLIGHT_TOGGLE.checked;
+     var use_sticky = STICKY_TOGGLE.checked;
+
+     if (!KEYBOARD_TOGGLE.checked) {
+       inputList.forEach((i) => {
+         i.readOnly = true;
+         i.style.cursor = "pointer";
+       });
+     };
+     
+     CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
+       use_crosshairs = CROSSHAIRS_TOGGLE.checked;
+     });
+
+     HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
+       use_highlight = HIGHLIGHT_TOGGLE.checked;
+     });
+
+     STICKY_TOGGLE.addEventListener("change", (e) => {
+       use_sticky = STICKY_TOGGLE.checked;
+     });
+
+     KEYBOARD_TOGGLE.addEventListener("change", (e) => {
+       if (!KEYBOARD_TOGGLE.checked) {
+         inputList.forEach((i) => {
+           i.readOnly = true;
+           i.style.cursor = "pointer";
+         });
+       } else {
+         inputList.forEach((i) => {
+           i.readOnly = false;
+           i.style.cursor = "";
+         });
+       }
+     })
+
+     // Show propositions when they're rendered (should be near-instant)
+     document.fonts.onloadingdone = function (fontFaceSetEvent) {
+       document.querySelectorAll("#propositions li").forEach((li) => {
+         li.style.visibility = "visible";
+       });
+     }
+
+     // id cells/inputs with their coordinates
      for (let i=0; i < inputList.length; i++) {
        let row = 1+Math.floor(i/ROWS);
        let col = 1+i%COLS;
@@ -765,7 +807,6 @@
          let col = 1+j%COLS;
          cellList[i].id = `c${row}.${col}`;
          tabdCells[row-1][col-1] = cellList[i];
-         cellList[i].setAttribute("ripple", true);
          j++;
        }
        
@@ -815,6 +856,7 @@
          inputList.forEach((inp) => {
            inp.disabled = true;
          });
+         addRipple(cellList);
        }
      }
      
@@ -831,19 +873,20 @@
          continue;
        }
        inputList[i].onfocus = function () { select(this); crosshairs(this.id);
-         spotlight(this.id);  };
+         highlight(this.id);  };
        inputList[i].onblur = function () { deSelect(); crosshairs("not-a-cell");
-         spotlight("not-a-cell");};
+         highlight("not-a-cell");};
      }
 
-     function spotlight(id) {
+     function highlight(id) {
+       if (!use_highlight) return;
        document.querySelectorAll(".entry").forEach( (entry) => {
 
          if (entry.classList.contains(
            "e" + id.charAt(1) + "e" + id.charAt(3))) {
-           entry.classList.add("spotlight");
+           entry.classList.add("highlight");
          } else {
-           entry.classList.remove("spotlight");
+           entry.classList.remove("highlight");
          }
        }
        );
@@ -870,9 +913,11 @@
          // Tiny slowdown to avoid resetting input.onfocus before we can actually use it!
          setTimeout(function () {
            inputList.forEach((input) => {
-             input.style.cursor = "";
-             input.readOnly = false;
-             input.onfocus = function () {deSelect(); crosshairs(this.id); spotlight(this.id);};
+             if (KEYBOARD_TOGGLE.checked) {
+               input.style.cursor = "";
+               input.readOnly = false;
+             }
+             input.onfocus = function () {select(this); crosshairs(this.id); highlight(this.id);};
              input.blur();
            });
          }, 1); 
@@ -969,42 +1014,46 @@
          // check that the cell matches in row or column
          if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
            cellList[i].style.boxShadow = "inset 0px 0px 0px 1px #000000";
+
          }
          // reset the styles of other cells without messing up the axis labels
          else if (! cellList[i].classList.contains("y-axis") && ! cellList[i].classList.contains("x-axis")) {
-           cellList[i].style.boxShadow = "";         
+           cellList[i].style.boxShadow = "";
+
          }
        }
      }
 
-
-     const elementsWithRipple = document.querySelectorAll('[ripple]');
-
-     elementsWithRipple.forEach(elementWithRipple => {
-       elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
-         // Create a ripple element <div class="ripple">
-         const rippleEl = document.createElement('div');
-         rippleEl.classList.add('ripple');
-         
-         // Position the ripple
-         const x = mouseEvent.offsetX;
-         const y = mouseEvent.offsetY;
-         
-         rippleEl.style.left = `${x}px`;
-         rippleEl.style.top = `${y}px`;
-         
-         elementWithRipple.appendChild(rippleEl);
-         
-         requestAnimationFrame(() => {
-           rippleEl.classList.add('run');
-         });
-         
-         // Remove ripple element when the transition is done
-         rippleEl.addEventListener('transitionend', () => {
-           rippleEl.remove();
+     function addRipple(list) {
+       list.forEach(elementWithRipple => {
+         elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
+           // Create a ripple element <div class="ripple">
+           const rippleEl = document.createElement('div');
+           rippleEl.classList.add('ripple');
+           
+           // Position the ripple
+           const x = mouseEvent.offsetX;
+           const y = mouseEvent.offsetY;
+           
+           rippleEl.style.left = `${x}px`;
+           rippleEl.style.top = `${y}px`;
+           
+           elementWithRipple.appendChild(rippleEl);
+           
+           requestAnimationFrame(() => {
+             rippleEl.classList.add('run');
+           });
+           
+           // Remove ripple element when the transition is done
+           rippleEl.addEventListener('transitionend', () => {
+             rippleEl.remove();
+           });
          });
        });
-     })
+     }
+
+     var elementsWithRipple = document.querySelectorAll('.given, #domain button');
+     addRipple(elementsWithRipple);
 
      function showModal(id) {
        document.getElementById(id).showModal();

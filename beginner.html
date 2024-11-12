@@ -312,9 +312,11 @@
                position: relative;
                z-index: 2; }
            }
-           
-           button:hover {
-             box-shadow: 0 6px 4px -4px rgba(154, 154, 154, .65), 0 0 1px 1px rgba(154, 154, 154, .1);
+
+           @media (hover: hover) and (pointer: fine) {
+             button:hover {
+               box-shadow: 0 4px 8px -4px rgba(154, 154, 154, .75), 0 0 1px 1px rgba(154, 154, 154, .1);
+             }
            }
            button:focus {
              background-color: #F1EEDC;

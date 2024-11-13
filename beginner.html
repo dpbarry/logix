@@ -303,8 +303,8 @@
              font-family:  computer modern serif;
              font-size: clamp(1.5rem, 5.35vh, 2.4rem);
              background-color: #FFFFFF;
-             border: 1px solid #000;
-             box-shadow: 0 4px 4px -4px rgba(154, 154, 154, .6), 0 0 1px rgba(154, 154, 154, .1);
+             border: 1px solid #101010;
+             box-shadow: 0 3px 4px -4px #DDDDDD, 0 0 3px #EEEEEE;
              border-radius: 2px;
              cursor: pointer;
              text-align: center;
@@ -317,7 +317,7 @@
 
            @media (hover: hover) and (pointer: fine) {
              button:hover {
-               box-shadow: 0 4px 8px -4px rgba(154, 154, 154, .75), 0 0 1px 1px rgba(154, 154, 154, .1);
+               box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
              }
            }
            button:focus {
@@ -381,8 +381,8 @@
            
 
            #domain {
-             margin-left: calc(1.18 * min(5vh, 50px));
-             width: calc(100% - 1.24 * min(5vh, 50px));
+             margin-left: calc(1.27 * min(5vh, 50px));
+             width: calc(100% - 1.33 * min(5vh, 50px));
              flex-wrap: nowrap;
              flex-basis: 100%;
              margin-top: 1.75vh;

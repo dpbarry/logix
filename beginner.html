@@ -204,6 +204,8 @@
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 8vh, 3rem);
+             caret-color: transparent;
+             cursor: pointer;
              
              /* Makes sure ripple effect doesn't cover number */
              position: relative;
@@ -432,6 +434,43 @@
            }
          }
 
+
+         .close {
+           position: absolute;
+           right: 20px;
+           top: 18px;
+           width: 30px;
+           height: 30px;
+           opacity: 0.7;
+           cursor: pointer;
+         }
+         .close:hover {
+           opacity: 1;
+         }
+         .close:before, .close:after {
+           left: 15px;
+           content: ' ';
+           height: 30px;
+           width: 1px;
+           background-color: #000000;
+           position: absolute;
+         }
+         .close:before {
+           transform: rotate(45deg);
+         }
+         .close:after {
+           transform: rotate(-45deg);
+         }
+
+         @keyframes backdrop-fade {
+           from {
+             opacity: 0;
+           }
+           to {
+             opacity: 0.3;
+           }
+         }
+         
          dialog {
            position: fixed;
            font-family: computer modern serif;
@@ -442,22 +481,15 @@
            transition: transform ease 0.2s, box-shadow ease 0.2s;
            transform: scale(0);
          }
-         @keyframes backdrop-fade {
-           from {
-             opacity: 0;
-           }
-           to {
-             opacity: 0.3;
-           }
-         }
-
          dialog[open]::backdrop {
            animation: backdrop-fade 0.2s ease-out forwards;
          }
          dialog[open] {
            visibility: visible;
            transform: scale(1);
-           box-shadow:0 0 5px 3px rgba(0, 0, 0, 0.15),
+           border: 1px solid #C2C2C2;
+           border-radius: 10px;
+           box-shadow:0 0 5px 3px rgba(0, 0, 0, 0.2),
            0 0 30px 15px rgb(0,0,0,0.1);
          }
          dialog.hide {
@@ -469,7 +501,7 @@
            animation: backdrop-fade 0.2s ease-in forwards;
            animation-direction: reverse;
          }
-
+         
          dialog {
            h1 {
              margin-top:0;
@@ -553,18 +585,22 @@
                 <li id="settings" onclick="showModal('settings_dialog')"></li>
             </ul>
             <dialog id="info_dialog">
+                <a class="close"></a>
                 <h1>INFO</h1>
             </dialog>
 
             <dialog id="dictionary_dialog">
+                <a class="close"></a>
                 <h1>DICTIONARY</h1>
             </dialog>
 
             <dialog id="notes_dialog">
+                <a class="close"></a>
                 <h1>NOTES</h1>
             </dialog>
 
             <dialog id="settings_dialog">
+                <a class="close"></a>
                 <h1>SETTINGS</h1>
                 <div id="configs">
                     <label> Crosshairs </label>
@@ -573,9 +609,6 @@
                     <label> Highlight </label>
                     <input id="highlight_toggle" type="checkbox" checked>
                     <p>Highlight appearances of selected cell in propositions</p>
-                    <label> Keyboard Support </label>
-                    <input id="keyboard_toggle" type="checkbox">
-                    <p>Selecting a cell allows you to type</p>
                     <label> Sticky Input </label>
                     <input id="sticky_toggle" type="checkbox">
                     <p>Input selection persists after filling a cell</p>
@@ -696,21 +729,21 @@
                     <tr>
                         
                         <td class="y-axis">1</td>
-                        <td><input type="text"></td>
+                        <td><input type="text" inputmode="none"></td>
                         <td class="given"><input type="text" value="2" disabled id></td>
-                        <td> <input type="text"></td>
+                        <td> <input type="text" inputmode="none"></td>
                     </tr>
                     <tr>
                         <td class="y-axis">2</td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
+                        <td><input type="text" inputmode="none"></td>
+                        <td><input type="text" inputmode="none"></td>
                         <td class="given"><input type="text" value="3" disabled></td>
                     </tr>
                     <tr>
                         <td class="y-axis">3</td>
                         <td class="given"><input type="text" value="1" disabled></td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
+                        <td><input type="text" inputmode="none"></td>
+                        <td><input type="text" inputmode="none"></td>
                     </tr>
                     
                     <tr>
@@ -743,7 +776,6 @@
      const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");
      const HIGHLIGHT_TOGGLE = document.getElementById("highlight_toggle");
      const STICKY_TOGGLE = document.getElementById("sticky_toggle");
-     const KEYBOARD_TOGGLE = document.getElementById("keyboard_toggle");
 
      // fetch all inputs and cells
      const inputList = document.querySelectorAll('input[type=text]');
@@ -754,13 +786,7 @@
      var use_highlight = HIGHLIGHT_TOGGLE.checked;
      var use_sticky = STICKY_TOGGLE.checked;
 
-     if (!KEYBOARD_TOGGLE.checked) {
-       inputList.forEach((i) => {
-         i.readOnly = true;
-         i.style.cursor = "pointer";
-       });
-     };
-     
+
      CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
        use_crosshairs = CROSSHAIRS_TOGGLE.checked;
      });
@@ -773,19 +799,6 @@
        use_sticky = STICKY_TOGGLE.checked;
      });
 
-     KEYBOARD_TOGGLE.addEventListener("change", (e) => {
-       if (!KEYBOARD_TOGGLE.checked) {
-         inputList.forEach((i) => {
-           i.readOnly = true;
-           i.style.cursor = "pointer";
-         });
-       } else {
-         inputList.forEach((i) => {
-           i.readOnly = false;
-           i.style.cursor = "";
-         });
-       }
-     })
 
      // Show propositions when they're rendered (should be near-instant)
      document.fonts.onloadingdone = function (fontFaceSetEvent) {
@@ -809,8 +822,7 @@
          cellList[i].id = `c${row}.${col}`;
          tabdCells[row-1][col-1] = cellList[i];
          j++;
-       }
-       
+       } 
      }
 
      // All inputs will now ensure only domain elements can be entered
@@ -914,18 +926,13 @@
          // Tiny slowdown to avoid resetting input.onfocus before we can actually use it!
          setTimeout(function () {
            inputList.forEach((input) => {
-             if (KEYBOARD_TOGGLE.checked) {
-               input.style.cursor = "";
-               input.readOnly = false;
-             }
              input.onfocus = function () {select(this); crosshairs(this.id); highlight(this.id);};
              input.blur();
            });
          }, 1); 
        };
-
      }
-     
+
      
      function verticalScroll(el) {
        const isScrollable = (el.scrollHeight > el.clientHeight);
@@ -1081,10 +1088,19 @@
            setTimeout(function () {
              e.target.close();
              e.target.classList.remove("hide");
-           }, 600);
+           }, 300);
        }});
      });
 
+     document.querySelectorAll(".close").forEach( (closeButton) => {
+       closeButton.addEventListener("click", (e) => {
+         closeButton.parentNode.classList.add("hide");
+         setTimeout(function () {
+           closeButton.parentNode.close();
+           closeButton.parentNode.classList.remove("hide");
+         }, 300);
+       });
+     });
 
      document.getElementById("level").onclick = function () {
        location.href = "index.html";

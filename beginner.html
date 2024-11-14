@@ -58,9 +58,8 @@
            top: 4.5vmin;
            right: 4vmin;
            text-align: center;
-           tabindex: 1; /* Only gets :active with SPC on Chrome for now */
 
-           #menu_input {
+           #menu_checkbox {
              display: block;
              width: 45px;
              height: 45px;
@@ -90,8 +89,8 @@
              transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
            }
 
-           #menu_input:checked { top: -15px; }
-           #menu_input:checked ~ span:before {
+           #menu_checkbox:checked { top: -15px; }
+           #menu_checkbox:checked ~ span:before {
              transform: rotate(180deg);
            }
 
@@ -108,7 +107,7 @@
              
              transition: transform 0.35s cubic-bezier(0.77,0.2,0.05,1.0);
            }
-           input:checked ~ ul {
+           #menu_checkbox:checked ~ ul {
              transform: none;
            }
            li {
@@ -167,7 +166,7 @@
              text-align: center;
              border-radius: 3px;
              background:transparent;
-             transition: all 0.2s ease, background-size 0.2s linear;
+             transition: all 0.2s ease, background-size 0.2s linear !important;
            }
            td {
              background-image: linear-gradient(#A4C1A0 , #A4C1A0);
@@ -212,11 +211,19 @@
              z-index: 3;
            }
 
+           input.selected {
+             animation: fade-in 0.1s ease-out forwards;
+           }
+
            td.selected {
              background-color: #F1EEDC !important;
            }
          }
          
+         @keyframes fade-in {
+           from { font-size: 0.1rem; }
+           to   { font-size: clamp(1rem, 8vh, 3rem); }
+         }
          
          #propositions {
            font-size: max(4vh, 1.5rem);
@@ -256,7 +263,7 @@
 
              span.entry.highlight {
                background-color: #F1EEDC;
-               box-shadow: 0 2px 2px rgba(154, 154, 154, .4), 0 0 2px rgba(154, 154, 154, .5);
+               box-shadow: 0 2px 2px #DADADA, 0 0 2px #DDDDDD;
 
              }
              
@@ -321,6 +328,7 @@
              }
            }
            button:focus {
+             box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
              background-color: #F1EEDC;
            }
            
@@ -364,7 +372,7 @@
              transform: translate(-50.1%);
            }
 
-           @media (height < 700px) {#wrapper { margin-top: calc(18vh - (700px - 100vh)/8);}}
+           @media (height < 700px) {#wrapper { margin-top: calc(18vh - (700px - 100vh)/7);}}
            
            #propositions {
              margin: 0;
@@ -450,7 +458,7 @@
          .close:before, .close:after {
            left: 15px;
            content: ' ';
-           height: 30px;
+           height: 28px;
            width: 1px;
            background-color: #000000;
            position: absolute;
@@ -463,19 +471,15 @@
          }
 
          @keyframes backdrop-fade {
-           from {
-             opacity: 0;
-           }
-           to {
-             opacity: 0.3;
-           }
+           from { opacity: 0; }
+           to   { opacity: 0.3; }
          }
          
          dialog {
            position: fixed;
            font-family: computer modern serif;
-           width: 67vw;
-           height: 70vh;
+           width: min(80vw, 500px);
+           height: 50vh;
            display: block;
            visibility: hidden;
            transition: transform ease 0.2s, box-shadow ease 0.2s;
@@ -487,9 +491,9 @@
          dialog[open] {
            visibility: visible;
            transform: scale(1);
-           border: 1px solid #C2C2C2;
+           border: 1px solid #C7C7C7;
            border-radius: 10px;
-           box-shadow:0 0 5px 3px rgba(0, 0, 0, 0.2),
+           box-shadow:0 0 8px 5px rgba(0, 0, 0, 0.15),
            0 0 30px 15px rgb(0,0,0,0.1);
          }
          dialog.hide {
@@ -505,6 +509,7 @@
          dialog {
            h1 {
              margin-top:0;
+             font-size: 1.75rem;
            }
            input {
              appearance: none;
@@ -576,7 +581,7 @@
     <body>
         <h1 id="level" onClick="">1.1</h1>
         <div id="menu">
-            <input id="menu_input" type ="checkbox">
+            <input id="menu_checkbox" type="checkbox">
             <span></span>
             <ul>
                 <li id="info" onclick="showModal('info_dialog')"></li>
@@ -603,14 +608,14 @@
                 <a class="close"></a>
                 <h1>SETTINGS</h1>
                 <div id="configs">
-                    <label> Crosshairs </label>
-                    <input id="crosshairs_toggle" type="checkbox" checked>
-                    <p>Emphasize row and column of selected cell</p>
                     <label> Highlight </label>
                     <input id="highlight_toggle" type="checkbox" checked>
                     <p>Highlight appearances of selected cell in propositions</p>
+                    <label> Crosshairs </label>
+                    <input id="crosshairs_toggle" type="checkbox">
+                    <p>Emphasize row and column of selected cell</p>
                     <label> Sticky Input </label>
-                    <input id="sticky_toggle" type="checkbox">
+                    <input id="sticky_toggle" type="checkbox" checked>
                     <p>Input selection persists after filling a cell</p>
                 </div>
             </dialog>
@@ -781,24 +786,23 @@
      const inputList = document.querySelectorAll('input[type=text]');
      const cellList = document.querySelectorAll('td');
      const domainList = document.querySelectorAll('button');
-     
-     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
+
      var use_highlight = HIGHLIGHT_TOGGLE.checked;
+     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
      var use_sticky = STICKY_TOGGLE.checked;
 
-
-     CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
-       use_crosshairs = CROSSHAIRS_TOGGLE.checked;
-     });
 
      HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
        use_highlight = HIGHLIGHT_TOGGLE.checked;
      });
 
+     CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
+       use_crosshairs = CROSSHAIRS_TOGGLE.checked;
+     });
+
      STICKY_TOGGLE.addEventListener("change", (e) => {
        use_sticky = STICKY_TOGGLE.checked;
      });
-
 
      // Show propositions when they're rendered (should be near-instant)
      document.fonts.onloadingdone = function (fontFaceSetEvent) {
@@ -832,9 +836,20 @@
          if (event.data != null && !REGEX.test(event.data)) 
            event.preventDefault();
        });
-       input.maxLength = MAXLENGTH;
-     });
 
+       // Limit length of input, w
+       input.addEventListener("input", (event) => {
+         if (event.target.value.length > MAXLENGTH) {
+           event.target.value = event.data.substring(0,MAXLENGTH);
+         }
+         event.target.classList.add("selected");
+
+         setTimeout(function () {
+           event.target.classList.remove("selected");
+         }, 150);
+       });
+     });
+     
 
      function checkGrid() {
        var flag = true;
@@ -912,19 +927,30 @@
          setTimeout(function () {
            inputList.forEach((input) => {
              input.style.cursor = "pointer";
-             input.readOnly = true;
              input.onfocus = function () {
                this.value = domainList[i].textContent;
                values.set(this, domainList[i].textContent);
+               this.classList.add("selected");
+               setTimeout(function () {
+                 input.classList.remove("selected");
+               }, 150);
                checkGrid();
              };
            }); 
          }, 5);
        };
 
-       domainList[i].onblur = function () {
+       domainList[i].onblur = function (e) {
          // Tiny slowdown to avoid resetting input.onfocus before we can actually use it!
          setTimeout(function () {
+           if (use_sticky && document.activeElement.parentNode.id != "domain"
+               && document.activeElement != document.body) {
+             console.log(document.activeElement);
+
+             e.target.focus();
+
+           }
+
            inputList.forEach((input) => {
              input.onfocus = function () {select(this); crosshairs(this.id); highlight(this.id);};
              input.blur();
@@ -1090,6 +1116,18 @@
              e.target.classList.remove("hide");
            }, 300);
        }});
+
+       dialog.addEventListener('keydown', (e) => {
+         if (e.key == "Escape") {
+
+           e.preventDefault();
+           e.target.classList.add("hide");
+           setTimeout(function () {
+             e.target.close();
+             e.target.classList.remove("hide");
+           }, 300);
+         }
+       })
      });
 
      document.querySelectorAll(".close").forEach( (closeButton) => {
@@ -1103,7 +1141,13 @@
      });
 
      document.getElementById("level").onclick = function () {
-       location.href = "index.html";
+       if (window.event.ctrlKey || window.event.shiftKey) {
+         // Interestingly, Chrome will only actually focus the
+         // new window if you were holding shift
+         window.open("index.html", '_blank').focus();
+       } else {
+         location.href = "index.html";
+       }
      }
 
      

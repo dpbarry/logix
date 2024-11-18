@@ -2,6 +2,6 @@ input,
 textarea,
 button,
 select,
-a, li  {
+a, li, td {
   -webkit-tap-highlight-color: transparent;
 }

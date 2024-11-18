@@ -167,23 +167,25 @@
              border-radius: 3px;
              background:transparent;
              transition: all 0.2s ease, background-size 0.2s linear !important;
-           }
-           td {
+             width: clamp(24px, 13vh, 100px);
+             height: clamp(24px, 13vh, 100px);
+             font-size: clamp(1rem, 8vh, 3rem);
+             cursor: pointer;
              background-image: linear-gradient(#A4C1A0 , #A4C1A0);
              background-repeat: no-repeat;
              background-size: 100% 0;
              background-position: bottom;
+             z-index: 1;
            }
            td.given {
              background-color: #D0D0D0;
            }
-
-
+           
+           
            td.correct {
              background-size: 100% 100%;
-             box-shadow: unset !important;  
+             box-shadow: unset !important;
            }
-
 
            .x-axis, .y-axis {
              border: 0px;
@@ -192,35 +194,16 @@
              height: min(5vh, 50px);
            }
 
-           input {
-             font-family: computer modern serif;
-             color: #000000;
-             background: transparent; 
-             padding: 0;
-             border: 0;
-             text-align: center;
-             outline: none;
-             width: clamp(24px, 13vh, 100px);
-             height: clamp(24px, 13vh, 100px);
-             font-size: clamp(1rem, 8vh, 3rem);
-             cursor: pointer;
-             
-             /* Makes sure ripple effect doesn't cover number */
-             position: relative;
-             z-index: 3;
-           }
-
-           input.selected {
-             animation: fade-in 0.1s ease-out forwards;
-           }
-
            td.selected {
              background-color: #F1EEDC !important;
+           }
+           td.insert {
+             animation: fade-in 0.12s ease-out forwards;
            }
          }
          
          @keyframes fade-in {
-           from { font-size: 0.1rem; }
+           from { font-size: 0;}
            to   { font-size: clamp(1rem, 8vh, 3rem); }
          }
          
@@ -320,7 +303,7 @@
                position: relative;
                z-index: 2; }
            }
-
+           
            @media (hover: hover) and (pointer: fine) {
              button:hover {
                box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
@@ -329,6 +312,7 @@
            button:focus {
              box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
              background-color: #F1EEDC;
+             outline: none;  /* Tabbing to button adds outline by default */
            }
            
          }
@@ -343,11 +327,11 @@
            transition: all 0.7s ease;
            pointer-events: none;
            will-change: transform;
-           z-index: 1;
+           z-index: -1;
          }
 
          .ripple.run {
-           opacity: 0;
+           opacity: 0 !important;
            transform: scale(200);
          }
 
@@ -448,18 +432,19 @@
            top: 18px;
            width: 30px;
            height: 30px;
-           opacity: 0.7;
            cursor: pointer;
+           border-radius: 5px;
          }
-         .close:hover {
-           opacity: 1;
+         .close:hover:before, .close:hover:after {
+           background-color: #000000;
          }
          .close:before, .close:after {
+           border-radius: 10px;
            left: 15px;
            content: ' ';
            height: 28px;
            width: 1px;
-           background-color: #000000;
+           background-color: #444444;
            position: absolute;
          }
          .close:before {
@@ -733,21 +718,21 @@
                     <tr>
                         
                         <td class="y-axis">1</td>
-                        <td><input type="text" inputmode="none"></td>
-                        <td class="given"><input type="text" value="2" disabled id></td>
-                        <td> <input type="text" inputmode="none"></td>
+                        <td></td>
+                        <td class="given">2</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td class="y-axis">2</td>
-                        <td><input type="text" inputmode="none"></td>
-                        <td><input type="text" inputmode="none"></td>
-                        <td class="given"><input type="text" value="3" disabled></td>
+                        <td></td>
+                        <td></td>
+                        <td class="given">3</td>
                     </tr>
                     <tr>
                         <td class="y-axis">3</td>
-                        <td class="given"><input type="text" value="1" disabled></td>
-                        <td><input type="text" inputmode="none"></td>
-                        <td><input type="text" inputmode="none"></td>
+                        <td class="given">1</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     
                     <tr>
@@ -782,8 +767,7 @@
      const STICKY_TOGGLE = document.getElementById("sticky_toggle");
 
      // fetch all inputs and cells
-     const inputList = document.querySelectorAll('input[type=text]');
-     const cellList = document.querySelectorAll('td');
+     const cellList = document.querySelectorAll('td:not(.x-axis, .y-axis)');
      const domainList = document.querySelectorAll('button');
 
      var use_highlight = HIGHLIGHT_TOGGLE.checked;
@@ -810,36 +794,40 @@
        });
      }
 
-     // id cells/inputs with their coordinates
-     for (let i=0; i < inputList.length; i++) {
-       let row = 1+Math.floor(i/ROWS);
-       let col = 1+i%COLS;
-       inputList[i].id = `i${row}.${col}`;
-     }
+     // id cells with their coordinates
+     for (let i=0, j=0; i < cellList.length; i++) {
+       let row = 1+Math.floor(j/ROWS);
+       let col = 1+j%COLS;
+       cellList[i].id = `c${row}.${col}`;
+       tabdCells[row-1][col-1] = cellList[i];
+       j++;
+     } 
 
-     var j=0;
-     for (let i=0; i < cellList.length; i++) {
-       if (! cellList[i].classList.contains("x-axis") && ! cellList[i].classList.contains("y-axis")) {
-         let row = 1+Math.floor(j/ROWS);
-         let col = 1+j%COLS;
-         cellList[i].id = `c${row}.${col}`;
-         tabdCells[row-1][col-1] = cellList[i];
-         j++;
-       } 
-     }
+     cellList.forEach((cell) => {
+       // Set up values map
+       values.set(cell, null);
 
-     // Prevent all unwanted keyboard interaction with inputs
-     // Revisit if domain includes multi-digit numbers
-     inputList.forEach((input) => {
-       input.readOnly = true;
+       // Allow kid-gloved typing
+       if (cell.classList.contains("given")) return;
+
+       cell.tabIndex = 0;
        
-       input.addEventListener("keydown", (event) => {
-         if (DOMAIN.includes(parseInt(event.key))) {
-           event.target.value = event.key;
-         }
-       })
+       cell.addEventListener("keydown", inp);
      });
-     
+
+     function inp (event) {
+       if (DOMAIN.includes(parseInt(event.key))) {
+         event.target.innerHTML = event.key;
+         event.target.classList.add("insert");
+         setTimeout(function () {
+           event.target.classList.remove("insert");
+         }, 150);
+       } else if (event.key === "Backspace") {
+         event.target.innerHTML = event.target.innerHTML.substring(0, event.target.innerHTML.length-1);  
+       }
+       values.set(event.target, event.target.innerHTML);
+       checkGrid();
+     }
 
      function checkGrid() {
        var flag = true;
@@ -854,45 +842,53 @@
        });
 
        if (flag) {
-         document.documentElement.classList.add("correct");
-         crosshairs("not-a-cell");
-         tabdCells[ROWS-1].forEach((td) => {
+         setTimeout(success, 120); // Suspense...
+       }
+     }
+     
+     function success() {
+       crosshairs("not-a-cell");
+       deSelect();
+       highlight("not-a-cell");
+       tabdCells[ROWS-1].forEach((td) => {
+         if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
+           td.classList.add("correct");
+         }
+       });
+       let i = 1;
+       var interval = setInterval (function () {
+         i++;
+         if (i == ROWS) { clearInterval (interval); }
+         tabdCells[ROWS-i].forEach((td) => {
            if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
              td.classList.add("correct");
            }
          });
-         let i = 1;
-         var interval = setInterval (function () {
-           i++;
-           if (i == ROWS) { clearInterval (interval); }
-           tabdCells[ROWS-i].forEach((td) => {
-             if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
-               td.classList.add("correct");
-             }
-           });
-         }, 200);
-         inputList.forEach((inp) => {
-           inp.disabled = true;
+       }, 200);
+       cellList.forEach((cell) => {
+         cell.tabIndex = -1;
+         cell.onfocus = "";
+         cell.removeEventListener("keydown", inp);
+         domainList.forEach((button) => {
+           // More to come... buttons morph into next level
+           button.onfocus = "";
+           button.onblur = "";
          });
-         addRipple(cellList);
-       }
-     }
-     
-     inputList.forEach((input) => {
-       values.set(input, null);
-       input.addEventListener("input", (event) => {
-         values.set(event.target, event.data);
-         checkGrid();
        });
-     });
+       
+       // Being careful not to double up ripples to given cells
+       addRipple(document.querySelectorAll("td:not(.given)"));
+       
 
-     for (var i = 0; i < inputList.length; i++){
-       if (inputList[i].id == undefined) {
+     }
+
+     for (var i = 0; i < cellList.length; i++){
+       if (cellList[i].id == undefined) {
          continue;
        }
-       inputList[i].onfocus = function () { select(this); crosshairs(this.id);
+       cellList[i].onfocus = function () { select(this); crosshairs(this.id);
          highlight(this.id);  };
-       inputList[i].onblur = function () { deSelect(); crosshairs("not-a-cell");
+       cellList[i].onblur = function () { deSelect(); crosshairs("not-a-cell");
          highlight("not-a-cell");};
      }
 
@@ -915,14 +911,13 @@
          // Slowdown ensures that, when switching from button A to button B, the blur handler
          // for B will wrap up before the focus handler for A fires
          setTimeout(function () {
-           inputList.forEach((input) => {
-             input.style.cursor = "pointer";
-             input.onfocus = function () {
-               this.value = domainList[i].textContent;
+           cellList.forEach((cell) => {
+             cell.onfocus = function () {
+               this.innerHTML = domainList[i].textContent;
                values.set(this, domainList[i].textContent);
-               this.classList.add("selected");
+               this.classList.add("insert");
                setTimeout(function () {
-                 input.classList.remove("selected");
+                 cell.classList.remove("insert");
                }, 150);
                checkGrid();
              };
@@ -931,19 +926,17 @@
        };
 
        domainList[i].onblur = function (e) {
-         // Tiny slowdown to avoid resetting input.onfocus before we can actually use it!
+         // Tiny slowdown to avoid resetting cell.onfocus before we can actually use it!
          setTimeout(function () {
            if (use_sticky && document.activeElement.parentNode.id != "domain"
                && document.activeElement != document.body) {
-             console.log(document.activeElement);
-
              e.target.focus();
 
            }
 
-           inputList.forEach((input) => {
-             input.onfocus = function () {select(this); crosshairs(this.id); highlight(this.id);};
-             input.blur();
+           cellList.forEach((cell) => {
+             cell.onfocus = function () {select(this); crosshairs(this.id); highlight(this.id);};
+             cell.blur();
            });
          }, 1); 
        };
@@ -1007,13 +1000,7 @@
      horizontalScroll(document.querySelector('#domain'));
 
 
-     function select(input) {
-       let cell;
-       cellList.forEach((td) => {
-         if (td.id.substring(1) == input.id.substring(1)) {
-           cell = td;
-         }
-       });
+     function select(cell) {
        cell.classList.add("selected");
        cell.addEventListener('transitionend', function end() {
          cell.classList.remove("selected");

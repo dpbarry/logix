@@ -170,12 +170,14 @@
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 8vh, 3rem);
-             cursor: pointer;
              background-image: linear-gradient(#A4C1A0 , #A4C1A0);
              background-repeat: no-repeat;
              background-size: 100% 0;
              background-position: bottom;
              z-index: 1;
+           }
+           td:not(.x-axis, .y-axis) {
+             cursor: pointer;
            }
            td.given {
              background-color: #D0D0D0;
@@ -285,7 +287,7 @@
            transition: opacity 1s;
 
            button {
-             transition: background 0.4s, box-shadow 0.2s;
+             transition: background 0.45s, box-shadow 0.2s;
              user-select: none;
              width: 100%;
              height: clamp(40px, 7vh, 55px);
@@ -294,27 +296,61 @@
              background-color: #FFFFFF;
              border: 1px solid #101010;
              box-shadow: 0 3px 4px -4px #DDDDDD, 0 0 3px #EEEEEE;
-             border-radius: 2px;
+             border-radius: 3px;
              cursor: pointer;
              text-align: center;
+             z-index: 1;
 
              /* Makes sure ripple effect doesn't cover number */
              p { margin: 0;
                position: relative;
-               z-index: 2; }
+               z-index: 0; }
            }
            
            @media (hover: hover) and (pointer: fine) {
              button:hover {
                box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
              }
+             #quill:hover { box-shadow: none;
+             opacity: 1;}
            }
            button:focus {
              box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
              background-color: #F1EEDC;
              outline: none;  /* Tabbing to button adds outline by default */
            }
-           
+           #quill {
+             transition: opacity 0.3s;
+             opacity: 0.5;
+             border: 0;
+             box-shadow: none;
+             border-radius: 15px;
+             display:flex;
+             position: absolute;
+             left: 0;
+             bottom: 65px;
+             width: 55px;
+             align-items: center;
+             justify-content: center;
+           }
+           #quill::after {
+             content: "";
+             background-image:url("images/OLDPEN.svg");
+             background-size: 100% 100%;
+             display: inline-block;
+             height: 100%;
+             width: 100%;
+             position: relative;
+             z-index: 20;
+           }
+           #quill > .ripple {
+             transition: all 1.25s ease;
+
+             background-color:  rgb(111,111,111,.1);
+           }
+           #quill:focus {
+             background:  unset;
+           }
          }
 
          .ripple {
@@ -378,6 +414,11 @@
              flex-basis: 100%;
              margin-top: 1.75vh;
              gap: 5px;
+             
+             #quill {
+               bottom: 0px;
+               left: -60px;
+             }
            }
          }         
          
@@ -743,6 +784,7 @@
                     </tr>
                 </table>
                 <div id="domain">
+                    <button id="quill"> </button>
 
                     <button data-value="1"><p>1</p></button>
                     <button data-value="2"><p>2</p></button>

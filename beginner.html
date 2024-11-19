@@ -24,12 +24,13 @@
            margin: 0;
            height: 100%;
          }
+
          html {
            transition: background-size 0.7s linear;
            background-image: linear-gradient(#ECF2EC, #ECF2EC);
            background-repeat: no-repeat;
            background-size: 100% 0;
-           background-position: bottom;        
+           background-position: bottom;
          }
          html.correct {
            background-size: 100% 100%;
@@ -196,7 +197,7 @@
              height: min(5vh, 50px);
            }
 
-           td.selected {
+           td:focus {
              background-color: #F1EEDC !important;
            }
            td.insert {
@@ -290,7 +291,7 @@
              transition: background 0.45s, box-shadow 0.2s;
              user-select: none;
              width: 100%;
-             height: clamp(40px, 7vh, 55px);
+             height: clamp(40px, 8vh, 60px);
              font-family:  computer modern serif;
              font-size: clamp(1.5rem, 5.35vh, 2.4rem);
              background-color: #FFFFFF;
@@ -311,7 +312,7 @@
              button:hover {
                box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
              }
-             #quill:hover { box-shadow: none;
+             #quill:hover::after { 
              opacity: 1;}
            }
            button:focus {
@@ -320,8 +321,7 @@
              outline: none;  /* Tabbing to button adds outline by default */
            }
            #quill {
-             transition: opacity 0.3s;
-             opacity: 0.5;
+             background-color: transparent;
              border: 0;
              box-shadow: none;
              border-radius: 15px;
@@ -336,6 +336,8 @@
            #quill::after {
              content: "";
              background-image:url("images/OLDPEN.svg");
+             transition: opacity 0.3s;
+             opacity: 0.5;
              background-size: 100% 100%;
              display: inline-block;
              height: 100%;
@@ -890,7 +892,6 @@
      
      function success() {
        crosshairs("not-a-cell");
-       deSelect();
        highlight("not-a-cell");
        tabdCells[ROWS-1].forEach((td) => {
          if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
@@ -928,9 +929,9 @@
        if (cellList[i].id == undefined) {
          continue;
        }
-       cellList[i].onfocus = function () { select(this); crosshairs(this.id);
+       cellList[i].onfocus = function () { crosshairs(this.id);
          highlight(this.id);  };
-       cellList[i].onblur = function () { deSelect(); crosshairs("not-a-cell");
+       cellList[i].onblur = function () { crosshairs("not-a-cell");
          highlight("not-a-cell");};
      }
 
@@ -977,7 +978,7 @@
            }
 
            cellList.forEach((cell) => {
-             cell.onfocus = function () {select(this); crosshairs(this.id); highlight(this.id);};
+             cell.onfocus = function () {crosshairs(this.id); highlight(this.id);};
              cell.blur();
            });
          }, 1); 
@@ -1041,23 +1042,6 @@
      verticalScroll(document.querySelector('#propositions'));
      horizontalScroll(document.querySelector('#domain'));
 
-
-     function select(cell) {
-       cell.classList.add("selected");
-       cell.addEventListener('transitionend', function end() {
-         cell.classList.remove("selected");
-         cell.style.backgroundColor = "#F1EEDC";
-         cell.removeEventListener('transitionend', end);
-       });
-     }
-
-     function deSelect() {
-       for (var i = 0; i < cellList.length; i++) {
-         if (! cellList[i].classList.contains("given")){
-           cellList[i].style.backgroundColor = "transparent";
-         }
-       }
-     }
 
 
      // given the id of a cell, emphasize borders of cells in that row and column

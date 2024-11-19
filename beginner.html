@@ -288,7 +288,7 @@
            transition: opacity 1s;
 
            button {
-             transition: background 0.45s, box-shadow 0.2s;
+             transition: background 0.45s, box-shadow 0.25s;
              user-select: none;
              width: 100%;
              height: clamp(40px, 7.5vh, 58px);
@@ -310,10 +310,15 @@
            
            @media (hover: hover) and (pointer: fine) {
              button:hover {
-               box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
+               box-shadow: 0 5px 6px -6px #777, 0 0 3px #DDD;
              }
              #quill:hover::after { 
-             opacity: 1;}
+               opacity: 1;
+             }
+             #undo:hover,
+             #redo:hover {
+               box-shadow: 0 6px 6px -6px #888888, 0 0 3px #DDD;
+             }
            }
            button:focus {
              box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
@@ -325,25 +330,24 @@
              border: 0;
              box-shadow: none;
              border-radius: 15px;
-             display:flex;
              position: absolute;
              left: 1px;
              bottom: 60px;
-             width: 55px;
-             align-items: center;
-             justify-content: center;
+             width: 50px;
+             height: 55px;
+             padding: 0;
            }
            #quill::after {
              content: "";
              background-image:url("images/OLDPEN.svg");
-             transition: opacity 0.3s;
              opacity: 0.5;
+             transition: opacity 0.3s;
              background-size: 100% 100%;
              display: inline-block;
              height: 100%;
              width: 100%;
              position: relative;
-             z-index: 20;
+             z-index: 2;
            }
            #quill > .ripple {
              transition: all 1.25s ease;
@@ -353,6 +357,42 @@
            #quill:focus {
              background:  unset;
            }
+
+           #undo, #redo {
+             background-color: transparent;
+             border: 0;
+             padding: 0;
+             box-shadow: none;
+             border-radius: 100px;
+             position: absolute;
+             bottom: 67px;
+             width: 40px;
+             height: 40px;
+           }
+           #undo {
+             right: 45px;
+           }
+           #redo {
+             right: 1px;
+           }
+           #undo::after, #redo::after {
+             content: "";
+             transition: opacity 0.3s;
+             opacity: 0.5;
+             background-size: 100% 100%;
+             display: inline-block;
+             height: 100%;
+             width: 100%;
+             position: relative;
+             z-index: 2;
+           }
+           #undo::after {
+             background-image:url("images/UNDO.svg");
+           }
+           #redo::after {
+             background-image:url("images/REDO.svg");
+           }
+           
          }
 
          .ripple {
@@ -420,6 +460,14 @@
              #quill {
                bottom: 0px;
                left: -60px;
+             }
+             #undo {
+               right: -52px;
+               bottom: 31px;
+             }
+             #redo {
+               right: -52px;
+               bottom: -11px;
              }
            }
          }         
@@ -791,6 +839,9 @@
                     <button data-value="1"><p>1</p></button>
                     <button data-value="2"><p>2</p></button>
                     <button data-value="3"><p>3</p></button>
+
+                    <button id="undo"></button>
+                    <button id="redo"></button>
                 </div>
             </div>
         </div>

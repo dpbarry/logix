@@ -891,6 +891,7 @@
      }
      
      function success() {
+       document.activeElement.blur();
        crosshairs("not-a-cell");
        highlight("not-a-cell");
        tabdCells[ROWS-1].forEach((td) => {

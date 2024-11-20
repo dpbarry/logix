@@ -312,13 +312,10 @@
              button:hover {
                box-shadow: 0 5px 6px -6px #777, 0 0 3px #DDD;
              }
-             #quill:hover::after { 
+             #quill:hover::after, #undo:hover::after, #redo:hover::after { 
                opacity: 1;
              }
-             #undo:hover,
-             #redo:hover {
-               box-shadow: 0 4px 3px -3px #888888, 0 0 3px #DDD;
-             }
+  
            }
            button:focus {
              box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
@@ -333,7 +330,7 @@
              position: absolute;
              left: 1px;
              bottom: 67px;
-             width: 55px;
+             width: 40px;
              height: 40px;
              padding: 0;
            }
@@ -361,15 +358,14 @@
 
            #undo, #redo {
              background-color: transparent;
+             box-shadow: none;
              border: 0;
              padding: 0;
-             box-shadow: none;
              border-radius: 50px;
              position: absolute;
              bottom: 64px;
              width: 40px;
              height: 40px;
-             transform: scale(95%);
            }
            #undo {
              right: 40px;
@@ -461,7 +457,7 @@
              
              #quill {
                bottom: 8px;
-               left: -62px;
+               left: -54px;
              }
              #undo {
                right: -47px;

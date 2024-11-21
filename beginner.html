@@ -312,10 +312,14 @@
              button:hover {
                box-shadow: 0 5px 6px -6px #777, 0 0 3px #DDD;
              }
+             #quill:hover, #undo:hover, #redo:hover {
+               filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .15));
+
+             }
              #quill:hover::after, #undo:hover::after, #redo:hover::after { 
                opacity: 1;
              }
-  
+             
            }
            button:focus {
              box-shadow: 0 6px 4px -6px #AAAAAA, 0 0 3px #DDD;
@@ -326,20 +330,22 @@
              background-color: transparent;
              border: 0;
              box-shadow: none;
+             filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .25));
              border-radius: 5px;
              position: absolute;
              left: 1px;
              bottom: 67px;
-             width: 40px;
+             width:40px;
              height: 40px;
+             transform: scale(0.85);
              padding: 0;
            }
            
            #quill::after {
              content: "";
              background-image:url("images/OLDPEN.svg");
-             opacity: 0.5;
-             transition: opacity 0.3s;
+             opacity: 0.45;
+             transition: opacity 0.25s, filter 0.25s;
              background-size: 100% 100%;
              display: inline-block;
              height: 100%;
@@ -347,15 +353,7 @@
              position: relative;
              z-index: 2;
            }
-           #quill > .ripple {
-             transition: all 1.25s ease;
-
-             background-color:  rgb(111,111,111,.1);
-           }
-           #quill:focus {
-             background:  unset;
-           }
-
+           
            #undo, #redo {
              background-color: transparent;
              box-shadow: none;
@@ -375,14 +373,16 @@
            }
            #undo::after, #redo::after {
              content: "";
-             transition: opacity 0.3s;
-             opacity: 0.5;
+             transition: opacity 0.25s, filter 0.25s;
+             opacity: 0.2;
              background-size: 100% 100%;
              display: inline-block;
              height: 100%;
              width: 100%;
              position: relative;
              z-index: 2;
+             filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .25));
+
            }
            #undo::after {
              background-image:url("images/UNDO.svg");
@@ -457,14 +457,14 @@
              
              #quill {
                bottom: 8px;
-               left: -54px;
+               left: -49px;
              }
              #undo {
-               right: -47px;
+               right: -42px;
                bottom: 31px;
              }
              #redo {
-               right: -47px;
+               right: -42px;
                bottom: -11px;
              }
            }

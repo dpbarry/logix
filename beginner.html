@@ -186,6 +186,9 @@
            td.given {
              background-color: #D0D0D0;
            }
+           td.given > .ripple {
+             background-color: #EBEBEB;
+           }
            
            
            td.correct {
@@ -204,13 +207,13 @@
              background-color: #F1EEDC !important;
            }
            td.insert {
-             animation: fade-in 0.075s ease-out forwards;
+             animation: fade-in 0.2s ease forwards;
            }
          }
          
          @keyframes fade-in {
-           from { font-size: 1rem;}
-           to   { font-size: clamp(1rem, 8vh, 3rem); }
+           from { color: transparent; }
+           to { color: #000000; }
          }
          
          #propositions {
@@ -315,11 +318,11 @@
              button:hover {
                box-shadow: 0 5px 6px -6px #777, 0 0 3px #DDD;
              }
-             #quill:hover, #undo:hover, #redo:hover {
+             #pencil:hover, #undo:hover, #redo:hover {
                filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .1));
 
              }
-             #quill:hover::after, #undo:hover::after, #redo:hover::after { 
+             #pencil:hover::after, #undo:hover::after, #redo:hover::after { 
                opacity: 1;
              }
              
@@ -329,7 +332,7 @@
              background-color: #F1EEDC;
              outline: none;  /* Tabbing to button adds outline by default */
            }
-           #quill {
+           #pencil {
              background-color: transparent;
              border: 0;
              box-shadow: none;
@@ -343,9 +346,9 @@
              transform: scale(0.9);
            }
            
-           #quill::after {
+           #pencil::after {
              content: "";
-             background-image:url("images/OLDPEN.svg");
+             background-image:url("images/PENCIL.svg");
              opacity: 0.45;
              transition: opacity 0.25s, filter 0.25s;
              background-size: 100% 100%;
@@ -360,13 +363,13 @@
              background-color: transparent;
              border: 0;
              box-shadow: none;
-             filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, 0.35));
+             filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.35));
              border-radius: 50px;
              padding: 0;
              
              position: absolute;
-             width: 38px;
-             height: 40px;
+             width: 32px;
+             height: 32px;
            }
            
            #undo::after, #redo::after {
@@ -377,10 +380,14 @@
              display: inline-block;
              height: 100%;
              width: 24px;
-             height: 34px;
-             position: relative;
+             height: 24px;
+             
+             position: absolute;
+             left: 50%;
+             top: 50%;
+             transform: translate(-50%, -50%);
+             
              z-index: 2;
-
            }
            #undo::after {
              background-image:url("images/UNDO.svg");
@@ -388,7 +395,10 @@
            #redo::after {
              background-image:url("images/REDO.svg");
            }
-           
+
+           #undo > .ripple, #redo > .ripple, #pencil > .ripple {
+             background:  rgb(110,135,155, 0.3);
+           }
          }
 
          .ripple {
@@ -429,7 +439,9 @@
              transform: translate(-50.1%);
            }
 
-           @media (height < 700px) {#wrapper { margin-top: calc(18vh - (700px - 100vh)/7);}}
+           @media (height < 700px) {
+             #wrapper { margin-top: calc(18vh - (700px - 100vh)/7);}
+           }
            
            #propositions {
              margin: 0;
@@ -453,17 +465,17 @@
              margin-top: 1.75vh;
              gap: 5px;
              
-             #quill {
-               bottom: 8px;
+             #pencil {
+               bottom: 11px;
                left: -46px;
              }
              #undo {
-               right: -43px;
+               right: -40px;
                bottom: 30px;
              }
              #redo {
-               right: -43px;
-               bottom: -10px;
+               right: -40px;
+               bottom: -2px;
              }
            }
          }         
@@ -490,11 +502,18 @@
                width: unset;
              }
            }
+           #domain {
+             width: 90vw;
+             flex-direction: row;
+             flex-basis: 100%;
+             margin-top: 1.25vh;
+             gap: 5px;
+           }
            @media (height < 750px) {
-             #wrapper { gap: calc((750px - 100vh)/20); }
+             #wrapper { gap: calc((750px - 100vh)/12); }
              #grid td {
-               width: clamp(24px, calc(13vh - (750px - 100vh)/12), 100px);
-               height: clamp(24px, calc(13vh - (750px - 100vh)/12), 100px);
+               width: clamp(24px, calc(13vh - (750px - 100vh)/14), 100px);
+               height: clamp(24px, calc(13vh - (750px - 100vh)/14), 100px);
                font-size: clamp(1rem, calc(8vh - (750px - 100vh)/15), 3rem);
              }
            }
@@ -502,38 +521,32 @@
              margin-right: 39px;
              margin-top: -3.5vh;
            }
-
-           #domain {
-             width: 90vw;
-             flex-direction: row;
-             flex-basis: 100%;
-             margin-top: 1.25vh;
-             gap: 5px;
-             #quill {
-               bottom: 61px;
-             }
-             #undo {
-               bottom: 57px;
-               right: 40px;
-             }
-             #redo {
-               bottom: 57px;
-               right: 0px;
-             }
+           #pencil {
+             bottom: max(9vh, 45px);
            }
-
-           @media (width < 485px) {
-             #domain #undo {
-               bottom: calc(57px + (485px - 100vw)/14);
-               right: calc(40px - (485px - 100vw)/5);
-             }
-             #domain #redo {
-               bottom: calc(57px - (485px - 100vw)/25);
-               right: calc(0px - (485px - 100vw)/14);
-             }
+           #undo {
+             bottom: max(9vh, 45px);
+             right: 36px;
+           }
+           #redo {
+             bottom: max(9vh, 45px);
+             right: -1px;
            }
          }
-
+         @media (width < 675px) {
+           #undo, #redo {transition: bottom 0.2s ease-out, right 0.2s ease-out; };
+         }
+         @media (width < 460px) {
+           #undo {
+             bottom: max(9.9vh, 45px);
+             right: 21px;
+           }
+           #redo {
+             bottom: max(8.1vh, 45px);
+             right: -5px;
+           }
+         }
+         }
 
          .close {
            position: absolute;
@@ -852,7 +865,7 @@
                     </tr>
                 </table>
                 <div id="domain">
-                    <button id="quill"> </button>
+                    <button id="pencil"> </button>
 
                     <button data-value="1"><p>1</p></button>
                     <button data-value="2"><p>2</p></button>
@@ -866,363 +879,363 @@
     </body>
     
     <script>
-        const ROWS = 3;
-        const COLS = 3;
-        const MAXLENGTH = 1;
-        const DOMAIN = [1, 2, 3]
-        const SOLUTION = [[3, null, 2], [1, 3, null], [null, 3, 1]];
+     const ROWS = 3;
+     const COLS = 3;
+     const MAXLENGTH = 1;
+     const DOMAIN = [1, 2, 3]
+     const SOLUTION = [[3, null, 2], [1, 3, null], [null, 3, 1]];
 
-        var tabdCells = [[null, null, null], [null, null, null], [null, null, null]];
-        var values = new Map();
+     var tabdCells = [[null, null, null], [null, null, null], [null, null, null]];
+     var values = new Map();
 
-        const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");
-        const HIGHLIGHT_TOGGLE = document.getElementById("highlight_toggle");
-        const STICKY_TOGGLE = document.getElementById("sticky_toggle");
+     const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");
+     const HIGHLIGHT_TOGGLE = document.getElementById("highlight_toggle");
+     const STICKY_TOGGLE = document.getElementById("sticky_toggle");
 
-        // fetch all inputs and cells
-        const cellList = document.querySelectorAll('td:not(.x-axis, .y-axis)');
-        const domainList = document.querySelectorAll('button');
+     // fetch all inputs and cells
+     const cellList = document.querySelectorAll('td:not(.x-axis, .y-axis)');
+     const domainList = document.querySelectorAll('button');
 
-        var use_highlight = HIGHLIGHT_TOGGLE.checked;
-        var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
-        var use_sticky = STICKY_TOGGLE.checked;
-
-
-        HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
-        use_highlight = HIGHLIGHT_TOGGLE.checked;
-        });
-
-        CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
-        use_crosshairs = CROSSHAIRS_TOGGLE.checked;
-        });
-
-        STICKY_TOGGLE.addEventListener("change", (e) => {
-        use_sticky = STICKY_TOGGLE.checked;
-        });
-
-        // Show propositions when they're rendered (should be near-instant)
-        document.fonts.onloadingdone = function (fontFaceSetEvent) {
-        document.querySelectorAll("#propositions li").forEach((li) => {
-        li.style.visibility = "visible";
-        });
-        }
-
-        // id cells with their coordinates
-        for (let i=0, j=0; i < cellList.length; i++) {
-        let row = 1+Math.floor(j/ROWS);
-        let col = 1+j%COLS;
-        cellList[i].id = `c${row}.${col}`;
-        tabdCells[row-1][col-1] = cellList[i];
-        j++;
-        } 
-
-        cellList.forEach((cell) => {
-        // Set up values map
-        values.set(cell, null);
-
-        // Allow kid-gloved typing
-        if (cell.classList.contains("given")) return;
-
-        cell.tabIndex = 0;
-        
-        cell.addEventListener("keydown", inp);
-        });
-
-        function inp (event) {
-        if (DOMAIN.includes(parseInt(event.key))) {
-        event.target.innerHTML = event.key;
-        event.target.classList.add("insert");
-        setTimeout(function () {
-        event.target.classList.remove("insert");
-        }, 150);
-        } else if (event.key === "Backspace") {
-        event.target.innerHTML = event.target.innerHTML.substring(0, event.target.innerHTML.length-1);  
-        }
-        values.set(event.target, event.target.innerHTML);
-        checkGrid();
-        }
-
-        function checkGrid() {
-        var flag = true;
-
-        values.forEach((value, key) => {
-        var row = parseInt(key.id.charAt(1));
-        var col = parseInt(key.id.charAt(3));
-        
-        if (value != SOLUTION[row - 1][col - 1]) {
-        flag = false;
-        }
-        });
-
-        if (flag) {
-        setTimeout(success, 120); // Suspense...
-        }
-        }
-        
-        function success() {
-        document.activeElement.blur();
-        crosshairs("not-a-cell");
-        highlight("not-a-cell");
-        tabdCells[ROWS-1].forEach((td) => {
-        if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
-        td.classList.add("correct");
-        }
-        });
-        let i = 1;
-        var interval = setInterval (function () {
-        i++;
-        if (i == ROWS) { clearInterval (interval); }
-        tabdCells[ROWS-i].forEach((td) => {
-        if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
-        td.classList.add("correct");
-        }
-        });
-        }, 200);
-        cellList.forEach((cell) => {
-        cell.tabIndex = -1;
-        cell.onfocus = "";
-        cell.removeEventListener("keydown", inp);
-        domainList.forEach((button) => {
-        // More to come... buttons morph into next level
-        button.onfocus = "";
-        button.onblur = "";
-        });
-        });
-        
-        // Being careful not to double up ripples to given cells
-        addRipple(document.querySelectorAll("td:not(.given)"));
-        
-
-        }
-
-        for (var i = 0; i < cellList.length; i++){
-        if (cellList[i].id == undefined) {
-        continue;
-        }
-        cellList[i].onfocus = function () { crosshairs(this.id);
-        highlight(this.id);  };
-        cellList[i].onblur = function () { crosshairs("not-a-cell");
-        highlight("not-a-cell");};
-        }
-
-        function highlight(id) {
-        if (!use_highlight) return;
-        document.querySelectorAll(".entry").forEach( (entry) => {
-
-        if (entry.classList.contains(
-        "e" + id.charAt(1) + "e" + id.charAt(3))) {
-        entry.classList.add("highlight");
-        } else {
-        entry.classList.remove("highlight");
-        }
-        }
-        );
-        }
-
-        for (let i = 0; i < domainList.length; i++) {
-        domainList[i].onfocus = function () {
-        // Slowdown ensures that, when switching from button A to button B, the blur handler
-        // for B will wrap up before the focus handler for A fires
-        setTimeout(function () {
-        cellList.forEach((cell) => {
-        cell.onfocus = function () {
-        this.innerHTML = domainList[i].textContent;
-        values.set(this, domainList[i].textContent);
-        this.classList.add("insert");
-        setTimeout(function () {
-        cell.classList.remove("insert");
-        }, 150);
-        checkGrid();
-        };
-        }); 
-        }, 5);
-        };
-
-        domainList[i].onblur = function (e) {
-        // Tiny slowdown to avoid resetting cell.onfocus before we can actually use it!
-        setTimeout(function () {
-        if (use_sticky && document.activeElement.parentNode.id != "domain"
-        && document.activeElement != document.body) {
-        e.target.focus();
-
-        }
-
-        cellList.forEach((cell) => {
-        cell.onfocus = function () {crosshairs(this.id); highlight(this.id);};
-        cell.blur();
-        });
-        }, 1); 
-        };
-        }
-
-        
-        function verticalScroll(el) {
-        const isScrollable = (el.scrollHeight > el.clientHeight);
-        
-        // GUARD: If element is not scrollable, remove all classes
-        if (!isScrollable) {
-        el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
-        return;
-        }
-        
-        // Otherwise, the element is overflowing!
-        // Now we just need to find out which direction it is overflowing to (can be both).
-        // One pixel is added to the height to account for non-integer heights.
-        const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
-        const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
-        el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
-        el.classList.toggle('is-top-overflowing', !isScrolledToTop);
-        }
-
-        
-
-        function horizontalScroll(el) {
-        const isScrollable = (el.scrollWidth > el.clientWidth);
-
-        // GUARD: If element is not scrollable, remove all classes
-        if (!isScrollable) {
-        el.classList.remove('is-left-overflowing', 'is-right-overflowing');
-        return;
-        }
-        
-        // Otherwise, the element is overflowing!
-        // Now we just need to find out which direction it is overflowing to (can be both).
-        // One pixel is added to the height to account for non-integer heights.
-        const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
-        const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
-        el.classList.toggle('is-right-overflowing', !isScrolledToRight);
-        el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
-        }
-
-        document.querySelector('#propositions').addEventListener('scroll', (e) => {
-        const el = e.currentTarget;
-        verticalScroll(el);
-        });
-
-        document.querySelector('#domain').addEventListener('scroll', (e) => {
-        const el = e.currentTarget;
-        horizontalScroll(el);
-        });
-
-        window.onresize = function(event) {
-        verticalScroll(document.querySelector('#propositions'));
-        }
-
-        
-        verticalScroll(document.querySelector('#propositions'));
-        horizontalScroll(document.querySelector('#domain'));
+     var use_highlight = HIGHLIGHT_TOGGLE.checked;
+     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
+     var use_sticky = STICKY_TOGGLE.checked;
 
 
+     HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
+       use_highlight = HIGHLIGHT_TOGGLE.checked;
+     });
 
-        // given the id of a cell, emphasize borders of cells in that row and column
-        function crosshairs(id) {
-        if (!use_crosshairs) return;
-        for (var i = 0; i < cellList.length; i++) {
-        // check that the cell matches in row or column
-        if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
-        cellList[i].style.boxShadow = "inset 0px 0px 0px 1px #000000";
+     CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
+       use_crosshairs = CROSSHAIRS_TOGGLE.checked;
+     });
 
-        }
-        // reset the styles of other cells without messing up the axis labels
-        else if (! cellList[i].classList.contains("y-axis") && ! cellList[i].classList.contains("x-axis")) {
-        cellList[i].style.boxShadow = "";
+     STICKY_TOGGLE.addEventListener("change", (e) => {
+       use_sticky = STICKY_TOGGLE.checked;
+     });
 
-        }
-        }
-        }
+     // Show propositions when they're rendered (should be near-instant)
+     document.fonts.onloadingdone = function (fontFaceSetEvent) {
+       document.querySelectorAll("#propositions li").forEach((li) => {
+         li.style.visibility = "visible";
+       });
+     }
 
-        function addRipple(list) {
-        list.forEach(elementWithRipple => {
-        elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
-        // Create a ripple element <div class="ripple">
-        const rippleEl = document.createElement('div');
-        rippleEl.classList.add('ripple');
-        
-        // Position the ripple
-        const x = mouseEvent.offsetX;
-        const y = mouseEvent.offsetY;
-        
-        rippleEl.style.left = `${x}px`;
-        rippleEl.style.top = `${y}px`;
-        
-        elementWithRipple.appendChild(rippleEl);
-        
-        requestAnimationFrame(() => {
-        rippleEl.classList.add('run');
-        });
-        
-        // Remove ripple element when the transition is done
-        rippleEl.addEventListener('transitionend', () => {
-        rippleEl.remove();
-        });
-        });
-        });
-        }
+     // id cells with their coordinates
+     for (let i=0, j=0; i < cellList.length; i++) {
+       let row = 1+Math.floor(j/ROWS);
+       let col = 1+j%COLS;
+       cellList[i].id = `c${row}.${col}`;
+       tabdCells[row-1][col-1] = cellList[i];
+       j++;
+     } 
 
-        var elementsWithRipple = document.querySelectorAll('.given, #domain button');
-        addRipple(elementsWithRipple);
+     cellList.forEach((cell) => {
+       // Set up values map
+       values.set(cell, null);
 
-        function showModal(id) {
-        document.getElementById(id).showModal();
-        }
+       // Allow kid-gloved typing
+       if (cell.classList.contains("given")) return;
 
-        const dialogList = document.querySelectorAll('dialog');
-        
-        dialogList.forEach((dialog) => {
-        dialog.addEventListener('click', (e) => {
-        if (e.target.tagName !== 'DIALOG')
-        return;
+       cell.tabIndex = 0;
+       
+       cell.addEventListener("keydown", inp);
+     });
 
-        const rect = e.target.getBoundingClientRect();
+     function inp (event) {
+       if (DOMAIN.includes(parseInt(event.key))) {
+         event.target.innerHTML = event.key;
+         event.target.classList.add("insert");
+         setTimeout(function () {
+           event.target.classList.remove("insert");
+         }, 150);
+       } else if (event.key === "Backspace") {
+         event.target.innerHTML = event.target.innerHTML.substring(0, event.target.innerHTML.length-1);  
+       }
+       values.set(event.target, event.target.innerHTML);
+       checkGrid();
+     }
 
-        const clickedInDialog = (
-        rect.top <= e.clientY &&
-        e.clientY <= rect.top + rect.height &&
-        rect.left <= e.clientX &&
-        e.clientX <= rect.left + rect.width
-        );
+     function checkGrid() {
+       var flag = true;
 
-        if (clickedInDialog === false) {
-        e.target.classList.add("hide");
-        setTimeout(function () {
-        e.target.close();
-        e.target.classList.remove("hide");
-        }, 300);
-        }});
+       values.forEach((value, key) => {
+         var row = parseInt(key.id.charAt(1));
+         var col = parseInt(key.id.charAt(3));
+         
+         if (value != SOLUTION[row - 1][col - 1]) {
+           flag = false;
+         }
+       });
 
-        dialog.addEventListener('keydown', (e) => {
-        if (e.key == "Escape") {
+       if (flag) {
+         setTimeout(success, 120); // Suspense...
+       }
+     }
+     
+     function success() {
+       document.activeElement.blur();
+       crosshairs("not-a-cell");
+       highlight("not-a-cell");
+       tabdCells[ROWS-1].forEach((td) => {
+         if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
+           td.classList.add("correct");
+         }
+       });
+       let i = 1;
+       var interval = setInterval (function () {
+         i++;
+         if (i == ROWS) { clearInterval (interval); }
+         tabdCells[ROWS-i].forEach((td) => {
+           if (! td.classList.contains("x-axis") && ! td.classList.contains("y-axis") ) {
+             td.classList.add("correct");
+           }
+         });
+       }, 200);
+       cellList.forEach((cell) => {
+         cell.tabIndex = -1;
+         cell.onfocus = "";
+         cell.removeEventListener("keydown", inp);
+         domainList.forEach((button) => {
+           // More to come... buttons morph into next level
+           button.onfocus = "";
+           button.onblur = "";
+         });
+       });
+       
+       // Being careful not to double up ripples to given cells
+       addRipple(document.querySelectorAll("td:not(.given)"));
+       
 
-        e.preventDefault();
-        e.target.classList.add("hide");
-        setTimeout(function () {
-        e.target.close();
-        e.target.classList.remove("hide");
-        }, 300);
-        }
-        })
-        });
+     }
 
-        document.querySelectorAll(".close").forEach( (closeButton) => {
-        closeButton.addEventListener("click", (e) => {
-        closeButton.parentNode.classList.add("hide");
-        setTimeout(function () {
-        closeButton.parentNode.close();
-        closeButton.parentNode.classList.remove("hide");
-        }, 300);
-        });
-        });
+     for (var i = 0; i < cellList.length; i++){
+       if (cellList[i].id == undefined) {
+         continue;
+       }
+       cellList[i].onfocus = function () { crosshairs(this.id);
+         highlight(this.id);  };
+       cellList[i].onblur = function () { crosshairs("not-a-cell");
+         highlight("not-a-cell");};
+     }
 
-        document.getElementById("level").onclick = function () {
-        if (window.event.ctrlKey || window.event.shiftKey) {
-        // Interestingly, Chrome will only actually focus the
-        // new window if you were holding shift
-        window.open("index.html", '_blank').focus();
-        } else {
-        location.href = "index.html";
-        }
-        }
+     function highlight(id) {
+       if (!use_highlight) return;
+       document.querySelectorAll(".entry").forEach( (entry) => {
 
-        
+         if (entry.classList.contains(
+           "e" + id.charAt(1) + "e" + id.charAt(3))) {
+           entry.classList.add("highlight");
+         } else {
+           entry.classList.remove("highlight");
+         }
+       }
+       );
+     }
+
+     for (let i = 0; i < domainList.length; i++) {
+       domainList[i].onfocus = function () {
+         // Slowdown ensures that, when switching from button A to button B, the blur handler
+         // for B will wrap up before the focus handler for A fires
+         setTimeout(function () {
+           cellList.forEach((cell) => {
+             cell.onfocus = function () {
+               this.innerHTML = domainList[i].textContent;
+               values.set(this, domainList[i].textContent);
+               this.classList.add("insert");
+               setTimeout(function () {
+                 cell.classList.remove("insert");
+               }, 150);
+               checkGrid();
+             };
+           }); 
+         }, 5);
+       };
+
+       domainList[i].onblur = function (e) {
+         // Tiny slowdown to avoid resetting cell.onfocus before we can actually use it!
+         setTimeout(function () {
+           if (use_sticky && document.activeElement.parentNode.id != "domain"
+               && document.activeElement != document.body) {
+             e.target.focus();
+
+           }
+
+           cellList.forEach((cell) => {
+             cell.onfocus = function () {crosshairs(this.id); highlight(this.id);};
+             cell.blur();
+           });
+         }, 1); 
+       };
+     }
+
+     
+     function verticalScroll(el) {
+       const isScrollable = (el.scrollHeight > el.clientHeight);
+       
+       // GUARD: If element is not scrollable, remove all classes
+       if (!isScrollable) {
+         el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
+         return;
+       }
+       
+       // Otherwise, the element is overflowing!
+       // Now we just need to find out which direction it is overflowing to (can be both).
+       // One pixel is added to the height to account for non-integer heights.
+       const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+       const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
+       el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
+       el.classList.toggle('is-top-overflowing', !isScrolledToTop);
+     }
+
+     
+
+     function horizontalScroll(el) {
+       const isScrollable = (el.scrollWidth > el.clientWidth);
+
+       // GUARD: If element is not scrollable, remove all classes
+       if (!isScrollable) {
+         el.classList.remove('is-left-overflowing', 'is-right-overflowing');
+         return;
+       }
+       
+       // Otherwise, the element is overflowing!
+       // Now we just need to find out which direction it is overflowing to (can be both).
+       // One pixel is added to the height to account for non-integer heights.
+       const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
+       const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
+       el.classList.toggle('is-right-overflowing', !isScrolledToRight);
+       el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
+     }
+
+     document.querySelector('#propositions').addEventListener('scroll', (e) => {
+       const el = e.currentTarget;
+       verticalScroll(el);
+     });
+
+     document.querySelector('#domain').addEventListener('scroll', (e) => {
+       const el = e.currentTarget;
+       horizontalScroll(el);
+     });
+
+     window.onresize = function(event) {
+       verticalScroll(document.querySelector('#propositions'));
+     }
+
+     
+     verticalScroll(document.querySelector('#propositions'));
+     horizontalScroll(document.querySelector('#domain'));
+
+
+
+     // given the id of a cell, emphasize borders of cells in that row and column
+     function crosshairs(id) {
+       if (!use_crosshairs) return;
+       for (var i = 0; i < cellList.length; i++) {
+         // check that the cell matches in row or column
+         if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
+           cellList[i].style.boxShadow = "inset 0px 0px 0px 1px #000000";
+
+         }
+         // reset the styles of other cells without messing up the axis labels
+         else if (! cellList[i].classList.contains("y-axis") && ! cellList[i].classList.contains("x-axis")) {
+           cellList[i].style.boxShadow = "";
+
+         }
+       }
+     }
+
+     function addRipple(list) {
+       list.forEach(elementWithRipple => {
+         elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
+           // Create a ripple element <div class="ripple">
+           const rippleEl = document.createElement('div');
+           rippleEl.classList.add('ripple');
+           
+           // Position the ripple
+           const x = mouseEvent.offsetX;
+           const y = mouseEvent.offsetY;
+           
+           rippleEl.style.left = `${x}px`;
+           rippleEl.style.top = `${y}px`;
+           
+           elementWithRipple.appendChild(rippleEl);
+           
+           requestAnimationFrame(() => {
+             rippleEl.classList.add('run');
+           });
+           
+           // Remove ripple element when the transition is done
+           rippleEl.addEventListener('transitionend', () => {
+             rippleEl.remove();
+           });
+         });
+       });
+     }
+
+     var elementsWithRipple = document.querySelectorAll('.given, #domain button');
+     addRipple(elementsWithRipple);
+
+     function showModal(id) {
+       document.getElementById(id).showModal();
+     }
+
+     const dialogList = document.querySelectorAll('dialog');
+     
+     dialogList.forEach((dialog) => {
+       dialog.addEventListener('click', (e) => {
+         if (e.target.tagName !== 'DIALOG')
+           return;
+
+         const rect = e.target.getBoundingClientRect();
+
+         const clickedInDialog = (
+           rect.top <= e.clientY &&
+           e.clientY <= rect.top + rect.height &&
+           rect.left <= e.clientX &&
+           e.clientX <= rect.left + rect.width
+         );
+
+         if (clickedInDialog === false) {
+           e.target.classList.add("hide");
+           setTimeout(function () {
+             e.target.close();
+             e.target.classList.remove("hide");
+           }, 300);
+       }});
+
+       dialog.addEventListener('keydown', (e) => {
+         if (e.key == "Escape") {
+
+           e.preventDefault();
+           e.target.classList.add("hide");
+           setTimeout(function () {
+             e.target.close();
+             e.target.classList.remove("hide");
+           }, 300);
+         }
+       })
+     });
+
+     document.querySelectorAll(".close").forEach( (closeButton) => {
+       closeButton.addEventListener("click", (e) => {
+         closeButton.parentNode.classList.add("hide");
+         setTimeout(function () {
+           closeButton.parentNode.close();
+           closeButton.parentNode.classList.remove("hide");
+         }, 300);
+       });
+     });
+
+     document.getElementById("level").onclick = function () {
+       if (window.event.ctrlKey || window.event.shiftKey) {
+         // Interestingly, Chrome will only actually focus the
+         // new window if you were holding shift
+         window.open("index.html", '_blank').focus();
+       } else {
+         location.href = "index.html";
+       }
+     }
+
+     
     </script>
 </html>

@@ -11,9 +11,7 @@
         <!-- COMPUTER MODERN SERIF -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+  
 
 
 
@@ -530,19 +528,19 @@
            }
            #redo {
              bottom: max(9vh, 45px);
-             right: -1px;
+             right: 0px;
            }
          }
          @media (width < 675px) {
-           #undo, #redo {transition: bottom 0.2s ease-out, right 0.2s ease-out; };
+           #domain #undo, #domain #redo {transition: bottom 0.15s ease-out, right 0.15s ease-out; };
          }
          @media (width < 460px) {
            #undo {
-             bottom: max(9.9vh, 45px);
+             bottom: clamp(45px, 9.9vh, 78px);
              right: 21px;
            }
            #redo {
-             bottom: max(8.1vh, 45px);
+             bottom: clamp(45px, 8.1vh, 66px);
              right: -5px;
            }
          }

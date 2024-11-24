@@ -1,71 +1,46 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1, interactive-widget=resizes-content">
 
         <link rel="stylesheet" href="style.css">
 
         <!-- COMPUTER MODERN SERIF -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
-
-  
-
-
-
-
         
         <title>Logix</title>
         <link rel="icon" type="image/png" href="images/MATHCAL_L.png">
-        
+
         <style>
-         html, body {
-           padding: 0;
-           margin: 0;
-           height: 100%;
-         }
-
-         html {
-           transition: background-size 0.7s linear;
-           background-image: linear-gradient(#ECF2EC, #ECF2EC);
-           background-repeat: no-repeat;
-           background-size: 100% 0;
-           background-position: bottom;
-         }
-         html.correct {
-           background-size: 100% 100%;
-         }
-
-         html.correct #domain {
-           opacity: 0;
-         }
-
          #level {
            font-family: computer modern serif;
-           text-align: left;
            font-weight: lighter;
            font-size: 2.25rem;
-           width: 10vw;
+           
+           width: min-content;
            position: relative;
            margin: 0;
-           top: 4.5vmin;
-           left: 3.5vmin;
+           top: 1.75vmin;
+           left: 2.75vmin;
+           
            cursor: pointer;
            user-select: none;
          }
 
          #menu {
            position: absolute;
-           top: 4.5vmin;
+           top: 2.5vmin;
            right: 4vmin;
            text-align: center;
-
+           
+           
            #menu_checkbox {
              display: block;
              width: 45px;
-             height: 45px;
+             height: 42px;
+             
              position: absolute;
              top: -7px;
              left: -5px;
@@ -74,12 +49,13 @@
              
              opacity: 0; 
              z-index: 1; 
-             
            }
            span {
-             margin-left: 1px;
+             transition: top 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
+             top: 0px;
+             position: relative;
            }
-
+           
            span:before {
              content: ' ';
              display: inline-block;
@@ -92,17 +68,18 @@
              transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
            }
 
-           #menu_checkbox:checked { top: -15px; }
            #menu_checkbox:checked ~ span:before {
              transform: rotate(180deg);
            }
-
-
+           #menu_checkbox:checked ~ span {
+             top: 10px;
+           }
+           
            ul {
+             margin-top: 18px;
+
              width: 100%;
-             padding:0;
-             margin-top: 15px;
-             
+             padding: 0;
              list-style-type: none;
              
              transform-origin: 0% 0%;
@@ -113,6 +90,7 @@
            #menu_checkbox:checked ~ ul {
              transform: none;
            }
+           
            li {
              display: block;
              height: 39px;
@@ -120,19 +98,19 @@
              text-align:center;
              margin-bottom: 15px;
              cursor: pointer;
-             transition: all 100ms linear;
+             transition: opacity 0.2s;
              user-select: none;
+             opacity: 1;
              position: relative;
              z-index: 1; /* Otherwise hitbox gets covered by wrapper spacing */
            }
 
            @media(hover: hover) and (pointer: fine) {
              li:hover {
-               filter: invert(30%) sepia(0%) saturate(1%) hue-rotate(163deg) brightness(98%) contrast(101%);
+               opacity: 0.72;
              }
            }
            
-
            #info {
              content: url("images/INFO.svg");
            }
@@ -146,7 +124,6 @@
              content: url("images/SETTINGS.svg");
            }
          }
-
 
          #wrapper {
            display: flex;
@@ -543,7 +520,6 @@
              bottom: clamp(45px, 8.1vh, 66px);
              right: -5px;
            }
-         }
          }
 
          .close {

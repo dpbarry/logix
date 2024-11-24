@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1, interactive-widget=resizes-content">
@@ -11,18 +10,15 @@
         <!-- COMPUTER MODERN SERIF -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
 
-        
-        <title>Logix</title>    
+        <title>Logix</title>
+        <link rel="icon" type="image/png" href="images/MATHCAL_L.png">
 
         <style>
-         * {
-           font-family: computer modern serif;
-         }
-
          #main-header {
            text-align: center;
            margin-bottom: 25px;
 
+           font-family: computer modern serif;
            font-weight: normal;
            font-size: 3rem;
          }
@@ -41,6 +37,8 @@
            transform: translate(-50%);
 
            padding: 0;
+
+           font-family: computer modern serif;
          }
          
          li {
@@ -58,7 +56,7 @@
            list-style-type: none;
            cursor: pointer;
            
-           transition: width .24s ease, border-radius .24s, background .2s ease-out, box-shadow .2s ease-out, top .2s ease-out;
+           transition: width .24s ease, background .2s ease-out, box-shadow .2s ease-out, top .2s ease-out;
 
            /* For on-click nudge animation */
            position: relative;
@@ -104,22 +102,18 @@
          .stage-number {
            align-self: center;
            position: relative;
-           left: 8px;
+           left: 9px;
 
-           width: min-content;
-           
            font-weight: bold;
-           font-size: 1.5rem;
-           
+           font-size: 1.5rem; 
          }
 
          .stage-content {
            align-self: center;
            position: relative;
-           left: 20px;
+           left: 25px;
 
            font-size: 1.15rem;
-           white-space: nowrap;
          }
          
         </style>
@@ -132,12 +126,12 @@
         <ul id="stage-list">
             <li id ="s1" class="animated-border-box">
                 <p class="stage-number"> 1 </p>
-                <p class="stage-content">Propositions</p>
+                <p class="stage-content"> Propositions </p>
             </li>
 
             <li id ="s2">
                 <p class="stage-number"> 2 </p>
-                <p class="stage-content"> Logical connectives  </p>
+                <p class="stage-content"> Logical connectives </p>
             </li>
 
             <li id ="s3">
@@ -152,22 +146,22 @@
 
             <li id ="s5">
                 <p class="stage-number"> 5 </p>
-                <p class="stage-content"> Relations </p>
+                <p class="stage-content" >Relations </p>
             </li>
 
             <li id ="s6">
                 <p class="stage-number"> 6 </p>
-                <p class="stage-content">Higher-order logic </p>
+                <p class="stage-content"> Higher-order logic </p>
             </li>
 
             <li id ="s7">
                 <p class="stage-number"> 7 </p>
-                <p class="stage-content">Semantics</p>
+                <p class="stage-content"> Semantics </p>
             </li>
             
             <li id ="s8">
                 <p class="stage-number"> 8 </p>
-                <p class="stage-content"> Metalogic</p>
+                <p class="stage-content"> Metalogic </p>
             </li>
         </div>
     </body>

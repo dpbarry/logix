@@ -221,7 +221,9 @@
            
            li {
              visibility: hidden;
-             padding: 1vh;
+             padding: 5px;
+             padding-top: 1.2vh;
+             padding-bottom: calc(1.2vh - 3px); /* Account for katex rendering a slight gap on bottom */
              width: 95%;
 
              + li {

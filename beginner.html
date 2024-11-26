@@ -152,7 +152,7 @@
              text-align: center;
              border-radius: 3px;
              background:transparent;
-             transition: background 0.25s ease, box-shadow 0.25s ease, background-size 0.2s linear !important;
+             transition: background 0.2s ease-in, box-shadow 0.2s ease, background-size 0.2s linear !important;
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 7.5vh, 3rem);
@@ -160,7 +160,6 @@
              background-repeat: no-repeat;
              background-size: 100% 0;
              background-position: bottom;
-             z-index: 1;
            }
            td:not(.x-axis, .y-axis) {
              cursor: pointer;
@@ -176,6 +175,10 @@
            td.correct {
              background-size: 100% 100%;
              box-shadow: unset !important;
+
+             & > .ripple {
+               background-color: #FFFFFF;
+             }
            }
 
            .x-axis, .y-axis {
@@ -184,19 +187,22 @@
              width: min(5vh, 50px);
              height: min(5vh, 50px);
            }
-
+           td.given {
+             z-index: 1;
+           }
+          
            td:focus {
              background-color: #F1EEDC !important;
            }
            td.insert {
-             animation: fade-in 0.2s ease forwards;
+             animation: fade-in 0.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
            }
          }
          
          
          @keyframes fade-in {
-           from { color: transparent; }
-           to { color: #000000; }
+           from { font-size: 0; }
+           to { font-size: clamp(1rem, 7.5vh, 3rem); }
          }
          
          #propositions {
@@ -575,7 +581,30 @@
          dialog::backdrop {
            opacity: 0;
          }
-       
+         #overlay {
+           position: fixed; 
+           display: block; 
+           width: 100%; 
+           height: 0;
+           top: 0;
+           left: 0;
+           right: 0;
+           bottom: 0;
+           z-index: 2;
+
+           background-color: rgba(0,0,0,0.1);
+           opacity: 0;
+           transition: opacity .3s;
+         }
+
+         #overlay:has(~ #menu > dialog[open]) {
+           height: 100%;
+           opacity: 0.4;
+         }
+         #overlay:has(~ #menu > .hide ) {
+           opacity: 0 !important;
+         }
+         
          dialog[open] {
            visibility: visible;
            transform: scale(1);
@@ -588,15 +617,21 @@
            transition: transform cubic-bezier(0.36, 0, 0.66, -0.56) 0.3s, box-shadow ease 0.3s;
            transform: scale(0);
            box-shadow:0 0 8px 5px rgba(0, 0, 0, 0.15),
-           0 0 30px 15px rgb(0,0,0,0.1);    }
-   
+           0 0 30px 15px rgb(0,0,0,0.1);
+         }
+
          
          dialog {
            h1 {
              margin-top:0;
              font-size: 1.75rem;
            }
+           label {
+             margin-right: 1px;
+           }
            input {
+             margin: 0;
+             margin-bottom: 4px;
              appearance: none;
              height: 26px;
              width: 60px;
@@ -604,24 +639,28 @@
              position: relative;
              border-radius: 15px;
              cursor: pointer;
-             transition: 0.2s ease;
+             transition: all 0.2s ease;
            }
 
            input::before {
              content: '';
              display: block;
              height: 18px;
-             width: 22px;
+             width: 21px;
              transform: translate(-50%, -50%);
              position: absolute;
              top: 50%;
              left: 16px;
              background-color: #3f3f3f;
              border-radius: 18px;
-             transition: .2s ease;
+             transition: all 0.2s ease;
            }
            input:hover {
-             filter: brightness(95%);
+             filter: brightness(94%);
+           }
+           input:focus {
+             outline: 0;
+             filter: brightness(94%);
            }
 
            input:checked {
@@ -665,6 +704,7 @@
     
     <body>
         <h1 id="level" onClick="">1.1</h1>
+        <div id="overlay"></div>
         <div id="menu">
             <input id="menu_checkbox" type="checkbox">
             <span></span>
@@ -1151,7 +1191,7 @@
        });
      }
 
-     var elementsWithRipple = document.querySelectorAll('.given, #domain button');
+     var elementsWithRipple = document.querySelectorAll('td, .given, #domain button');
      addRipple(elementsWithRipple);
 
      function showModal(id) {
@@ -1201,7 +1241,16 @@
        closeButton.addEventListener("click", (e) => {
          closeButton.parentNode.classList.add("hide");
          closeButton.parentNode.addEventListener("transitionend", closeDialog);
+       });
+     });
 
+     document.querySelectorAll("dialog input").forEach((toggle) => {
+       toggle.addEventListener("keydown", (e) => {
+         if (e.key == "Escape") {
+           e.preventDefault();
+           e.target.closest("dialog").classList.add("hide");
+           e.target.closest("dialog").addEventListener("transitionend", closeDialog);
+         }
        });
      });
 

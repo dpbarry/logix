@@ -152,7 +152,7 @@
              text-align: center;
              border-radius: 3px;
              background:transparent;
-             transition: background 0.2s ease-in, box-shadow 0.2s ease, background-size 0.2s linear !important;
+             transition: background 0.14s ease-in, box-shadow 0.2s ease, background-size 0.2s linear !important;
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 7.5vh, 3rem);
@@ -166,18 +166,19 @@
            }
            td.given {
              background-color: #D0D0D0;
+             z-index: 1;
            }
            td.given > .ripple {
-             background-color: #EBEBEB;
+             background-color: #EFEFEF;
            }
            
            
            td.correct {
              background-size: 100% 100%;
              box-shadow: unset !important;
-
+             z-index: 1;
              & > .ripple {
-               background-color: #FFFFFF;
+               background-color: #EFEFEF;
              }
            }
 
@@ -187,10 +188,7 @@
              width: min(5vh, 50px);
              height: min(5vh, 50px);
            }
-           td.given {
-             z-index: 1;
-           }
-          
+    
            td:focus {
              background-color: #F1EEDC !important;
            }
@@ -307,7 +305,7 @@
            
            @media (hover: hover) and (pointer: fine) {
              button:hover {
-               box-shadow: 0 5px 6px -6px #777, 0 0 3px #DDD;
+               box-shadow: 0 3px 6px -6px #777, 0 0 3px #DDD;
              }
              #pencil:hover, #undo:hover, #redo:hover {
                filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .1));
@@ -319,7 +317,7 @@
              
            }
            button:focus {
-             box-shadow: 0 5px 6px -6px #777, 0 0 3px #DDD;
+             box-shadow: 0 4px 6px -6px #777, 0 0 3px #DDD;
              background-color: #F1EEDC;
              outline: none;  /* Tabbing to button adds outline by default */
            }
@@ -496,7 +494,7 @@
              width: 90vw;
              flex-direction: row;
              flex-basis: 100%;
-             margin-top: 2vh;
+             margin-top: clamp(10px, 2vh, 18px);
              gap: 5px;
            }
            @media (height < 750px) {
@@ -1020,11 +1018,6 @@
            button.onblur = "";
          });
        });
-       
-       // Being careful not to double up ripples to given cells
-       addRipple(document.querySelectorAll("td:not(.given)"));
-       
-
      }
 
      for (var i = 0; i < cellList.length; i++){
@@ -1191,7 +1184,7 @@
        });
      }
 
-     var elementsWithRipple = document.querySelectorAll('td, .given, #domain button');
+     var elementsWithRipple = document.querySelectorAll('td:not(.x-axis, .y-axis), #domain button');
      addRipple(elementsWithRipple);
 
      function showModal(id) {

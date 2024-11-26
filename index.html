@@ -51,12 +51,12 @@
            margin-bottom: 20px;
            
            border: 1px solid black;
-           box-shadow: 0 2px 3px rgba(154,154,154,.3), 0 0 2px rgba(154,154,154,.2);
+           box-shadow: 0 2px 3px rgba(154,154,154,.18), 0 0 2px rgba(154,154,154,.2);
 
            list-style-type: none;
            cursor: pointer;
            
-           transition: width .24s ease, background .2s ease-out, box-shadow .2s ease-out, top .2s ease-out;
+           transition: width .2s ease, background .2s ease-out, box-shadow .2s ease-out, top .2s ease-out;
 
            /* For on-click nudge animation */
            position: relative;
@@ -65,18 +65,21 @@
 
          @media (hover: hover) and (pointer: fine) {
            li:hover {
-             width: min(85vw, 425px);
+             width: min(83vw, 415px);
              background-color: #f1eedc !important;
-             box-shadow: 0 3px 6px rgba(154,154,154,.4), 0 0 2px rgba(154,154,154,.3);
+             box-shadow: 0 3px 6px rgba(154,154,154,.25), 0 0 2px rgba(154,154,154,.3);
            }
          }
 
          li:active, li:focus {
-           width: min(85vw, 425px);
+           width: min(83vw, 415px);
            background-color: #f1eedc !important;
-           box-shadow: 0 3px 6px rgba(154,154,154,.4), 0 0 2px rgba(154,154,154,.3);
-           top: 2px;
+           box-shadow: 0 3px 6px rgba(154,154,154,.25), 0 0 2px rgba(154,154,154,.3);
            outline: 0;
+         }
+
+         li:active {
+           top: 2px;
          }
          
          li#s1 { background-color: rgb(0,0,0,0); }
@@ -167,16 +170,18 @@
     </body>
 
     <script>
+     document.querySelectorAll("#stage-list li").forEach((l) =>
+       l.onclick = function () {
+         this.blur();
+       }
+     );
+     
      document.getElementById("s1").onclick = function () {
-       setTimeout(() => {
-         location.href = "beginner.html";
-       }, 150);  // Delay for animation
+       location.href = "beginner.html";
      };
      document.getElementById("s1").onkeydown = function (e) {
        if (e.key != " " && e.key != "Enter") return;
-       setTimeout(() => {
-         location.href = "beginner.html";
-       }, 150);  // Delay for animation
+       setTimeout(function () { location.href = "beginner.html"; }, 0);
      };
 
 

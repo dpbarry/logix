@@ -489,7 +489,7 @@
              width: 90vw;
              flex-direction: row;
              flex-basis: 100%;
-             margin-top: 1.25vh;
+             margin-top: 2vh;
              gap: 5px;
            }
            @media (height < 750px) {
@@ -502,7 +502,7 @@
            }
            #grid {
              margin-right: 39px;
-             margin-top: -3.5vh;
+             margin-top: -4vh;
            }
            #pencil {
              bottom: clamp(45px, 9vh, 72px);
@@ -558,24 +558,23 @@
            transform: rotate(-45deg);
          }
 
-         @keyframes backdrop-fade {
-           from { opacity: 0; }
-           to   { opacity: 0.3; }
-         }
          
          dialog {
+           outline: 0;
            position: fixed;
            font-family: computer modern serif;
            width: min(80vw, 500px);
-           height: 50vh;
+           height: 51vh;
            display: block;
            visibility: hidden;
-           transition: transform ease 0.2s, box-shadow ease 0.2s;
+           transition: transform cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s, box-shadow ease 0.3s;
            transform: scale(0);
          }
-         dialog[open]::backdrop {
-           animation: backdrop-fade 0.2s ease-out forwards;
+
+         dialog::backdrop {
+           opacity: 0;
          }
+       
          dialog[open] {
            visibility: visible;
            transform: scale(1);
@@ -585,14 +584,11 @@
            0 0 30px 15px rgb(0,0,0,0.1);
          }
          dialog.hide {
+           transition: transform cubic-bezier(0.36, 0, 0.66, -0.56) 0.3s, box-shadow ease 0.3s;
            transform: scale(0);
-           box-shadow: unset;
-         }
-         
-         dialog.hide::backdrop {
-           animation: backdrop-fade 0.2s ease-in forwards;
-           animation-direction: reverse;
-         }
+           box-shadow:0 0 8px 5px rgba(0, 0, 0, 0.15),
+           0 0 30px 15px rgb(0,0,0,0.1);    }
+   
          
          dialog {
            h1 {
@@ -1162,6 +1158,12 @@
      }
 
      const dialogList = document.querySelectorAll('dialog');
+
+     function closeDialog (event) {
+       event.target.close();
+       event.target.classList.remove("hide");
+       event.target.removeEventListener("transitionend", closeDialog);
+     }
      
      dialogList.forEach((dialog) => {
        dialog.addEventListener('click', (e) => {
@@ -1179,10 +1181,8 @@
 
          if (clickedInDialog === false) {
            e.target.classList.add("hide");
-           setTimeout(function () {
-             e.target.close();
-             e.target.classList.remove("hide");
-           }, 300);
+           
+           e.target.addEventListener("transitionend", closeDialog);
        }});
 
        dialog.addEventListener('keydown', (e) => {
@@ -1190,21 +1190,17 @@
 
            e.preventDefault();
            e.target.classList.add("hide");
-           setTimeout(function () {
-             e.target.close();
-             e.target.classList.remove("hide");
-           }, 300);
+
+           e.target.addEventListener("transitionend", closeDialog);
          }
-       })
+       });
      });
 
      document.querySelectorAll(".close").forEach( (closeButton) => {
        closeButton.addEventListener("click", (e) => {
          closeButton.parentNode.classList.add("hide");
-         setTimeout(function () {
-           closeButton.parentNode.close();
-           closeButton.parentNode.classList.remove("hide");
-         }, 300);
+         closeButton.parentNode.addEventListener("transitionend", closeDialog);
+
        });
      });
 

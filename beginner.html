@@ -164,16 +164,19 @@
              background-size: 100% 0;
              background-position: bottom;
            }
+           
            td:not(.x_axis, .y_axis) {
              cursor: pointer;
            }
+
            td.given {
              background-color: #D0D0D0;
              z-index: 1;
            }
            td.given > .ripple, td.correct > .ripple {
+             opacity: 0.4;
              background-color: #EFEFEF;
-             transition: all 0.5s ease;
+             transition: all 0.4s ease;
              
            }
            
@@ -284,7 +287,7 @@
            transition: opacity 1s;
 
            button {
-             transition: background 0.45s, box-shadow 0.25s;
+             transition: background 0.54s, box-shadow 0.25s;
              width: 100%;
              height: clamp(40px, 7.5vh, 58px);
              font-family:  computer modern serif;
@@ -384,10 +387,6 @@
            #redo::after {
              background-image:url("images/REDO.svg");
            }
-
-           #undo > .ripple, #redo > .ripple, #pencil > .ripple {
-             background:  rgb(110,135,155, 0.3);
-           }
          }
 
          .ripple {
@@ -395,7 +394,7 @@
            width: 3px;
            height: 3px;
            border-radius: 100%;
-           opacity: 0.4;
+           opacity: 1;
            position: absolute;
            transition: all 0.7s ease;
            pointer-events: none;

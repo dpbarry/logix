@@ -154,7 +154,7 @@
              text-align: center;
              outline: 1px solid transparent; /* For crosshairs */
              border-radius: 3px;
-             background: transparent;
+             background-color: transparent;
              transition: background-color 0.2s ease-in, outline-color 0.2s ease;
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
@@ -1177,6 +1177,9 @@
      function addRipple(list) {
        list.forEach(elementWithRipple => {
          elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
+           document.querySelectorAll(".ripple").forEach((r) => {
+             r.remove();
+           });
            // Create a ripple element <div class="ripple">
            const rippleEl = document.createElement('div');
            rippleEl.classList.add('ripple');

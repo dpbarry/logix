@@ -155,7 +155,7 @@
              outline: 1px solid transparent; /* For crosshairs */
              border-radius: 3px;
              background: transparent;
-             transition: background-color 0.249s ease-in, outline-color 0.2s ease;
+             transition: background-color 0.2s ease-in, outline-color 0.2s ease;
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 7.5vh, 3rem);
@@ -177,7 +177,9 @@
              opacity: 0.4;
              background-color: #EFEFEF;
              transition: all 0.4s ease;
-             
+             &.run {
+               opacity: 0;
+             }
            }
            
            
@@ -231,8 +233,8 @@
            li {
              visibility: hidden;
              padding: 5px;
-             padding-top: 1.2vh;
-             padding-bottom: calc(1.2vh - 3px); /* Account for katex rendering a slight gap on bottom */
+             padding-top: 0.75vh;
+             padding-bottom: calc(0.75vh - 1px); /* Account for katex rendering a slight gap on bottom */
              width: 95%;
 
              + li {
@@ -240,6 +242,7 @@
              }
 
              span.entry {
+               padding-top: 3px;
                display: inline-block;
                border-radius: 5px;
                transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -287,7 +290,7 @@
            transition: opacity 1s;
 
            button {
-             transition: background 0.54s, box-shadow 0.25s;
+             transition: background 0.55s, box-shadow 0.25s;
              width: 100%;
              height: clamp(40px, 7.5vh, 58px);
              font-family:  computer modern serif;
@@ -396,14 +399,13 @@
            border-radius: 100%;
            opacity: 1;
            position: absolute;
-           transition: all 0.7s ease;
+           transition: all 0.65s ease;
            pointer-events: none;
            will-change: transform;
            z-index: -1;
          }
 
          .ripple.run {
-           opacity: 0 !important;
            transform: scale(200);
          }
 

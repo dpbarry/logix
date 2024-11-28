@@ -78,7 +78,7 @@
            outline: 0;
          }
 
-         li:active {
+         li:active, li.activated {
            top: 2px;
          }
          
@@ -177,11 +177,12 @@
      );
      
      document.getElementById("s1").onclick = function () {
-       location.href = "beginner.html";
+       setTimeout(function () { location.href = "beginner.html"; }, 50);
      };
      document.getElementById("s1").onkeydown = function (e) {
        if (e.key != " " && e.key != "Enter") return;
-       setTimeout(function () { location.href = "beginner.html"; }, 0);
+       e.target.classList.add("activated");
+       setTimeout(function () { location.href = "beginner.html"; }, 50);
      };
 
 

@@ -14,147 +14,148 @@
         <link rel="icon" type="image/png" href="images/MATHCAL_L.png">
 
         <style>
+         /*  Prevent mismatch between viewport and body dimensions */
          html, body {
            padding: 0;
            margin: 0;
            height: 100%;
          }
-         
+
          #level {
            font-family: computer modern serif;
            font-weight: lighter;
            font-size: 2.25rem;
            
            width: min-content;
-           position: relative;
            margin: 0;
+
+           position: relative;
            top: 1.75vmin;
            left: 2.75vmin;
            
            cursor: pointer;
-           user-select: none;
          }
 
          #menu {
            position: absolute;
-           top: 2.5vmin;
-           right: 4vmin;
-           text-align: center;
-           
+           top: 1.75vmin;
+           right: 3vmin;
+
+           /* Align #chevron */
+           text-align: center; 
            
            #menu_checkbox {
              display: block;
              width: 45px;
-             height: 42px;
+             height: 45px;
              
              position: absolute;
-             top: -7px;
-             left: -5px;
+             top: -6px;
+             left: -6px;
              
              cursor: pointer;
              
              opacity: 0; 
              z-index: 1; 
            }
-           span {
-             transition: top 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
-             top: 0px;
+           
+           #chevron {
              position: relative;
+             top: 0px;
+             transition: top 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
            }
            
-           span:before {
-             will-change: transform;
-             content: ' ';
+           #chevron:before {
+             content: "";
+             
              display: inline-block;
+             height: 24px;
+             width: 24px;
+             
              border-bottom: 3px solid #000000;
              border-right: 3px solid #000000;
              border-radius: 0px;
-             height: 24px;
-             width: 24px;
+
              rotate: 45deg;
              transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
            }
 
-           #menu_checkbox:checked ~ span:before {
+           #menu_checkbox:checked ~ #chevron:before {
              transform: rotate(180deg);
            }
-           #menu_checkbox:checked ~ span {
-             top: 10px;
+           #menu_checkbox:checked ~ #chevron {
+             /* Counteract apparent upwards-shift caused by rotating chevron */
+             top: 15px;
            }
            
            ul {
-             will-change: transform;
-             margin-top: 18px;
-
              width: 100%;
+             margin-top: 22px;
              padding: 0;
+             
              list-style-type: none;
-             
-             transform-origin: 0% 0%;
-             transform: translate(0, -500%);
-             
+
+             transform: translateY(-500%);
+             will-change: transform;
              transition: transform 0.35s cubic-bezier(0.77,0.2,0.05,1.0);
            }
+           
            #menu_checkbox:checked ~ ul {
              transform: none;
            }
            
            li {
-             display: block;
+             display: block;  
              height: 39px;
              width: 100%;
-             text-align:center;
-             margin-bottom: 15px;
+             margin-bottom: 14px;
+             
              cursor: pointer;
-             transition: opacity 0.2s;
-             user-select: none;
+             
+             z-index: 1; /* Otherwise hitbox gets covered by #main_wrapper spacing */
+
              opacity: 1;
-             position: relative;
-             z-index: 1; /* Otherwise hitbox gets covered by wrapper spacing */
+             transition: opacity 0.2s;
            }
 
            @media(hover: hover) and (pointer: fine) {
-             li:hover {
-               opacity: 0.72;
-             }
+             li:hover { opacity: 0.72; }
            }
-           
-           #info {
-             content: url("images/INFO.svg");
+           li:active {
+             animation: 0.15s ease nudge forwards;
            }
-           #dictionary {
-             content: url("images/DICTIONARY.svg");
-           }
-           #notes {
-             content: url("images/NOTES.svg");
-           }
-           #settings {
-             content: url("images/SETTINGS.svg");
-           }
+
+           #info { content: url("images/INFO.svg"); }
+           #dictionary { content: url("images/DICTIONARY.svg"); }
+           #notes { content: url("images/NOTES.svg"); }
+           #settings { content: url("images/SETTINGS.svg"); }
          }
 
-         #wrapper {
+         @keyframes nudge {
+           0% { transform: translateY(0%); }
+           50% { transform: translateY(2.25%); }
+           100% {transform: translateY(0%); }
+         }
+
+         
+         #main_wrapper {
            display: flex;
            flex-wrap: wrap;
            justify-content: center;
          }
 
          #grid {
-           position: relative;
-
            align-self: center;
            border-spacing: 4px;
 
            td {
-             position: relative;
-             user-select: none;
              font-family: computer modern serif;
              border: 1px solid #000000;
-             outline: 1px solid transparent;
              text-align: center;
+             outline: 1px solid transparent; /* For crosshairs */
              border-radius: 3px;
-             background:transparent;
-             transition: background-color 0.14s ease-in, box-shadow 0.2s ease;
+             background: transparent;
+             transition: background-color 0.14s ease-in, outline-color 0.2s ease;
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 7.5vh, 3rem);
@@ -163,7 +164,7 @@
              background-size: 100% 0;
              background-position: bottom;
            }
-           td:not(.x-axis, .y-axis) {
+           td:not(.x_axis, .y_axis) {
              cursor: pointer;
            }
            td.given {
@@ -183,7 +184,7 @@
              z-index: 1;
            }
 
-           .x-axis, .y-axis {
+           .x_axis, .y_axis {
              border: 0px;
              font-size: min(3vh, 1.7rem);
              width: min(5vh, 50px);
@@ -208,7 +209,6 @@
            font-size: max(4vh, 1.5rem);
 
            cursor: default;
-           user-select: none;
            
            margin: 0;
            margin-left: 12.5vw;
@@ -285,7 +285,6 @@
 
            button {
              transition: background 0.45s, box-shadow 0.25s;
-             user-select: none;
              width: 100%;
              height: clamp(40px, 7.5vh, 58px);
              font-family:  computer modern serif;
@@ -419,7 +418,7 @@
 
          /* Landscape layout */
          @media (width > 850px) {
-           #wrapper {
+           #main_wrapper {
              gap: 2.25vw;
 
              margin-top: 18vh;
@@ -430,7 +429,7 @@
            }
 
            @media (height < 700px) {
-             #wrapper { margin-top: calc(18vh - (700px - 100vh)/7);}
+             #main_wrapper { margin-top: calc(18vh - (700px - 100vh)/7);}
            }
            
            #propositions {
@@ -472,10 +471,7 @@
          
          /* Portrait layout */
          @media (width <= 850px) {
-           #menu {
-             right: 3vmin;
-           }
-           #wrapper {
+           #main_wrapper {
              margin-top: 0vh;
              flex-direction: column;
              align-content: center;
@@ -499,7 +495,7 @@
              gap: 5px;
            }
            @media (height < 750px) {
-             #wrapper { gap: calc((750px - 100vh)/14); }
+             #main_wrapper { gap: calc((750px - 100vh)/14); }
              #grid td {
                width: clamp(24px, calc(13vh - (750px - 100vh)/14), 100px);
                height: clamp(24px, calc(13vh - (750px - 100vh)/14), 100px);
@@ -710,7 +706,7 @@
         <div id="overlay"></div>
         <div id="menu">
             <input id="menu_checkbox" type="checkbox">
-            <span></span>
+            <span id="chevron"></span>
             <ul>
                 <li id="info" onclick="showModal('info_dialog')"></li>
                 <li id="dictionary" onclick="showModal('dictionary_dialog')"></li>
@@ -749,7 +745,7 @@
             </dialog>
         </div>
 
-        <div id="wrapper">
+        <div id="main_wrapper">
             <ul id="propositions">
                 <li>
                     <span class="entry e1e1"> \(
@@ -861,29 +857,29 @@
                 <table id="grid">            
                     <tr>
                         
-                        <td class="y-axis">1</td>
+                        <td class="y_axis">1</td>
                         <td></td>
                         <td class="given">2</td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="y-axis">2</td>
+                        <td class="y_axis">2</td>
                         <td></td>
                         <td></td>
                         <td class="given">3</td>
                     </tr>
                     <tr>
-                        <td class="y-axis">3</td>
+                        <td class="y_axis">3</td>
                         <td class="given">1</td>
                         <td></td>
                         <td></td>
                     </tr>
                     
                     <tr>
-                        <td class="x-axis"></td>
-                        <td class="x-axis">1</td>
-                        <td class="x-axis">2</td>
-                        <td class="x-axis">3</td>
+                        <td class="x_axis"></td>
+                        <td class="x_axis">1</td>
+                        <td class="x_axis">2</td>
+                        <td class="x_axis">3</td>
                     </tr>
                 </table>
                 <div id="domain">
@@ -915,7 +911,7 @@
      const STICKY_TOGGLE = document.getElementById("sticky_toggle");
 
      // fetch all inputs and cells
-     const cellList = document.querySelectorAll('td:not(.x-axis, .y-axis)');
+     const cellList = document.querySelectorAll('td:not(.x_axis, .y_axis)');
      const domainList = document.querySelectorAll('button');
 
      var use_highlight = HIGHLIGHT_TOGGLE.checked;
@@ -993,7 +989,7 @@
          setTimeout(success, 125); // Suspense...
        }
      }
- 
+     
      function animateGridSuccess (i) {
        if (i > ROWS) return;
 
@@ -1166,12 +1162,12 @@
        for (var i = 0; i < cellList.length; i++) {
          // check that the cell matches in row or column
          if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
-           cellList[i].style.boxShadow = "inset 0px 0px 0px 1px #000000";
+           cellList[i].style.outlineColor = "black";
 
          }
          // reset the styles of other cells without messing up the axis labels
-         else if (! cellList[i].classList.contains("y-axis") && ! cellList[i].classList.contains("x-axis")) {
-           cellList[i].style.boxShadow = "";
+         else if (! cellList[i].classList.contains("y_axis") && ! cellList[i].classList.contains("x_axis")) {
+           cellList[i].style.outlineColor = "transparent";
 
          }
        }
@@ -1205,7 +1201,7 @@
        });
      }
 
-     var elementsWithRipple = document.querySelectorAll('td:not(.x-axis, .y-axis), #domain button');
+     var elementsWithRipple = document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button');
      addRipple(elementsWithRipple);
 
      function showModal(id) {

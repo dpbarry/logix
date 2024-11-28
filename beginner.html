@@ -155,7 +155,7 @@
              outline: 1px solid transparent; /* For crosshairs */
              border-radius: 3px;
              background-color: transparent;
-             transition: background-color 0.2s ease-in, outline-color 0.2s ease;
+             transition: background-color 0.16s ease-in, outline-color 0.2s ease;
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 7.5vh, 3rem);
@@ -176,7 +176,6 @@
            td.given > .ripple, td.correct > .ripple {
              opacity: 0.4;
              background-color: #EFEFEF;
-             transition: all 0.4s ease;
              &.run {
                opacity: 0;
              }
@@ -232,9 +231,8 @@
            
            li {
              visibility: hidden;
-             padding: 5px;
-             padding-top: 0.75vh;
-             padding-bottom: calc(0.75vh - 1px); /* Account for katex rendering a slight gap on bottom */
+             padding: 4px;
+
              width: 95%;
 
              + li {
@@ -280,62 +278,31 @@
            justify-content: center;
          }
 
-         #domain {
-           padding: 0;
+         #wrap_toolbar_domain {
            display: flex;
-           align-items: flex-start;
-           gap: 1vw;
-           margin: auto;
-           position: relative;
-           transition: opacity 1s;
+           wrap: wrap;
+           flex-direction: column;
+           gap: 7px;
+           margin-top: -15px;
+           align-items: center;
+         }
 
-           button {
-             transition: background 0.55s, box-shadow 0.25s;
-             width: 100%;
-             height: clamp(40px, 7.5vh, 58px);
-             font-family:  computer modern serif;
-             font-size: clamp(1.5rem, 5.35vh, 2.4rem);
-             background-color: #FFFFFF;
-             border: 1px solid #101010;
-             box-shadow: 0 3px 4px -4px #DDDDDD, 0 0 3px #EEEEEE;
-             border-radius: 3px;
-             cursor: pointer;
-             text-align: center;
-             z-index: 1;
-
-             /* Makes sure ripple effect doesn't cover number */
-             p { margin: 0;
-               position: relative;
-               z-index: 0; }
-           }
+         #toolbar {
+           display: flex;
+           width: 90vw;
+           flex-basis: 100%;
            
-           @media (hover: hover) and (pointer: fine) {
-             button:hover {
-               box-shadow: 0 3px 6px -6px #777, 0 0 3px #DDD;
-             }
-             #pencil:hover, #undo:hover, #redo:hover {
-               filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .1));
-
-             }
-             #pencil:hover::after, #undo:hover::after, #redo:hover::after { 
-               opacity: 1;
-             }
-             
-           }
-           button:focus {
-             box-shadow: 0 4px 6px -6px #777, 0 0 3px #DDD;
-             background-color: #F1EEDC;
-             outline: none;  /* Tabbing to button adds outline by default */
-           }
-           #pencil {
+           & > * {
+             cursor: pointer;
              background-color: transparent;
              border: 0;
              box-shadow: none;
-             filter: drop-shadow( 0px 1px 1px rgba(0, 0, 0, .2));
-             border-radius: 5px;
+             filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.35));
+             border-radius: 50px;
              padding: 0;
-
-             position: absolute;
+           }
+           #pencil {
+             margin-right: auto;
              width:35px;
              height: 35px;
              transform: scale(0.9);
@@ -355,14 +322,6 @@
            }
            
            #undo, #redo {
-             background-color: transparent;
-             border: 0;
-             box-shadow: none;
-             filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.35));
-             border-radius: 50px;
-             padding: 0;
-             
-             position: absolute;
              width: 32px;
              height: 32px;
            }
@@ -390,6 +349,58 @@
            #redo::after {
              background-image:url("images/REDO.svg");
            }
+           
+           @media (hover: hover) and (pointer: fine) {
+             #pencil:hover, #undo:hover, #redo:hover {
+               filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .1));
+
+             }
+             #pencil:hover::after, #undo:hover::after, #redo:hover::after { 
+               opacity: 1;
+             }
+             
+           }
+         }
+
+         #domain {
+           padding: 0;
+           display: flex;
+           align-items: flex-start;
+           gap: 1vw;
+           position: relative;
+           transition: opacity 1s;
+
+           button {
+             transition: background 0.55s, box-shadow 0.25s;
+             width: 100%;
+             height: clamp(40px, 7.5vh, 58px);
+             font-family:  computer modern serif;
+             font-size: clamp(1.5rem, 5.35vh, 2.4rem);
+             background-color: #FFFFFF;
+             border: 1px solid #101010;
+             box-shadow: 0 3px 4px -4px #DDDDDD, 0 0 3px #EEEEEE;
+             border-radius: 3px;
+             cursor: pointer;
+             text-align: center;
+             z-index: 1;
+
+             /* Makes sure ripple effect doesn't cover number */
+             p { margin: 0;
+               position: relative;
+               z-index: 0; }
+           }
+           
+           @media (hover: hover) and (pointer: fine) {
+             button:hover {
+               box-shadow: 0 3px 6px -6px #777, 0 0 3px #DDD;
+             }   
+           }
+           button:focus {
+             box-shadow: 0 4px 6px -6px #777, 0 0 3px #DDD;
+             background-color: #F1EEDC;
+             outline: none;  /* Tabbing to button adds outline by default */
+           }
+
          }
 
          .ripple {
@@ -399,7 +410,7 @@
            border-radius: 100%;
            opacity: 1;
            position: absolute;
-           transition: all 0.65s ease;
+           transition: all 0.5s ease;
            pointer-events: none;
            will-change: transform;
            z-index: -1;
@@ -445,27 +456,47 @@
              flex-grow: 0.5;
            }
 
-           
+           #wrap_toolbar_domain {
+             margin-top: calc(1.15vh - clamp(40px, 7.5vh, 58px));
+               ;
+               gap: 0;
+           }
+           #toolbar {
+             width: calc(100% - 1.33 * min(5vh, 50px));
+             margin-left: calc(1.27 * min(5vh, 50px));
+             min-height: clamp(40px, 7.5vh, 58px);
+             position: relative;
+             top: clamp(40px, 7.5vh, 58px);
 
+
+             max-height:0;
+
+             #pencil {
+               position: absolute;
+               bottom: max(min(10px, calc(10px - (750px - 100vh)/15)), 1px);
+               left: -40px;
+               margin: 0;
+             }
+             #undo {
+               position: absolute;
+
+               right: -37px;
+               bottom: max(min(30px, calc(30px - (750px - 100vh)/25)), 20px);
+             }
+             #redo {
+               position: absolute;
+
+               right: -37px;
+               bottom: max(min(-2px, calc(-2px - (750px - 100vh)/25)), -10px);
+             }
+           }
            #domain {
              margin-left: calc(1.27 * min(5vh, 50px));
              width: calc(100% - 1.33 * min(5vh, 50px));
              flex-wrap: nowrap;
-             margin-top: 1.75vh;
              gap: 5px;
              
-             #pencil {
-               bottom: max(min(10px, calc(10px - (750px - 100vh)/15)), 1px);
-               left: -46px;
-             }
-             #undo {
-               right: -40px;
-               bottom: max(min(30px, calc(30px - (750px - 100vh)/25)), 20px);
-             }
-             #redo {
-               right: -40px;
-               bottom: max(min(-2px, calc(-2px - (750px - 100vh)/25)), -10px);
-             }
+             
            }
          }         
          
@@ -483,7 +514,7 @@
              align-self: center;
              text-align: center;
              width: 70vw;
-             height: 38.5vh;
+             height: 36.25vh;
              li {
                width: unset;
              }
@@ -492,7 +523,6 @@
              width: 90vw;
              flex-direction: row;
              flex-basis: 100%;
-             margin-top: clamp(4px, 2vh, 13px);
              gap: 5px;
            }
            @media (height < 750px) {
@@ -525,11 +555,9 @@
          @media (width < 460px) {
            #undo {
              bottom: clamp(45px, 10vh, 78px);
-             right: 21px;
            }
            #redo {
              bottom: clamp(45px, 8.2vh, 66px);
-             right: -5px;
            }
          }
 
@@ -883,15 +911,20 @@
                         <td class="x_axis">3</td>
                     </tr>
                 </table>
-                <div id="domain">
-                    <button id="pencil"> </button>
+                <div id="wrap_toolbar_domain">
+                    <div id="toolbar">
+                        <button id="pencil"> </button>
 
-                    <button data-value="1"><p>1</p></button>
-                    <button data-value="2"><p>2</p></button>
-                    <button data-value="3"><p>3</p></button>
+                        <button id="undo"></button>
+                        <button id="redo"></button>
+                    </div>
+                    <div id="domain">
+                        
+                        <button data-value="1"><p>1</p></button>
+                        <button data-value="2"><p>2</p></button>
+                        <button data-value="3"><p>3</p></button>
 
-                    <button id="undo"></button>
-                    <button id="redo"></button>
+                    </div>
                 </div>
             </div>
         </div>

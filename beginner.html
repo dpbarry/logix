@@ -174,7 +174,6 @@
              z-index: 1;
            }
            td.given > .ripple, td.correct > .ripple {
-             opacity: 0.4;
              background-color: #EFEFEF;
              &.run {
                opacity: 0;
@@ -414,10 +413,11 @@
            pointer-events: none;
            will-change: transform;
            z-index: -1;
+           opacity: 0.9;
          }
 
          .ripple.run {
-           transform: scale(200);
+           transform: scale(175);
          }
 
          /* For ripple */
@@ -458,8 +458,8 @@
 
            #wrap_toolbar_domain {
              margin-top: calc(1.15vh - clamp(40px, 7.5vh, 58px));
-               ;
-               gap: 0;
+             ;
+             gap: 0;
            }
            #toolbar {
              width: calc(100% - 1.33 * min(5vh, 50px));
@@ -1207,40 +1207,43 @@
        }
      }
 
-     function addRipple(list) {
-       list.forEach(elementWithRipple => {
-         elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
-           document.querySelectorAll(".ripple").forEach((r) => {
-             r.remove();
-           });
-           // Create a ripple element <div class="ripple">
-           const rippleEl = document.createElement('div');
-           rippleEl.classList.add('ripple');
-           
-           // Position the ripple
-           const x = mouseEvent.offsetX;
-           const y = mouseEvent.offsetY;
-           
-           rippleEl.style.left = `${x}px`;
-           rippleEl.style.top = `${y}px`;
-           
-           elementWithRipple.appendChild(rippleEl);
-           
-           requestAnimationFrame(() => {
-             rippleEl.classList.add('run');
-           });
-           
-           // Remove ripple element when the transition is done
-           rippleEl.addEventListener('transitionend', () => {
-             rippleEl.remove();
-           });
-         });
+     function spawnRipple() {
+       document.querySelectorAll(".ripple").forEach((r) => {
+         r.remove();
+       });
+       // Create a ripple element <div class="ripple">
+       const rippleEl = document.createElement('div');
+       rippleEl.classList.add('ripple');
+       
+       // Position the ripple
+       const x = mouseEvent.offsetX;
+       const y = mouseEvent.offsetY;
+       
+       rippleEl.style.left = `${x}px`;
+       rippleEl.style.top = `${y}px`;
+       
+       elementWithRipple.appendChild(rippleEl);
+       
+       requestAnimationFrame(() => {
+         rippleEl.classList.add('run');
+       });
+       
+       // Remove ripple element when the transition is done
+       rippleEl.addEventListener('transitionend', () => {
+         rippleEl.remove();
        });
      }
 
-     var elementsWithRipple = document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button');
-     addRipple(elementsWithRipple);
+     
 
+     document.querySelectorAll('td:not(.x_axis, .y_axis, .given), #domain button').forEach(element => {
+       element.onfocus = function () {
+         
+       } 
+     });
+
+
+     
      function showModal(id) {
        document.getElementById(id).showModal();
      }

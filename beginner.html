@@ -112,7 +112,7 @@
              
              cursor: pointer;
              
-             z-index: 1; /* Otherwise hitbox gets covered by #main_wrapper spacing */
+             z-index: 1; /* Otherwise hitbox gets covered by #wrap_main spacing */
 
              opacity: 1;
              transition: opacity 0.2s;
@@ -138,7 +138,7 @@
          }
 
          
-         #main_wrapper {
+         #wrap_main {
            display: flex;
            flex-wrap: wrap;
            justify-content: center;
@@ -163,6 +163,7 @@
              background-repeat: no-repeat;
              background-size: 100% 0;
              background-position: bottom;
+             z-index: 1;
            }
            
            td:not(.x_axis, .y_axis) {
@@ -171,9 +172,9 @@
 
            td.given {
              background-color: #D0D0D0;
-             z-index: 1;
            }
            td.given > .ripple, td.correct > .ripple {
+             opacity: 0.4;
              background-color: #EFEFEF;
              &.run {
                opacity: 0;
@@ -184,7 +185,6 @@
            td.correct {
              background-size: 100% 100%;
              box-shadow: unset !important;
-             z-index: 1;
            }
 
            .x_axis, .y_axis {
@@ -212,6 +212,10 @@
            font-size: max(4vh, 1.5rem);
 
            cursor: default;
+
+           display: flex;
+           flex-direction: column;
+           justify-content: flex-start;
            
            margin: 0;
            margin-left: 12.5vw;
@@ -227,13 +231,16 @@
            mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
            --top-mask-size: 0px;
            --bottom-mask-size: 0px;
-           
+
            li {
              visibility: hidden;
              padding: 4px;
 
              width: 95%;
 
+             &:first-child { margin-top: auto; }
+             &:last-child { margin-bottom: auto; }
+             
              + li {
                border-top: 1px solid #000000;
              }
@@ -257,11 +264,11 @@
 
          
          #propositions.is-top-overflowing {
-           --top-mask-size: 48px !important;
+           --top-mask-size: 40px !important;
          }
 
          #propositions.is-bottom-overflowing {
-           --bottom-mask-size: 48px !important;
+           --bottom-mask-size: 40px !important;
          }
          
          #propositions::-webkit-scrollbar { 
@@ -279,10 +286,9 @@
 
          #wrap_toolbar_domain {
            display: flex;
-           wrap: wrap;
            flex-direction: column;
            gap: 7px;
-           margin-top: -15px;
+           margin-top: -25px;
            align-items: center;
          }
 
@@ -291,7 +297,7 @@
            width: 90vw;
            flex-basis: 100%;
            
-           & > * {
+           #pencil, #undo, #redo {
              cursor: pointer;
              background-color: transparent;
              border: 0;
@@ -299,6 +305,7 @@
              filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.35));
              border-radius: 50px;
              padding: 0;
+             
            }
            #pencil {
              margin-right: auto;
@@ -370,11 +377,11 @@
            transition: opacity 1s;
 
            button {
-             transition: background 0.55s, box-shadow 0.25s;
+             transition: background 0.35s, box-shadow 0.25s;
              width: 100%;
-             height: clamp(40px, 7.5vh, 58px);
+             height: 56px;
              font-family:  computer modern serif;
-             font-size: clamp(1.5rem, 5.35vh, 2.4rem);
+             font-size: 2.4rem;
              background-color: #FFFFFF;
              border: 1px solid #101010;
              box-shadow: 0 3px 4px -4px #DDDDDD, 0 0 3px #EEEEEE;
@@ -413,11 +420,10 @@
            pointer-events: none;
            will-change: transform;
            z-index: -1;
-           opacity: 0.9;
          }
 
          .ripple.run {
-           transform: scale(175);
+           transform: scale(200);
          }
 
          /* For ripple */
@@ -429,8 +435,8 @@
          
 
          /* Landscape layout */
-         @media (width > 850px) {
-           #main_wrapper {
+         @media (orientation: landscape) {
+           #wrap_main {
              gap: 2.25vw;
 
              margin-top: 18vh;
@@ -441,13 +447,13 @@
            }
 
            @media (height < 700px) {
-             #main_wrapper { margin-top: calc(18vh - (700px - 100vh)/7);}
+             #wrap_main { margin-top: calc(18vh - (700px - 100vh)/7);}
            }
            
            #propositions {
              margin: 0;
-             margin-top: 4.75vh;
-
+             position: relative;
+             bottom: 5vh;
              display: flex;
              flex-direction: column;
              min-height: 50vh;
@@ -457,13 +463,12 @@
            }
 
            #wrap_toolbar_domain {
-             margin-top: calc(1.15vh - clamp(40px, 7.5vh, 58px));
-             ;
+             margin-top: calc(1vh - clamp(40px, 7.5vh, 58px));
              gap: 0;
            }
            #toolbar {
-             width: calc(100% - 1.33 * min(5vh, 50px));
-             margin-left: calc(1.27 * min(5vh, 50px));
+             width: calc(100% - 1 * min(7vh, 50px));
+             margin-left: calc(1.2 * min(5vh, 50px));
              min-height: clamp(40px, 7.5vh, 58px);
              position: relative;
              top: clamp(40px, 7.5vh, 58px);
@@ -473,26 +478,26 @@
 
              #pencil {
                position: absolute;
-               bottom: max(min(10px, calc(10px - (750px - 100vh)/15)), 1px);
-               left: -40px;
+               bottom: max(min(10px, calc(10px - (750px - 100vh)/12)), -8px);
+               left: -41px;
                margin: 0;
              }
              #undo {
                position: absolute;
 
                right: -37px;
-               bottom: max(min(30px, calc(30px - (750px - 100vh)/25)), 20px);
+               bottom: max(min(30px, calc(30px - (750px - 100vh)/15)), 10px);
              }
              #redo {
                position: absolute;
 
                right: -37px;
-               bottom: max(min(-2px, calc(-2px - (750px - 100vh)/25)), -10px);
+               bottom: max(min(-2px, calc(-2px - (750px - 100vh)/15)), -20px);
              }
            }
            #domain {
-             margin-left: calc(1.27 * min(5vh, 50px));
-             width: calc(100% - 1.33 * min(5vh, 50px));
+             margin-left: calc(1.2 * min(5vh, 50px));
+             width: calc(100% - 1 * min(7vh, 50px));
              flex-wrap: nowrap;
              gap: 5px;
              
@@ -502,8 +507,8 @@
          
          
          /* Portrait layout */
-         @media (width <= 850px) {
-           #main_wrapper {
+         @media (orientation: portrait) {
+           #wrap_main {
              margin-top: 0vh;
              flex-direction: column;
              align-content: center;
@@ -511,13 +516,20 @@
            }
            #propositions {
              margin: 0;
+             margin-bottom: 1.15vh;
              align-self: center;
              text-align: center;
              width: 70vw;
-             height: 36.25vh;
+             height: 32.75vh; /* REDUCED WHEN <4 PROPOSITIONS */
              li {
                width: unset;
              }
+           }
+
+           #wrap_toolbar_domain {
+             position: absolute;
+             bottom: 15px;
+             left: 5vw;
            }
            #domain {
              width: 90vw;
@@ -525,41 +537,18 @@
              flex-basis: 100%;
              gap: 5px;
            }
-           @media (height < 750px) {
-             #main_wrapper { gap: calc((750px - 100vh)/14); }
+           @media (height < 700px) {
              #grid td {
-               width: clamp(24px, calc(13vh - (750px - 100vh)/14), 100px);
-               height: clamp(24px, calc(13vh - (750px - 100vh)/14), 100px);
-               font-size: clamp(1rem, calc(8vh - (750px - 100vh)/15), 3rem);
+               width: clamp(24px, calc(13vh - (700px - 100vh)/14), 100px);
+               height: clamp(24px, calc(13vh - (700px - 100vh)/14), 100px);
+               font-size: clamp(1rem, calc(8vh - (700px - 100vh)/15), 3rem);
              }
            }
            #grid {
-             margin-right: 39px;
-             margin-top: -3.75vh;
-           }
-           #pencil {
-             bottom: clamp(45px, 9.25vh, 72px);
-           }
-           #undo {
-             bottom: clamp(45px, 9.25vh, 72px);
-             right: 36px;
-           }
-           #redo {
-             bottom: clamp(45px, 9.25vh, 72px);
-             right: 0px;
+             margin-right: 5.09vh;
            }
          }
-         @media (width < 675px) {
-           #domain #undo, #domain #redo {transition: bottom 0.15s ease-out, right 0.15s ease-out; };
-         }
-         @media (width < 460px) {
-           #undo {
-             bottom: clamp(45px, 10vh, 78px);
-           }
-           #redo {
-             bottom: clamp(45px, 8.2vh, 66px);
-           }
-         }
+
 
          .close {
            position: absolute;
@@ -774,7 +763,7 @@
             </dialog>
         </div>
 
-        <div id="main_wrapper">
+        <div id="wrap_main">
             <ul id="propositions">
                 <li>
                     <span class="entry e1e1"> \(
@@ -880,9 +869,9 @@
                         \)
                     </span>
                 </li>
+                
             </ul>
-
-            <div id ="wrap_grid_domain">
+            <div id="wrap_grid_domain">
                 <table id="grid">            
                     <tr>
                         
@@ -923,7 +912,6 @@
                         <button data-value="1"><p>1</p></button>
                         <button data-value="2"><p>2</p></button>
                         <button data-value="3"><p>3</p></button>
-
                     </div>
                 </div>
             </div>
@@ -970,6 +958,8 @@
        document.querySelectorAll("#propositions li").forEach((li) => {
          li.style.visibility = "visible";
        });
+       verticalScroll(document.querySelector('#propositions'), 7);
+       horizontalScroll(document.querySelector('#domain'));
      }
 
      // id cells with their coordinates
@@ -1132,8 +1122,8 @@
      }
 
      
-     function verticalScroll(el) {
-       const isScrollable = (el.scrollHeight > el.clientHeight);
+     function verticalScroll(el, moe) {
+       const isScrollable = (el.scrollHeight - moe > el.clientHeight);
        
        // GUARD: If element is not scrollable, remove all classes
        if (!isScrollable) {
@@ -1172,7 +1162,7 @@
 
      document.querySelector('#propositions').addEventListener('scroll', (e) => {
        const el = e.currentTarget;
-       verticalScroll(el);
+       verticalScroll(el, 7);
      });
 
      document.querySelector('#domain').addEventListener('scroll', (e) => {
@@ -1181,13 +1171,11 @@
      });
 
      window.onresize = function(event) {
-       verticalScroll(document.querySelector('#propositions'));
+       verticalScroll(document.querySelector('#propositions'), 7);
      }
 
      
-     verticalScroll(document.querySelector('#propositions'));
      horizontalScroll(document.querySelector('#domain'));
-
 
 
      // given the id of a cell, emphasize borders of cells in that row and column
@@ -1207,43 +1195,46 @@
        }
      }
 
-     function spawnRipple() {
-       document.querySelectorAll(".ripple").forEach((r) => {
-         r.remove();
-       });
-       // Create a ripple element <div class="ripple">
-       const rippleEl = document.createElement('div');
-       rippleEl.classList.add('ripple');
-       
-       // Position the ripple
-       const x = mouseEvent.offsetX;
-       const y = mouseEvent.offsetY;
-       
-       rippleEl.style.left = `${x}px`;
-       rippleEl.style.top = `${y}px`;
-       
-       elementWithRipple.appendChild(rippleEl);
-       
-       requestAnimationFrame(() => {
-         rippleEl.classList.add('run');
-       });
-       
-       // Remove ripple element when the transition is done
-       rippleEl.addEventListener('transitionend', () => {
-         rippleEl.remove();
+     rippleStack = [];
+     function addRipple(list) {
+       list.forEach(elementWithRipple => {
+         elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
+           rippleStack.push(mouseEvent.target);
+           document.querySelectorAll(".ripple").forEach((r) => {
+             if (rippleStack[rippleStack.length - 1] == mouseEvent.target) {
+               r.remove();
+             } else {
+               return;
+             }
+           });
+           // Create a ripple element <div class="ripple">
+           const rippleEl = document.createElement('div');
+           rippleEl.classList.add('ripple');
+           
+           // Position the ripple
+           const x = mouseEvent.offsetX;
+           const y = mouseEvent.offsetY;
+           
+           rippleEl.style.left = `${x}px`;
+           rippleEl.style.top = `${y}px`;
+           
+           elementWithRipple.appendChild(rippleEl);
+           
+           requestAnimationFrame(() => {
+             rippleEl.classList.add('run');
+           });
+           
+           // Remove ripple element when the transition is done
+           rippleEl.addEventListener('transitionend', () => {
+             rippleEl.remove();
+           });
+         });
        });
      }
 
-     
+     var elementsWithRipple = document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button');
+     addRipple(elementsWithRipple);
 
-     document.querySelectorAll('td:not(.x_axis, .y_axis, .given), #domain button').forEach(element => {
-       element.onfocus = function () {
-         
-       } 
-     });
-
-
-     
      function showModal(id) {
        document.getElementById(id).showModal();
      }

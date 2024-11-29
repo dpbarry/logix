@@ -435,7 +435,7 @@
          
 
          /* Landscape layout */
-         @media (width > 850px) {
+         @media (orientation: landscape) {
            #wrap_main {
              gap: 2.25vw;
 
@@ -507,7 +507,7 @@
          
          
          /* Portrait layout */
-         @media (width <= 850px) {
+         @media (orientation: portrait) {
            #wrap_main {
              margin-top: 0vh;
              flex-direction: column;
@@ -869,7 +869,7 @@
                         \)
                     </span>
                 </li>
-             
+                
             </ul>
             <div id="wrap_grid_domain">
                 <table id="grid">            
@@ -958,6 +958,8 @@
        document.querySelectorAll("#propositions li").forEach((li) => {
          li.style.visibility = "visible";
        });
+       verticalScroll(document.querySelector('#propositions'), 7);
+       horizontalScroll(document.querySelector('#domain'));
      }
 
      // id cells with their coordinates
@@ -1172,12 +1174,8 @@
        verticalScroll(document.querySelector('#propositions'), 7);
      }
 
-
-     // Timeout to avoid false positive
-    setTimeout(function () {
-     verticalScroll(document.querySelector('#propositions'), 7);
+     
      horizontalScroll(document.querySelector('#domain'));
-}, 15);
 
 
      // given the id of a cell, emphasize borders of cells in that row and column

@@ -1056,8 +1056,9 @@
        
        cellList.forEach((cell) => {
          cell.tabIndex = -1;
-         cell.onfocus = "";
+         cell.onfocus = function () {this.blur();};
          cell.removeEventListener("keydown", inp);
+
          domainList.forEach((button) => {
            // More to come... buttons morph into next level
            button.onfocus = "";
@@ -1202,16 +1203,16 @@
 
      rippleStack = [];
      
-     function spawnRipple(mouseEvent) {
-       rippleStack.push(mouseEvent.target);
+     function spawnRipple(mouseEvent, element) {
+       rippleStack.push(element);
 
        document.querySelectorAll(".ripple").forEach((r) => {
-         if (mouseEvent.target === rippleStack[rippleStack.length-1])
+         if (element === rippleStack[rippleStack.length-1])
            r.remove();
        });
 
        rippleStack = rippleStack.slice(rippleStack.length-1);
-       if (mouseEvent.target !== rippleStack[rippleStack.length-1])
+       if (element !== rippleStack[rippleStack.length-1])
          return;
        // Create a ripple element <div class="ripple">
        const rippleEl = document.createElement('div');
@@ -1224,7 +1225,7 @@
        rippleEl.style.left = `${x}px`;
        rippleEl.style.top = `${y}px`;
 
-       mouseEvent.target.appendChild(rippleEl);
+       element.appendChild(rippleEl);
 
        requestAnimationFrame(() => {
          rippleEl.classList.add('run');
@@ -1236,11 +1237,14 @@
 
        });
      }
+
+
+     
      
      document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
-       element.addEventListener("pointerdown", (e) => {
-         spawnRipple(e);
-         e.target.focus();
+       element.addEventListener("pointerdown",  (event) => {
+         spawnRipple(event, element);
+         element.focus();
        });
      });
      

@@ -163,6 +163,7 @@
              background-repeat: no-repeat;
              background-size: 100% 0;
              background-position: bottom;
+             z-index: 1;
            }
            
            td:not(.x_axis, .y_axis) {
@@ -171,7 +172,6 @@
 
            td.given {
              background-color: #D0D0D0;
-             z-index: 1;
            }
            td.given > .ripple, td.correct > .ripple {
              opacity: 0.4;
@@ -185,7 +185,6 @@
            td.correct {
              background-size: 100% 100%;
              box-shadow: unset !important;
-             z-index: 1;
            }
 
            .x_axis, .y_axis {
@@ -380,9 +379,9 @@
            button {
              transition: background 0.35s, box-shadow 0.25s;
              width: 100%;
-             height: clamp(40px, 7.5vh, 58px);
+             height: 56px;
              font-family:  computer modern serif;
-             font-size: clamp(1.5rem, 5.35vh, 2.4rem);
+             font-size: 2.4rem;
              background-color: #FFFFFF;
              border: 1px solid #101010;
              box-shadow: 0 3px 4px -4px #DDDDDD, 0 0 3px #EEEEEE;
@@ -529,7 +528,7 @@
 
            #wrap_toolbar_domain {
              position: fixed;
-             bottom: 20px;
+             bottom: 15px;
              left: 5vw;
            }
            #domain {
@@ -538,12 +537,11 @@
              flex-basis: 100%;
              gap: 5px;
            }
-           @media (height < 750px) {
-             #wrap_main { gap: calc((750px - 100vh)/14); }
+           @media (height < 650px) {
              #grid td {
-               width: clamp(24px, calc(13vh - (750px - 100vh)/14), 100px);
-               height: clamp(24px, calc(13vh - (750px - 100vh)/14), 100px);
-               font-size: clamp(1rem, calc(8vh - (750px - 100vh)/15), 3rem);
+               width: clamp(24px, calc(13vh - (650px - 100vh)/14), 100px);
+               height: clamp(24px, calc(13vh - (650px - 100vh)/14), 100px);
+               font-size: clamp(1rem, calc(8vh - (650px - 100vh)/15), 3rem);
              }
            }
            #grid {
@@ -713,7 +711,6 @@
              max-width: 500px;
            }
          }
-
         </style>
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
@@ -1201,11 +1198,17 @@
        }
      }
 
+     rippleStack = [];
      function addRipple(list) {
        list.forEach(elementWithRipple => {
          elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
+           rippleStack.push(mouseEvent.target);
            document.querySelectorAll(".ripple").forEach((r) => {
-             r.remove();
+             if (rippleStack[rippleStack.length - 1] == mouseEvent.target) {
+               r.remove();
+             } else {
+               return;
+             }
            });
            // Create a ripple element <div class="ripple">
            const rippleEl = document.createElement('div');

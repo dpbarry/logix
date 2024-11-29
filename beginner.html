@@ -452,8 +452,8 @@
            
            #propositions {
              margin: 0;
-             margin-top: 4.75vh;
-
+             position: relative;
+             bottom: 5vh;
              display: flex;
              flex-direction: column;
              min-height: 50vh;
@@ -478,21 +478,21 @@
 
              #pencil {
                position: absolute;
-               bottom: max(min(10px, calc(10px - (750px - 100vh)/15)), 1px);
-               left: -40px;
+               bottom: max(min(10px, calc(10px - (750px - 100vh)/12)), -8px);
+               left: -41px;
                margin: 0;
              }
              #undo {
                position: absolute;
 
                right: -37px;
-               bottom: max(min(30px, calc(30px - (750px - 100vh)/25)), 20px);
+               bottom: max(min(30px, calc(30px - (750px - 100vh)/15)), 10px);
              }
              #redo {
                position: absolute;
 
                right: -37px;
-               bottom: max(min(-2px, calc(-2px - (750px - 100vh)/25)), -10px);
+               bottom: max(min(-2px, calc(-2px - (750px - 100vh)/15)), -20px);
              }
            }
            #domain {
@@ -516,18 +516,18 @@
            }
            #propositions {
              margin: 0;
-             margin-bottom: 10px;
+             margin-bottom: 1.15vh;
              align-self: center;
              text-align: center;
              width: 70vw;
-             height: 32vh; /* REDUCED WHEN <4 PROPOSITIONS */
+             height: 32.75vh; /* REDUCED WHEN <4 PROPOSITIONS */
              li {
                width: unset;
              }
            }
 
            #wrap_toolbar_domain {
-             position: fixed;
+             position: absolute;
              bottom: 15px;
              left: 5vw;
            }
@@ -537,11 +537,11 @@
              flex-basis: 100%;
              gap: 5px;
            }
-           @media (height < 650px) {
+           @media (height < 700px) {
              #grid td {
-               width: clamp(24px, calc(13vh - (650px - 100vh)/14), 100px);
-               height: clamp(24px, calc(13vh - (650px - 100vh)/14), 100px);
-               font-size: clamp(1rem, calc(8vh - (650px - 100vh)/15), 3rem);
+               width: clamp(24px, calc(13vh - (700px - 100vh)/14), 100px);
+               height: clamp(24px, calc(13vh - (700px - 100vh)/14), 100px);
+               font-size: clamp(1rem, calc(8vh - (700px - 100vh)/15), 3rem);
              }
            }
            #grid {
@@ -869,8 +869,7 @@
                         \)
                     </span>
                 </li>
-
-            
+             
             </ul>
             <div id="wrap_grid_domain">
                 <table id="grid">            
@@ -1178,7 +1177,7 @@
     setTimeout(function () {
      verticalScroll(document.querySelector('#propositions'), 7);
      horizontalScroll(document.querySelector('#domain'));
-}, 0);
+}, 15);
 
 
      // given the id of a cell, emphasize borders of cells in that row and column

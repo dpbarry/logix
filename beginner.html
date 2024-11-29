@@ -195,7 +195,7 @@
            }
            
            td:focus {
-             background-color: #F1EEDC !important;
+             background: #F1EEDC !important;
            }
            td.insert {
              animation: fade-in 0.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -424,6 +424,7 @@
 
          .ripple.run {
            transform: scale(200);
+           opacity: 0;
          }
 
          /* For ripple */
@@ -1196,45 +1197,48 @@
      }
 
      rippleStack = [];
-     function addRipple(list) {
-       list.forEach(elementWithRipple => {
-         elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
-           rippleStack.push(mouseEvent.target);
-           document.querySelectorAll(".ripple").forEach((r) => {
-             if (rippleStack[rippleStack.length - 1] == mouseEvent.target) {
-               r.remove();
-             } else {
-               return;
-             }
-           });
-           // Create a ripple element <div class="ripple">
-           const rippleEl = document.createElement('div');
-           rippleEl.classList.add('ripple');
-           
-           // Position the ripple
-           const x = mouseEvent.offsetX;
-           const y = mouseEvent.offsetY;
-           
-           rippleEl.style.left = `${x}px`;
-           rippleEl.style.top = `${y}px`;
-           
-           elementWithRipple.appendChild(rippleEl);
-           
-           requestAnimationFrame(() => {
-             rippleEl.classList.add('run');
-           });
-           
-           // Remove ripple element when the transition is done
-           rippleEl.addEventListener('transitionend', () => {
-             rippleEl.remove();
-           });
-         });
+     
+     function spawnRipple(mouseEvent) {
+       rippleStack.push(mouseEvent.target);
+
+       document.querySelectorAll(".ripple").forEach((r) => {
+         if (mouseEvent.target === rippleStack[rippleStack.length-1])
+           r.remove();
+       });
+
+       rippleStack = rippleStack.slice(rippleStack.length-1);
+       if (mouseEvent.target !== rippleStack[rippleStack.length-1])
+         return;
+       // Create a ripple element <div class="ripple">
+       const rippleEl = document.createElement('div');
+       rippleEl.classList.add('ripple');
+
+       // Position the ripple
+       const x = mouseEvent.offsetX;
+       const y = mouseEvent.offsetY;
+
+       rippleEl.style.left = `${x}px`;
+       rippleEl.style.top = `${y}px`;
+
+       mouseEvent.target.appendChild(rippleEl);
+
+       requestAnimationFrame(() => {
+         rippleEl.classList.add('run');
+       });
+
+       // Remove ripple element when the transition is done
+       rippleEl.addEventListener('transitionend', () => {
+         rippleEl.remove();
+
        });
      }
-
-     var elementsWithRipple = document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button');
-     addRipple(elementsWithRipple);
-
+     
+     document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
+       element.addEventListener("pointerdown", (e) => {
+         spawnRipple(e);
+       });
+     });
+     
      function showModal(id) {
        document.getElementById(id).showModal();
      }

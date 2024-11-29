@@ -209,7 +209,7 @@
          }
          
          #propositions {
-           font-size: max(4vh, 1.5rem);
+           font-size: clamp(1.5rem, 4vh, 2rem);
 
            cursor: default;
 
@@ -410,7 +410,7 @@
          }
 
          .ripple {
-           background: #F1EEDC;
+           background: #e6e3d5;
            width: 3px;
            height: 3px;
            border-radius: 100%;
@@ -530,6 +530,11 @@
            #wrap_toolbar_domain {
              position: relative;
              bottom: 5px;
+           }
+           @media (height > 700px) {
+             #wrap_grid_domain {
+               gap: calc((100vh - 700px) / 6);
+             }
            }
            #domain {
              width: 90vw;
@@ -1235,6 +1240,7 @@
      document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
        element.addEventListener("pointerdown", (e) => {
          spawnRipple(e);
+         e.target.focus();
        });
      });
      

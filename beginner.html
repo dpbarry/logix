@@ -620,8 +620,9 @@
            width: min(80vw, 500px);
            height: 51vh;
            visibility: hidden;
-           transition: transform cubic-bezier(.25,1,.25,1) 0.25s;
+           transition: transform cubic-bezier(.25,1,.25,1) 0.25s, opacity 0.1s ;
            transform: scale(0);
+           opacity: 0;
          }
 
          dialog::backdrop {
@@ -630,6 +631,7 @@
 
          dialog[open] {
            transform: scale(1);
+           opacity: 1;
 
            visibility: visible;
            border: 1px solid #C7C7C7;
@@ -638,17 +640,20 @@
            0 0 30px 15px rgb(0,0,0,0.1);
          }
          dialog.hide {
-           transition: transform ease 0.15s;
-
-           transform: scale(0);
+           transition: transform ease-in 0.2s, opacity ease 0.2s;
+           transform: scale(20%);
+           perspective: 1000px;
+           opacity: 0;
          }
 
          
          dialog {
            h1 {
-             margin-top:-5px;
-             font-size: 1.75rem;
+             margin-top:-10px;
+             margin-bottom: 10px;
+             font-size: 1.95rem;
              font-weight: 600;
+             text-align: center;
            }
            label {
              margin-right: 1px;
@@ -1018,7 +1023,8 @@
        });
 
        if (flag) {
-         setTimeout(success, 125); // Suspense...
+         // Partly for suspense
+         setTimeout(success, 125); 
        }
      }
      
@@ -1051,7 +1057,6 @@
 
 
      function success() {
-       document.activeElement.blur();
        crosshairs("not-a-cell");
        highlight("not-a-cell");
        
@@ -1067,6 +1072,10 @@
            button.onblur = "";
          });
        });
+       
+       // Only blur what might be a domain button after handler is removed
+       document.activeElement.blur();
+
      }
 
      for (var i = 0; i < cellList.length; i++){

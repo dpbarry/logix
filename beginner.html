@@ -9,6 +9,12 @@
 
         <!-- COMPUTER MODERN SERIF -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
+
+        <!-- SOURCE SERIF 4 -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
+
         
         <title>Logix</title>
         <link rel="icon" type="image/png" href="images/MATHCAL_L.png">
@@ -22,7 +28,7 @@
          }
 
          #level {
-           font-family: computer modern serif;
+           font-family: "computer modern serif";
            font-weight: lighter;
            font-size: 2.25rem;
            
@@ -149,7 +155,7 @@
            border-spacing: 4px;
 
            td {
-             font-family: computer modern serif;
+             font-family: "computer modern serif";
              border: 1px solid #000000;
              text-align: center;
              outline: 1px solid transparent; /* For crosshairs */
@@ -195,7 +201,7 @@
            }
            
            td:focus {
-             background: #F1EEDC !important;
+             background-color: #F1EEDC !important;
            }
            td.insert {
              animation: fade-in 0.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -209,7 +215,7 @@
          }
          
          #propositions {
-           font-size: clamp(1.5rem, 4vh, 2rem);
+           font-size: max(4vh, 1.5rem);
 
            cursor: default;
 
@@ -380,7 +386,7 @@
              transition: background 0.35s, box-shadow 0.25s;
              width: 100%;
              height: 56px;
-             font-family:  computer modern serif;
+             font-family: "computer modern serif";
              font-size: 2.4rem;
              background-color: #FFFFFF;
              border: 1px solid #101010;
@@ -410,7 +416,7 @@
          }
 
          .ripple {
-           background: #e6e3d5;
+           background: #F1EEDC;
            width: 3px;
            height: 3px;
            border-radius: 100%;
@@ -423,8 +429,7 @@
          }
 
          .ripple.run {
-           transform: scale(165);
-           opacity: 0;
+           transform: scale(200);
          }
 
          /* For ripple */
@@ -528,13 +533,9 @@
            }
 
            #wrap_toolbar_domain {
-             position: relative;
-             bottom: 5px;
-           }
-           @media (height > 700px) {
-             #wrap_grid_domain {
-               gap: calc((100vh - 700px) / 13);
-             }
+             position: absolute;
+             bottom: 15px;
+             left: 5vw;
            }
            #domain {
              width: 90vw;
@@ -615,7 +616,7 @@
            margin: auto;
            display: block;
            
-           font-family: computer modern serif;
+           font-family: "source serif 4";
            width: min(80vw, 500px);
            height: 51vh;
            visibility: hidden;
@@ -645,8 +646,9 @@
          
          dialog {
            h1 {
-             margin-top:0;
+             margin-top:-5px;
              font-size: 1.75rem;
+             font-weight: 600;
            }
            label {
              margin-right: 1px;
@@ -696,8 +698,8 @@
            #configs {
              margin-left: 2vw;
              margin-right: 2vw;
-             font-family: Computer Modern Serif;
              font-size: 1.4rem;
+             font-weight: 400;
              display:flex;
              align-items: flex-end;
              justify-content: left;
@@ -707,6 +709,7 @@
            p {
              margin: 0;
              font-style: italic;
+             font-weight: 350;
              font-size: 1rem;
              flex-basis:100%;
              text-align: left;
@@ -728,7 +731,7 @@
         <h1 id="level" onClick="">1.1</h1>
         <div id="overlay"></div>
         <div id="menu">
-            <input id="menu_checkbox" type="checkbox">
+            <input id="menu_checkbox" type="checkbox" checked>
             <span id="chevron"></span>
             <ul>
                 <li id="info" onclick="showModal('info_dialog')"></li>
@@ -1056,9 +1059,8 @@
        
        cellList.forEach((cell) => {
          cell.tabIndex = -1;
-         cell.onfocus = function () {this.blur();};
+         cell.onfocus = "";
          cell.removeEventListener("keydown", inp);
-
          domainList.forEach((button) => {
            // More to come... buttons morph into next level
            button.onfocus = "";
@@ -1202,52 +1204,45 @@
      }
 
      rippleStack = [];
-     
-     function spawnRipple(mouseEvent, element) {
-       rippleStack.push(element);
-
-       document.querySelectorAll(".ripple").forEach((r) => {
-         if (element === rippleStack[rippleStack.length-1])
-           r.remove();
-       });
-
-       rippleStack = rippleStack.slice(rippleStack.length-1);
-       if (element !== rippleStack[rippleStack.length-1])
-         return;
-       // Create a ripple element <div class="ripple">
-       const rippleEl = document.createElement('div');
-       rippleEl.classList.add('ripple');
-
-       // Position the ripple
-       const x = mouseEvent.offsetX;
-       const y = mouseEvent.offsetY;
-
-       rippleEl.style.left = `${x}px`;
-       rippleEl.style.top = `${y}px`;
-
-       element.appendChild(rippleEl);
-
-       requestAnimationFrame(() => {
-         rippleEl.classList.add('run');
-       });
-
-       // Remove ripple element when the transition is done
-       rippleEl.addEventListener('transitionend', () => {
-         rippleEl.remove();
-
+     function addRipple(list) {
+       list.forEach(elementWithRipple => {
+         elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
+           rippleStack.push(mouseEvent.target);
+           document.querySelectorAll(".ripple").forEach((r) => {
+             if (rippleStack[rippleStack.length - 1] == mouseEvent.target) {
+               r.remove();
+             } else {
+               return;
+             }
+           });
+           // Create a ripple element <div class="ripple">
+           const rippleEl = document.createElement('div');
+           rippleEl.classList.add('ripple');
+           
+           // Position the ripple
+           const x = mouseEvent.offsetX;
+           const y = mouseEvent.offsetY;
+           
+           rippleEl.style.left = `${x}px`;
+           rippleEl.style.top = `${y}px`;
+           
+           elementWithRipple.appendChild(rippleEl);
+           
+           requestAnimationFrame(() => {
+             rippleEl.classList.add('run');
+           });
+           
+           // Remove ripple element when the transition is done
+           rippleEl.addEventListener('transitionend', () => {
+             rippleEl.remove();
+           });
+         });
        });
      }
 
+     var elementsWithRipple = document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button');
+     addRipple(elementsWithRipple);
 
-     
-     
-     document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
-       element.addEventListener("pointerdown",  (event) => {
-         spawnRipple(event, element);
-         element.focus();
-       });
-     });
-     
      function showModal(id) {
        document.getElementById(id).showModal();
      }

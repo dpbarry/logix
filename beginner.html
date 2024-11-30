@@ -201,7 +201,7 @@
            }
            
            td:focus {
-             background-color: #F1EEDC !important;
+             background: #F1EEDC !important;
            }
            td.insert {
              animation: fade-in 0.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -215,7 +215,7 @@
          }
          
          #propositions {
-           font-size: max(4vh, 1.5rem);
+           font-size: clamp(1.5rem, 4vh, 2rem);
 
            cursor: default;
 
@@ -416,7 +416,7 @@
          }
 
          .ripple {
-           background: #F1EEDC;
+           background: #e6e3d5;
            width: 3px;
            height: 3px;
            border-radius: 100%;
@@ -429,6 +429,8 @@
          }
 
          .ripple.run {
+           transform: scale(165);
+           opacity: 0;
            transform: scale(200);
          }
 
@@ -533,9 +535,13 @@
            }
 
            #wrap_toolbar_domain {
-             position: absolute;
-             bottom: 15px;
-             left: 5vw;
+             position: relative;
+             bottom: 5px;
+           }
+           @media (height > 700px) {
+             #wrap_grid_domain {
+               gap: calc((100vh - 700px) / 13);
+             }
            }
            #domain {
              width: 90vw;
@@ -1064,7 +1070,7 @@
        
        cellList.forEach((cell) => {
          cell.tabIndex = -1;
-         cell.onfocus = "";
+         cell.onfocus = function () {this.blur();};
          cell.removeEventListener("keydown", inp);
          domainList.forEach((button) => {
            // More to come... buttons morph into next level
@@ -1213,44 +1219,41 @@
      }
 
      rippleStack = [];
-     function addRipple(list) {
-       list.forEach(elementWithRipple => {
-         elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
-           rippleStack.push(mouseEvent.target);
-           document.querySelectorAll(".ripple").forEach((r) => {
-             if (rippleStack[rippleStack.length - 1] == mouseEvent.target) {
-               r.remove();
-             } else {
-               return;
-             }
-           });
-           // Create a ripple element <div class="ripple">
-           const rippleEl = document.createElement('div');
-           rippleEl.classList.add('ripple');
-           
-           // Position the ripple
-           const x = mouseEvent.offsetX;
-           const y = mouseEvent.offsetY;
-           
-           rippleEl.style.left = `${x}px`;
-           rippleEl.style.top = `${y}px`;
-           
-           elementWithRipple.appendChild(rippleEl);
-           
-           requestAnimationFrame(() => {
-             rippleEl.classList.add('run');
-           });
-           
-           // Remove ripple element when the transition is done
-           rippleEl.addEventListener('transitionend', () => {
-             rippleEl.remove();
-           });
-         });
+     function spawnRipple(mouseEvent, element) {
+       rippleStack.push(element);
+       document.querySelectorAll(".ripple").forEach((r) => {
+         if (element === rippleStack[rippleStack.length-1])
+           r.remove();
        });
+       rippleStack = rippleStack.slice(rippleStack.length-1);
+       if (element !== rippleStack[rippleStack.length-1])
+         return;
+       // Create a ripple element <div class="ripple">
+       const rippleEl = document.createElement('div');
+       rippleEl.classList.add('ripple');
+       // Position the ripple
+       const x = mouseEvent.offsetX;
+       const y = mouseEvent.offsetY;
+       rippleEl.style.left = `${x}px`;
+       rippleEl.style.top = `${y}px`;
+       element.appendChild(rippleEl);
+       requestAnimationFrame(() => {
+         rippleEl.classList.add('run');
+       });
+       // Remove ripple element when the transition is done
+       rippleEl.addEventListener('transitionend', () => {
+         rippleEl.remove();
+       }
+       );
      }
 
-     var elementsWithRipple = document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button');
-     addRipple(elementsWithRipple);
+     document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
+       element.addEventListener("pointerdown",  (event) => {
+         spawnRipple(event, element);
+         element.focus();
+       });
+     });
+     
 
      function showModal(id) {
        document.getElementById(id).showModal();

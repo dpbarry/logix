@@ -20,6 +20,7 @@
         <link rel="icon" type="image/png" href="images/MATHCAL_L.png">
 
         <style>
+
          /*  Prevent mismatch between viewport and body dimensions */
          html, body {
            padding: 0;
@@ -27,6 +28,19 @@
            height: 100%;
          }
 
+
+         @property --myColor1 {
+           syntax: '<color>';
+           initial-value: rgb(110,155,250,.2);
+           inherits: false;
+         }
+
+         @property --myColor2 {
+           syntax: '<color>';
+           initial-value: rgb(110,155,250,.5);
+           inherits: false;
+         }
+         
          html.correct #domain {
            justify-content: right;
            transition: gap 0.5s;
@@ -46,13 +60,16 @@
              border: 0px;
            }
            button:first-child {
+
+             
              flex-basis: 100%;
              width: 100%;
              border: 1px solid black;
-             background: repeating-linear-gradient(20deg, rgb(110,155,250,.28),  rgb(110,155,250,0.42)  , rgb(110,155,250,.28) 400px);
-             background-size: calc(400px/sin(20deg)) 100%;
+             background: repeating-linear-gradient(20deg, var(--myColor1),  var(--myColor2) , var(--myColor1) 600px);
+             background-size: calc(600px/sin(20deg)) 100%;
              animation: glow 2.5s linear infinite reverse;
-
+             transition: --myColor1 0.25s, --myColor2 0.25s;
+             
              &>.ripple {
                background: rgb(110,155,250);
                transition: all .6s;
@@ -61,6 +78,11 @@
                  transform: scale(400);
                }
              }
+           }
+           
+           button:first-child:hover {
+             --myColor1: rgb(110,155,250,.5) ;
+             --myColor2: rgb(110,155,250,.8);
            }
 
            button:first-child::before {
@@ -77,18 +99,15 @@
              top: 50%; left: 50%;
              line-height: 3.25rem;
 
-             transition: font-weight 0.125s ease;
 
            }
-           button:first-child:hover::before {
-             font-weight: 400;
-           }
+
          }
 
 
          @keyframes glow {
            0% {
-             background-position: calc(400px/sin(20deg)) 0;
+             background-position: calc(600px/sin(20deg)) 0;
            }
          }
 

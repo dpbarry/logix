@@ -201,7 +201,7 @@
            }
            
            td:focus {
-             background-color: #F1EEDC !important;
+             background: #F1EEDC !important;
            }
            td.insert {
              animation: fade-in 0.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -215,7 +215,7 @@
          }
          
          #propositions {
-           font-size: max(4vh, 1.5rem);
+           font-size: clamp(1.5rem, 4vh, 2rem);
 
            cursor: default;
 
@@ -416,7 +416,7 @@
          }
 
          .ripple {
-           background: #F1EEDC;
+           background: #e6e3d5;
            width: 3px;
            height: 3px;
            border-radius: 100%;
@@ -429,6 +429,8 @@
          }
 
          .ripple.run {
+           transform: scale(165);
+           opacity: 0;
            transform: scale(200);
          }
 
@@ -533,9 +535,13 @@
            }
 
            #wrap_toolbar_domain {
-             position: absolute;
-             bottom: 15px;
-             left: 5vw;
+             position: relative;
+             bottom: 5px;
+           }
+           @media (height > 700px) {
+             #wrap_grid_domain {
+               gap: calc((100vh - 700px) / 13);
+             }
            }
            #domain {
              width: 90vw;
@@ -620,8 +626,9 @@
            width: min(80vw, 500px);
            height: 51vh;
            visibility: hidden;
-           transition: transform cubic-bezier(.25,1,.25,1) 0.25s;
+           transition: transform cubic-bezier(.25,1,.25,1) 0.25s, opacity 0.1s ;
            transform: scale(0);
+           opacity: 0;
          }
 
          dialog::backdrop {
@@ -630,6 +637,7 @@
 
          dialog[open] {
            transform: scale(1);
+           opacity: 1;
 
            visibility: visible;
            border: 1px solid #C7C7C7;
@@ -638,17 +646,20 @@
            0 0 30px 15px rgb(0,0,0,0.1);
          }
          dialog.hide {
-           transition: transform ease 0.15s;
-
-           transform: scale(0);
+           transition: transform ease-in 0.2s, opacity ease 0.2s;
+           transform: scale(20%);
+           perspective: 1000px;
+           opacity: 0;
          }
 
          
          dialog {
            h1 {
-             margin-top:-5px;
-             font-size: 1.75rem;
+             margin-top:-10px;
+             margin-bottom: 10px;
+             font-size: 1.95rem;
              font-weight: 600;
+             text-align: center;
            }
            label {
              margin-right: 1px;
@@ -1018,7 +1029,8 @@
        });
 
        if (flag) {
-         setTimeout(success, 125); // Suspense...
+         // Partly for suspense
+         setTimeout(success, 125); 
        }
      }
      
@@ -1051,7 +1063,6 @@
 
 
      function success() {
-       document.activeElement.blur();
        crosshairs("not-a-cell");
        highlight("not-a-cell");
        
@@ -1059,7 +1070,7 @@
        
        cellList.forEach((cell) => {
          cell.tabIndex = -1;
-         cell.onfocus = "";
+         cell.onfocus = function () {this.blur();};
          cell.removeEventListener("keydown", inp);
          domainList.forEach((button) => {
            // More to come... buttons morph into next level
@@ -1067,6 +1078,10 @@
            button.onblur = "";
          });
        });
+       
+       // Only blur what might be a domain button after handler is removed
+       document.activeElement.blur();
+
      }
 
      for (var i = 0; i < cellList.length; i++){
@@ -1204,44 +1219,41 @@
      }
 
      rippleStack = [];
-     function addRipple(list) {
-       list.forEach(elementWithRipple => {
-         elementWithRipple.addEventListener('pointerdown', (mouseEvent) => {
-           rippleStack.push(mouseEvent.target);
-           document.querySelectorAll(".ripple").forEach((r) => {
-             if (rippleStack[rippleStack.length - 1] == mouseEvent.target) {
-               r.remove();
-             } else {
-               return;
-             }
-           });
-           // Create a ripple element <div class="ripple">
-           const rippleEl = document.createElement('div');
-           rippleEl.classList.add('ripple');
-           
-           // Position the ripple
-           const x = mouseEvent.offsetX;
-           const y = mouseEvent.offsetY;
-           
-           rippleEl.style.left = `${x}px`;
-           rippleEl.style.top = `${y}px`;
-           
-           elementWithRipple.appendChild(rippleEl);
-           
-           requestAnimationFrame(() => {
-             rippleEl.classList.add('run');
-           });
-           
-           // Remove ripple element when the transition is done
-           rippleEl.addEventListener('transitionend', () => {
-             rippleEl.remove();
-           });
-         });
+     function spawnRipple(mouseEvent, element) {
+       rippleStack.push(element);
+       document.querySelectorAll(".ripple").forEach((r) => {
+         if (element === rippleStack[rippleStack.length-1])
+           r.remove();
        });
+       rippleStack = rippleStack.slice(rippleStack.length-1);
+       if (element !== rippleStack[rippleStack.length-1])
+         return;
+       // Create a ripple element <div class="ripple">
+       const rippleEl = document.createElement('div');
+       rippleEl.classList.add('ripple');
+       // Position the ripple
+       const x = mouseEvent.offsetX;
+       const y = mouseEvent.offsetY;
+       rippleEl.style.left = `${x}px`;
+       rippleEl.style.top = `${y}px`;
+       element.appendChild(rippleEl);
+       requestAnimationFrame(() => {
+         rippleEl.classList.add('run');
+       });
+       // Remove ripple element when the transition is done
+       rippleEl.addEventListener('transitionend', () => {
+         rippleEl.remove();
+       }
+       );
      }
 
-     var elementsWithRipple = document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button');
-     addRipple(elementsWithRipple);
+     document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
+       element.addEventListener("pointerdown",  (event) => {
+         spawnRipple(event, element);
+         element.focus();
+       });
+     });
+     
 
      function showModal(id) {
        document.getElementById(id).showModal();

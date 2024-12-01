@@ -27,6 +27,76 @@
            height: 100%;
          }
 
+         html.correct #domain {
+           justify-content: right;
+           transition: gap 0.5s;
+           gap: 0px;
+
+           button p {
+             transition: font-size 0.1s, opacity 0.1s;
+             opacity: 0;
+             font-size: 0rem;
+           }
+           
+           button:not(:first-child) {
+             transition: width 1s, font-size 1s, padding 1s, border 1s, flex-basis 1s;
+             width: 0px;
+             box-shadow: none;
+             padding: 0px;
+             border: 0px;
+           }
+           button:first-child {
+             flex-basis: 100%;
+             width: 100%;
+             border: 1px solid black;
+             background: repeating-linear-gradient(20deg, rgb(110,155,250,.28),  rgb(110,155,250,0.42)  , rgb(110,155,250,.28) 400px);
+             background-size: calc(400px/sin(20deg)) 100%;
+             animation: glow 2.5s linear infinite reverse;
+
+             &>.ripple {
+               background: rgb(110,155,250);
+               transition: all .8s;
+               &.run {
+                 opacity: 1;
+                 transform: scale(400);
+               }
+             }
+           }
+
+           button:first-child::before {
+             content: "Next level...";
+             font-family: "Source Serif 4";
+             animation: spring 1s ease forwards;
+             font-size: 2.5rem;
+             font-weight: 325;
+             font-style: italic;
+             height: 100%;
+             width: 100%;
+             position: absolute;
+             transform: translate(-50%, -50%);
+             top: 50%; left: 50%;
+             line-height: 3.25rem;
+
+             transition: font-weight 0.15s ease;
+
+           }
+           button:first-child:hover::before {
+             font-weight: 425;
+           }
+         }
+
+
+         @keyframes glow {
+           0% {
+             background-position: calc(400px/sin(20deg)) 0;
+           }
+         }
+
+         @keyframes spring {
+           0% { font-size: 0rem; }
+           100% { font-size: 2.5rem; }
+         }
+         
          #level {
            font-family: "computer modern serif";
            font-weight: lighter;
@@ -182,9 +252,6 @@
            td.given > .ripple, td.correct > .ripple {
              opacity: 0.4;
              background-color: #EFEFEF;
-             &.run {
-               opacity: 0;
-             }
            }
            
            
@@ -378,7 +445,6 @@
            padding: 0;
            display: flex;
            align-items: flex-start;
-           gap: 1vw;
            position: relative;
            transition: opacity 1s;
 
@@ -416,7 +482,7 @@
          }
 
          .ripple {
-           background: #e6e3d5;
+           background: #ebe7ce;
            width: 3px;
            height: 3px;
            border-radius: 100%;
@@ -429,9 +495,8 @@
          }
 
          .ripple.run {
-           transform: scale(165);
-           opacity: 0;
-           transform: scale(200);
+           transform: scale3d(180, 180, 151);
+           opacity: 0 !important;
          }
 
          /* For ripple */
@@ -1060,14 +1125,14 @@
          animateGridSuccess(i+1);
        }.bind(transitionStage), delay);
      }
-
-
+     
      function success() {
        crosshairs("not-a-cell");
        highlight("not-a-cell");
        
        animateGridSuccess(1);
-       
+
+       document.documentElement.classList.add("correct");
        cellList.forEach((cell) => {
          cell.tabIndex = -1;
          cell.onfocus = function () {this.blur();};

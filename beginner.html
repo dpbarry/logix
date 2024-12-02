@@ -20,6 +20,7 @@
         <link rel="icon" type="image/png" href="images/MATHCAL_L.png">
 
         <style>
+         
 
          /*  Prevent mismatch between viewport and body dimensions */
          html, body {
@@ -28,6 +29,10 @@
            height: 100%;
          }
 
+
+
+
+         
 
          @property --myColor1 {
            syntax: '<color>';
@@ -59,9 +64,10 @@
              padding: 0px;
              border: 0px;
            }
+
+           
            button:first-child {
 
-             
              flex-basis: 100%;
              width: 100%;
              border: 1px solid black;
@@ -103,7 +109,6 @@
            }
 
          }
-
 
          @keyframes glow {
            0% {
@@ -225,11 +230,24 @@
            #notes { content: url("images/NOTES.svg"); }
            #settings { content: url("images/SETTINGS.svg"); }
          }
-
+         
          @keyframes nudge {
            0% { transform: translateY(0%); }
            50% { transform: translateY(2.25%); }
            100% {transform: translateY(0%); }
+         }
+
+
+         #configs {
+           margin-left: 2vw;
+           margin-right: 2vw;
+           font-size: 1.4rem;
+           font-weight: 400;
+           display:flex;
+           align-items: flex-end;
+           justify-content: left;
+           flex-wrap: wrap;
+           gap: 10px;
          }
 
          
@@ -645,175 +663,7 @@
            }
          }
 
-
-         .close {
-           position: absolute;
-           right: 20px;
-           top: 18px;
-           width: 30px;
-           height: 30px;
-           cursor: pointer;
-           border-radius: 5px;
-         }
-         .close:hover:before, .close:hover:after {
-           background-color: #000000;
-         }
-         .close:before, .close:after {
-           border-radius: 10px;
-           left: 15px;
-           content: ' ';
-           height: 28px;
-           width: 1px;
-           background-color: #444444;
-           position: absolute;
-         }
-         .close:before {
-           transform: rotate(45deg);
-         }
-         .close:after {
-           transform: rotate(-45deg);
-         }
-
-         #overlay {
-           position: fixed; 
-           display: block; 
-           width: 100%; 
-           height: 0;
-           top: 0;
-           left: 0;
-           right: 0;
-           bottom: 0;
-           z-index: 2;
-
-           background-color: rgba(0,0,0,0.1);
-           opacity: 0;
-           transition: opacity .2s;
-         }
-
-         #overlay:has(~ #menu > dialog[open]) {
-           height: 100%;
-           opacity: 0.4;
-         }
-         #overlay:has(~ #menu > .hide ) {
-           opacity: 0 !important;
-         }
-
          
-         dialog {
-           outline: 0;
-           
-           position: fixed;
-           margin: auto;
-           display: block;
-           
-           font-family: "source serif 4";
-           width: min(80vw, 500px);
-           height: 51vh;
-           visibility: hidden;
-           transition: transform cubic-bezier(.25,1,.25,1) 0.25s, opacity 0.1s ;
-           transform: scale(0);
-           opacity: 0;
-         }
-
-         dialog::backdrop {
-           opacity: 0;
-         }
-
-         dialog[open] {
-           transform: scale(1);
-           opacity: 1;
-
-           visibility: visible;
-           border: 1px solid #C7C7C7;
-           border-radius: 10px;
-           box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.15),
-           0 0 30px 15px rgb(0,0,0,0.1);
-         }
-         dialog.hide {
-           transition: transform ease-in 0.2s, opacity ease 0.2s;
-           transform: scale(20%);
-           perspective: 1000px;
-           opacity: 0;
-         }
-
-         
-         dialog {
-           h1 {
-             margin-top:-10px;
-             margin-bottom: 20px;
-             font-size: 1.95rem;
-             font-weight: 600;
-             text-align: center;
-           }
-           label {
-             margin-right: 1px;
-           }
-           input {
-             margin: 0;
-             margin-bottom: 4px;
-             appearance: none;
-             height: 26px;
-             width: 60px;
-             background-color: #C0C0C0;
-             position: relative;
-             border-radius: 15px;
-             cursor: pointer;
-             transition: all 0.2s ease;
-           }
-
-           input::before {
-             content: '';
-             display: block;
-             height: 18px;
-             width: 21px;
-             transform: translate(-50%, -50%);
-             position: absolute;
-             top: 50%;
-             left: 16px;
-             background-color: #3f3f3f;
-             border-radius: 18px;
-             transition: all 0.2s ease;
-           }
-           input:hover {
-             filter: brightness(94%);
-           }
-           input:focus {
-             outline: 0;
-             filter: brightness(94%);
-           }
-
-           input:checked {
-             background-color: #A4C1A0;
-           }
-
-           input:checked::before {
-             background-color: #3e4d3c;
-             left: calc(100% - 16px);
-           }
-           #configs {
-             margin-left: 2vw;
-             margin-right: 2vw;
-             font-size: 1.4rem;
-             font-weight: 400;
-             display:flex;
-             align-items: flex-end;
-             justify-content: left;
-             flex-wrap: wrap;
-             gap: 10px;
-           }
-           p {
-             margin: 0;
-             font-style: italic;
-             font-weight: 350;
-             font-size: 1rem;
-             flex-basis:100%;
-             text-align: left;
-           }
-
-           #settings_dialog {
-             max-width: 500px;
-           }
-         }
         </style>
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
@@ -829,7 +679,7 @@
             <input id="menu_checkbox" type="checkbox" checked>
             <span id="chevron"></span>
             <ul>
-                <li id="info" onclick="showModal('info_dialog')"></li>
+                <li class id="info" onclick="showModal('info_dialog')"></li>
                 <li id="dictionary" onclick="showModal('dictionary_dialog')"></li>
                 <li id="notes" onclick="showModal('notes_dialog')"></li>
                 <li id="settings" onclick="showModal('settings_dialog')"></li>
@@ -1020,7 +870,9 @@
             </div>
         </div>
     </body>
-    
+
+    <script src="script.js"></script>
+
     <script>
      const ROWS = 3;
      const COLS = 3;
@@ -1339,66 +1191,8 @@
      });
      
 
-     function showModal(id) {
-       document.getElementById(id).showModal();
-     }
 
-     const dialogList = document.querySelectorAll('dialog');
-
-     function closeDialog (event) {
-       event.target.close();
-       event.target.classList.remove("hide");
-       event.target.removeEventListener("transitionend", closeDialog);
-     }
      
-     dialogList.forEach((dialog) => {
-       dialog.addEventListener('click', (e) => {
-         if (e.target.tagName !== 'DIALOG')
-           return;
-
-         const rect = e.target.getBoundingClientRect();
-
-         const clickedInDialog = (
-           rect.top <= e.clientY &&
-           e.clientY <= rect.top + rect.height &&
-           rect.left <= e.clientX &&
-           e.clientX <= rect.left + rect.width
-         );
-
-         if (clickedInDialog === false) {
-           e.target.classList.add("hide");
-           
-           e.target.addEventListener("transitionend", closeDialog);
-       }});
-
-       dialog.addEventListener('keydown', (e) => {
-         if (e.key == "Escape") {
-
-           e.preventDefault();
-           e.target.classList.add("hide");
-
-           e.target.addEventListener("transitionend", closeDialog);
-         }
-       });
-     });
-
-     document.querySelectorAll(".close").forEach( (closeButton) => {
-       closeButton.addEventListener("click", (e) => {
-         closeButton.parentNode.classList.add("hide");
-         closeButton.parentNode.addEventListener("transitionend", closeDialog);
-       });
-     });
-
-     document.querySelectorAll("dialog input").forEach((toggle) => {
-       toggle.addEventListener("keydown", (e) => {
-         if (e.key == "Escape") {
-           e.preventDefault();
-           e.target.closest("dialog").classList.add("hide");
-           e.target.closest("dialog").addEventListener("transitionend", closeDialog);
-         }
-       });
-     });
-
      document.getElementById("level").onclick = function () {
        if (window.event.ctrlKey || window.event.shiftKey) {
          // Interestingly, Chrome will only actually focus the

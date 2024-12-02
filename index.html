@@ -27,7 +27,7 @@
          #main-header {
            text-align: center;
            margin: 0;
-           margin-top: 8px;
+           margin-top: 6px;
            margin-bottom: 5px;
 
            font-family: computer modern serif;
@@ -56,15 +56,15 @@
          #preferences {
            top: 20px;
            right: 20px;
-           height: 32px;
-           width: 32px;
+           height: 33px;
+           width: 33px;
          }
 
          #info {
-           top: 20px;
+           top: 17px;
            left: 20px;
-           height: 40px;
-           width: 40px;
+           height: 38px;
+           width: 38px;
          }
 
          @media(hover: hover) and (pointer: fine) {
@@ -180,7 +180,7 @@
            list-style-type: none;
            cursor: pointer;
            
-           transition: width .2s ease, background .2s ease-out, box-shadow .2s ease-out, top .2s ease-out;
+           transition: width .18s ease, background .3s ease, box-shadow .3s ease-out, top .3s ease-out;
 
            /* For on-click nudge animation */
            position: relative;
@@ -197,7 +197,7 @@
              box-shadow: 0 3px 6px rgba(154,154,154,.25), 0 0 2px rgba(154,154,154,.3);
 
              & > .stage-content {
-               font-weight: 500;
+               font-weight: 475;
              }
            }
          }
@@ -208,12 +208,14 @@
            box-shadow: 0 3px 6px rgba(154,154,154,.25), 0 0 2px rgba(154,154,154,.3);
            outline: 0;
            & > .stage-content {
-             font-weight: 500;
+             font-weight: 475;
            }
+
          }
 
          li:active, li.activated {
            top: 2px;
+
          }
          li#s1 { background-color: rgb(0,0,0,0); }
 
@@ -237,7 +239,7 @@
            position: relative;
            left: 15px;
 
-           transition: 0.15s font-weight ease;
+           transition: 0.12s font-weight ease;
          }
          
          
@@ -314,12 +316,12 @@
      );
      
      document.getElementById("s1").onclick = function () {
-       setTimeout(function () { location.href = "beginner.html"; }, 50);
+       setTimeout(function () { location.href = "beginner.html"; }, 100);
      };
      document.getElementById("s1").onkeydown = function (e) {
        if (e.key != " " && e.key != "Enter") return;
        e.target.classList.add("activated");
-       setTimeout(function () { location.href = "beginner.html"; }, 50);
+       setTimeout(function () { location.href = "beginner.html"; }, 100);
      };
 
 

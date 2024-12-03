@@ -79,7 +79,7 @@
 
          
 
-    
+         
          
          
          #options {
@@ -125,6 +125,7 @@
            align-items: center;
            justify-content: flex-start;
 
+
            h2 {
              font-family: "Source Serif 4";
              font-size: 1.85rem;
@@ -133,6 +134,36 @@
              margin-bottom: 8px;
              
            }
+         }
+
+         #training {
+           background-color:  #f4faf4;
+
+           box-shadow: 0 0 4px #EAF0EA , 0 0px 2px  #CAD0CA, 0 7px 8px -8px #DAE0DA ;
+           li {
+             
+             border: 1px solid #CCC;
+             box-shadow: 0 2px 3px #DFE4DF, 0 0 2px #EEF3EE;
+           }
+         }
+
+         #normal {
+           background-color:  #faf8f4;
+           box-shadow: 0 0 4px #F0EFEA , 0 0px 2px  #D0CFCA, 0 7px 8px -8px #E0DFDA ;
+
+         }
+
+         #difficult {
+           background-color: #fff4f4;
+           box-shadow: 0 0 4px #FFEAEA , 0 0px 2px  #DFCACA, 0 7px 8px -8px #EFDADA ;
+
+         }
+
+         #extreme {
+           background-color: #f8f4ff;
+
+           box-shadow: 0 0 4px #EFEAFF , 0 0px 2px  #CFCADF, 0 7px 8px -8px #DFDAEF ;
+
          }
 
          @media (orientation: portrait) {
@@ -172,15 +203,15 @@
            border-radius: 2px;
            margin-bottom: 15px;
 
+           backdrop-filter: saturate(4) brightness(0.86); 
            
-           
-           border: 1px solid #AAA;
+           border: 1px solid #CCC;
            box-shadow: 0 2px 3px #DFDFDF, 0 0 2px #EEE;
 
            list-style-type: none;
            cursor: pointer;
            
-           transition: width .18s ease, background .3s ease, box-shadow .3s ease-out, top .3s ease-out;
+           transition: background .15s ease, box-shadow .15s ease-out, top .3s ease-out, backdrop-filter .15s;
 
            /* For on-click nudge animation */
            position: relative;
@@ -192,23 +223,38 @@
 
          @media (hover: hover) and (pointer: fine) {
            li:hover {
-             width: 101%;
-             background-color: #f1eedc !important;
-             box-shadow: 0 3px 6px rgba(154,154,154,.25), 0 0 2px rgba(154,154,154,.3);
+             backdrop-filter: saturate(6.1) brightness(0.8); 
+             border: 1px solid #ABABAB !important;
 
              & > .stage-content {
-               font-weight: 475;
+               left: 20px;
+
+               font-weight: 600;
+
+               &::before {
+                 left: 0px;
+                 opacity: 1;
+               }
              }
            }
          }
 
          li:active, li:focus {
-           width: 101%;
-           background-color: #f1eedc !important;
-           box-shadow: 0 3px 6px rgba(154,154,154,.25), 0 0 2px rgba(154,154,154,.3);
+           border: 1px solid #ABABAB !important;
+           backdrop-filter: saturate(6.1) brightness(0.8); 
+
            outline: 0;
            & > .stage-content {
-             font-weight: 475;
+             font-weight: 600;
+
+             left: 11px;
+
+             font-weight: 600;
+
+             &::before {
+               left: 0px;
+               opacity: 1;
+             }
            }
 
          }
@@ -217,16 +263,6 @@
            top: 2px;
 
          }
-         li#s1 { background-color: rgb(0,0,0,0); }
-
-         li#s2 { background-color: rgb(0,0,0, 0.15);   }
-
-         li#s3 { background-color: rgb(0,0,0,0.15);  }
-
-         li#s4 { background-color: rgb(0,0,0,0.15);  }
-
-         li#s5 { background-color: rgb(0,0,0,0.15); }
-
 
          p {
            margin: 0;
@@ -237,9 +273,18 @@
            font-size: 1.25rem;
            font-weight: 325;
            position: relative;
-           left: 15px;
+           left: -5px;
 
-           transition: 0.12s font-weight ease;
+           transition: 0.1s font-weight ease, left 0.15s;
+         }
+         .stage-content::before {
+           font-weight: 900;
+           content: "→";
+           position: relative;
+           left: -18px;
+           opacity: 0;
+
+           transition: opacity 0.15s, left 0.15s ease;
          }
          
          
@@ -272,7 +317,7 @@
 
         <h1 id="main-header">LOGIX</h1>
         <div id="wrap_cards">
-            <ul id="training" class="card">
+            <ul class="card" id="training" >
                 <h2> Training </h2>
                 <li id ="s1" class="animated-border-box">
                     <p class="stage-content"> Propositions </p>
@@ -294,14 +339,14 @@
                     <p class="stage-content"> Relations </p>
                 </li>
             </ul>
-            <ul class="card">
+            <ul class="card" id="normal">
                 <h2> Normal </h2>
                 
             </ul>
-            <ul class="card">
+            <ul class="card" id="difficult">
                 <h2> Difficult </h2>     
             </ul>
-            <ul class="card">
+            <ul class="card" id="extreme">
                 <h2> Extreme </h2>           
             </ul>
         </div>

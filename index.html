@@ -22,7 +22,7 @@
         <style>
 
          html, body {
-           margin: 0; 
+           margin: 0;
          }
          #main-header {
            text-align: center;
@@ -35,19 +35,19 @@
            font-size: 3.1rem;
          }
 
-         
-         
+
+
          button  {
            border: 0;
            outline: 0;
-           position: absolute;  
-           
+           position: absolute;
+
            margin: 0;
            margin-bottom: 14px;
-           
+
            cursor: pointer;
-           
-           z-index: 1; 
+
+           z-index: 1;
 
            opacity: 1;
            transition: opacity 0.2s;
@@ -75,13 +75,13 @@
 
          #info { background: url("images/INFO.svg"); }
          #preferences { background: url("images/PREFERENCES.svg"); }
-         
 
-         
 
-         
-         
-         
+
+
+
+
+
          #options {
            margin-left: 2vw;
            margin-right: 2vw;
@@ -97,8 +97,8 @@
          #preferences_dialog {
            max-width: 500px;
          }
-         
-         
+
+
 
          #wrap_cards {
            display: flex;
@@ -107,10 +107,10 @@
            transform: translateY(-50%);
            width: 100%;
 
-           
+
          }
          .card {
-           
+
            padding: 15px;
            width: 100%;
 
@@ -132,7 +132,7 @@
              font-weight: 700;
              margin-top: -10px;
              margin-bottom: 8px;
-             
+
            }
          }
 
@@ -141,7 +141,7 @@
 
            box-shadow: 0 0 4px #EAF0EA , 0 0px 2px  #CAD0CA, 0 7px 8px -8px #DAE0DA ;
            li {
-             
+
              border: 1px solid #CCC;
              box-shadow: 0 2px 3px #DFE4DF, 0 0 2px #EEF3EE;
            }
@@ -191,7 +191,7 @@
              width: 275px;
            }
          }
-         
+
          li {
            display: flex;
            flex-direction: row;
@@ -203,14 +203,14 @@
            border-radius: 2px;
            margin-bottom: 15px;
 
-           backdrop-filter: saturate(4) brightness(0.86); 
-           
+           backdrop-filter: saturate(4) brightness(0.86);
+
            border: 1px solid #CCC;
            box-shadow: 0 2px 3px #DFDFDF, 0 0 2px #EEE;
 
            list-style-type: none;
            cursor: pointer;
-           
+
            transition: background .15s ease, box-shadow .15s ease-out, top .3s ease-out, backdrop-filter .15s;
 
            /* For on-click nudge animation */
@@ -219,11 +219,11 @@
 
            &:last-of-type {margin-bottom: 0px;}
          }
-         
+
 
          @media (hover: hover) and (pointer: fine) {
            li:hover {
-             backdrop-filter: saturate(6.1) brightness(0.8); 
+             backdrop-filter: saturate(6.1) brightness(0.8);
              border: 1px solid #ABABAB !important;
 
              & > .stage-content {
@@ -241,7 +241,7 @@
 
          li:active, li:focus {
            border: 1px solid #ABABAB !important;
-           backdrop-filter: saturate(6.1) brightness(0.8); 
+           backdrop-filter: saturate(6.1) brightness(0.8);
 
            outline: 0;
            & > .stage-content {
@@ -265,7 +265,7 @@
          p {
            margin: 0;
          }
-         
+
 
          .stage-content {
            font-size: 1.25rem;
@@ -276,6 +276,7 @@
            transition: 0.1s font-weight ease, left 0.15s;
          }
          .stage-content::before {
+           font-family: "Source Serif 4";
            font-weight: 900;
            content: "→";
            position: relative;
@@ -284,14 +285,14 @@
 
            transition: opacity 0.15s, left 0.15s ease;
          }
-         
-         
+
+
         </style>
     </head>
 
     <body>
         <button id="info" onclick="showModal('info_dialog')"></button>
-        
+
         <button id="preferences" onclick="showModal('preferences_dialog')"></button>
         <dialog id="info_dialog">
             <a class="close"></a>
@@ -339,13 +340,13 @@
             </ul>
             <ul class="card" id="normal">
                 <h2> Normal </h2>
-                
+
             </ul>
             <ul class="card" id="difficult">
-                <h2> Difficult </h2>     
+                <h2> Difficult </h2>
             </ul>
             <ul class="card" id="extreme">
-                <h2> Extreme </h2>           
+                <h2> Extreme </h2>
             </ul>
         </div>
     </body>
@@ -357,7 +358,7 @@
          this.blur();
        }
      );
-     
+
      document.getElementById("s1").onclick = function () {
        setTimeout(function () { location.href = "beginner.html"; }, 100);
      };
@@ -371,6 +372,5 @@
      document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
     </script>
 
-    
-</html>
 
+</html>

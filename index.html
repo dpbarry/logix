@@ -137,32 +137,40 @@
          }
 
          #training {
-           border: 1px solid hsl(120 18% 90% / 1);
            li {
              border: 1px solid #CCC;
              box-shadow: 0 2px 3px hsl(120 4% 90% / 1), 0 0 2px hsl(120 4% 95% / 1);
-             background: hsl(120 5% 90%);
+             background: hsl(120 8% 90%);
            }
          }
 
          #normal {
-           border: 1px solid hsl(40 18% 90% / 1);
+           li {
+             border: 1px solid #CCC;
+             box-shadow: 0 2px 3px hsl(55 4% 90% / 1), 0 0 2px hsl(55 4% 95% / 1);
+             background: hsl(55 8% 90%);
+           }
          }
 
          #difficult {
-           border: 1px solid hsl(0 18% 90% / 1);
-
-
+           li {
+             border: 1px solid #CCC;
+             box-shadow: 0 2px 3px hsl(0 4% 90% / 1), 0 0 2px hsl(0 4% 95% / 1);
+             background: hsl(0 8% 90%);
+           }
          }
 
          #extreme {
-           border: 1px solid hsl(300 18% 90% / 1);
-
+           li {
+             border: 1px solid #CCC;
+             box-shadow: 0 2px 3px hsl(300 4% 90% / 1), 0 0 2px hsl(300 4% 95% / 1);
+             background: hsl(300 8% 90%);
+           }
          }
 
          @media (orientation: portrait) {
            .card:not(#training) {
-             visibility: hidden;
+             display: none;
            }
 
            #training {
@@ -221,8 +229,7 @@
              border: 1px solid #AAA !important;
 
              & > .stage-content {
-               left: 10px;
-
+               left: 8px;
                font-weight: 600;
 
                &::before {
@@ -240,7 +247,7 @@
 
            outline: 0;
            & > .stage-content {
-             left: 10px;
+             left: 8px;
 
              font-weight: 600;
 
@@ -266,19 +273,19 @@
            font-size: 1.25rem;
            font-weight: 325;
            position: relative;
-           left: -5px;
+           left: -8px;
 
-           transition: 0.15s font-weight ease, left 0.2s ease;
+           transition: 0.15s font-weight, left 0.2s;
          }
          .stage-content::before {
            font-family: "Source Serif 4";
-           font-weight: 900;
            content: "→";
+           font-size: 1em;
            position: relative;
-           left: -40px;
+           left: -20px;
            opacity: 0;
 
-           transition: opacity 0.2s, left 0.2s ease;
+           transition: opacity 0.2s, left 0.2s;
          }
 
 
@@ -313,7 +320,7 @@
         <div id="wrap_cards">
             <ul class="card" id="training" >
                 <h2> Training </h2>
-                <li id ="s1" class="animated-border-box">
+                <li id ="s1">
                     <p class="stage-content"> Propositions </p>
                 </li>
 
@@ -335,13 +342,22 @@
             </ul>
             <ul class="card" id="normal">
                 <h2> Normal </h2>
+                <li id ="s1">
+                    <p class="stage-content"> ... </p>
+                </li>
 
             </ul>
             <ul class="card" id="difficult">
                 <h2> Difficult </h2>
+                 <li id ="s1">
+                     <p class="stage-content"> ... </p>
+                 </li>
             </ul>
             <ul class="card" id="extreme">
                 <h2> Extreme </h2>
+                 <li id ="s1">
+                     <p class="stage-content"> ... </p>
+                 </li>
             </ul>
         </div>
     </body>

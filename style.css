@@ -11,9 +11,9 @@
 }
 
 @keyframes nudge {
-  0% { transform: translateY(0%); }
-  50% { transform: translateY(2.25%); }
-  100% {transform: translateY(0%); }
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% {transform: translateY(1); }
 }
 
 
@@ -106,26 +106,27 @@ dialog[open] {
   0 0 30px 15px rgb(0,0,0,0.1);
 }
 dialog.hide {
-  transition: transform ease-in 0.2s, opacity ease 0.2s;
-  transform: scale(20%);
+  transition: transform ease-in 0.15s, opacity ease 0.15s;
+  transform: scale(0%);
   opacity: 0;
 }
 
 
 dialog {
   h1 {
-    margin-top:-10px;
+    margin-top:-8px;
     margin-bottom: 20px;
     font-size: 1.95rem;
-    font-weight: 600;
+    font-weight: 800;
     text-align: center;
+
   }
   label {
     margin-right: 1px;
   }
   input {
     margin: 0;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     appearance: none;
     height: 26px;
     width: 60px;

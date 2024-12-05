@@ -1,9 +1,10 @@
+
 const dialogList = document.querySelectorAll('dialog');
 
 
-     function showModal(id) {
-       document.getElementById(id).showModal();
-     }
+function showModal(id) {
+    document.getElementById(id).showModal();
+}
 
 function closeDialog (event) {
     event.target.close();
@@ -58,3 +59,14 @@ document.querySelectorAll("dialog input").forEach((toggle) => {
         }
     });
 });
+
+document.querySelectorAll(".dialog_button").forEach(li => {
+    li.addEventListener("pointerdown", (event) => {
+        event.target.classList.add("nudged");
+
+        event.target.addEventListener("animationend", (event) => {
+            event.target.classList.remove("nudged");
+        })
+    })
+});
+

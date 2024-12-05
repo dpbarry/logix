@@ -34,13 +34,13 @@
 
          
 
-         @property --myColor1 {
+         @property --lightBlue {
            syntax: '<color>';
            initial-value: rgb(110,155,250,.25);
            inherits: false;
          }
 
-         @property --myColor2 {
+         @property --darkBlue {
            syntax: '<color>';
            initial-value: rgb(110,155,250,.5);
            inherits: false;
@@ -72,15 +72,13 @@
              flex-basis: 100%;
              width: 100%;
              border: 1px solid black;
-             background: repeating-linear-gradient(45deg, var(--myColor1),  var(--myColor2) , var(--myColor1) 600px);
+             background: repeating-linear-gradient(45deg, var(--lightBlue),  var(--darkBlue) , var(--lightBlue) 600px);
              background-size: calc(600px/sin(45deg)) 100%;
              animation: glow 2.5s linear infinite reverse;
-             transition: --myColor1 0.25s, --myColor2 0.25s, top 0.14s ease, background 0.4s ease;
+             transition: --lightBlue 0.25s, --darkBlue 0.25s, background 0.4s ease;
 
-             box-shadow: 0 0 1px 1px rgb(110,155,250,.3) !important;
+             box-shadow: 0 0 1px 1px rgb(110,155,250,.1) !important;
 
-             position: relative;
-             top: 0;
              
              &>.ripple {
                background: rgb(110,155,250);
@@ -93,14 +91,13 @@
            }
            
            button:first-child:hover, button:first-child:focus {
-             --myColor1: rgb(110,155,250,.5) ;
-             --myColor2: rgb(110,155,250,.75);
-             box-shadow: 0 0 3px 2px rgb(110,155,250,.3) !important;
+             --lightBlue: rgb(110,155,250,.5) ;
+             --darkBlue: rgb(110,155,250,.75);
+             box-shadow: 0 0 3px 2px rgb(110,155,250,.15) !important;
            }
            
            button:first-child:focus {
              background-color: rgb(110,155,250);
-             top: 3px;
              &::before {
                color: white;
              }
@@ -118,7 +115,7 @@
              transform: translate(-50%, -50%);
              top: 50%; left: 50%;
              line-height: 3.25rem;
-             transition: color 0.3s;
+             transition: color 0.21s;
 
 
            }
@@ -236,8 +233,8 @@
            @media(hover: hover) and (pointer: fine) {
              li:hover { opacity: 0.72; }
            }
-           li:active {
-             animation: 0.15s ease nudge forwards;
+           li.nudged {
+             animation: 0.2s ease nudge forwards;
            }
 
            #info { content: url("images/INFO.svg"); }
@@ -246,11 +243,7 @@
            #settings { content: url("images/SETTINGS.svg"); }
          }
          
-         @keyframes nudge {
-           0% { transform: translateY(0%); }
-           50% { transform: translateY(2.25%); }
-           100% {transform: translateY(0%); }
-         }
+         
 
 
          #configs {
@@ -283,7 +276,7 @@
              outline: 1px solid transparent; /* For crosshairs */
              border-radius: 3px;
              background-color: transparent;
-             transition: background-color .175s ease-in, outline-color 0.2s ease;
+             transition: background-color .175s ease-in, outline-color 0.2s ease, box-shadow 0.15s;
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 7.5vh, 3rem);
@@ -292,8 +285,21 @@
              background-size: 100% 0;
              background-position: bottom;
              z-index: 1;
+
+             filter: brightness(1);
+             backdrop-filter: brightness(1);
            }
-           
+           td:not(.given, .x_axis, .y_axis)::before {
+             content: "";
+             background-color: #F1EEDC;
+             opacity: 0;
+             position: fixed;
+             width: 100%;
+             height: 100%;
+             left: 0; right: 0; top: 0; bottom: 0;
+             transition: opacity 0.09s;
+             z-index: -1;
+           }
            td:not(.x_axis, .y_axis) {
              cursor: pointer;
            }
@@ -306,6 +312,14 @@
              background-color: #EFEFEF;
            }
            
+           td:not(:active, :focus):hover::before {
+             opacity: 0.25;
+           }
+
+           td.noticed::before {
+             transition: opacity 0.2s;
+             opacity: 0.5;
+           }
            
            td.correct {
              background-size: 100% 100%;
@@ -374,12 +388,15 @@
                padding-top: 3px;
                display: inline-block;
                border-radius: 5px;
-               transition: background-color 0.3s ease, box-shadow 0.3s ease;
+               transition: background-color 0.2s ease, box-shadow 0.2s ease;
              }
-
+             span.entry:hover {
+               background-color: #f8f6ed;
+               box-shadow: 0 2px 1px -1px #EEEEEE, 0 0 1px 0px #EEEEEE;
+             }
              span.entry.highlight {
                background-color: #F1EEDC;
-               box-shadow: 0 3px 1px -1px #CCCCCC, 0 0 1px 0px #CCCCCC;
+               box-shadow: 0 3px 1px -1px #E2E2E2, 0 0 1px 0px #EAEAEA;
 
              }
              
@@ -694,29 +711,29 @@
             <input id="menu_checkbox" type="checkbox" checked>
             <span id="chevron"></span>
             <ul>
-                <li class id="info" onclick="showModal('info_dialog')"></li>
-                <li id="dictionary" onclick="showModal('dictionary_dialog')"></li>
-                <li id="notes" onclick="showModal('notes_dialog')"></li>
-                <li id="settings" onclick="showModal('settings_dialog')"></li>
+                <li id="info" class="dialog_button" onclick="showModal('info_dialog')"></li>
+                <li id="dictionary" class="dialog_button" onclick="showModal('dictionary_dialog')"></li>
+                <li id="notes" class="dialog_button" onclick="showModal('notes_dialog')"></li>
+                <li id="settings" class="dialog_button" onclick="showModal('settings_dialog')"></li>
             </ul>
             <dialog id="info_dialog">
                 <a class="close"></a>
-                <h1>INFO</h1>
+                <h1>Info</h1>
             </dialog>
 
             <dialog id="dictionary_dialog">
                 <a class="close"></a>
-                <h1>DICTIONARY</h1>
+                <h1>Dictionary</h1>
             </dialog>
 
             <dialog id="notes_dialog">
                 <a class="close"></a>
-                <h1>NOTES</h1>
+                <h1>Notes</h1>
             </dialog>
 
             <dialog id="settings_dialog">
                 <a class="close"></a>
-                <h1>SETTINGS</h1>
+                <h1>Settings</h1>
                 <div id="configs">
                     <label> Highlight </label>
                     <input id="highlight_toggle" type="checkbox" checked>
@@ -734,7 +751,7 @@
         <div id="wrap_main">
             <ul id="propositions">
                 <li>
-                    <span class="entry e1e1"> \(
+                    <span class="entry" id="e1e1"> \(
                         \lang	
                         \begin{smallmatrix}
                         1 \\
@@ -743,7 +760,7 @@
                         \)
                     </span>
                     \( > \)
-                    <span class="entry e1e3"> \(
+                    <span class="entry"  id="e1e3"> \(
                         \lang
                         \begin{smallmatrix}
                         1 \\
@@ -753,7 +770,7 @@
                     </span>
                 </li>
                 <li>
-                    <span class="entry e2e1">
+                    <span class="entry" id="e2e1">
                         \(\lang	
                         \begin{smallmatrix}
                         2 \\
@@ -761,7 +778,7 @@
                         \end{smallmatrix} \rang \)
                     </span>
                     \( = \) 
-                    <span class="entry e1e1"> \(
+                    <span class="entry" id="e1e1"> \(
                         \lang	
                         \begin{smallmatrix}
                         1 \\
@@ -770,7 +787,7 @@
                         \) </span>
                     \( - \)
 
-                    <span class="entry e1e3"> \(
+                    <span class="entry" id="e1e3"> \(
                         
                         \lang	
                         \begin{smallmatrix}
@@ -781,7 +798,7 @@
                     </span>
                 </li>
                 <li>
-                    <span class="entry e2e2">
+                    <span class="entry" id="e2e2">
                         \(\lang	
                         \begin{smallmatrix}
                         2 \\
@@ -790,7 +807,7 @@
 
                     \( \neq \)
 
-                    <span class="entry e2e1"> \(
+                    <span class="entry" id="e2e1"> \(
                         \lang	
                         \begin{smallmatrix}
                         2 \\
@@ -799,7 +816,7 @@
 
                     \( \neq \)
 
-                    <span class="entry e1e3"> \(
+                    <span class="entry" id="e1e3"> \(
                         \lang	
                         \begin{smallmatrix}
                         1 \\
@@ -809,7 +826,7 @@
                     </span>
                 </li>
                 <li>
-                    <span class="entry e3e2">
+                    <span class="entry" id="e3e2">
                         \(\lang	
                         \begin{smallmatrix}
                         3 \\
@@ -818,7 +835,7 @@
 
                     >
 
-                    <span class="entry e3e3"> \(
+                    <span class="entry" id="e3e3"> \(
                         \lang	
                         \begin{smallmatrix}
                         3 \\
@@ -827,7 +844,7 @@
 
                     \( + \)
 
-                    <span class="entry e2e1"> \(
+                    <span class="entry" id="e2e1"> \(
 
                         \lang	
                         \begin{smallmatrix}
@@ -1049,8 +1066,8 @@
        if (!use_highlight) return;
        document.querySelectorAll(".entry").forEach( (entry) => {
 
-         if (entry.classList.contains(
-           "e" + id.charAt(1) + "e" + id.charAt(3))) {
+         if (entry.id ===
+           "e" + id.charAt(1) + "e" + id.charAt(3)) {
            entry.classList.add("highlight");
          } else {
            entry.classList.remove("highlight");
@@ -1058,6 +1075,17 @@
        }
        );
      }
+
+     document.querySelectorAll(".entry").forEach( (entry) => {
+       entry.addEventListener("mouseover", (event) => {
+         cell = "c" + entry.id.charAt(1) + "." + entry.id.charAt(3);
+         document.getElementById(cell).classList.add("noticed");
+         entry.addEventListener("mouseleave", (event) => {
+           cell = "c" + entry.id.charAt(1) + "." + entry.id.charAt(3);
+           document.getElementById(cell).classList.remove("noticed");
+         });
+       });
+     });
 
      for (let i = 0; i < domainList.length; i++) {
        domainList[i].onfocus = function () {
@@ -1204,7 +1232,7 @@
          element.focus();
        });
      });
-     
+
 
 
      

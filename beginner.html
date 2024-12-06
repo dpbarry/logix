@@ -297,7 +297,7 @@
              width: 100%;
              height: 100%;
              left: 0; right: 0; top: 0; bottom: 0;
-             transition: opacity 0.09s;
+             transition: opacity 0.2s;
              z-index: -1;
            }
            td:not(.x_axis, .y_axis) {
@@ -312,13 +312,8 @@
              background-color: #EFEFEF;
            }
            
-           td:not(:active, :focus):hover::before {
-             opacity: 0.25;
-           }
-
            td.noticed::before {
-             transition: opacity 0.2s;
-             opacity: 0.5;
+             opacity: 0.425;
            }
            
            td.correct {
@@ -385,20 +380,21 @@
              }
 
              span.entry {
+               cursor: pointer;
                padding-top: 3px;
                display: inline-block;
                border-radius: 5px;
                transition: background-color 0.2s ease, box-shadow 0.2s ease;
              }
-             span.entry:hover {
-               background-color: #f8f6ed;
+             span.entry:not(.correct, .highlight):hover {
+               background-color:  hsl(51, 43%, 90%, 0.5);
                box-shadow: 0 2px 1px -1px #EEEEEE, 0 0 1px 0px #EEEEEE;
              }
              span.entry.highlight {
-               background-color: #F1EEDC;
+               background-color: hsl(51, 43%, 90%);
                box-shadow: 0 3px 1px -1px #E2E2E2, 0 0 1px 0px #EAEAEA;
-
              }
+             
              
            }
            
@@ -551,7 +547,7 @@
          }
 
          .ripple {
-           background: #f1eedc;
+           background: hsl(40, 40%, 87%);
            width: 3px;
            height: 3px;
            border-radius: 100%;
@@ -922,6 +918,7 @@
      // fetch all inputs and cells
      const cellList = document.querySelectorAll('td:not(.x_axis, .y_axis)');
      const domainList = document.querySelectorAll('button');
+     const entryList = document.querySelectorAll('.entry');
 
      var use_highlight = HIGHLIGHT_TOGGLE.checked;
      var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
@@ -1036,6 +1033,7 @@
        animateGridSuccess(1);
 
        document.documentElement.classList.add("correct");
+       
        cellList.forEach((cell) => {
          cell.tabIndex = -1;
          cell.onfocus = function () {this.blur();};
@@ -1046,6 +1044,13 @@
            button.onblur = "";
          });
        });
+
+       entryList.forEach((entry) => {
+         entry.removeEventListener("mouseover", noticeCell);
+         entry.removeEventListener("mouseleave", removeNoticeCell);
+         entry.removeEventListener("pointerdown", jumpToCell);
+         entry.classList.add("correct");
+       })
        
        // Only blur what might be a domain button after handler is removed
        document.activeElement.blur();
@@ -1064,7 +1069,7 @@
 
      function highlight(id) {
        if (!use_highlight) return;
-       document.querySelectorAll(".entry").forEach( (entry) => {
+       entryList.forEach( (entry) => {
 
          if (entry.id ===
            "e" + id.charAt(1) + "e" + id.charAt(3)) {
@@ -1076,15 +1081,31 @@
        );
      }
 
-     document.querySelectorAll(".entry").forEach( (entry) => {
-       entry.addEventListener("mouseover", (event) => {
-         cell = "c" + entry.id.charAt(1) + "." + entry.id.charAt(3);
-         document.getElementById(cell).classList.add("noticed");
-         entry.addEventListener("mouseleave", (event) => {
-           cell = "c" + entry.id.charAt(1) + "." + entry.id.charAt(3);
-           document.getElementById(cell).classList.remove("noticed");
-         });
-       });
+     function noticeCell (event) {
+       let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
+       document.getElementById(cell).classList.add("noticed");
+     }
+
+     function removeNoticeCell (event) {
+       let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
+       document.getElementById(cell).classList.remove("noticed");
+     }
+
+     function jumpToCell (event) {
+       let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
+       window.setTimeout(() => {
+         fakeRipple = new PointerEvent("pointerdown");
+         fakeRipple.simulated = true;
+         document.getElementById(cell).dispatchEvent(fakeRipple);
+         document.getElementById(cell).focus();
+       }, 0);
+     }
+
+     
+     entryList.forEach( (entry) => {
+       entry.addEventListener("mouseover", noticeCell);
+       entry.addEventListener("mouseleave", removeNoticeCell);
+       entry.addEventListener("pointerdown", jumpToCell);         
      });
 
      for (let i = 0; i < domainList.length; i++) {
@@ -1211,8 +1232,14 @@
        const rippleEl = document.createElement('div');
        rippleEl.classList.add('ripple');
        // Position the ripple
-       const x = mouseEvent.offsetX;
-       const y = mouseEvent.offsetY;
+       let x = element.offsetWidth / (Math.floor(Math.random() * 5)+1);
+       let y = element.offsetHeight / (Math.floor(Math.random() * 5)+1);
+       console.log(x,y);
+       if (!mouseEvent.simulated) {
+         x = mouseEvent.offsetX;
+         y = mouseEvent.offsetY;
+       }
+       
        rippleEl.style.left = `${x}px`;
        rippleEl.style.top = `${y}px`;
        element.appendChild(rippleEl);

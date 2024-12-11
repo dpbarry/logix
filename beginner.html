@@ -308,8 +308,9 @@
              background-color: #D0D0D0;
            }
            td.given > .ripple, td.correct > .ripple {
-             opacity: 0.4;
+             opacity: 0.41;
              background-color: #EFEFEF;
+             transition: all 0.5s ease;
            }
            
            td.noticed::before {
@@ -1092,13 +1093,14 @@
      }
 
      function jumpToCell (event) {
+       event.preventDefault();
        let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
        window.setTimeout(() => {
          fakeRipple = new PointerEvent("pointerdown");
          fakeRipple.simulated = true;
          document.getElementById(cell).dispatchEvent(fakeRipple);
          document.getElementById(cell).focus();
-       }, 1);
+       }, 0);
      }
 
      

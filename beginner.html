@@ -276,7 +276,7 @@
              outline: 1px solid transparent; /* For crosshairs */
              border-radius: 3px;
              background-color: transparent;
-             transition: background-color .175s ease-in, outline-color 0.2s ease, box-shadow 0.15s;
+             transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s;
              width: clamp(24px, 13vh, 100px);
              height: clamp(24px, 13vh, 100px);
              font-size: clamp(1rem, 7.5vh, 3rem);
@@ -547,20 +547,20 @@
          }
 
          .ripple {
-           background: hsl(40, 40%, 87%);
+           background:  #F1EEDC;
            width: 3px;
            height: 3px;
            border-radius: 100%;
            opacity: 1;
            position: absolute;
-           transition: all 0.5s ease;
+           transition: all 0.6s cubic-bezier(.38,.23,.69,1.02);
            pointer-events: none;
            will-change: transform;
            z-index: -1;
          }
 
          .ripple.run {
-           transform: scale3d(170, 170, 150);
+           transform: scale(500);
            opacity: 0 !important;
          }
 
@@ -1098,7 +1098,7 @@
          fakeRipple.simulated = true;
          document.getElementById(cell).dispatchEvent(fakeRipple);
          document.getElementById(cell).focus();
-       }, 0);
+       }, 50);
      }
 
      

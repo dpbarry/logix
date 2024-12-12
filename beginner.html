@@ -1106,6 +1106,8 @@
 
          } else {
            domainList.forEach((domain) => {
+             domain.blur();
+
              domain.onfocus = chamberInput;
              domain.onblur = releaseInput;
            });
@@ -1196,6 +1198,7 @@
            e.target.focus();
          } else {
            cellList.forEach((cell) => {
+             cell.blur();
              cell.onfocus = lockCell;
              cell.onblur = fillCell;
            });

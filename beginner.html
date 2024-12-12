@@ -308,9 +308,12 @@
              background-color: #D0D0D0;
            }
            td.given > .ripple, td.correct > .ripple {
-             opacity: 0.41;
+             opacity: 0.4;
              background-color: #EFEFEF;
-             transition: all 0.5s ease;
+             transition: all 0.4s ease;
+             &.run {
+               transform: scale(150);
+             }
            }
            
            td.noticed::before {
@@ -330,17 +333,25 @@
            }
            
            td:focus {
-             background: hsl(50, 49%, 90%) !important;
+             background: hsl(50, 46%, 90%) !important;
            }
-           td.insert {
-             animation: fade-in 0.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+           
+           td > p {
+             margin: 0;
+             padding: 0;
+             position: relative;
+             pointer-events: none; /* Don't interfere with ripple */
+
+             &.insert {
+               animation: fade-in 0.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+             }
            }
          }
          
          
          @keyframes fade-in {
-           from { font-size: 0; }
-           to { font-size: clamp(1rem, 7.5vh, 3rem); }
+           from { top: 100px; }
+           to { top: 0px; }
          }
          
          #propositions {
@@ -392,7 +403,7 @@
                box-shadow: 0 2px 1px -1px #EEEEEE, 0 0 1px 0px #EEEEEE;
              }
              span.entry.highlight {
-               background-color: hsl(50, 49%, 90%);
+               background-color: hsl(50, 46%, 90%);
                box-shadow: 0 3px 1px -1px #E2E2E2, 0 0 1px 0px #EAEAEA;
              }
              
@@ -541,27 +552,27 @@
            }
            button:focus {
              box-shadow: 0 4px 6px -6px #777, 0 0 3px #DDD;
-             background-color: hsl(50, 49%, 90%);
+             background-color: hsl(50, 46%, 90%);
              outline: none;  /* Tabbing to button adds outline by default */
            }
 
          }
 
          .ripple {
-           background:  hsl(50, 49%, 90%);
+           background:  hsl(50, 46%, 90%);
            width: 3px;
            height: 3px;
            border-radius: 100%;
            opacity: 1;
            position: absolute;
-           transition: all 0.6s cubic-bezier(.38,.23,.69,1.02);
+           transition: all 0.4s cubic-bezier(.38,.23,.69,1.02);
            pointer-events: none;
            will-change: transform;
            z-index: -1;
          }
 
          .ripple.run {
-           transform: scale(500);
+           transform: scale(225);
            opacity: 0 !important;
          }
 
@@ -858,21 +869,21 @@
                     <tr>
                         
                         <td class="y_axis">1</td>
-                        <td></td>
+                        <td><p></p></td>
                         <td class="given">2</td>
-                        <td></td>
+                        <td><p></p></td>
                     </tr>
                     <tr>
                         <td class="y_axis">2</td>
-                        <td></td>
-                        <td></td>
+                        <td><p></p></td>
+                        <td><p></p></td>
                         <td class="given">3</td>
                     </tr>
                     <tr>
                         <td class="y_axis">3</td>
                         <td class="given">1</td>
-                        <td></td>
-                        <td></td>
+                        <td><p></p></td>
+                        <td><p></p></td>
                     </tr>
                     
                     <tr>
@@ -970,15 +981,15 @@
 
      function inp (event) {
        if (DOMAIN.includes(parseInt(event.key))) {
-         event.target.innerHTML = event.key;
-         event.target.classList.add("insert");
+         event.target.firstChild.innerHTML = event.key;
+         event.target.firstChild.classList.add("insert");
          setTimeout(function () {
-           event.target.classList.remove("insert");
+           event.target.firstChild.classList.remove("insert");
          }, 150);
        } else if (event.key === "Backspace") {
-         event.target.innerHTML = event.target.innerHTML.substring(0, event.target.innerHTML.length-1);  
+         event.target.firstChild.innerHTML = event.target.firstChild.innerHTML.substring(0, event.target.firstChild.innerHTML.length-1);  
        }
-       values.set(event.target, event.target.innerHTML);
+       values.set(event.target, event.target.firstChild.innerHTML);
        checkGrid();
      }
 
@@ -1117,11 +1128,14 @@
          setTimeout(function () {
            cellList.forEach((cell) => {
              cell.onfocus = function () {
-               this.innerHTML = domainList[i].textContent;
-               values.set(this, domainList[i].textContent);
-               this.classList.add("insert");
+               cell.firstChild.innerHTML = domainList[i].textContent;
+               values.set(cell, domainList[i].textContent);
+               cell.firstChild.classList.add("insert");
+
+               this.lastChild.remove();
+
                setTimeout(function () {
-                 cell.classList.remove("insert");
+                 cell.firstChild.classList.remove("insert");
                }, 150);
                checkGrid();
              };
@@ -1236,7 +1250,6 @@
        // Position the ripple
        let x = element.offsetWidth / (Math.floor(Math.random() * 5)+1);
        let y = element.offsetHeight / (Math.floor(Math.random() * 5)+1);
-       console.log(x,y);
        if (!mouseEvent.simulated) {
          x = mouseEvent.offsetX;
          y = mouseEvent.offsetY;
@@ -1261,8 +1274,6 @@
          element.focus();
        });
      });
-
-
 
      
      document.getElementById("level").onclick = function () {

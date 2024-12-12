@@ -343,15 +343,15 @@
              pointer-events: none; /* Don't interfere with ripple */
 
              &.insert {
-               animation: fade-in 0.15s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+               animation: fade-in 0.55s  cubic-bezier(0,1.22,.21,1.06) forwards;
              }
            }
          }
          
          
          @keyframes fade-in {
-           from { top: 100px; }
-           to { top: 0px; }
+           from { bottom: 15px; }
+           to { bottom: 0px; }
          }
          
          #propositions {
@@ -398,6 +398,9 @@
                border-radius: 5px;
                transition: background-color 0.2s ease, box-shadow 0.2s ease;
              }
+             span.entry.correct {
+               cursor: default;
+             }
              span.entry:not(.correct, .highlight):hover {
                background-color: hsl(40, 60%, 90%, 0.5);
                box-shadow: 0 2px 1px -1px #EEEEEE, 0 0 1px 0px #EEEEEE;
@@ -406,10 +409,7 @@
                background-color: hsl(50, 46%, 90%);
                box-shadow: 0 3px 1px -1px #E2E2E2, 0 0 1px 0px #EAEAEA;
              }
-             
-             
            }
-           
          }
 
          
@@ -1069,15 +1069,55 @@
 
      }
 
-     for (var i = 0; i < cellList.length; i++){
-       if (cellList[i].id == undefined) {
-         continue;
-       }
-       cellList[i].onfocus = function () { crosshairs(this.id);
-         highlight(this.id);  };
-       cellList[i].onblur = function () { crosshairs("not-a-cell");
-         highlight("not-a-cell");};
+
+     function lockCell () {
+       crosshairs(this.id);
+       highlight(this.id);
+
+       setTimeout(function () {
+         domainList.forEach( (domain) => {
+           domain.onfocus = function () {
+             let val = this.querySelector("p");
+
+             val.innerHTML = domain.textContent;
+             values.set(this, domain.textContent);
+             val.classList.add("insert");
+
+             setTimeout(function () {
+               val.classList.remove("insert");
+             }, 150);
+             checkGrid();
+           }.bind(this);
+
+           domain.onblur = function () {};
+         });
+       }.bind(this), 5);
+       
      }
+
+     function fillCell () {
+       crosshairs("not-a-cell");
+       highlight("not-a-cell");
+
+       setTimeout(function () {
+         if (use_sticky && !(document.getElementById("grid").contains(document.activeElement))
+             && document.activeElement != document.body) {
+           this.focus();
+
+         } else {
+           domainList.forEach((domain) => {
+             domain.onfocus = chamberInput;
+             domain.onblur = releaseInput;
+           });
+         }
+         
+       }.bind(this), 1); 
+     }
+
+     cellList.forEach( (cell) => {
+       cell.onfocus = lockCell;
+       cell.onblur = fillCell;
+     });
 
      function highlight(id) {
        if (!use_highlight) return;
@@ -1121,173 +1161,181 @@
        entry.addEventListener("pointerdown", jumpToCell);         
      });
 
-     for (let i = 0; i < domainList.length; i++) {
-       domainList[i].onfocus = function () {
-         // Slowdown ensures that, when switching from button A to button B, the blur handler
-         // for B will wrap up before the focus handler for A fires
-         setTimeout(function () {
+
+     function chamberInput (e) {
+       let button = e.target;
+       setTimeout(function () {
+         cellList.forEach((cell) => {
+           cell.onfocus = function () {
+
+             
+             let val = cell.querySelector("p");
+             
+             val.innerHTML = button.textContent;
+             values.set(cell,button.textContent);
+             val.classList.add("insert");
+
+             cell.querySelector(".ripple").remove();
+
+             setTimeout(function () {
+               val.classList.remove("insert");
+             }, 150);
+             checkGrid();
+           };
+
+           cell.onblur = function () {};
+         }
+         );
+       }, 5);
+     }
+
+     function releaseInput (e) {
+       setTimeout(function () {
+         if (use_sticky && document.activeElement.parentNode.id != "domain"
+             && document.activeElement != document.body) {
+           e.target.focus();
+         } else {
            cellList.forEach((cell) => {
-             cell.onfocus = function () {
-               let val = cell.querySelector("p");
-               
-               val.innerHTML = domainList[i].textContent;
-               values.set(cell, domainList[i].textContent);
-               val.classList.add("insert");
+             cell.onfocus = lockCell;
+             cell.onblur = fillCell;
+           });
+         }
+         }, 1);  // Tiny slowdown to avoid resetting cell.onfocus before we can actually use it!
+         
+       }
+       
+       domainList.forEach( (button) => {
+         button.onfocus = chamberInput;
 
-               cell.querySelector(".ripple").remove();
+         button.onblur = releaseInput;
+       });
 
-               setTimeout(function () {
-                 val.classList.remove("insert");
-               }, 150);
-               checkGrid();
-             };
-           }); 
-         }, 5);
-       };
+       
+       function verticalScroll(el, moe) {
+         const isScrollable = (el.scrollHeight - moe > el.clientHeight);
+         
+         // GUARD: If element is not scrollable, remove all classes
+         if (!isScrollable) {
+           el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
+           return;
+         }
+         
+         // Otherwise, the element is overflowing!
+         // Now we just need to find out which direction it is overflowing to (can be both).
+         // One pixel is added to the height to account for non-integer heights.
+         const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+         const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
+         el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
+         el.classList.toggle('is-top-overflowing', !isScrolledToTop);
+       }
 
-       domainList[i].onblur = function (e) {
-         // Tiny slowdown to avoid resetting cell.onfocus before we can actually use it!
-         setTimeout(function () {
-           if (use_sticky && document.activeElement.parentNode.id != "domain"
-               && document.activeElement != document.body) {
-             e.target.focus();
+       
+
+       function horizontalScroll(el) {
+         const isScrollable = (el.scrollWidth > el.clientWidth);
+
+         // GUARD: If element is not scrollable, remove all classes
+         if (!isScrollable) {
+           el.classList.remove('is-left-overflowing', 'is-right-overflowing');
+           return;
+         }
+         
+         // Otherwise, the element is overflowing!
+         // Now we just need to find out which direction it is overflowing to (can be both).
+         // One pixel is added to the height to account for non-integer heights.
+         const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
+         const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
+         el.classList.toggle('is-right-overflowing', !isScrolledToRight);
+         el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
+       }
+
+       document.querySelector('#propositions').addEventListener('scroll', (e) => {
+         const el = e.currentTarget;
+         verticalScroll(el, 7);
+       });
+
+       document.querySelector('#domain').addEventListener('scroll', (e) => {
+         const el = e.currentTarget;
+         horizontalScroll(el);
+       });
+
+       window.onresize = function(event) {
+         verticalScroll(document.querySelector('#propositions'), 7);
+       }
+
+       
+       horizontalScroll(document.querySelector('#domain'));
+
+
+       // given the id of a cell, emphasize borders of cells in that row and column
+       function crosshairs(id) {
+         if (!use_crosshairs) return;
+         for (var i = 0; i < cellList.length; i++) {
+           // check that the cell matches in row or column
+           if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
+             cellList[i].style.outlineColor = "black";
 
            }
+           // reset the styles of other cells without messing up the axis labels
+           else if (! cellList[i].classList.contains("y_axis") && ! cellList[i].classList.contains("x_axis")) {
+             cellList[i].style.outlineColor = "transparent";
 
-           cellList.forEach((cell) => {
-             cell.onfocus = function () {crosshairs(this.id); highlight(this.id);};
-             cell.blur();
-           });
-         }, 1); 
-       };
-     }
-
-     
-     function verticalScroll(el, moe) {
-       const isScrollable = (el.scrollHeight - moe > el.clientHeight);
-       
-       // GUARD: If element is not scrollable, remove all classes
-       if (!isScrollable) {
-         el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
-         return;
-       }
-       
-       // Otherwise, the element is overflowing!
-       // Now we just need to find out which direction it is overflowing to (can be both).
-       // One pixel is added to the height to account for non-integer heights.
-       const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
-       const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
-       el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
-       el.classList.toggle('is-top-overflowing', !isScrolledToTop);
-     }
-
-     
-
-     function horizontalScroll(el) {
-       const isScrollable = (el.scrollWidth > el.clientWidth);
-
-       // GUARD: If element is not scrollable, remove all classes
-       if (!isScrollable) {
-         el.classList.remove('is-left-overflowing', 'is-right-overflowing');
-         return;
-       }
-       
-       // Otherwise, the element is overflowing!
-       // Now we just need to find out which direction it is overflowing to (can be both).
-       // One pixel is added to the height to account for non-integer heights.
-       const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
-       const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
-       el.classList.toggle('is-right-overflowing', !isScrolledToRight);
-       el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
-     }
-
-     document.querySelector('#propositions').addEventListener('scroll', (e) => {
-       const el = e.currentTarget;
-       verticalScroll(el, 7);
-     });
-
-     document.querySelector('#domain').addEventListener('scroll', (e) => {
-       const el = e.currentTarget;
-       horizontalScroll(el);
-     });
-
-     window.onresize = function(event) {
-       verticalScroll(document.querySelector('#propositions'), 7);
-     }
-
-     
-     horizontalScroll(document.querySelector('#domain'));
-
-
-     // given the id of a cell, emphasize borders of cells in that row and column
-     function crosshairs(id) {
-       if (!use_crosshairs) return;
-       for (var i = 0; i < cellList.length; i++) {
-         // check that the cell matches in row or column
-         if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
-           cellList[i].style.outlineColor = "black";
-
-         }
-         // reset the styles of other cells without messing up the axis labels
-         else if (! cellList[i].classList.contains("y_axis") && ! cellList[i].classList.contains("x_axis")) {
-           cellList[i].style.outlineColor = "transparent";
-
+           }
          }
        }
-     }
 
-     rippleStack = [];
-     function spawnRipple(mouseEvent, element) {
-       rippleStack.push(element);
-       document.querySelectorAll(".ripple").forEach((r) => {
-         if (element === rippleStack[rippleStack.length-1])
-           r.remove();
-       });
-       rippleStack = rippleStack.slice(rippleStack.length-1);
-       if (element !== rippleStack[rippleStack.length-1])
-         return;
-       // Create a ripple element <div class="ripple">
-       const rippleEl = document.createElement('div');
-       rippleEl.classList.add('ripple');
-       // Position the ripple
-       let x = element.offsetWidth / (Math.floor(Math.random() * 5)+1);
-       let y = element.offsetHeight / (Math.floor(Math.random() * 5)+1);
-       if (!mouseEvent.simulated) {
-         x = mouseEvent.offsetX;
-         y = mouseEvent.offsetY;
+       rippleStack = [];
+       function spawnRipple(mouseEvent, element) {
+         rippleStack.push(element);
+         document.querySelectorAll(".ripple").forEach((r) => {
+           if (element === rippleStack[rippleStack.length-1])
+             r.remove();
+         });
+         rippleStack = rippleStack.slice(rippleStack.length-1);
+         if (element !== rippleStack[rippleStack.length-1])
+           return;
+         // Create a ripple element <div class="ripple">
+         const rippleEl = document.createElement('div');
+         rippleEl.classList.add('ripple');
+         // Position the ripple
+         let x = element.offsetWidth / (Math.floor(Math.random() * 5)+1);
+         let y = element.offsetHeight / (Math.floor(Math.random() * 5)+1);
+         if (!mouseEvent.simulated) {
+           x = mouseEvent.offsetX;
+           y = mouseEvent.offsetY;
+         }
+         
+         rippleEl.style.left = `${x}px`;
+         rippleEl.style.top = `${y}px`;
+         element.appendChild(rippleEl);
+         requestAnimationFrame(() => {
+           rippleEl.classList.add('run');
+         });
+         // Remove ripple element when the transition is done
+         rippleEl.addEventListener('transitionend', () => {
+           rippleEl.remove();
+         }
+         );
        }
+
+       document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
+         element.addEventListener("pointerdown",  (event) => {
+           spawnRipple(event, element);
+           element.focus();
+         });
+       });
+
        
-       rippleEl.style.left = `${x}px`;
-       rippleEl.style.top = `${y}px`;
-       element.appendChild(rippleEl);
-       requestAnimationFrame(() => {
-         rippleEl.classList.add('run');
-       });
-       // Remove ripple element when the transition is done
-       rippleEl.addEventListener('transitionend', () => {
-         rippleEl.remove();
+       document.getElementById("level").onclick = function () {
+         if (window.event.ctrlKey || window.event.shiftKey) {
+           // Interestingly, Chrome will only actually focus the
+           // new window if you were holding shift
+           window.open("index.html", '_blank').focus();
+         } else {
+           location.href = "index.html";
+         }
        }
-       );
-     }
 
-     document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
-       element.addEventListener("pointerdown",  (event) => {
-         spawnRipple(event, element);
-         element.focus();
-       });
-     });
-
-     
-     document.getElementById("level").onclick = function () {
-       if (window.event.ctrlKey || window.event.shiftKey) {
-         // Interestingly, Chrome will only actually focus the
-         // new window if you were holding shift
-         window.open("index.html", '_blank').focus();
-       } else {
-         location.href = "index.html";
-       }
-     }
-
-     
+       
     </script>
 </html>

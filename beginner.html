@@ -1128,14 +1128,16 @@
          setTimeout(function () {
            cellList.forEach((cell) => {
              cell.onfocus = function () {
-               cell.firstChild.innerHTML = domainList[i].textContent;
+               let val = cell.querySelector("p");
+               
+               val.innerHTML = domainList[i].textContent;
                values.set(cell, domainList[i].textContent);
-               cell.firstChild.classList.add("insert");
+               val.classList.add("insert");
 
-               this.lastChild.remove();
+               cell.querySelector(".ripple").remove();
 
                setTimeout(function () {
-                 cell.firstChild.classList.remove("insert");
+                 val.classList.remove("insert");
                }, 150);
                checkGrid();
              };

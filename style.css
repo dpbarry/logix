@@ -101,7 +101,7 @@ dialog[open] {
 
   visibility: visible;
   border: 1px solid #C7C7C7;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.15),
   0 0 30px 15px rgb(0,0,0,0.1);
 }

@@ -1406,6 +1406,9 @@
      document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
        element.addEventListener("pointerdown",  (event) => {
          spawnRipple(event, element);
+         if (document.activeElement === document.body) {
+           element.focus();
+         }
        });
      });
 

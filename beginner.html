@@ -398,7 +398,7 @@
                cursor: pointer;
                padding-top: 3px;
                display: inline-block;
-               border-radius: 5px;
+               border-radius: 10px;
                transition: background-color 0.2s ease, box-shadow 0.2s ease;
              }
              span.entry.correct {
@@ -410,7 +410,7 @@
              }
              span.entry.highlight {
                background-color: hsl(50, 46%, 90%);
-               box-shadow: 0 3px 1px -1px #E2E2E2, 0 0 1px 0px #EAEAEA;
+               box-shadow: 0 3px 1px -1px #E2E2E2, 0 0 1px #CCC;
              }
            }
          }
@@ -1399,14 +1399,14 @@
        // Remove ripple element when the transition is done
        rippleEl.addEventListener('transitionend', () => {
          rippleEl.remove();
-       }
-       );
+       });
+         return rippleEl;
      }
 
      document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
        element.addEventListener("pointerdown",  (event) => {
-         spawnRipple(event, element);
-         if (document.activeElement === document.body) {
+         let x = spawnRipple(event, element);
+         if (document.body.contains(x)) {
            element.focus();
          }
        });

@@ -345,7 +345,7 @@
                animation: fade 0.15s cubic-bezier(.35,1.35,1,1) forwards;
              }
              &.dismiss {
-               animation: fade 0.15s cubic-bezier(.65,-0.35,0,0) forwards reverse;
+               animation: fade 0.1s cubic-bezier(.65,-0.35,0,0) forwards reverse;
              }
            }
          }
@@ -570,14 +570,14 @@
            }
 
            button:active, button.activated {
-             animation: 0.12s lightNudge ease forwards;
+             animation: 0.18s lightNudge ease forwards;
            }
 
          }
 
          @keyframes lightNudge {
            0% { transform: scale(1); }
-           50% { transform: scale(0.99); }
+           50% { transform: scale(0.992); }
            100% { transform: scale(1); }
          }
 
@@ -1148,6 +1148,8 @@
        setTimeout(function () {
          domainList.forEach( (domain) => {
            domain.onfocus = function () {
+             domain.querySelector(".ripple").remove();
+
              let text = this.querySelector("p");
 
 
@@ -1162,7 +1164,6 @@
              redo.classList.remove("usable");
              
              insert(this, domain.textContent);
-             domain.querySelector(".ripple").remove();
 
              values.set(this, domain.textContent);
 
@@ -1249,6 +1250,7 @@
        setTimeout(function () {
          cellList.forEach((cell) => {
            cell.onfocus = function () {
+             cell.querySelector(".ripple").remove();
              let text = cell.querySelector("p")
 
              if (undoStack.length == 0) {
@@ -1258,7 +1260,6 @@
              redoStack = [];
              redo.classList.remove("usable");
 
-             cell.querySelector(".ripple").remove();
              insert(cell, button.textContent);
 
              values.set(cell,button.textContent);

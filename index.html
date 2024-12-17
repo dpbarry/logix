@@ -370,16 +370,50 @@
 
      document.getElementById("s1").onclick = function () {
        this.classList.add("activated");
-       setTimeout(function () { location.href = "beginner.html"; }, 150);
+       setTimeout(function () {
+         Router("beginner.html");
+         history.pushState({}, "", "beginner.html");
+       }, 150);
      };
      document.getElementById("s1").onkeydown = function (e) {
        if (e.key != " " && e.key != "Enter") return;
        e.target.classList.add("activated");
-       setTimeout(function () { location.href = "beginner.html"; }, 150);
+       setTimeout(function () {
+         Router("beginner.html");
+         history.pushState({}, "", "beginner.html");
+       }, 150);
      };
 
 
      document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
+
+
+     
+
+
+     const Routes = {
+
+       "beginner.html": () => (document.body.innerHTML = "<p>Test</p>"),
+       
+     }
+
+     const Router = (path) => {
+       if (Routes[path]) {
+         Routes[path]();
+       } else {
+         document.body.innnerHTML = "<p> Where are we? </p>";
+       }
+     }
+
+     Router(location.pathname);
+
+     window.addEventListener("load", () => {
+       window.addEventListener("popstate", () => {
+         Router(location.pathname)
+       })
+     })
+     
+     
     </script>
 
 

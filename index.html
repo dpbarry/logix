@@ -290,122 +290,84 @@
         </style>
     </head>
 
-    <body>
-        <button id="info" class ="dialog_button" onclick="showModal('info_dialog')"></button>
-
-        <button id="preferences" class ="dialog_button" onclick="showModal('preferences_dialog')"></button>
-        <dialog id="info_dialog">
-            <a class="close"></a>
-            <h1>Info</h1>
-        </dialog>
-
-        <div id="overlay"></div>
-        <dialog id="preferences_dialog">
-            <a class="close"></a>
-            <h1>Preferences</h1>
-            <div id="options">
-                <label> Theme </label>
-                <input id="highlight_toggle" type="checkbox" checked>
-                <p>todo</p>
-
-                <label> Language </label>
-                <input id="highlight_toggle" type="checkbox" checked>
-                <p>todo</p>
-            </div>
-        </dialog>
-
-        <h1 id="main-header">LOGIX</h1>
-        <div id="wrap_cards">
-            <ul class="card" id="training" >
-                <h2> Training </h2>
-                <li id ="s1">
-                    <p class="stage-content"> Propositions </p>
-                </li>
-
-                <li id ="s2">
-                    <p class="stage-content"> Connectives </p>
-                </li>
-
-                <li id ="s3">
-                    <p class="stage-content"> Quantifiers </p>
-                </li>
-
-                <li id ="s4">
-                    <p class="stage-content"> Set Theory </p>
-                </li>
-
-                <li id ="s5">
-                    <p class="stage-content"> Relations </p>
-                </li>
-            </ul>
-            <ul class="card" id="normal">
-                <h2> Normal </h2>
-                <li id ="s1">
-                    <p class="stage-content"> ... </p>
-                </li>
-
-            </ul>
-            <ul class="card" id="difficult">
-                <h2> Difficult </h2>
-                <li id ="s1">
-                    <p class="stage-content"> ... </p>
-                </li>
-            </ul>
-            <ul class="card" id="extreme">
-                <h2> Extreme </h2>
-                <li id ="s1">
-                    <p class="stage-content"> ... </p>
-                </li>
-            </ul>
-        </div>
-    </body>
+    <body></body>
 
     <script src="script.js"></script>
     <script>
-     document.querySelectorAll(".card li").forEach((l) =>
-       l.onclick = function () {
-         this.blur();
-       }
-     );
+     let landingHTML;
+     async function getLanding() {
+       const res = await fetch('landing.html');
+       landingHTML = await res.text();
+     }
+     let beginnerHTML;
+     async function getBeginner() {
+       const res = await fetch('beginner.html');
+       beginnerHTML = await res.text();
+     }
 
-     document.getElementById("s1").onclick = function () {
-       this.classList.add("activated");
-       setTimeout(function () {
-         Router("beginner.html");
-         history.pushState({}, "", "beginner.html");
-       }, 150);
-     };
-     document.getElementById("s1").onkeydown = function (e) {
-       if (e.key != " " && e.key != "Enter") return;
-       e.target.classList.add("activated");
-       setTimeout(function () {
-         Router("beginner.html");
-         history.pushState({}, "", "beginner.html");
-       }, 150);
-     };
-
-
-     document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
-
-
-     
-
+     getLanding();
+     getBeginner();
 
      const Routes = {
-
-       "beginner.html": () => (document.body.innerHTML = "<p>Test</p>"),
        
+       "index.html": () => 
+         (setTimeout(function() {
+           document.body.innerHTML = landingHTML}, 25)),
+       "logix": () =>
+          (setTimeout(function() {
+            document.body.innerHTML = landingHTML}, 25)),
+       "beginner.html": () =>
+          (setTimeout(function() {
+            document.body.innerHTML = beginnerHTML}, 25)),
      }
 
      const Router = (path) => {
        if (Routes[path]) {
          Routes[path]();
        } else {
-         document.body.innnerHTML = "<p> Where are we? </p>";
+         document.body.innerHTML = "<p> Where are we? </p>";
        }
      }
 
-     Router(location.pathname);
+
+     p = location.pathname;
+     url = p.replace(/\/+$/, '');
+     lastSeg = url.substr(url.lastIndexOf('/') + 1);
+
+     
+     Router(lastSeg);
+
+
+     setTimeout(function() {
+       document.querySelectorAll(".card li").forEach((l) =>
+         l.onclick = function () {
+           this.blur();
+         }
+       );
+
+       document.getElementById("s1").onclick = function () {
+         this.classList.add("activated");
+         setTimeout(function () {
+           Router("beginner.html");
+           history.pushState({}, "", "beginner.html");
+         }, 150);
+       };
+       document.getElementById("s1").onkeydown = function (e) {
+         if (e.key != " " && e.key != "Enter") return;
+         e.target.classList.add("activated");
+         setTimeout(function () {
+           Router("beginner.html");
+           history.pushState({}, "", "beginner.html");
+         }, 150);
+       };
+
+       document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
+
+
+       
+     }, 100);
+
+     
 
      window.addEventListener("load", () => {
        window.addEventListener("popstate", () => {

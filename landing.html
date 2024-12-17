@@ -1,0 +1,67 @@
+<button id="info" class ="dialog_button" onclick="showModal('info_dialog')"></button>
+
+<button id="preferences" class ="dialog_button" onclick="showModal('preferences_dialog')"></button>
+<dialog id="info_dialog">
+    <a class="close"></a>
+    <h1>Info</h1>
+</dialog>
+
+<div id="overlay"></div>
+<dialog id="preferences_dialog">
+    <a class="close"></a>
+    <h1>Preferences</h1>
+    <div id="options">
+        <label> Theme </label>
+        <input id="highlight_toggle" type="checkbox" checked>
+        <p>todo</p>
+
+        <label> Language </label>
+        <input id="highlight_toggle" type="checkbox" checked>
+        <p>todo</p>
+    </div>
+</dialog>
+
+<h1 id="main-header">LOGIX</h1>
+<div id="wrap_cards">
+    <ul class="card" id="training" >
+        <h2> Training </h2>
+        <li id ="s1">
+            <p class="stage-content"> Propositions </p>
+        </li>
+
+        <li id ="s2">
+            <p class="stage-content"> Connectives </p>
+        </li>
+
+        <li id ="s3">
+            <p class="stage-content"> Quantifiers </p>
+        </li>
+
+        <li id ="s4">
+            <p class="stage-content"> Set Theory </p>
+        </li>
+
+        <li id ="s5">
+            <p class="stage-content"> Relations </p>
+        </li>
+    </ul>
+    <ul class="card" id="normal">
+        <h2> Normal </h2>
+        <li id ="s1">
+            <p class="stage-content"> ... </p>
+        </li>
+
+    </ul>
+    <ul class="card" id="difficult">
+        <h2> Difficult </h2>
+        <li id ="s1">
+            <p class="stage-content"> ... </p>
+        </li>
+    </ul>
+    <ul class="card" id="extreme">
+        <h2> Extreme </h2>
+        <li id ="s1">
+            <p class="stage-content"> ... </p>
+        </li>
+    </ul>
+</div>

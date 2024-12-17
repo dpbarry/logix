@@ -271,7 +271,7 @@
              border: 1px solid #000000;
              text-align: center;
              outline: 1px solid transparent; /* For crosshairs */
-             border-radius: 2px;
+             border-radius: 4px;
              background-color: transparent;
              transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s;
              width: clamp(24px, 13vh, 100px);
@@ -300,6 +300,7 @@
            td:not(.x_axis, .y_axis) {
              cursor: pointer;
            }
+         
 
            td.given {
              background-color: #D0D0D0;
@@ -307,7 +308,7 @@
            td.given > .ripple, td.correct > .ripple {
              opacity: 0.4;
              background-color: #EFEFEF;
-             transition: all 0.4s ease;
+             transition: all 0.48s ease;
              &.run {
                transform: scale(150);
              }
@@ -341,16 +342,20 @@
              pointer-events: none; /* Don't interfere with ripple */
 
              &.insert {
-               animation: fade-in 0.15s cubic-bezier(.29,1.11,.5,.92) forwards;
+               animation: fade 0.15s cubic-bezier(.35,1.35,1,1) forwards;
+             }
+             &.dismiss {
+               animation: fade 0.15s cubic-bezier(.65,-0.35,0,0) forwards reverse;
              }
            }
          }
          
          
-         @keyframes fade-in {
-           from { bottom: 17px; }
-           to { bottom: 0px; }
+         @keyframes fade {
+           from { bottom: 8px; opacity: 0; }
+           to { bottom: 0px; opacity: 1; }
          }
+
          
          #propositions {
            font-size: clamp(1.5rem, 4vh, 2rem);
@@ -562,9 +567,18 @@
            button:focus {
              box-shadow: 0 4px 6px -6px #777, 0 0 3px #DDD;
              background-color: hsl(50, 46%, 90%);
-             outline: none;  /* Tabbing to button adds outline by default */
            }
 
+           button:active, button.activated {
+             animation: 0.12s lightNudge ease forwards;
+           }
+
+         }
+
+         @keyframes lightNudge {
+           0% { transform: scale(1); }
+           50% { transform: scale(0.99); }
+           100% { transform: scale(1); }
          }
 
          .ripple {
@@ -994,30 +1008,52 @@
        cell.addEventListener("keydown", inp);
      });
 
+
+     function endInsert(e) {
+       e.target.classList.remove("insert");
+       e.target.removeEventListener("animationend", endInsert);
+     }
+
+     function endDismiss(e) {
+       let text = e.target;
+       text.classList.remove("dismiss");
+       text.innerHTML = text.innerHTML.substring(0, text.innerHTML.length-1);
+       text.removeEventListener("animationend", endDismiss);
+     }
+
+     function insert(cell, value) {
+       let text = cell.querySelector("p");
+       
+       flushDismiss = new AnimationEvent("animationend");
+       text.dispatchEvent(flushDismiss);
+       
+       text.innerHTML = value;
+       
+       text.classList.add("insert");
+       text.addEventListener("animationend", endInsert);
+     }
+     
      function inp (event) {
-       if (event.key === "Tab") return;
-       let val = event.target.firstChild;
+       let text = event.target.querySelector("p");
 
-       if (undoStack.length == 0) {
-         undo.classList.add("usable");
+       if (DOMAIN.includes(parseInt(event.key)) || event.key === "Backspace") { 
+         if (undoStack.length == 0) {
+           undo.classList.add("usable");
+         }
+         undoStack.push([event.target, text.innerHTML]);
+         redoStack = [];
+         redo.classList.remove("usable");
        }
-       undoStack.push([event.target, val.innerHTML]);
-       redoStack = [];
-       redo.classList.remove("usable");
-
-
+       
        if (DOMAIN.includes(parseInt(event.key))) {
-         val.innerHTML = event.key;
-         
-         val.classList.add("insert");
-         val.addEventListener("animationend", (e) => {
-           val.classList.remove("insert");
-         });
+         insert(event.target, event.key);
          
        } else if (event.key === "Backspace") {
-         val.innerHTML = val.innerHTML.substring(0, val.innerHTML.length-1);  
+         text.classList.add("dismiss");
+
+         text.addEventListener("animationend", endDismiss);
        }
-       values.set(event.target, val.innerHTML);
+       values.set(event.target, text.innerHTML);
        checkGrid();
      }
 
@@ -1097,6 +1133,13 @@
 
      }
 
+     function endActivated(e) {
+       let domain = e.target;
+       if (e.target.nodeName === "P")
+         domain = e.target.parentNode;
+       domain.classList.remove("activated");
+       domain.removeEventListener("animationend", endPull);
+     }
 
      function lockCell () {
        crosshairs(this.id);
@@ -1105,24 +1148,24 @@
        setTimeout(function () {
          domainList.forEach( (domain) => {
            domain.onfocus = function () {
-             let val = this.querySelector("p");
+             let text = this.querySelector("p");
 
-             if (undoStack.length == 0) {
+
+             domain.classList.add("activated");
+             domain.addEventListener("animationend", endActivated);
+             
+             if (undoStack.length === 0) {
                undo.classList.add("usable");
              }
              undoStack.push([this, this.firstChild.innerHTML]);
              redoStack = [];
              redo.classList.remove("usable");
-
              
-             val.innerHTML = domain.textContent;
+             insert(this, domain.textContent);
+             domain.querySelector(".ripple").remove();
+
              values.set(this, domain.textContent);
 
-             val.classList.add("insert");
-
-             val.addEventListener("animationend", (e) => {
-               val.classList.remove("insert");
-             });
              checkGrid();
            }.bind(this);
 
@@ -1206,28 +1249,20 @@
        setTimeout(function () {
          cellList.forEach((cell) => {
            cell.onfocus = function () {
-
-             
-             let val = cell.querySelector("p");
+             let text = cell.querySelector("p")
 
              if (undoStack.length == 0) {
                undo.classList.add("usable");
              }
-             undoStack.push([cell, val.innerHTML]);
+             undoStack.push([cell, text.innerHTML]);
              redoStack = [];
              redo.classList.remove("usable");
 
-             
-             val.innerHTML = button.textContent;
+             cell.querySelector(".ripple").remove();
+             insert(cell, button.textContent);
+
              values.set(cell,button.textContent);
 
-             val.classList.add("insert");
-
-             cell.querySelector(".ripple").remove();
-
-             val.addEventListener("animationend", (e) => {
-               val.classList.remove("insert");
-             });
              checkGrid();
            };
 
@@ -1370,7 +1405,6 @@
      document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
        element.addEventListener("pointerdown",  (event) => {
          spawnRipple(event, element);
-         element.focus();
        });
      });
 
@@ -1386,7 +1420,14 @@
        let undone = prevState[1];
        let done = cell.firstChild.innerHTML;
 
-       cell.firstChild.innerHTML = undone;
+       if (undone === "") {
+         cell.firstChild.classList.add("dismiss");
+
+         cell.firstChild.addEventListener("animationend", endDismiss);
+
+       } else {
+         insert(cell, undone);
+       }
 
        if (redoStack.length === 0) {
          redo.classList.add("usable");
@@ -1407,7 +1448,13 @@
        let redone = prevState[1];
        let done = cell.firstChild.innerHTML;
 
-       cell.firstChild.innerHTML = redone;
+       if (redone === "") {
+         cell.firstChild.classList.add("dismiss");
+
+         cell.firstChild.addEventListener("animationend", endDismiss);
+       } else {
+         insert(cell, redone);
+       }
 
        if (undoStack.length === 0) {
          undo.classList.add("usable");

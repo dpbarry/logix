@@ -1,12 +1,3 @@
-/*  Prevent mismatch between viewport and body dimensions */
-html, body {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-}
-
-
 
 @property --lightBlue {
   syntax: '<color>';

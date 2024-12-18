@@ -1,0 +1,259 @@
+#main-header {
+  text-align: center;
+  margin: 0;
+  padding-top: 6px;
+  padding-bottom: 5px;
+
+  font-family: computer modern serif;
+  font-weight: bolder;
+  font-size: 3.1rem;
+}
+
+
+button.home  {
+  border: 0;
+  outline: 0;
+  position: absolute;
+
+  margin: 0;
+  margin-bottom: 14px;
+
+  cursor: pointer;
+
+  z-index: 1;
+
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+#preferences.home {
+  top: 20px;
+  right: 20px;
+  height: 33px;
+  width: 33px;
+  background: url("images/PREFERENCES.svg");
+}
+
+#info.home {
+  top: 17px;
+  left: 20px;
+  height: 38px;
+  width: 38px;
+  background: url("images/INFO.svg");
+}
+
+@media(hover: hover) and (pointer: fine) {
+  button.home:hover { opacity: 0.72; }
+}
+.home.nudged {
+  animation:  nudge 0.2s ease forwards;
+}
+
+
+
+
+
+
+
+#options {
+  margin-left: 2vw;
+  margin-right: 2vw;
+  font-size: 1.4rem;
+  font-weight: 400;
+  display:flex;
+  align-items: flex-end;
+  justify-content: left;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#preferences_dialog {
+  max-width: 500px;
+}
+
+
+
+#wrap_cards {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+
+
+}
+.card {
+
+  padding: 15px;
+  width: 100%;
+
+  background-color: #F7F7F7;
+  border-radius: 5px;
+  box-shadow: 0 0 4px #EAEAEA , 0 0px 2px  #C0C0C0, 0 7px 8px -8px #D0D0D0 ;
+
+  font-family: "Source Serif 4";
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+
+  h2 {
+    font-family: "Source Serif 4";
+    font-size: 1.85rem;
+    font-weight: 700;
+    margin-top: -10px;
+    margin-bottom: 8px;
+
+  }
+}
+
+#training {
+  li {
+    border: 1px solid #CCC;
+    box-shadow: 0 2px 3px hsl(120 4% 90% / 1), 0 0 2px hsl(120 4% 95% / 1);
+    background: hsl(120 10% 90%);
+  }
+}
+
+#normal {
+  li {
+    border: 1px solid #CCC;
+    box-shadow: 0 2px 3px hsl(55 4% 90% / 1), 0 0 2px hsl(55 4% 95% / 1);
+    background: hsl(55 10% 90%);
+  }
+}
+
+#difficult {
+  li {
+    border: 1px solid #CCC;
+    box-shadow: 0 2px 3px hsl(0 4% 90% / 1), 0 0 2px hsl(0 4% 95% / 1);
+    background: hsl(0 10% 90%);
+  }
+}
+
+#extreme {
+  li {
+    border: 1px solid #CCC;
+    box-shadow: 0 2px 3px hsl(300 4% 90% / 1), 0 0 2px hsl(300 4% 95% / 1);
+    background: hsl(300 10% 90%);
+  }
+}
+
+@media (orientation: portrait) {
+  .card:not(#training) {
+    display: none;
+  }
+
+  #training {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75vw;
+  }
+}
+@media (orientation: landscape)  {
+  #wrap_cards {
+    width: 90vw;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+  }
+  .card {
+    width: 275px;
+  }
+}
+
+.card li {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 100%;
+  height: 47px;
+  border-radius: 2px;
+  margin-bottom: 15px;
+
+  filter: none;
+
+  border: 1px solid #CCC;
+  box-shadow: 0 2px 3px #DFDFDF, 0 0 2px #EEE;
+
+  list-style-type: none;
+  cursor: pointer;
+
+  transition: background .15s ease, box-shadow .15s ease-out, top .3s ease-out, filter .15s, border .15s;
+
+  /* For on-click nudge animation */
+  position: relative;
+  top: 0;
+
+  &:last-of-type {margin-bottom: 0px;}
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+  .card li:hover {
+    filter: saturate(2) brightness(0.96);
+    border: 1px solid #AAA !important;
+
+    & > .stage-content {
+      font-weight: 500;
+      left: -7px;
+      &::before {
+        left: -2px;
+        opacity: 0.25;
+      }
+    }
+  }
+}
+
+.card li:focus {
+  filter: saturate(2) brightness(0.96);
+  border: 1px solid #AAA !important;
+  
+  & > .stage-content {
+    font-weight: 500;
+    &::before {
+      left: -2px;
+      opacity: 0.25;
+    }
+  }
+}
+
+.card li:active > .stage-content, .card li.activated > .stage-content {
+  left: 8px;
+  
+  &::before {
+    left: 0px;
+    opacity: 1;
+  }
+}
+
+
+p {
+  margin: 0;
+}
+
+
+.stage-content {
+  font-size: 1.25rem;
+  font-weight: 375;
+  position: relative;
+  left: -10px;
+  transition: 0.15s font-weight, left 0.18s;
+}
+.stage-content::before {
+  font-family: sans-serif;
+  content: "→";
+  font-size: 1.25rem;
+  position: relative;
+  left: -20px;
+  opacity: 0;
+
+  transition: opacity 0.2s, left 0.18s;
+}

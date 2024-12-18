@@ -12,12 +12,20 @@
   &:focus {outline: none;}
 }
 
+/*  Prevent mismatch between viewport and body dimensions */
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
 @keyframes nudge {
   0% { transform: scale(1); }
   50% { transform: scale(0.95); }
   100% {transform: translateY(1); }
 }
-
 
 
 .close {

@@ -11,8 +11,6 @@ function closeDialog (event) {
 function initDialogs() {
     const dialogList = document.querySelectorAll('dialog');
 
-    
-
     dialogList.forEach((dialog) => {
         dialog.addEventListener('click', (e) => {
             if (e.target.tagName !== 'DIALOG')

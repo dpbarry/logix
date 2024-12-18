@@ -256,7 +256,7 @@
   }
   td:not(.given, .x_axis, .y_axis)::before {
     content: "";
-    background-color: hsl(40, 60%, 90%);
+    background-color: #F1EEDC;
     opacity: 0;
     position: fixed;
     width: 100%;
@@ -274,16 +274,15 @@
     background-color: #D0D0D0;
   }
   td.given > .ripple, td.correct > .ripple {
-    opacity: 0.4;
-    background-color: #EFEFEF;
-    transition: all 0.48s ease;
-    &.run {
-      transform: scale(150);
-    }
+    background-color: rgba(220,220,220,0.65);
   }
   
   td.noticed::before {
-    opacity: 0.425;
+    opacity: 0.5;
+
+    &.run {
+      transform: scale(110);
+    }
   }
   
   td.correct {
@@ -310,7 +309,7 @@
     pointer-events: none; /* Don't interfere with ripple */
 
     &.insert {
-      animation: fade 0.15s cubic-bezier(.35,1.15,1,1) forwards;
+      animation: fade 0.15s cubic-bezier(.35,1,1,1) forwards;
     }
     &.dismiss {
       animation: fade 0.1s cubic-bezier(.65,-0.4,0,0) forwards reverse;
@@ -320,8 +319,8 @@
 
 
 @keyframes fade {
-  from { bottom: 10px; opacity: 0; }
-  to { bottom: 0px; opacity: 1; }
+  from { bottom: 10px; opacity: 0; font-size: 110%; }
+  to { bottom: 0px; opacity: 1; font-size: 100%; }
 }
 
 
@@ -374,10 +373,10 @@
       display: block;
       transform: scale(0.94);
       opacity: 0;
-      border-radius: 3px;
+      border-radius: 5px;
       position: absolute;
       left: 0; right: 0; top: 0; bottom: 0;
-      transition: opacity 0.15s;
+      transition: opacity 0.225s ease-out;
       background-color: hsl(50, 46%, 90%);
       box-shadow: 0 2px 1px -1px #EEEEEE, 0 0 1px 0px #EEEEEE;
 
@@ -387,14 +386,12 @@
       cursor: default;
     }
     span.entry:not(.correct, .highlight):hover::before {
-      animation: grow 0.15s ease-in forwards;
       opacity: 0.5;
 
       transition: opacity 0.1s ease-in;
 
     }
     span.entry.highlight::before {
-      animation: grow 0.15s ease-in forwards;
       opacity: 1;
       transition: opacity 0.1s ease-in;
 
@@ -402,10 +399,6 @@
   }
 }
 
-@keyframes grow {
-  from { transform: scale(0.4); }
-  to { transform: scale(0.94;)}
-}
 
 #propositions.is-top-overflowing {
   --top-mask-size: 40px !important;
@@ -586,7 +579,7 @@
 }
 
 .ripple.run {
-  transform: scale(225);
+  transform: scale(170);
   opacity: 0 !important;
 }
 

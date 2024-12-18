@@ -107,7 +107,7 @@ dialog {
   
   font-family: "source serif 4";
   width: min(80vw, 500px);
-  height: 51vh;
+  height: 52vh;
   visibility: hidden;
   transition: transform cubic-bezier(.25,1,.25,1) 0.25s;
   transform: scale(0);
@@ -121,10 +121,10 @@ dialog[open] {
   transform: scale(1);
 
   visibility: visible;
-  border: 1px solid #C7C7C7;
-  border-radius: 20px;
-  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.15),
-  0 0 30px 15px rgb(0,0,0,0.1);
+  border: 0px solid rgb(0,0,0,0.175);
+  border-radius: 18px;
+  box-shadow: 0 0 3px rgb(0,0,0,0.15), 0 0 5px rgb(0,0,0,0.125), 0 0 8px 1px rgba(0, 0, 0, 0.075),
+  0 0 30px 15px rgb(0,0,0,0.05);
 }
 dialog.hide {
   transition: transform ease-in 0.15s, opacity ease 0.15s;

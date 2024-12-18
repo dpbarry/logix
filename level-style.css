@@ -116,7 +116,6 @@
 #menu {
   position: absolute;
   top: 1.75vmin;
-  right: 3vmin;
 
   /* Align #chevron */
   text-align: center; 
@@ -273,8 +272,13 @@
   td.given {
     background-color: #D0D0D0;
   }
-  td.given > .ripple, td.correct > .ripple {
+  td.given > .ripple {
     background-color: rgba(220,220,220,0.65);
+  }
+
+  td.correct > .ripple {
+    background-color: rgba(220,255,220,0.1);
+
   }
   
   td.noticed::before {
@@ -319,7 +323,7 @@
 
 
 @keyframes fade {
-  from { bottom: 10px; opacity: 0; font-size: 110%; }
+  from { bottom: 10px; opacity: 0; font-size: 106%; }
   to { bottom: 0px; opacity: 1; font-size: 100%; }
 }
 
@@ -593,6 +597,9 @@ td, #domain button {
 
 /* Landscape layout */
 @media (orientation: landscape) {
+
+  #menu { right: clamp(15px, 1.75vw, 22px); }
+  
   #wrap_main {
     gap: 2.25vw;
 
@@ -657,14 +664,14 @@ td, #domain button {
     width: calc(100% - 1 * min(7vh, 50px));
     flex-wrap: nowrap;
     gap: 5px;
-    
-    
   }
 }         
 
 
 /* Portrait layout */
 @media (orientation: portrait) {
+  #menu { right: 3vw; }
+
   #wrap_main {
     margin-top: -1px;
     flex-direction: column;

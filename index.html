@@ -12,7 +12,7 @@
 
 
         <!-- COMPUTER MODERN SERIF -->
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/bitmaks/cm-web-fonts@latest/fonts.css">
 
         <!-- SOURCE SERIF 4 -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,9 +117,12 @@
      let cacheLoc = sessionStorage.getItem("loc");
      if (cacheLoc) {
        Router(cacheLoc);
+       console.log("loaded");
        history.replaceState({loc:cacheLoc}, "");
      } else {
        Router(segment(location.pathname));
+       console.log("loadedNew");
+
        history.replaceState({loc:segment(location.pathname)}, "");
 
      }

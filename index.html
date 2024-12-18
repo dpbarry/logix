@@ -40,38 +40,71 @@
 
     <script>
 
+     function fetchedBody(event, newBody) {
+       
+       document.body.removeEventListener("transitionend", fetchedBody);
+     }
+
      const Routes = {
        
        "index.html": 
        (async () => {
-         document.body.innerHTML = await (await fetch('home.html')).text();
-         setupLanding();
-         initDialogs();
+         let newBody = await (await fetch('home.html')).text();
+         document.body.classList.remove("fadein");
+         document.body.classList.add("fadeout");
+
+         setTimeout(function() {
+           document.body.innerHTML = newBody;
+           document.body.classList.remove("fadeout");
+           document.body.classList.add("fadein");
+           
+           setupLanding();
+           initDialogs();
+         }, 200);
+
        }),
+       
        "logix":
        (async () => {
-         document.body.innerHTML = await (await fetch('home.html')).text();
-         setupLanding();
-         initDialogs();
+         let newBody = await (await fetch('home.html')).text();
+         document.body.classList.remove("fadein");
+         document.body.classList.add("fadeout");
+
+         setTimeout(function() {
+           document.body.innerHTML = newBody;
+           document.body.classList.remove("fadeout");
+           document.body.classList.add("fadein");
+           
+           setupLanding();
+           initDialogs();
+         }, 200);
        }),
 
        "level":
        (async () => {
-         console.log(location.pathname);
-         document.body.innerHTML = await (await fetch('t1-7.html')).text();
-         initDialogs();
-         renderMathInElement(document.body);
-         initLevel();
+         let newBody = await (await fetch('t1-7.html')).text();
+         document.body.classList.remove("fadein");
+         document.body.classList.add("fadeout");
+         
+         setTimeout(function() {
+           document.body.innerHTML = newBody;
+           document.body.classList.remove("fadeout");
+           document.body.classList.add("fadein");
+           
+           initDialogs();
+              renderMathInElement(document.body);
+           initLevel();
+         }, 200);
+ 
+      
        }),
      }
 
      const Router = (path) => {
        if (Routes[path]) {
          Routes[path]();
-       } else {
-         
-       }
-     }
+       } 
+     };
 
 
      function segment(pathName) {

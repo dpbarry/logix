@@ -20,6 +20,17 @@ html, body {
   height: 100%;
 }
 
+body {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+body.fadeout {
+  opacity: 0;
+}
+
+body.fadein {
+  opacity: 1;
+}
 
 @keyframes nudge {
   0% { transform: scale(1); }

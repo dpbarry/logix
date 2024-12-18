@@ -1,17 +1,17 @@
 
 @property --lightBlue {
   syntax: '<color>';
-  initial-value: rgb(110,155,250,.25);
+  initial-value: rgb(110,155,250,.28);
   inherits: false;
 }
 
 @property --darkBlue {
   syntax: '<color>';
-  initial-value: rgb(110,155,250,.5);
+  initial-value: rgb(110,155,250,.51);
   inherits: false;
 }
 
-html.correct #domain {
+#domain.correct {
   justify-content: right;
   transition: gap 0.5s;
   gap: 0px;
@@ -57,7 +57,7 @@ html.correct #domain {
   
   button:first-child:hover, button:first-child:focus {
     --lightBlue: rgb(110,155,250,.5) ;
-    --darkBlue: rgb(110,155,250,.75);
+    --darkBlue: rgb(110,155,250,.73);
     box-shadow: 0 0 3px 2px rgb(110,155,250,.15) !important;
   }
   

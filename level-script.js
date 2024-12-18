@@ -12,8 +12,8 @@ function initLevel() {
     var undoStack = [];
     var redoStack = [];
 
-    const undo = document.getElementById("undo");
-    const redo = document.getElementById("redo");
+    const undoButton = document.getElementById("undo");
+    const redoButton = document.getElementById("redo");
 
     var use_highlight = HIGHLIGHT_TOGGLE.checked;
     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
@@ -94,11 +94,11 @@ function initLevel() {
 
         if (DOMAIN.includes(parseInt(event.key)) || event.key === "Backspace") { 
             if (undoStack.length == 0) {
-                undo.classList.add("usable");
+                undoButton.classList.add("usable");
             }
             undoStack.push([event.target, text.innerHTML]);
             redoStack = [];
-            redo.classList.remove("usable");
+            redoButton.classList.remove("usable");
         }
         
         if (DOMAIN.includes(parseInt(event.key))) {
@@ -130,6 +130,8 @@ function initLevel() {
             setTimeout(success, 125); 
         }
     }
+
+   
 
     function animateGridSuccess (i) {
         if (i > ROWS) return;
@@ -164,18 +166,24 @@ function initLevel() {
         
         animateGridSuccess(1);
 
-        document.documentElement.classList.add("correct");
+        document.getElementById("domain").classList.add("correct");
+        
+        domainList.forEach((button) => {
+            button.onfocus = "";
+            button.onblur = "";
+        });
         
         cellList.forEach((cell) => {
             cell.tabIndex = -1;
             cell.onfocus = function () {this.blur();};
             cell.removeEventListener("keydown", inp);
-            domainList.forEach((button) => {
-                // More to come... buttons morph into next level
-                button.onfocus = "";
-                button.onblur = "";
-            });
+            
         });
+
+        undoButton.removeEventListener("pointerdown", undo);
+        redoButton.removeEventListener("pointerdown", redo);
+        undoButton.classList.remove("usable");
+        redoButton.classList.remove("usable");
 
         entryList.forEach((entry) => {
             entry.removeEventListener("mouseover", noticeCell);
@@ -213,11 +221,11 @@ function initLevel() {
                     domain.addEventListener("animationend", endActivated);
                     
                     if (undoStack.length === 0) {
-                        undo.classList.add("usable");
+                        undoButton.classList.add("usable");
                     }
                     undoStack.push([this, this.firstChild.innerHTML]);
                     redoStack = [];
-                    redo.classList.remove("usable");
+                    redoButton.classList.remove("usable");
                     
                     insert(this, domain.textContent);
 
@@ -310,11 +318,11 @@ function initLevel() {
                     let text = cell.querySelector("p")
 
                     if (undoStack.length == 0) {
-                        undo.classList.add("usable");
+                        undoButton.classList.add("usable");
                     }
                     undoStack.push([cell, text.innerHTML]);
                     redoStack = [];
-                    redo.classList.remove("usable");
+                    redoButton.classList.remove("usable");
 
                     insert(cell, button.textContent);
 
@@ -468,12 +476,13 @@ function initLevel() {
         });
     });
 
-    undo.addEventListener("pointerdown", (event) => {
+
+    function undo(e) {
         if (undoStack.length === 0) return;
         let prevState = undoStack.pop();
 
         if (undoStack.length === 0) {
-            undo.classList.remove("usable");
+            undoButton.classList.remove("usable");
         }
 
         let cell = prevState[0];
@@ -490,18 +499,17 @@ function initLevel() {
         }
 
         if (redoStack.length === 0) {
-            redo.classList.add("usable");
+            redoButton.classList.add("usable");
         }
         redoStack.push([cell, done]);
-    });
+    }
 
-
-    redo.addEventListener("pointerdown", (event) => {
+    function redo(e) {
         if (redoStack.length === 0) return;
         let prevState = redoStack.pop();
 
         if (redoStack.length === 0) {
-            redo.classList.remove("usable");
+            redoButton.classList.remove("usable");
         }
 
         let cell = prevState[0];
@@ -520,7 +528,11 @@ function initLevel() {
             undo.classList.add("usable");
         }
         undoStack.push([cell, done]);
-    });
+    }
+
+    undoButton.addEventListener("pointerdown", undo);
+
+    redoButton.addEventListener("pointerdown", redo);
 
 
 

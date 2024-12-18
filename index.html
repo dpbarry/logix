@@ -92,29 +92,38 @@
            document.body.classList.add("fadein");
            
            initDialogs();
-              renderMathInElement(document.body);
+           renderMathInElement(document.body);
            initLevel();
          }, 200);
- 
-      
+         
+         
        }),
      }
 
      const Router = (path) => {
        if (Routes[path]) {
          Routes[path]();
+         sessionStorage.setItem("loc", path);
        } 
      };
-
+     
 
      function segment(pathName) {
        url = pathName.replace(/\/+$/, '');
        return url.substr(url.lastIndexOf('/') + 1);
      }
-     
-     Router(segment(location.pathname));
 
-     history.pushState({loc:"index.html"}, "");
+
+     let cacheLoc = sessionStorage.getItem("loc");
+     if (cacheLoc) {
+       Router(cacheLoc);
+       history.replaceState({loc:cacheLoc}, "");
+     } else {
+       Router(segment(location.pathname));
+       history.replaceState({loc:segment(location.pathname)}, "");
+
+     }
+
 
      function setupLanding() {
 
@@ -136,13 +145,14 @@
          e.target.classList.add("activated");
          setTimeout(function () {
            Router("level");
-           history.pushState({}, "");
+           history.pushState({loc:"level"}, "");
          }, 150);
        };
 
        document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
      }
 
+     
      window.addEventListener("load", () => {
        window.addEventListener("popstate", (e) => {
          Router(e.state.loc);

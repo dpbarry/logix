@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width,initial-scale=1, interactive-widget=resizes-content">
 
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="levelStyle.css">
+
 
         <!-- COMPUTER MODERN SERIF -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
@@ -15,9 +17,16 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
 
-
+        
         <title>Logix</title>
         <link rel="icon" type="image/png" href="images/MATHCAL_L.png">
+
+
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js" integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+                onload="renderMathInElement(document.body);"></script>
 
         <style>
 
@@ -27,8 +36,8 @@
          #main-header {
            text-align: center;
            margin: 0;
-           margin-top: 6px;
-           margin-bottom: 5px;
+           padding-top: 6px;
+           padding-bottom: 5px;
 
            font-family: computer modern serif;
            font-weight: bolder;
@@ -36,8 +45,7 @@
          }
 
 
-
-         button  {
+         .landing  {
            border: 0;
            outline: 0;
            position: absolute;
@@ -53,31 +61,30 @@
            transition: opacity 0.2s;
          }
 
-         #preferences {
+         #preferences.landing {
            top: 20px;
            right: 20px;
            height: 33px;
            width: 33px;
+           background: url("images/PREFERENCES.svg");
          }
 
-         #info {
+         #info.landing {
            top: 17px;
            left: 20px;
            height: 38px;
            width: 38px;
+           background: url("images/INFO.svg");
          }
 
          @media(hover: hover) and (pointer: fine) {
            button:hover { opacity: 0.72; }
          }
-         button.nudged {
+         .landing.nudged {
            animation:  nudge 0.2s ease forwards;
          }
 
-         #info { background: url("images/INFO.svg"); }
-         #preferences { background: url("images/PREFERENCES.svg"); }
-
-
+         
 
 
 
@@ -195,7 +202,7 @@
            }
          }
 
-         li {
+         .card li {
            display: flex;
            flex-direction: row;
            justify-content: flex-start;
@@ -225,7 +232,7 @@
 
 
          @media (hover: hover) and (pointer: fine) {
-           li:hover {
+           .card li:hover {
              filter: saturate(2) brightness(0.96);
              border: 1px solid #AAA !important;
 
@@ -240,7 +247,7 @@
            }
          }
 
-         li:focus {
+         .card li:focus {
            filter: saturate(2) brightness(0.96);
            border: 1px solid #AAA !important;
            
@@ -253,7 +260,7 @@
            }
          }
 
-         li:active > .stage-content, li.activated > .stage-content {
+         .card li:active > .stage-content, .card li.activated > .stage-content {
            left: 8px;
            
            &::before {
@@ -292,33 +299,31 @@
 
     <body></body>
 
-    <script src="script.js"></script>
-    <script>
-     let landingHTML;
-     async function getLanding() {
-       const res = await fetch('landing.html');
-       landingHTML = await res.text();
-     }
-     let beginnerHTML;
-     async function getBeginner() {
-       const res = await fetch('beginner.html');
-       beginnerHTML = await res.text();
-     }
 
-     getLanding();
-     getBeginner();
+    
+    <script src="script.js"></script>
+    
+    <script>
 
      const Routes = {
        
-       "index.html": () => 
-         (setTimeout(function() {
-           document.body.innerHTML = landingHTML}, 25)),
-       "logix": () =>
-          (setTimeout(function() {
-            document.body.innerHTML = landingHTML}, 25)),
-       "beginner.html": () =>
-          (setTimeout(function() {
-            document.body.innerHTML = beginnerHTML}, 25)),
+       "index.html": 
+       (async () => {
+         document.body.innerHTML = await (await fetch('landing.html')).text();
+         setupLanding();
+         initDialogs();
+       }),
+       "logix":
+       (async () => {
+         document.body.innerHTML = await (await fetch('landing.html')).text();
+       }),
+       "beginner.html":
+       (async () => {
+         console.log(location.pathname);
+         document.body.innerHTML = await (await fetch('beginner.html')).text();
+         initDialogs();
+
+       }),
      }
 
      const Router = (path) => {
@@ -330,15 +335,17 @@
      }
 
 
-     p = location.pathname;
-     url = p.replace(/\/+$/, '');
-     lastSeg = url.substr(url.lastIndexOf('/') + 1);
+     function segment(pathName) {
+       url = pathName.replace(/\/+$/, '');
+       return url.substr(url.lastIndexOf('/') + 1);
 
+     }
      
-     Router(lastSeg);
+     Router(segment(location.pathname));
 
 
-     setTimeout(function() {
+     function setupLanding() {
+
        document.querySelectorAll(".card li").forEach((l) =>
          l.onclick = function () {
            this.blur();
@@ -362,21 +369,16 @@
        };
 
        document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
-
-
-       
-     }, 100);
-
-     
+     }
 
      window.addEventListener("load", () => {
        window.addEventListener("popstate", () => {
-         Router(location.pathname)
-       })
-     })
+         Router(segment(location.path));
+       });
+     });
      
      
     </script>
-
+    
 
 </html>

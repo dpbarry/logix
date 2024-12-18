@@ -316,6 +316,8 @@
        "logix":
        (async () => {
          document.body.innerHTML = await (await fetch('landing.html')).text();
+         setupLanding();
+         initDialogs();
        }),
        "beginner.html":
        (async () => {

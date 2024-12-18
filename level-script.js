@@ -32,14 +32,16 @@ function initLevel() {
         use_sticky = STICKY_TOGGLE.checked;
     });
 
+
+    
     // Show propositions when they're rendered (should be near-instant)
-    document.fonts.onloadingdone = function (fontFaceSetEvent) {
+    document.fonts.ready.then(() => {
         document.querySelectorAll("#propositions li").forEach((li) => {
             li.style.visibility = "visible";
         });
         verticalScroll(document.querySelector('#propositions'), 7);
         horizontalScroll(document.querySelector('#domain'));
-    }
+    });
 
     // id cells with their coordinates
     for (let i=0, j=0; i < cellList.length; i++) {
@@ -529,7 +531,8 @@ function initLevel() {
             // new window if you were holding shift
             window.open("index.html", '_blank').focus();
         } else {
-            location.href = "index.html";
+            Router("index.html");
+            history.pushState({state: "level"}, "");
         }
     }
 }

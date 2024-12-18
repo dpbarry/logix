@@ -33,9 +33,9 @@
     </head>
     
     <body></body>
- 
+    
     <script src="dialog-script.js"></script>
-    <script src="T1-7.js"></script>
+    <script src="t1-7.js"></script>
     <script src="level-script.js"></script>
 
     <script>
@@ -69,7 +69,7 @@
        if (Routes[path]) {
          Routes[path]();
        } else {
-         Routes["index.html"];
+         
        }
      }
 
@@ -81,6 +81,7 @@
      
      Router(segment(location.pathname));
 
+     history.pushState({loc:"index.html"}, "");
 
      function setupLanding() {
 
@@ -94,7 +95,7 @@
          this.classList.add("activated");
          setTimeout(function () {
            Router("level");
-           history.pushState({}, "", "level");
+           history.pushState({loc:"level"}, "");
          }, 150);
        };
        document.getElementById("s1").onkeydown = function (e) {
@@ -102,7 +103,7 @@
          e.target.classList.add("activated");
          setTimeout(function () {
            Router("level");
-           history.pushState({}, "", "level");
+           history.pushState({}, "");
          }, 150);
        };
 
@@ -110,11 +111,11 @@
      }
 
      window.addEventListener("load", () => {
-       window.addEventListener("popstate", () => {
-         Router(segment(location.pathname));
+       window.addEventListener("popstate", (e) => {
+         Router(e.state.loc);
        });
      });
-          
+
     </script>
 
 </html>

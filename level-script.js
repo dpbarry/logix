@@ -176,6 +176,7 @@ function initLevel() {
         cellList.forEach((cell) => {
             cell.tabIndex = -1;
             cell.onfocus = function () {this.blur();};
+            cell.onblur = "";
             cell.removeEventListener("keydown", inp);
             
         });

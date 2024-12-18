@@ -1,4 +1,3 @@
-console.log("H");
 function initLevel() {
     
     const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");

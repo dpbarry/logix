@@ -54,9 +54,8 @@
          setupLanding();
          initDialogs();
        }),
-       "loading.html":
-          (()=>{}),
-       "beginner.html":
+
+       "level":
        (async () => {
          console.log(location.pathname);
          document.body.innerHTML = await (await fetch('t1-7.html')).text();
@@ -70,7 +69,7 @@
        if (Routes[path]) {
          Routes[path]();
        } else {
-         document.body.innerHTML = "<p> Where are we? </p>";
+         Routes["index.html"];
        }
      }
 
@@ -94,16 +93,16 @@
        document.getElementById("s1").onclick = function () {
          this.classList.add("activated");
          setTimeout(function () {
-           Router("beginner.html");
-           history.pushState({}, "", "beginner.html");
+           Router("level");
+           history.pushState({}, "", "level");
          }, 150);
        };
        document.getElementById("s1").onkeydown = function (e) {
          if (e.key != " " && e.key != "Enter") return;
          e.target.classList.add("activated");
          setTimeout(function () {
-           Router("beginner.html");
-           history.pushState({}, "", "beginner.html");
+           Router("level");
+           history.pushState({}, "", "level");
          }, 150);
        };
 

@@ -21,7 +21,7 @@
     opacity: 0;
     font-size: 0rem;
   }
-  
+
   button:not(:first-child) {
     transition: width 0.6s, font-size 0.6s, padding 0.6s, border 0.6s, flex-basis 0.6s;
     width: 0px;
@@ -30,10 +30,10 @@
     border: 0px;
   }
 
-  
+
   button:first-child {
-    
-    
+
+    height: 56px;
     flex-basis: 100%;
     width: 100%;
     border: 1px solid black;
@@ -44,7 +44,7 @@
 
     box-shadow: 0 0 1px 1px rgb(110,155,250,.1) !important;
 
-    
+
     &>.ripple {
       background: rgb(110,155,250);
       transition: all .6s;
@@ -54,20 +54,21 @@
       }
     }
   }
-  
+
   button:first-child:hover, button:first-child:focus {
     --lightBlue: rgb(110,155,250,.5) ;
     --darkBlue: rgb(110,155,250,.73);
     box-shadow: 0 0 3px 2px rgb(110,155,250,.15) !important;
   }
-  
+
   button:first-child:focus {
+    transition: --lightBlue 0.25s, --darkBlue 0.25s, background 0.4s;
     background-color: rgb(110,155,250);
     &::before {
       color: white;
     }
   }
-  
+
   button:first-child::before {
     content: "Next level...";
     font-family: "Source Serif 4";
@@ -102,14 +103,14 @@
   font-family: "computer modern serif";
   font-weight: lighter;
   font-size: 2.3rem;
-  
+
   width: min-content;
   margin: 0;
 
   position: relative;
   top: 1.75vmin;
   left: 2.75vmin;
-  
+
   cursor: pointer;
 }
 
@@ -118,36 +119,36 @@
   top: 1.75vmin;
 
   /* Align #chevron */
-  text-align: center; 
-  
+  text-align: center;
+
   #menu_checkbox {
     display: block;
     width: 45px;
     height: 45px;
-    
+
     position: absolute;
     top: -6px;
     left: -6px;
-    
+
     cursor: pointer;
-    
-    opacity: 0; 
-    z-index: 1; 
+
+    opacity: 0;
+    z-index: 1;
   }
-  
+
   #chevron {
     position: relative;
     top: 0px;
     transition: top 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
   }
-  
+
   #chevron:before {
     content: "";
-    
+
     display: inline-block;
     height: 24px;
     width: 24px;
-    
+
     border-bottom: 3px solid #000000;
     border-right: 3px solid #000000;
     border-radius: 0px;
@@ -163,31 +164,31 @@
     /* Counteract apparent upwards-shift caused by rotating chevron */
     top: 15px;
   }
-  
+
   ul {
     width: 100%;
     margin-top: 22px;
     padding: 0;
-    
+
     list-style-type: none;
 
     transform: translateY(-500%);
     will-change: transform;
     transition: transform 0.35s cubic-bezier(0.77,0.2,0.05,1.0);
   }
-  
+
   #menu_checkbox:checked ~ ul {
     transform: none;
   }
-  
+
   li {
-    display: block;  
+    display: block;
     height: 39px;
     width: 100%;
     margin-bottom: 14px;
-    
+
     cursor: pointer;
-    
+
     z-index: 1; /* Otherwise hitbox gets covered by #wrap_main spacing */
 
     opacity: 1;
@@ -197,7 +198,7 @@
   @media(hover: hover) and (pointer: fine) {
     li:hover { opacity: 0.72; }
   }
-  
+
 
   #info { content: url("../assets/INFO.svg"); }
   #dictionary { content: url("../assets/DICTIONARY.svg"); }
@@ -262,7 +263,7 @@
   td:not(.x_axis, .y_axis) {
     cursor: pointer;
   }
-  
+
 
   td.given {
     background-color: #D0D0D0;
@@ -275,7 +276,7 @@
     background-color: rgba(220,255,220,0.1);
 
   }
-  
+
   td.noticed::before {
     opacity: 0.5;
 
@@ -283,7 +284,7 @@
       transform: scale(110);
     }
   }
-  
+
   td.correct {
     background-size: 100% 100%;
     box-shadow: unset !important;
@@ -296,11 +297,11 @@
     height: min(5vh, 50px);
     z-index: -1;
   }
-  
+
   td:focus {
     background: hsl(50, 46%, 90%) !important;
   }
-  
+
   td > p {
     margin: 0;
     padding: 0;
@@ -331,11 +332,11 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  
+
   margin: 0;
   margin-left: 12.5vw;
   padding: 0;
-  
+
   text-align: center;
   list-style-type: none; /* no bullet points */
 
@@ -355,7 +356,7 @@
 
     &:first-child { margin-top: auto; }
     &:last-child { margin-bottom: auto; }
-    
+
     + li {
       border-top: 1px solid #000000;
     }
@@ -407,10 +408,10 @@
   --bottom-mask-size: 40px !important;
 }
 
-#propositions::-webkit-scrollbar { 
-  display: none; 
+#propositions::-webkit-scrollbar {
+  display: none;
 }
-#domain::-webkit-scrollbar { 
+#domain::-webkit-scrollbar {
   display: none;
 }
 
@@ -432,7 +433,7 @@
   display: flex;
   width: 90vw;
   flex-basis: 100%;
-  
+
   #pencil, #undo, #redo {
     cursor: pointer;
     background-color: transparent;
@@ -440,7 +441,7 @@
     box-shadow: none;
     filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1));
     border-radius: 50px;
-    padding: 0;             
+    padding: 0;
   }
   #pencil {
     margin-right: auto;
@@ -448,10 +449,10 @@
     height: 35px;
     transform: scale(0.9);
   }
-  
+
   #pencil::after {
     content: "";
-    background-image:url("images/PENCIL.svg");
+    background-image:url("../assets/PENCIL.svg");
     opacity: 0.45;
     transition: opacity 0.15s, filter 0.15s;
     background-size: 100% 100%;
@@ -461,12 +462,12 @@
     position: relative;
     z-index: 2;
   }
-  
+
   #undo, #redo {
     width: 32px;
     height: 32px;
   }
-  
+
   #undo::after, #redo::after {
     content: "";
     transition: opacity 0.15s, filter 0.15s;
@@ -475,30 +476,30 @@
     height: 100%;
     width: 24px;
     height: 24px;
-    
+
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    
+
     z-index: 2;
   }
   #undo::after {
-    background-image:url("images/UNDO.svg");
+    background-image:url("../assets/UNDO.svg");
   }
   #redo::after {
-    background-image:url("images/REDO.svg");
+    background-image:url("../assets/REDO.svg");
   }
-  
+
   @media (hover: hover) and (pointer: fine) {
     #pencil:hover, #undo:hover, #redo:hover {
       filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .1));
 
     }
-    #pencil:hover::after, #undo.usable:hover::after, #redo.usable:hover::after { 
+    #pencil:hover::after, #undo.usable:hover::after, #redo.usable:hover::after {
       opacity: 1;
     }
-    
+
   }
 
   #undo:not(.usable), #redo:not(.usable) {
@@ -507,7 +508,7 @@
     &::after {
       opacity: 0.35;
     }
-    
+
   }
 
   #undo.usable::after, #redo.usable::after {
@@ -518,16 +519,16 @@
 #domain {
   padding: 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   position: relative;
   transition: opacity 1s;
+  height: 56px;
 
   button {
     transition: background 0.35s, box-shadow 0.25s;
     width: 100%;
-    height: 56px;
     font-family: "computer modern serif";
-    font-size: 2.5rem;
+    font-size: 2.6rem;
     background-color: #FFFFFF;
     border: 1px solid #373737;
     border-radius: 5px;
@@ -541,11 +542,11 @@
       position: relative;
       z-index: 0; }
   }
-  
+
   @media (hover: hover) and (pointer: fine) {
     button:hover {
       box-shadow: 0 3px 6px -6px #777, 0 0 3px #DDD;
-    }   
+    }
   }
   button:focus {
     box-shadow: 0 4px 6px -6px #777, 0 0 3px #DDD;
@@ -594,7 +595,7 @@ td, #domain button {
 @media (orientation: landscape) {
 
   #menu { right: clamp(15px, 1.75vw, 22px); }
-  
+
   #wrap_main {
     gap: 2.25vw;
 
@@ -607,8 +608,9 @@ td, #domain button {
 
   @media (height < 700px) {
     #wrap_main { margin-top: calc(18vh - (700px - 100vh)/7);}
+    #domain button { font-size: calc(2.6rem - (700px - 100vh)/25);}
   }
-  
+
   #propositions {
     margin: 0;
     position: relative;
@@ -645,22 +647,22 @@ td, #domain button {
       position: absolute;
 
       right: -37px;
-      bottom: max(min(30px, calc(30px - (750px - 100vh)/15)), 10px);
+      bottom: max(min(30px, calc(30px - (750px - 100vh)/16)), 12px);
     }
     #redo {
       position: absolute;
 
       right: -37px;
-      bottom: max(min(-2px, calc(-2px - (750px - 100vh)/15)), -20px);
+      bottom: max(min(-2px, calc(-2px - (750px - 100vh)/16)), -17px);
     }
   }
   #domain {
-    margin-left: calc(1.2 * min(5vh, 50px));
-    width: calc(100% - 1 * min(7vh, 50px));
+    margin-left: calc(1.15 * min(5vh, 50px));
+    width: calc(100% - 1.05 * min(7vh, 50px));
     flex-wrap: nowrap;
     gap: 5px;
   }
-}         
+}
 
 
 /* Portrait layout */

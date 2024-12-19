@@ -117,14 +117,10 @@
      let cacheLoc = sessionStorage.getItem("loc");
      if (cacheLoc) {
        Router(cacheLoc);
-       console.log("loaded");
        history.replaceState({loc:cacheLoc}, "");
      } else {
        Router(segment(location.pathname));
-       console.log("loadedNew");
-
        history.replaceState({loc:segment(location.pathname)}, "");
-
      }
 
 

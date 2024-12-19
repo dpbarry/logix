@@ -15,6 +15,8 @@ function initLevel() {
     const undoButton = document.getElementById("undo");
     const redoButton = document.getElementById("redo");
 
+    var values = new Map();
+
     var use_highlight = HIGHLIGHT_TOGGLE.checked;
     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
     var use_sticky = STICKY_TOGGLE.checked;
@@ -545,7 +547,7 @@ function initLevel() {
             window.open("index.html", '_blank').focus();
         } else {
             Router("index.html");
-            history.pushState({state: "level"}, "");
+            history.pushState({loc:"index.html"}, "");
         }
     }
 }

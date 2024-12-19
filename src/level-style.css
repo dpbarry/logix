@@ -528,7 +528,7 @@
     transition: background 0.35s, box-shadow 0.25s;
     width: 100%;
     font-family: "computer modern serif";
-    font-size: 2.6rem;
+    font-size: 2.5rem;
     background-color: #FFFFFF;
     border: 1px solid #373737;
     border-radius: 5px;
@@ -608,7 +608,7 @@ td, #domain button {
 
   @media (height < 700px) {
     #wrap_main { margin-top: calc(18vh - (700px - 100vh)/7);}
-    #domain button { font-size: calc(2.6rem - (700px - 100vh)/25);}
+    #domain button { font-size: calc(2.5rem - (700px - 100vh)/25);}
   }
 
   #propositions {

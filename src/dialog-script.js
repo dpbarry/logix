@@ -50,7 +50,7 @@ function initDialogs() {
     });
 
     document.querySelectorAll("dialog input").forEach((toggle) => {
-        toggle.addEventListener("click", (e) => {
+        toggle.addEventListener("pointerup", (e) => {
             e.target.blur();
         });
         toggle.addEventListener("keydown", (e) => {

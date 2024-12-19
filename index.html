@@ -26,30 +26,29 @@
                 onload="renderMathInElement(document.body);"></script>
         
         <!------- STYLESHEETS ------->
-        <link rel="stylesheet" href="global-style.css">
-        <link rel="stylesheet" href="home-style.css">
-        <link rel="stylesheet" href="level-style.css">
+        <link rel="stylesheet" href="src/global-style.css">
+        <link rel="stylesheet" href="src/home-style.css">
+        <link rel="stylesheet" href="src/level-style.css">
 
     </head>
     
     <body></body>
     
-    <script src="dialog-script.js"></script>
-    <script src="t1-7.js"></script>
-    <script src="level-script.js"></script>
+    <script src="src/dialog-script.js"></script>
+    
+    <script src="src/levels/t1-7.js"></script>
+    <script src="src/level-script.js"></script>
 
     <script>
 
      function fetchedBody(event, newBody) {
-       
        document.body.removeEventListener("transitionend", fetchedBody);
      }
 
      const Routes = {
-       
        "index.html": 
        (async () => {
-         let newBody = await (await fetch('home.html')).text();
+         let newBody = await (await fetch('src/home.html')).text();
          document.body.classList.remove("fadein");
          document.body.classList.add("fadeout");
 
@@ -66,7 +65,7 @@
        
        "logix":
        (async () => {
-         let newBody = await (await fetch('home.html')).text();
+         let newBody = await (await fetch('src/home.html')).text();
          document.body.classList.remove("fadein");
          document.body.classList.add("fadeout");
 
@@ -82,7 +81,7 @@
 
        "level":
        (async () => {
-         let newBody = await (await fetch('t1-7.html')).text();
+         let newBody = await (await fetch('src/levels/t1-7.html')).text();
          document.body.classList.remove("fadein");
          document.body.classList.add("fadeout");
          

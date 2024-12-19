@@ -32,10 +32,13 @@ body.fadein {
   opacity: 1;
 }
 
-@keyframes nudge {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.95); }
-  100% {transform: translateY(1); }
+.nudged {
+  transform: scale(0.95);
+}
+
+
+@media(hover: hover) and (pointer: fine) {
+  .dialog_button.home:hover { opacity: 0.72; }
 }
 
 

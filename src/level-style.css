@@ -40,7 +40,7 @@
     background: repeating-linear-gradient(45deg, var(--lightBlue),  var(--darkBlue) , var(--lightBlue) 600px);
     background-size: calc(600px/sin(45deg)) 100%;
     animation: glow 2.5s linear infinite reverse;
-    transition: --lightBlue 0.25s, --darkBlue 0.25s, background 0.4s ease;
+    transition: --lightBlue 0.25s, --darkBlue 0.25s;
 
     box-shadow: 0 0 1px 1px rgb(110,155,250,.1) !important;
 
@@ -191,24 +191,19 @@
     z-index: 1; /* Otherwise hitbox gets covered by #wrap_main spacing */
 
     opacity: 1;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s, transform 0.1s;
   }
 
   @media(hover: hover) and (pointer: fine) {
     li:hover { opacity: 0.72; }
   }
-  li.nudged {
-    animation: 0.2s ease nudge forwards;
-  }
+  
 
-  #info { content: url("images/INFO.svg"); }
-  #dictionary { content: url("images/DICTIONARY.svg"); }
-  #notes { content: url("images/NOTES.svg"); }
-  #settings { content: url("images/SETTINGS.svg"); }
+  #info { content: url("../assets/INFO.svg"); }
+  #dictionary { content: url("../assets/DICTIONARY.svg"); }
+  #notes { content: url("../assets/NOTES.svg"); }
+  #settings { content: url("../assets/SETTINGS.svg"); }
 }
-
-
-
 
 #configs {
   margin-left: 2vw;

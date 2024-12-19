@@ -10,7 +10,7 @@
 }
 
 
-button.home  {
+.dialog_button.home {
   border: 0;
   outline: 0;
   position: absolute;
@@ -23,37 +23,24 @@ button.home  {
   z-index: 1;
 
   opacity: 1;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, transform 0.1s;
 }
 
-#preferences.home {
+#preferences {
   top: 20px;
   right: 20px;
   height: 33px;
   width: 33px;
-  background: url("images/PREFERENCES.svg");
+  background: url("../assets/PREFERENCES.svg");
 }
 
-#info.home {
+#about {
   top: 17px;
   left: 20px;
   height: 38px;
   width: 38px;
-  background: url("images/INFO.svg");
+  background: url("../assets/INFO.svg");
 }
-
-@media(hover: hover) and (pointer: fine) {
-  button.home:hover { opacity: 0.72; }
-}
-.home.nudged {
-  animation:  nudge 0.2s ease forwards;
-}
-
-
-
-
-
-
 
 #options {
   margin-left: 2vw;
@@ -67,23 +54,15 @@ button.home  {
   gap: 10px;
 }
 
-#preferences_dialog {
-  max-width: 500px;
-}
-
-
-
 #wrap_cards {
   display: flex;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   width: 100%;
-
-
 }
-.card {
 
+.card {
   padding: 15px;
   width: 100%;
 
@@ -234,13 +213,8 @@ button.home  {
   }
 }
 
-
-p {
-  margin: 0;
-}
-
-
 .stage-content {
+  margin: 0;
   font-size: 1.25rem;
   font-weight: 375;
   position: relative;

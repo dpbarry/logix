@@ -50,6 +50,9 @@ function initDialogs() {
     });
 
     document.querySelectorAll("dialog input").forEach((toggle) => {
+        toggle.addEventListener("click", (e) => {
+            e.target.blur();
+        });
         toggle.addEventListener("keydown", (e) => {
             if (e.key == "Escape") {
                 e.preventDefault();
@@ -63,7 +66,7 @@ function initDialogs() {
         li.addEventListener("pointerdown", (event) => {
             event.target.classList.add("nudged");
 
-            event.target.addEventListener("animationend", (event) => {
+            event.target.addEventListener("pointerup", (event) => {
                 event.target.classList.remove("nudged");
             })
         })

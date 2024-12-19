@@ -93,7 +93,7 @@ body.fadein {
 #overlay:has(~ dialog[open]),
 #overlay:has(~ #menu > dialog[open]){
   height: 100%;
-  opacity: 0.4;
+  opacity: 0.5;
 }
 #overlay:has(~ .hide ),
 #overlay:has(~ #menu > .hide) {
@@ -125,12 +125,11 @@ dialog::backdrop {
 dialog[open] {
   transform: scale(1);
   opacity: 1;
-
+  border: 0px solid rgb(0,0,0,0.15);
   visibility: visible;
-  border: 0px solid rgb(0,0,0,0.175);
   border-radius: 18px;
-  box-shadow: 0 0 3px rgb(0,0,0,0.15), 0 0 5px rgb(0,0,0,0.125), 0 0 8px 1px rgba(0, 0, 0, 0.075),
-  0 0 30px 15px rgb(0,0,0,0.05);
+  box-shadow: 0 0 5px rgb(0,0,0,0.05), 0 0 8px rgba(0, 0, 0, 0.075),
+  0 0 30px rgb(0,0,0,0.075);
 }
 dialog.hide {
   transition: transform ease-in 0.1s, opacity ease-in 0.1s;

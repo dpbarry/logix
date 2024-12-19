@@ -112,7 +112,9 @@ dialog {
   width: min(80vw, 500px);
   height: 52vh;
   visibility: hidden;
-  transition: transform cubic-bezier(.25,1,.25,1) 0.25s;
+  opacity: 0;
+  
+  transition: opacity 0.25s, transform cubic-bezier(.25,1,.25,1) 0.25s;
   transform: scale(0);
 }
 
@@ -122,6 +124,7 @@ dialog::backdrop {
 
 dialog[open] {
   transform: scale(1);
+  opacity: 1;
 
   visibility: visible;
   border: 0px solid rgb(0,0,0,0.175);
@@ -130,8 +133,8 @@ dialog[open] {
   0 0 30px 15px rgb(0,0,0,0.05);
 }
 dialog.hide {
-  transition: transform ease-in 0.15s, opacity ease 0.15s;
-  transform: scale(0%);
+  transition: transform ease-in 0.1s, opacity ease-in 0.1s;
+  transform: scale(75%);
   opacity: 0;
 }
 

@@ -33,14 +33,9 @@
     </head>
     
     <body></body>
-    
-    <script src="src/dialog-script.js"></script>
-    
-    <script src="src/levels/t1-7.js"></script>
-    <script src="src/level-script.js"></script>
+
 
     <script>
-
      function fetchedBody(event, newBody) {
        document.body.removeEventListener("transitionend", fetchedBody);
      }
@@ -57,7 +52,7 @@
            document.body.classList.remove("fadeout");
            document.body.classList.add("fadein");
            
-           setupLanding();
+           setupHome();
            initDialogs();
          }, 200);
 
@@ -74,7 +69,7 @@
            document.body.classList.remove("fadeout");
            document.body.classList.add("fadein");
            
-           setupLanding();
+           setupHome();
            initDialogs();
          }, 200);
        }),
@@ -123,40 +118,19 @@
      }
 
 
-     function setupLanding() {
-
-       document.querySelectorAll(".card li").forEach((l) =>
-         l.onclick = function () {
-           this.blur();
-         }
-       );
-
-       document.getElementById("s1").onclick = function () {
-         this.classList.add("activated");
-         setTimeout(function () {
-           Router("level");
-           history.pushState({loc:"level"}, "");
-         }, 150);
-       };
-       document.getElementById("s1").onkeydown = function (e) {
-         if (e.key != " " && e.key != "Enter") return;
-         e.target.classList.add("activated");
-         setTimeout(function () {
-           Router("level");
-           history.pushState({loc:"level"}, "");
-         }, 150);
-       };
-
-       document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
-     }
-
      
      window.addEventListener("load", () => {
        window.addEventListener("popstate", (e) => {
          Router(e.state.loc);
        });
      });
-
     </script>
 
+    
+    <script src="src/dialog-script.js"></script>
+    
+    <script src="src/levels/t1-7.js"></script>
+    <script src="src/level-script.js"></script>
+
+    <script src="src/home-script.js"></script>
 </html>

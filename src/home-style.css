@@ -171,6 +171,8 @@
   position: relative;
   top: 0;
 
+  transform: rotate(0deg);
+
   &:last-of-type {margin-bottom: 0px;}
 }
 
@@ -181,12 +183,7 @@
     border: 1px solid #AAA !important;
 
     & > .stage-content {
-      font-weight: 500;
-      left: -7px;
-      &::before {
-        left: -2px;
-        opacity: 0.25;
-      }
+      font-weight: 470;
     }
   }
 }
@@ -196,20 +193,7 @@
   border: 1px solid #AAA !important;
   
   & > .stage-content {
-    font-weight: 500;
-    &::before {
-      left: -2px;
-      opacity: 0.25;
-    }
-  }
-}
-
-.card li:active > .stage-content, .card li.activated > .stage-content {
-  left: 8px;
-  
-  &::before {
-    left: 0px;
-    opacity: 1;
+    font-weight: 470;
   }
 }
 
@@ -218,16 +202,71 @@
   font-size: 1.25rem;
   font-weight: 375;
   position: relative;
-  left: -10px;
-  transition: 0.15s font-weight, left 0.18s;
+  left: 12px;
+  transition: 0.1s font-weight;
 }
-.stage-content::before {
-  font-family: sans-serif;
-  content: "→";
-  font-size: 1.25rem;
-  position: relative;
-  left: -20px;
-  opacity: 0;
 
-  transition: opacity 0.2s, left 0.18s;
+
+.dropdown_chevron {
+  position: relative;
+  right: 22.5px;
+  margin-left: auto;
+  transition: top 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+.dropdown_chevron:before {
+  content: "";
+
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  border-radius: 0px;
+
+  rotate: 45deg;
+  transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+.trainstage.dropped ~ .dropdown_chevron:before {
+  transform: rotate(180deg);
+}
+.trainstage.dropped ~ .dropdown_chevron {
+  /* Counteract apparent upwards-shift caused by rotating chevron */
+  top: 7px;
+}
+
+ul.droplist {
+  padding: 0;
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  width: 100%;
+  list-style-type: none;
+
+  margin-bottom: 11px;
+
+  will-change: transform;
+  transition: transform 0.35s cubic-bezier(0.77,0.2,0.05,1.0);
+
+  li {
+    height: 60px;
+    width: 60px;
+    font-size: 1.75rem;
+    font-weight: 350;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+}
+
+
+.trainstage:last-of-type.dropped {
+  margin-bottom: 15px;
+}
+
+.trainstage.dropped + .droplist {
+  display:flex;
 }

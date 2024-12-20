@@ -22,7 +22,7 @@ html, body {
 
 body {
   opacity: 1;
-  transition: opacity 0.3s;
+  transition: opacity 0.2s;
 }
 body.fadeout {
   opacity: 0;
@@ -33,7 +33,7 @@ body.fadein {
 }
 
 .nudged {
-  transform: scale(0.95);
+  transform: scale(0.95) !important;
 }
 
 

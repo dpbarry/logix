@@ -23,25 +23,32 @@ function setupHome() {
         s.onclick = toggleDropped;
         s.onkeydown = toggleDropped;
     });
-    
-    document.getElementById("t1.1").onclick = function () {
-        e.target.classList.add("activated");
-        setTimeout(function () {
-            Router("level");
-            history.pushState({loc:"level"}, "");
-        }, 150);
-    };
-    document.getElementById("t1.1").onkeydown = function (e) {
-        if (e.key != " " && e.key != "Enter") return;
+
+    document.querySelectorAll(".level-button").forEach((b) => {
         
-        e.target.classList.add("activated");
-        setTimeout(function () {
-            Router("level");
-            history.pushState({loc:"level"}, "");
-        }, 150);
-    };
+        b.onclick = function (e) {
+            e.target.classList.add("activated");
+            setTimeout(function () {
+                Router(e.target.id);
+                history.pushState({loc:e.target.id}, "");
+            }, 150);
+        };
+        
+        b.onkeydown = function (e) {
+            if (e.key != " " && e.key != "Enter") return;
+            
+            e.target.classList.add("activated");
+            setTimeout(function () {
+                Router(e.target.id);
+                history.pushState({loc:e.target.id}, "");
+            }, 150);
+        };
 
-    document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
+        b.addEventListener("pointerdown", (e) => {
+            b.classList.add("nudged");
+        });
+       
+        document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
+    });
+                                                      
 }
-
-

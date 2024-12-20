@@ -72,4 +72,10 @@ function initDialogs() {
         })
     });
 
+    document.body.addEventListener("pointerup", (e) => {
+        document.querySelectorAll(".nudged").forEach((elem) => {
+            elem.classList.remove("nudged");
+            
+        });
+    });
 }

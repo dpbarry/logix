@@ -1,3 +1,11 @@
+let ROWS = 3;
+let COLS = 3;
+let MAXLENGTH = 1;
+let DOMAIN = [1, 2, 3]
+let SOLUTION = [[3, null, 2], [1, 3, null], [null, 3, 1]];
+
+let tabdCells = [[null, null, null], [null, null, null], [null, null, null]];
+
 function initLevel() {
     
     const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");
@@ -157,6 +165,7 @@ function initLevel() {
             tabdCells[ROWS-i].forEach((td) => {
                 td.style.transition = this;
                 td.classList.add("correct");
+                td.classList.remove("noticed");
             });
             animateGridSuccess(i+1);
         }.bind(transitionStage), delay);

@@ -4,7 +4,7 @@
     <head>
         
         <title>Logix</title>
-        <link rel="icon" type="image/png" href="images/MATHCAL_L.png">
+        <link rel="icon" type="image/png" href="assets/MATHCAL_L.png">
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1, interactive-widget=resizes-content">
@@ -40,65 +40,66 @@
        document.body.removeEventListener("transitionend", fetchedBody);
      }
 
-     const Routes = {
-       "index.html": 
-       (async () => {
-         let newBody = await (await fetch('src/home.html')).text();
-         document.body.classList.remove("fadein");
-         document.body.classList.add("fadeout");
+   
 
-         setTimeout(function() {
-           document.body.innerHTML = newBody;
-           document.body.classList.remove("fadeout");
-           document.body.classList.add("fadein");
-           
-           setupHome();
-           initDialogs();
-         }, 200);
+     async function goHome() {
 
-       }),
-       
-       "logix":
-       (async () => {
-         let newBody = await (await fetch('src/home.html')).text();
-         document.body.classList.remove("fadein");
-         document.body.classList.add("fadeout");
+       let newBody = await (await fetch('src/home.html')).text();
+       document.body.classList.remove("fadein");
+       document.body.classList.add("fadeout");
 
-         setTimeout(function() {
-           document.body.innerHTML = newBody;
-           document.body.classList.remove("fadeout");
-           document.body.classList.add("fadein");
-           
-           setupHome();
-           initDialogs();
-         }, 200);
-       }),
-
-       "level":
-       (async () => {
-         let newBody = await (await fetch('src/levels/t1-7.html')).text();
-         document.body.classList.remove("fadein");
-         document.body.classList.add("fadeout");
+       setTimeout(function() {
+         document.body.innerHTML = newBody;
+         document.body.classList.remove("fadeout");
+         document.body.classList.add("fadein");
          
-         setTimeout(function() {
-           document.body.innerHTML = newBody;
-           document.body.classList.remove("fadeout");
-           document.body.classList.add("fadein");
-           
-           initDialogs();
-           renderMathInElement(document.body);
-           initLevel();
-         }, 200);
-         
-         
-       }),
+         setupHome();
+         initDialogs();
+       }, 200);
+
+       sessionStorage.setItem("loc", "index.html");
      }
 
+     async function goLevel(path) {
+       let flag = path.charAt(0);
+
+       if (!"tnde".includes(flag))  return; 
+
+       let newBody;
+       var response = await fetch(`src/levels/${path}.html`);
+       if (!response.ok) return;
+       
+       newBody = await response.text();
+
+       var script = document.createElement("script");
+       script.text = await (await fetch(`src/levels/${path}.js`)).text();
+
+       document.body.classList.remove("fadein");
+       document.body.classList.add("fadeout");
+
+       setTimeout(function() {
+         document.body.innerHTML = newBody;
+         document.body.classList.remove("fadeout");
+         document.body.classList.add("fadein");
+
+         document.head.appendChild(script).parentNode.removeChild(script);
+         
+         initDialogs();
+         renderMathInElement(document.body);
+         initLevel();
+       }, 200);
+
+
+       sessionStorage.setItem("loc", path);
+     }
+
+     
      const Router = (path) => {
-       if (Routes[path]) {
-         Routes[path]();
-         sessionStorage.setItem("loc", path);
-       } 
+       if (path === "index.html" || path === "logix") {
+         goHome();
+       } else {
+         goLevel(path);
+       }
      };
      
 
@@ -109,6 +110,7 @@
 
 
      let cacheLoc = sessionStorage.getItem("loc");
+     
      if (cacheLoc) {
        Router(cacheLoc);
        history.replaceState({loc:cacheLoc}, "");
@@ -129,7 +131,6 @@
     
     <script src="src/dialog-script.js"></script>
     
-    <script src="src/levels/t1-7.js"></script>
     <script src="src/level-script.js"></script>
 
     <script src="src/home-script.js"></script>

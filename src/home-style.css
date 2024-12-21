@@ -1,9 +1,12 @@
 #main-header {
-  text-align: center;
+  width: min-content;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
   margin: 0;
-  padding-top: 6px;
-  padding-bottom: 5px;
-
+  top: 7px;
+  cursor: pointer;
+  
   font-family: computer modern serif;
   font-weight: bolder;
   font-size: 3.1rem;
@@ -81,8 +84,8 @@
 
 .card {
   padding: 15px;
-  min-width: 300px;
-  max-width: 300px;
+  min-width: 294px;
+  max-width: 294px;
   
   min-height: 450px;
   max-height: 450px;
@@ -115,9 +118,18 @@
   transition: min-height 0.1s;
   min-height: 0;
   &:has(.dropped) {min-height: 450px; }
+  
   li {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
     background: hsl(120 15% 85%);
+  }
+
+  li:focus {
+    background: hsl(120 20% 80%);
+    box-shadow: 0 2px 3px hsl(120 8% 85% / 1), 0 0 2px hsl(120 8% 90% / 1);
+  }
+  li.dropped + * > li.locked {
+    opacity: 0.3;
   }
 
   li.dropped {
@@ -131,10 +143,14 @@
   li {
     box-shadow: 0 2px 3px hsl(55 8% 86% / 1), 0 0 2px hsl(55 8% 91% / 1);
     background: hsl(55 15% 85%);
-    &:hover {
+    
+    &:focus {
       background: hsl(55 20% 80%);
       box-shadow: 0 2px 3px hsl(55 8% 85% / 1), 0 0 2px hsl(55 8% 90% / 1);
     }
+  }
+  li.locked {
+    opacity: 0.3;
   }
 }
 
@@ -142,21 +158,32 @@
   li {
     box-shadow: 0 2px 3px hsl(0 8% 86% / 1), 0 0 2px hsl(0 8% 91% / 1);
     background: hsl(0 15% 85%);
-    &:hover {
+
+
+    &:focus {
       background: hsl(0 20% 80%);
       box-shadow: 0 2px 3px hsl(0 8% 85% / 1), 0 0 2px hsl(0 8% 90% / 1);
     }
   }
+  li.locked {
+    opacity: 0.3;
+  }
+  
 }
 
 #extreme {
   li {
     box-shadow: 0 2px 3px hsl(300 8% 86% / 1), 0 0 2px hsl(300 8% 91% / 1);
     background: hsl(300 15% 85%);
-    &:hover {
+
+    &:focus {
       background: hsl(300 20% 80%);
       box-shadow: 0 2px 3px hsl(300 8% 85% / 1), 0 0 2px hsl(300 8% 90% / 1);
     }
+  }
+
+  li.locked {
+    opacity: 0.3;
   }
 }
 
@@ -168,7 +195,11 @@
   justify-content: flex-start;
   align-items: center;
 
-  width: 100%;
+  font-size: 1.45rem;
+  font-weight: 435;
+  padding-left: 11px;
+  
+  width: calc(100% - 11px - 1px); /* Align edge with droplist */
   height: 50px;
   border-radius: 2px;
   margin-bottom: 10px;
@@ -205,31 +236,46 @@
     background: hsl(120 20% 80%);
     box-shadow: 0 2px 3px hsl(120 8% 85% / 1), 0 0 2px hsl(120 8% 90% / 1);
   }
+
+  #normal .level-button:hover {
+    background: hsl(55 20% 80%);
+    box-shadow: 0 2px 3px hsl(55 8% 85% / 1), 0 0 2px hsl(55 8% 90% / 1);
+  }
+
+  #difficult .level-button:hover {
+    background: hsl(0 20% 80%);
+    box-shadow: 0 2px 3px hsl(0 8% 85% / 1), 0 0 2px hsl(0 8% 90% / 1);
+  }
+
+  #extreme .level-button:hover {
+    background: hsl(300 20% 80%);
+    box-shadow: 0 2px 3px hsl(300 8% 85% / 1), 0 0 2px hsl(300 8% 90% / 1);
+  }
+
+  
 }
 
+.level-button:focus {
+  border: 1px solid #555;
+  font-weight: 375;
+}
 
 .level-button.activated {
   border: 1px solid #555;
-  animation: swirl 0.2s forwards;
+  animation: spin 0.2s forwards;
 }
 
-@keyframes swirl {
+
+@keyframes spin {
   from {transform: rotate(0); border-radius: 3px; }
   to {transform: rotate(360deg); border-radius: 40px; }
-}
-
-.stage-content {
-  margin: 0;
-  font-size: 1.45rem;
-  font-weight: 450;
-  position: relative;
-  left: 12px;
 }
 
 
 .dropdown_chevron {
   position: relative;
-  right: 18px;
+  right: 15px;
+  bottom: 3px;
   margin-left: auto;
   transition: top 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
 }
@@ -254,7 +300,7 @@
 }
 .trainstage.dropped .dropdown_chevron {
   /* Counteract apparent upwards-shift caused by rotating chevron */
-  top: 7px;
+  top: 4px;
 }
 
 .droplist, .campaignlist {
@@ -262,6 +308,8 @@
   display: flex;
   flex-wrap: wrap;
 
+  justify-content: flex-start;
+  
   gap: 6px;
 
   list-style-type: none;

@@ -22,16 +22,17 @@ function setupHome() {
     stages.forEach((s) => {
         s.onclick = toggleDropped;
         s.onkeydown = toggleDropped;
+        s.tabIndex = 0;
     });
 
-    document.querySelectorAll(".level-button").forEach((b) => {
+    document.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
         
         b.onclick = function (e) {
             e.target.classList.add("activated");
             setTimeout(function () {
                 Router(e.target.id);
                 history.pushState({loc:e.target.id}, "");
-            }, 150);
+            }, 50);
         };
         
         b.onkeydown = function (e) {
@@ -41,14 +42,23 @@ function setupHome() {
             setTimeout(function () {
                 Router(e.target.id);
                 history.pushState({loc:e.target.id}, "");
-            }, 150);
+            }, 50);
         };
 
-        b.addEventListener("pointerdown", (e) => {
-            b.classList.add("nudged");
-        });
-       
-        document.querySelectorAll("li").forEach(l => {l.tabIndex = 0;});
+        
     });
-                                                      
+
+    
+    document.querySelectorAll(".level-button").forEach(l => {
+        l.tabIndex = 0;
+        l.addEventListener("pointerdown", (e) => {
+            l.classList.add("nudged");
+        });
+    });
+
+    document.getElementById("main-header").onclick = function () {
+        Router("index.html");
+        history.pushState({loc:"index.html"}, "");
+    }
+    
 }

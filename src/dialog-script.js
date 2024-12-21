@@ -32,7 +32,7 @@ function initDialogs() {
             }});
 
         dialog.addEventListener('keydown', (e) => {
-            if (e.key == "Escape") {
+            if (e.key === "Escape") {
 
                 e.preventDefault();
                 e.target.classList.add("hide");
@@ -51,10 +51,11 @@ function initDialogs() {
 
     document.querySelectorAll("dialog input").forEach((toggle) => {
         toggle.addEventListener("pointerup", (e) => {
-            e.target.blur();
+            e.target.focus();
+            // i.e., the dialog
         });
         toggle.addEventListener("keydown", (e) => {
-            if (e.key == "Escape") {
+            if (e.key === "Escape") {
                 e.preventDefault();
                 e.target.closest("dialog").classList.add("hide");
                 e.target.closest("dialog").addEventListener("transitionend", closeDialog);

@@ -325,8 +325,6 @@ ul.droplist {
   .level-button {
     transform: translateY(-20px);
     opacity: 0;
-
-    transition: transform 0.2s, opacity 0.2s, background 0.12s, border 0.12s, font-weight 0.12s;
   }
 }
 
@@ -346,7 +344,7 @@ ul.droplist {
   align-items: center;
   cursor: pointer;
 
-  transition: background 0.12s, border 0.12s, font-weight 0.12s;
+  transition: transform 0.2s, opacity 0.2s, background 0.12s, border 0.12s, font-weight 0.12s;
 }
 
 .trainstage:last-of-type.dropped {

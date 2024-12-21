@@ -50,7 +50,7 @@ function setupHome() {
 
     
     document.querySelectorAll(".level-button").forEach(l => {
-        l.tabIndex = 0;
+        if (!l.classList.contains("locked")) l.tabIndex = 0;
         l.addEventListener("pointerdown", (e) => {
             l.classList.add("nudged");
         });

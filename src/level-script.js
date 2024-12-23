@@ -479,7 +479,7 @@ function initLevel() {
         return rippleEl;
     }
 
-    document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button').forEach(element => {
+    document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button p').forEach(element => {
         element.addEventListener("pointerdown",  (event) => {
             let x = spawnRipple(event, element);
             if (document.body.contains(x)) {
@@ -537,7 +537,7 @@ function initLevel() {
         }
 
         if (undoStack.length === 0) {
-            undo.classList.add("usable");
+            undoButton.classList.add("usable");
         }
         undoStack.push([cell, done]);
     }

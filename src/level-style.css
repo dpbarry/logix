@@ -84,6 +84,8 @@ body {
     --lightBlue: rgb(110,155,250,.5) ;
     --darkBlue: rgb(110,155,250,.73);
     box-shadow: 0 0 3px 2px rgb(110,155,250,.15) !important;
+
+    &:before {    filter: unset;    }
   }
 
   button:first-child:focus {

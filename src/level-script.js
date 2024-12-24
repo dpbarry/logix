@@ -355,7 +355,7 @@ function initLevel() {
         setTimeout(function () {
             if (use_sticky && document.activeElement.parentNode.id != "domain" && document.activeElement.parentNode.id != "toolbar"
                 && document.activeElement != document.body) {
-                e.target.focus();
+                e.target.focus({preventScroll: true});
             } else {
                 cellList.forEach((cell) => {
                     cell.blur();
@@ -493,7 +493,7 @@ function initLevel() {
         element.addEventListener("pointerdown",  (event) => {
             let x = spawnRipple(event, element);
             if (document.body.contains(x)) {
-                element.focus();
+                element.focus({preventScroll: true});
             }
         });
     });

@@ -11,29 +11,46 @@
   inherits: false;
 }
 
+
+:root {
+  --domainButtonHeight: 56px;
+  --bgColor:  #FFF;
+  --baseColor: black;
+  --cellColor: #FFF;
+  --buttonColor: #FFF;
+}
+
+body {
+  background-color: var(--bgColor);
+}
+
 #domain.correct {
   justify-content: right;
-  transition: gap 0.5s;
+  transition: gap 0.6s, bottom 0.6s;
   gap: 0px;
+  bottom: calc(0.15 * var(--domainButtonHeight));
 
-  button p {
-    transition: font-size 0.1s, opacity 0.1s;
-    opacity: 0;
-    font-size: 0rem;
-  }
 
   button:not(:first-child) {
-    transition: width 0.6s, font-size 0.6s, padding 0.6s, border 0.6s, flex-basis 0.6s;
-    width: 0px;
+    transition: width 0.6s, font-size 0.6s, padding 0.6s, border 0.6s, flex-basis 0.6s, bottom 0.3s;
     box-shadow: none;
-    padding: 0px;
     border: 0px;
+    width: 0;
+    bottom: -8px;
+
+    &::before {transition: opacity 0.6s; opacity: 0;}
+    p {
+      transition: font-size 0.6s, border 0.6s, color 0.6s;
+      border: 1px solid transparent;
+      color: transparent;
+      font-size: 0;
+    }
+
   }
 
 
   button:first-child {
-
-    height: 56px;
+    height: var(--domainButtonHeight);
     flex-basis: 100%;
     width: 100%;
     border: 1px solid black;
@@ -45,6 +62,8 @@
     box-shadow: 0 0 1px 1px rgb(110,155,250,.1) !important;
 
 
+    overflow: hidden;
+    
     &>.ripple {
       background: rgb(110,155,250);
       transition: all .6s;
@@ -52,6 +71,12 @@
         opacity: 1 !important;
         transform: scale(400);
       }
+    }
+
+    p {
+      transition: font-size 0.1s, opacity 0.1s;
+      font-size: 0;
+      opacity: 0;
     }
   }
 
@@ -71,6 +96,7 @@
 
   button:first-child::before {
     content: "Next level...";
+    background: transparent;
     font-family: "Source Serif 4";
     animation: spring 0.7s ease-out forwards;
     font-weight: 375;
@@ -232,11 +258,10 @@
 
   td {
     font-family: "computer modern serif";
-    border: 1px solid #000000;
+    border: 1px solid var(--baseColor);
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
     border-radius: 4px;
-    background-color: transparent;
     transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s;
     width: clamp(24px, 13vh, 100px);
     height: clamp(24px, 13vh, 100px);
@@ -246,15 +271,13 @@
     background-size: 100% 0;
     background-position: bottom;
     z-index: 1;
-
-    filter: brightness(1);
-    backdrop-filter: brightness(1);
+    color: var(--baseColor);
   }
   td:not(.given, .x_axis, .y_axis)::before {
     content: "";
     background-color: #F1EEDC;
     opacity: 0;
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
     left: 0; right: 0; top: 0; bottom: 0;
@@ -263,6 +286,8 @@
   }
   td:not(.x_axis, .y_axis) {
     cursor: pointer;
+    background-color: var(--cellColor);
+
   }
 
 
@@ -310,7 +335,7 @@
     pointer-events: none; /* Don't interfere with ripple */
 
     &.insert {
-      animation: fade 0.15s cubic-bezier(.35,1,1,1) forwards;
+      animation: fade 0.12s cubic-bezier(.35,1,1,1) forwards;
     }
     &.dismiss {
       animation: fade 0.1s cubic-bezier(.65,-0.4,0,0) forwards reverse;
@@ -320,8 +345,8 @@
 
 
 @keyframes fade {
-  from { bottom: 10px; opacity: 0; font-size: 106%; }
-  to { bottom: 0px; opacity: 1; font-size: 100%; }
+  from { bottom: 10px; opacity: 0; }
+  to { bottom: 0px; opacity: 1; }
 }
 
 
@@ -334,6 +359,7 @@
   flex-direction: column;
   justify-content: flex-start;
 
+  color:  var(--baseColor);
   margin: 0;
   margin-left: 12.5vw;
   padding: 0;
@@ -425,7 +451,7 @@
 #wrap_toolbar_domain {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 2px;
   margin-top: -25px;
   align-items: center;
 }
@@ -523,7 +549,10 @@
   align-items: center;
   position: relative;
   transition: opacity 1s;
-  height: 56px;
+  height: var(--domainButtonHeight);
+
+  padding-top: calc(0.15 * var(--domainButtonHeight)); /* account for button visuals being 85% */
+
 
   button {
     width: 100%;
@@ -531,11 +560,11 @@
     position: relative;
     font-family: "computer modern serif";
     font-size: 2.5rem;
-    background-color: #FFFFFF;
+    background-color: var(-buttonColor);
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
-    z-index: 1;
+    z-index: 0;
     border: none;
     background: transparent;
     padding: 0;
@@ -548,15 +577,16 @@
       left: 0;
       width: 100%;
       height: 85%;
-      border-radius: 12px;
+      border-radius: 11px;
       background: linear-gradient(
         to left,
-        hsl(340deg 0% 26%) 0%,
-        hsl(340deg 0% 42%) 8%,
-        hsl(340deg 0% 42%) 92%,
-        hsl(340deg 0% 26%) 100%
+        hsl(340deg 0% 45%) 0%,
+        hsl(340deg 0% 60%) 8%,
+        hsl(340deg 0% 60%) 92%,
+        hsl(340deg 0% 45%) 100%
       );
-      
+
+      transition: filter 0.2s;
     }
 
     p {
@@ -567,10 +597,10 @@
       height: 85%;
       width: 100%;
       overflow: hidden;
-      border: 1px solid #888;
+      border: 1px solid black;
       box-sizing: border-box;
       
-      border-radius: 12px;
+      border-radius: 11px;
       color: black;
 
       display: flex;
@@ -578,28 +608,37 @@
       justify-content: center;
       
 
-      background: hsl(0 0% 98%);
+      background: white;
       will-change: transform;
-      bottom: 9px;
-      transition: bottom 0.15s ease, background 0.5s;
+      bottom: 8px;
+      transition: bottom 0.15s, background 0.4s, zoom 0.15s;
     }
   }
 
   @media (hover: hover) and (pointer: fine) {
     button:hover p {
-      bottom: 11px;
+      bottom: 10px;
     }
   }
   button:focus p {
-    transition: bottom 0.2s cubic-bezier(.3, .7, .4, 1.5), background 0.5s;
+    transition: bottom 0.2s cubic-bezier(.3, .7, .4, 1.4), background 0.4s, zoom 0.2s;
 
-    box-shadow: 0 4px 6px -6px #777, 0 0 3px #DDD;
     background-color: hsl(50, 46%, 90%);
+    bottom: 6px;
+
+    zoom: 0.98;
+
+  }
+
+  button:focus::before {
+    filter: brightness(0.75);
+  }
+  button.pushed p {
+    transition: bottom 0.2s cubic-bezier(.3, .7, .4, 1.5), background 0.5s;
     bottom: 6px;
   }
 
 }
-
 
 .ripple {
   background:  hsl(50, 46%, 90%);
@@ -691,7 +730,6 @@ td {
     }
   }
   #domain {
-    padding-top: calc(0.15* 56px); /* account for button visuals being 85% */
     margin-left: calc(6px + min(5vh, 50px));
     width: calc(100% - (min(5vh, 50px) + 6px));
     flex-wrap: nowrap;
@@ -724,7 +762,7 @@ td {
 
   #wrap_toolbar_domain {
     position: relative;
-    bottom: 5px;
+    bottom: 2px;
   }
   @media (height > 700px) {
     #wrap_grid_domain {

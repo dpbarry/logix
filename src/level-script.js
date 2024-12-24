@@ -22,6 +22,7 @@ function initLevel() {
 
     const undoButton = document.getElementById("undo");
     const redoButton = document.getElementById("redo");
+    const pencilButton = document.getElementById("pencil");
 
     var values = new Map();
 
@@ -141,7 +142,7 @@ function initLevel() {
         }
     }
 
-   
+    
 
     function animateGridSuccess (i) {
         if (i > ROWS) return;
@@ -196,6 +197,7 @@ function initLevel() {
         redoButton.removeEventListener("pointerdown", redo);
         undoButton.classList.remove("usable");
         redoButton.classList.remove("usable");
+        pencilButton.classList.remove("usable");
 
         entryList.forEach((entry) => {
             entry.removeEventListener("mouseover", noticeCell);
@@ -369,6 +371,14 @@ function initLevel() {
         button.onfocus = chamberInput;
 
         button.onblur = releaseInput;
+
+        button.addEventListener("pointerdown", function (e) {
+            e.target.closest("button").classList.add("pushed");
+        });
+
+        button.addEventListener("pointerup", function (e) {
+            e.target.closest("button").classList.remove("pushed");
+        })
     });
 
 
@@ -479,7 +489,7 @@ function initLevel() {
         return rippleEl;
     }
 
-    document.querySelectorAll('td:not(.x_axis, .y_axis), #domain button p').forEach(element => {
+    document.querySelectorAll('td:not(.x_axis, .y_axis)').forEach(element => {
         element.addEventListener("pointerdown",  (event) => {
             let x = spawnRipple(event, element);
             if (document.body.contains(x)) {
@@ -487,6 +497,16 @@ function initLevel() {
             }
         });
     });
+
+    document.querySelectorAll('#domain button').forEach(element => {
+        element.addEventListener("pointerdown", (event) => {
+            if (event.target.closest("#domain").classList.contains("correct")) {
+                spawnRipple(event, event.target.closest("button"));
+            } else {
+                spawnRipple(event, event.target.closest("p"));
+            }
+        })
+    })
 
 
     function undo(e) {

@@ -372,13 +372,18 @@ function initLevel() {
 
         button.onblur = releaseInput;
 
-        button.addEventListener("pointerdown", function (e) {
-            e.target.closest("button").classList.add("pushed");
-        });
 
-        button.addEventListener("pointerup", function (e) {
-            e.target.closest("button").classList.remove("pushed");
-        })
+        button.addEventListener("pointerdown", function (e) {
+            let button = e.target.closest("button");
+            button.classList.add("pushed");
+            
+
+            e.target.closest("p").addEventListener("transitionend", function() {
+            button.classList.remove("pushed");
+            });
+            
+        });
+       
     });
 
 

@@ -613,22 +613,22 @@ body {
       background: white;
       will-change: transform;
       bottom: 8px;
-      transition: bottom 0.15s, background 0.4s, zoom 0.15s;
+      transition: bottom 0.12s, background 0.4s;
     }
   }
 
   @media (hover: hover) and (pointer: fine) {
     button:hover p {
-      bottom: 10px;
+      bottom: 9px;
     }
   }
   button:focus p {
-    transition: bottom 0.2s cubic-bezier(.3, .7, .4, 1.4), background 0.4s, zoom 0.2s;
+    transition: bottom 0.2s cubic-bezier(.3, .7, .4, 1.4), background 0.4s;
 
     background-color: hsl(50, 46%, 90%);
     bottom: 6px;
 
-    zoom: 0.98;
+    zoom: 0.99;
 
   }
 
@@ -636,7 +636,7 @@ body {
     filter: brightness(0.75);
   }
   button.pushed p {
-    transition: bottom 0.2s cubic-bezier(.3, .7, .4, 1.5), background 0.5s;
+    transition: bottom 0.12s cubic-bezier(.3, .7, .4, 1.5), background 0.4s;
     bottom: 6px;
   }
 

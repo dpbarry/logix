@@ -752,7 +752,7 @@ td {
   }
   #propositions {
     margin: 0;
-    margin-bottom: 1.15vh;
+    margin-bottom: 1vh;
     align-self: center;
     text-align: center;
     width: 70vw;
@@ -764,7 +764,7 @@ td {
 
   #wrap_toolbar_domain {
     position: relative;
-    bottom: 2px;
+    bottom: 4px;
   }
   @media (height > 700px) {
     #wrap_grid_domain {

@@ -374,16 +374,25 @@ function initLevel() {
 
 
         button.addEventListener("pointerdown", function (e) {
-            let button = e.target.closest("button");
-            button.classList.add("pushed");
-            
 
-            e.target.closest("p").addEventListener("transitionend", function() {
-            button.classList.remove("pushed");
-            });
-            
+            if (e.target.nodeName == "BUTTON") {
+                
+                e.target.classList.add("pushed");
+
+                e.target.querySelector("p").addEventListener("transitionend", function() {
+                    e.target.closest("button").classList.remove("pushed");
+                });
+            } else {
+                e.target.closest("button").classList.add("pushed");
+
+                e.target.addEventListener("transitionend", function () {
+                    e.target.closest("button").classList.remove("pushed");
+                });
+            }
         });
-       
+
+        button.querySelector("p").onfocus = () => { button.focus(); };
+        
     });
 
 
@@ -507,8 +516,10 @@ function initLevel() {
         element.addEventListener("pointerdown", (event) => {
             if (event.target.closest("#domain").classList.contains("correct")) {
                 spawnRipple(event, event.target.closest("button"));
+            } else if (event.target.nodeName === "P") {
+                spawnRipple(event, event.target);
             } else {
-                spawnRipple(event, event.target.closest("p"));
+                spawnRipple(event, event.target.querySelector("p"));
             }
         })
     })

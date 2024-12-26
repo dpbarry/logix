@@ -101,7 +101,9 @@ function initLevel() {
 
         let text = cell.querySelector("p");
 
-        if (use_cancelout && text.innerHTML === value) {
+        console.log(value);
+
+        if (use_cancelout && text.innerHTML.trim() === value.trim()) {
             flushInsert = new AnimationEvent("animationend");
             text.dispatchEvent(flushInsert);
 
@@ -137,9 +139,14 @@ function initLevel() {
             insert(event.target, event.key);
             
         } else if (event.key === "Backspace") {
-            text.classList.add("dismiss");
+            flushInsert = new AnimationEvent("animationend");
+            text.dispatchEvent(flushInsert);
 
-            text.addEventListener("animationend", endDismiss);
+            setTimeout(() => {
+                text.classList.add("dismiss");
+                text.addEventListener("animationend", endDismiss);
+            }, 1); // ensure insert handler has been removed
+
         }
         values.set(event.target, text.innerHTML);
         checkGrid();
@@ -248,7 +255,6 @@ function initLevel() {
 
             domainList.forEach( (domain) => {
                 domain.onfocus = function () {
-                    console.log(debounced);
                     
                     if (debounced === 0) {
                         domain.classList.add("pushed");

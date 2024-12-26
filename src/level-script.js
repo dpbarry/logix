@@ -218,16 +218,19 @@ function initLevel() {
     document.body.onfocus = () => {
         cellActive = false;
         domainActive = false;
+        console.log("Well");
     }
 
     function lockCell () {
         crosshairs(this.id);
         highlight(this.id);
 
-        cellActive = true;
-        domainActive = false;
-
+        
         setTimeout(function () {
+            cellActive = true;
+            domainActive = false;
+
+
             domainList.forEach( (domain) => {
                 domain.onfocus = function () {
                     domain.classList.add("pushed");
@@ -255,10 +258,13 @@ function initLevel() {
     }
 
     function fillCell () {
+
         crosshairs("not-a-cell");
         highlight("not-a-cell");
 
         setTimeout(function () {
+            cellActive = false;
+
             if (use_sticky && !(document.getElementById("grid").contains(document.activeElement))
                 && document.activeElement.parentNode.id != "toolbar" && document.activeElement != document.body) {
                 this.focus();
@@ -270,9 +276,11 @@ function initLevel() {
                     domain.onfocus = chamberInput;
                     domain.onblur = releaseInput;
                 });
+
             }
             
-        }.bind(this), 1); 
+        }.bind(this), 1);
+
     }
 
     cellList.forEach( (cell) => {
@@ -325,10 +333,11 @@ function initLevel() {
 
     function chamberInput (e) {
         let button = e.target;
-        domainActive = true;
-        cellActive = false;
         
         setTimeout(function () {
+            domainActive = true;
+            cellActive = false;
+            
             cellList.forEach((cell) => {
                 cell.onfocus = function () {
                     let text = cell.querySelector("p")
@@ -355,6 +364,8 @@ function initLevel() {
 
     function releaseInput (e) {
         setTimeout(function () {
+            domainActive = false;
+
             if (use_sticky && document.activeElement.parentNode.id != "domain" && document.activeElement.parentNode.id != "toolbar"
                 && document.activeElement != document.body) {
                 e.target.focus({preventScroll: true});
@@ -364,6 +375,7 @@ function initLevel() {
                     cell.onfocus = lockCell;
                     cell.onblur = fillCell;
                 });
+
             }
         }, 1);  // Tiny slowdown to avoid resetting cell.onfocus before we can actually use it!
         
@@ -508,7 +520,6 @@ function initLevel() {
             if (event.target.closest("#domain").classList.contains("correct")) {
                 spawnRipple(event, event.target.closest("button"));
             } else if (event.target.nodeName === "P" && !cellActive) {
-
                 spawnRipple(event, event.target);
             } else if (!cellActive) {
                 spawnRipple(event, event.target.querySelector("p"));

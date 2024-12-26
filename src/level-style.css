@@ -408,6 +408,7 @@ body {
       transition: opacity 0.225s ease-out;
       background-color: hsl(50, 46%, 90%);
       box-shadow: 0 2px 1px -1px #EEEEEE, 0 0 1px 0px #EEEEEE;
+      border: 1px solid  hsl(50, 20%, 75%);
 
       z-index: -1;
     }
@@ -638,22 +639,11 @@ body {
   button.pushed p {
     transition: bottom 0.1s cubic-bezier(.3, .7, .4, 1.4), background 0.4s;
 
-    bottom: 7px;
+    bottom: 6px;
 
     zoom: 0.99;
   }
 
-}
-
-@keyframes bounceHover {
-  0% {bottom: 9px;}
-  50% {bottom: 6px;}
-  100% {bottom: 9px;}
-}
-@keyframes bounceNormal {
-  0% {bottom: 8px;}
-  50% {bottom: 6px;}
-  100% {bottom: 8px;}
 }
 
 .ripple {

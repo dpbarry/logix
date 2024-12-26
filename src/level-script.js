@@ -95,6 +95,8 @@ function initLevel() {
         text.classList.remove("dismiss");
         text.innerHTML = text.innerHTML.substring(0, text.innerHTML.length-1);
         text.removeEventListener("animationend", endDismiss);
+        values.set(e.target.parentNode, text.innerHTML);
+
     }
 
     function insert(cell, value) {
@@ -121,6 +123,11 @@ function initLevel() {
             text.classList.add("insert");
             text.addEventListener("animationend", endInsert);
         }, 1); // ensure dismiss handler has been removed
+
+        values.set(cell, value);
+        checkGrid();
+
+
     }
 
     function inp (event) {
@@ -148,7 +155,6 @@ function initLevel() {
             }, 1); // ensure insert handler has been removed
 
         }
-        values.set(event.target, text.innerHTML);
         checkGrid();
     }
 
@@ -272,9 +278,6 @@ function initLevel() {
                     
                     insert(this, domain.textContent);
 
-                    values.set(this, domain.textContent);
-
-                    checkGrid();
                 }.bind(this);
 
                 domain.onblur = function () {};
@@ -377,9 +380,6 @@ function initLevel() {
 
                     insert(cell, button.textContent);
 
-                    values.set(cell,button.textContent);
-
-                    checkGrid();
                 };
 
                 cell.onblur = function () {};

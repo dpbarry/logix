@@ -211,13 +211,7 @@ function initLevel() {
 
     }
 
-    function endActivated(e) {
-        let domain = e.target;
-        if (e.target.nodeName === "P")
-            domain = e.target.parentNode;
-        domain.classList.remove("activated");
-        domain.removeEventListener("animationend", endPull);
-    }
+
 
     function lockCell () {
         crosshairs(this.id);
@@ -226,13 +220,12 @@ function initLevel() {
         setTimeout(function () {
             domainList.forEach( (domain) => {
                 domain.onfocus = function () {
-                    domain.querySelector(".ripple").remove();
-
+                    let ripple = domain.querySelector(".ripple");
+                    if (ripple !== null) {  ripple.remove();    }
+                    
+                    domain.classList.add("pushed");
                     let text = this.querySelector("p");
 
-
-                    domain.classList.add("activated");
-                    domain.addEventListener("animationend", endActivated);
                     
                     if (undoStack.length === 0) {
                         undoButton.classList.add("usable");
@@ -372,23 +365,9 @@ function initLevel() {
 
         button.onblur = releaseInput;
 
-
-        button.addEventListener("pointerdown", function (e) {
-
-            if (e.target.nodeName == "BUTTON") {
-                
-                e.target.classList.add("pushed");
-
-                e.target.querySelector("p").addEventListener("transitionend", function() {
-                    e.target.closest("button").classList.remove("pushed");
-                });
-            } else {
-                e.target.closest("button").classList.add("pushed");
-
-                e.target.addEventListener("transitionend", function () {
-                    e.target.closest("button").classList.remove("pushed");
-                });
-            }
+        button.querySelector("p").addEventListener("transitionend", (e) => {
+            if (e.target === null || e.target.classList.contains("ripple")) return;
+            e.target.closest("button").classList.remove("pushed");
         });
 
         button.querySelector("p").onfocus = () => { button.focus(); };

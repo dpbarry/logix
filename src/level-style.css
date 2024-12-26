@@ -131,12 +131,12 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  top: 2.5vmin;
-  left: 2.75vmin;
+  top: 2.25vmin;
+  left: 2.25vmin;
   width: min-content;
   height: min-content;
   align-items: center;
-  margin-bottom: -22px;
+  margin-bottom: -21px;
   cursor: pointer;
 }
 
@@ -163,7 +163,7 @@ body {
 
 #menu {
   position: absolute;
-  top: 1.75vmin;
+  top: 2vmin;
 
   /* Align #chevron */
   text-align: center;

@@ -102,18 +102,23 @@ function initLevel() {
         let text = cell.querySelector("p");
 
         if (use_cancelout && text.innerHTML === value) {
-            text.classList.add("dismiss");
+            flushInsert = new AnimationEvent("animationend");
+            text.dispatchEvent(flushInsert);
 
-            text.addEventListener("animationend", endDismiss);
+            setTimeout(() => {
+                text.classList.add("dismiss");
+                text.addEventListener("animationend", endDismiss);
+            }, 1); // ensure insert handler has been removed
             return;
         }
         flushDismiss = new AnimationEvent("animationend");
         text.dispatchEvent(flushDismiss);
         
-        text.innerHTML = value;
-        
-        text.classList.add("insert");
-        text.addEventListener("animationend", endInsert);
+        setTimeout(() => {
+            text.innerHTML = value;
+            text.classList.add("insert");
+            text.addEventListener("animationend", endInsert);
+        }, 1); // ensure dismiss handler has been removed
     }
 
     function inp (event) {

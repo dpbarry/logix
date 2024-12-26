@@ -127,19 +127,38 @@ body {
   100% { font-size: 2.25rem; }
 }
 
+#wrap_home_level {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 2.5vmin;
+  left: 2.75vmin;
+  width: min-content;
+  height: min-content;
+  align-items: center;
+  margin-bottom: -22px;
+  cursor: pointer;
+}
+
+#home {
+  background-image: url("../assets/HOME.svg");
+  background-size: 100% 100%;
+  display: inline-block;
+  height: 37px;
+  width: 37px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
 #level {
   font-family: "computer modern serif";
   font-weight: lighter;
-  font-size: 2.3rem;
-
-  width: min-content;
-  margin: 0;
+  font-size: 1.5rem;
 
   position: relative;
-  top: 1.75vmin;
-  left: 2.75vmin;
-
-  cursor: pointer;
+  bottom: 2px;
+  width: min-content;
+  margin: 0;
 }
 
 #menu {
@@ -337,17 +356,17 @@ body {
     pointer-events: none; /* Don't interfere with ripple */
 
     &.insert {
-      animation: fade 0.12s cubic-bezier(.35,1,1,1) forwards;
+      animation: fade 0.16s cubic-bezier(.35,1,1,1) forwards;
     }
     &.dismiss {
-      animation: fade 0.1s cubic-bezier(.65,-0.4,0,0) forwards reverse;
+      animation: fade 0.12s cubic-bezier(.65,-0.4,0,0) forwards reverse;
     }
   }
 }
 
 
 @keyframes fade {
-  from { bottom: 10px; opacity: 0; }
+  from { bottom: 12px; opacity: 0; }
   to { bottom: 0px; opacity: 1; }
 }
 
@@ -407,7 +426,7 @@ body {
       left: 0; right: 0; top: 0; bottom: 0;
       transition: opacity 0.225s ease-out;
       background-color: hsl(50, 46%, 90%);
-      box-shadow: 0 2px 1px -1px #EEEEEE, 0 0 1px 0px #EEEEEE;
+      box-shadow: 0 2px 1px -1px #EEE, 0 0 1px 0px #DDD;
       border: 1px solid  hsl(50, 20%, 75%);
 
       z-index: -1;
@@ -614,7 +633,7 @@ body {
       background: white;
       will-change: transform;
       bottom: 8px;
-      transition: bottom 0.12s, background 0.4s;
+      transition: bottom 0.08s ease-out, background 0.4s;
     }
   }
 
@@ -624,7 +643,7 @@ body {
     }
   }
   button:focus p {
-    transition: bottom 0.2s cubic-bezier(.3, .7, .4, 1.4), background 0.4s;
+    transition: bottom 0.125s cubic-bezier(.3, .7, .4, 1.25), background 0.4s;
 
     background-color: hsl(50, 46%, 90%);
     bottom: 6px;
@@ -637,7 +656,7 @@ body {
     filter: brightness(0.75);
   }
   button.pushed p {
-    transition: bottom 0.51s cubic-bezier(.3, .7, .4, 1.4), background 0.4s;
+    transition: bottom 0.125s cubic-bezier(.3, .7, .4, 1.25), background 0.4s;
 
     bottom: 6px;
 

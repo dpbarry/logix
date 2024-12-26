@@ -11,6 +11,7 @@ function initLevel() {
     const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");
     const HIGHLIGHT_TOGGLE = document.getElementById("highlight_toggle");
     const STICKY_TOGGLE = document.getElementById("sticky_toggle");
+    const CANCELOUT_TOGGLE = document.getElementById("cancelout_toggle");
 
     // fetch all inputs and cells
     const cellList = document.querySelectorAll('td:not(.x_axis, .y_axis)');
@@ -29,6 +30,7 @@ function initLevel() {
     var use_highlight = HIGHLIGHT_TOGGLE.checked;
     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
     var use_sticky = STICKY_TOGGLE.checked;
+    var use_cancelout = CANCELOUT_TOGGLE.checked;
 
     var cellActive = false;
     var domainActive = false;
@@ -44,6 +46,10 @@ function initLevel() {
 
     STICKY_TOGGLE.addEventListener("change", (e) => {
         use_sticky = STICKY_TOGGLE.checked;
+    });
+
+    CANCELOUT_TOGGLE.addEventListener("change", (e) => {
+        use_cancelout = CANCELOUT_TOGGLE.checked;
     });
 
 
@@ -92,8 +98,15 @@ function initLevel() {
     }
 
     function insert(cell, value) {
+
         let text = cell.querySelector("p");
-        
+
+        if (use_cancelout && text.innerHTML === value) {
+            text.classList.add("dismiss");
+
+            text.addEventListener("animationend", endDismiss);
+            return;
+        }
         flushDismiss = new AnimationEvent("animationend");
         text.dispatchEvent(flushDismiss);
         
@@ -594,7 +607,7 @@ function initLevel() {
 
 
 
-    document.getElementById("level").onclick = function () {
+    document.getElementById("wrap_home_level").onclick = function () {
         if (window.event.ctrlKey || window.event.shiftKey) {
             // Interestingly, Chrome will only actually focus the
             // new window if you were holding shift

@@ -1,5 +1,7 @@
-
-<h1 id="level" onClick="">1.1</h1>
+<div id="wrap_home_level">
+    <button id="home"></button>
+    <h1 id="level" onClick="">1.1</h1>
+</div>
 <div id="overlay"></div>
 <div id="menu">
     <input id="menu_checkbox" type="checkbox" checked>
@@ -29,15 +31,21 @@
         <a class="close"></a>
         <h1>Settings</h1>
         <div id="configs">
-            <label for="highlight_toggle"> Highlight </label>
-            <input id="highlight_toggle" type="checkbox" checked>
-            <p>Highlight appearances of selected cell in propositions</p>
-            <label for="crosshairs_toggle"> Crosshairs </label>
-            <input id="crosshairs_toggle" type="checkbox">
-            <p>Emphasize row and column of selected cell</p>
             <label for="sticky_toggle"> Sticky Input </label>
             <input id="sticky_toggle" type="checkbox" checked>
             <p>Input selection persists after filling a cell</p>
+            
+            <label for="highlight_toggle"> Highlight </label>
+            <input id="highlight_toggle" type="checkbox" checked>
+            <p>Highlight appearances of selected cell in propositions</p>
+            
+            <label for="crosshairs_toggle"> Crosshairs </label>
+            <input id="crosshairs_toggle" type="checkbox">
+            <p>Emphasize row and column of selected cell</p>
+
+            <label for="cancelout_toggle"> Cancel Out </label>
+            <input id="cancelout_toggle" type="checkbox" checked>
+            <p>Clear a cell by inputting its current value</p>
         </div>
     </dialog>
 </div>

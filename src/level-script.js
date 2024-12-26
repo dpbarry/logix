@@ -30,6 +30,9 @@ function initLevel() {
     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
     var use_sticky = STICKY_TOGGLE.checked;
 
+    var cellActive = false;
+    var domainActive = false;
+
 
     HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
         use_highlight = HIGHLIGHT_TOGGLE.checked;
@@ -212,16 +215,21 @@ function initLevel() {
     }
 
 
+    document.body.onfocus = () => {
+        cellActive = false;
+        domainActive = false;
+    }
 
     function lockCell () {
         crosshairs(this.id);
         highlight(this.id);
 
+        cellActive = true;
+        domainActive = false;
+
         setTimeout(function () {
             domainList.forEach( (domain) => {
                 domain.onfocus = function () {
-                    let ripple = domain.querySelector(".ripple");
-                    if (ripple !== null) {  ripple.remove();    }
                     
                     domain.classList.add("pushed");
                     let text = this.querySelector("p");
@@ -318,10 +326,12 @@ function initLevel() {
 
     function chamberInput (e) {
         let button = e.target;
+        domainActive = true;
+        cellActive = false;
+        
         setTimeout(function () {
             cellList.forEach((cell) => {
                 cell.onfocus = function () {
-                    cell.querySelector(".ripple").remove();
                     let text = cell.querySelector("p")
 
                     if (undoStack.length == 0) {
@@ -484,8 +494,8 @@ function initLevel() {
 
     document.querySelectorAll('td:not(.x_axis, .y_axis)').forEach(element => {
         element.addEventListener("pointerdown",  (event) => {
-            let x = spawnRipple(event, element);
-            if (document.body.contains(x)) {
+            if (!domainActive) {
+                spawnRipple(event, element);
                 element.focus({preventScroll: true});
             }
         });
@@ -494,17 +504,14 @@ function initLevel() {
     document.querySelectorAll('#domain button').forEach(element => {
         element.addEventListener("pointerdown", (event) => {
             if (event.target.closest("#domain").classList.contains("correct")) {
-                let x = spawnRipple(event, event.target.closest("button"));
-                if (document.body.contains(x))
-                    event.target.closest("button").focus({preventScroll: true});
-            } else if (event.target.nodeName === "P") {
-                let x = spawnRipple(event, event.target);
-                if (document.body.contains(x)) 
-                    event.target.closest("button").focus({preventScroll: true});
-            } else {
-                let x = spawnRipple(event, event.target.querySelector("p"));
-                if (document.body.contains(x)) 
-                    event.target.closest("button").focus({preventScroll: true});
+                spawnRipple(event, event.target.closest("button"));
+                event.target.closest("button").focus({preventScroll: true});
+            } else if (event.target.nodeName === "P" && !cellActive) {
+                spawnRipple(event, event.target);
+                event.target.closest("button").focus({preventScroll: true});
+            } else if (!cellActive) {
+                spawnRipple(event, event.target.querySelector("p"));
+                event.target.closest("button").focus({preventScroll: true});
             }
         })
     })

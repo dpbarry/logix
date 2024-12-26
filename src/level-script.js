@@ -215,12 +215,9 @@ function initLevel() {
     }
 
 
-    document.body.onfocus = () => {
-        cellActive = false;
-        domainActive = false;
-        console.log("Well");
-    }
 
+    let debounced = 0;
+    
     function lockCell () {
         crosshairs(this.id);
         highlight(this.id);
@@ -233,7 +230,12 @@ function initLevel() {
 
             domainList.forEach( (domain) => {
                 domain.onfocus = function () {
-                    domain.classList.add("pushed");
+                    console.log(debounced);
+                    
+                    if (debounced === 0) {
+                        domain.classList.add("pushed");
+                        debounced++;
+                    }
                     let text = this.querySelector("p");
 
                     
@@ -387,8 +389,10 @@ function initLevel() {
         button.onblur = releaseInput;
 
         button.querySelector("p").addEventListener("transitionend", (e) => {
-            if (e.target === null || e.target.classList.contains("ripple")) return;
+            if (e.target === null || e.target.classList.contains("ripple") || !(e.target.closest("button").classList.contains("pushed"))) return;
             e.target.closest("button").classList.remove("pushed");
+
+            setTimeout( () => {debounced--;}, 85);
         });
 
         button.querySelector("p").onfocus = () => { button.focus(); };

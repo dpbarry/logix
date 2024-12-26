@@ -230,7 +230,6 @@ function initLevel() {
         setTimeout(function () {
             domainList.forEach( (domain) => {
                 domain.onfocus = function () {
-                    
                     domain.classList.add("pushed");
                     let text = this.querySelector("p");
 

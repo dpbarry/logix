@@ -57,7 +57,7 @@ function initLevel() {
     // Show propositions when they're rendered (should be near-instant)
     document.fonts.ready.then(() => {
         document.querySelectorAll("#propositions li").forEach((li) => {
-            li.style.visibility = "visible";
+            li.style.color = "var(--baseColor)";
         });
         verticalScroll(document.querySelector('#propositions'), 7);
         horizontalScroll(document.querySelector('#domain'));
@@ -102,8 +102,6 @@ function initLevel() {
     function insert(cell, value) {
 
         let text = cell.querySelector("p");
-
-        console.log(value);
 
         if (use_cancelout && text.innerHTML.trim() === value.trim()) {
             flushInsert = new AnimationEvent("animationend");

@@ -216,7 +216,6 @@
   position: relative;
   top: 0;
 
-  transform: rotate(0deg);
 
   &:last-of-type {margin-bottom: 0px;}
 }
@@ -229,7 +228,6 @@
 
   .level-button:hover {
     border: 1px solid #555;
-    font-weight: 375;
   }
 
   #training .trainstage:hover, #training .level-button:hover {
@@ -258,17 +256,6 @@
 .level-button:focus {
   border: 1px solid #555;
   font-weight: 375;
-}
-
-.level-button.activated {
-  border: 1px solid #555;
-  animation: spin 0.2s forwards;
-}
-
-
-@keyframes spin {
-  from {transform: rotate(0); border-radius: 3px; }
-  to {transform: rotate(360deg); border-radius: 40px; }
 }
 
 
@@ -345,6 +332,15 @@ ul.droplist {
   cursor: pointer;
 
   transition: transform 0.2s, opacity 0.2s, background 0.12s, border 0.12s, font-weight 0.12s;
+}
+
+.level-button.locked.nudged {
+  transform: scale(0.97) !important;
+  transition: transform 0.05s;
+}
+.level-button.nudged {
+  transform: scale(0.95) !important;
+  transition: transform 0.08s;
 }
 
 .trainstage:last-of-type.dropped {

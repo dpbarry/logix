@@ -36,6 +36,8 @@
 
 
     <script>
+     const parser = new DOMParser();
+
      function fetchedBody(event, newBody) {
        document.body.removeEventListener("transitionend", fetchedBody);
      }
@@ -44,12 +46,14 @@
 
      async function goHome() {
 
-       let newBody = await (await fetch('src/home.html')).text();
+       let newBodyText = await (await fetch('src/home.html')).text();
+       let newBody = parser.parseFromString(newBodyText, 'text/html');
+
        document.body.classList.remove("fadein");
        document.body.classList.add("fadeout");
 
        setTimeout(function() {
-         document.body.innerHTML = newBody;
+         document.body.replaceWith(newBody.body);
          document.body.classList.remove("fadeout");
          document.body.classList.add("fadein");
          
@@ -65,20 +69,23 @@
 
        if (!"tnde".includes(flag))  return; 
 
-       let newBody;
        var response = await fetch(`src/levels/${path}.html`);
        if (!response.ok) return;
        
-       newBody = await response.text();
+       let newBodyText = await response.text();
+       let newBody = parser.parseFromString(newBodyText, 'text/html');
+       
 
        var script = document.createElement("script");
        script.text = await (await fetch(`src/levels/${path}.js`)).text();
+
 
        document.body.classList.remove("fadein");
        document.body.classList.add("fadeout");
 
        setTimeout(function() {
-         document.body.innerHTML = newBody;
+         document.body.replaceWith(newBody.body);
+
          document.body.classList.remove("fadeout");
          document.body.classList.add("fadein");
 

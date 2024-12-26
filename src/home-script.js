@@ -28,7 +28,6 @@ function setupHome() {
     document.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
         
         b.onclick = function (e) {
-            e.target.classList.add("activated");
             setTimeout(function () {
                 Router(e.target.id);
                 history.pushState({loc:e.target.id}, "");
@@ -38,7 +37,6 @@ function setupHome() {
         b.onkeydown = function (e) {
             if (e.key != " " && e.key != "Enter") return;
             
-            e.target.classList.add("activated");
             setTimeout(function () {
                 Router(e.target.id);
                 history.pushState({loc:e.target.id}, "");

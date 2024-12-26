@@ -380,7 +380,6 @@ body {
   flex-direction: column;
   justify-content: flex-start;
 
-  color:  var(--baseColor);
   margin: 0;
   margin-left: 12.5vw;
   padding: 0;
@@ -397,9 +396,9 @@ body {
   --bottom-mask-size: 0px;
 
   li {
-    visibility: hidden;
     padding: 4px;
-
+    color:  transparent;
+    transition: color 0.15s;
     width: 95%;
 
     &:first-child { margin-top: auto; }

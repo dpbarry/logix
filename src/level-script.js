@@ -503,16 +503,19 @@ function initLevel() {
 
     document.querySelectorAll('#domain button').forEach(element => {
         element.addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+            event.target.closest("button").focus({preventScroll: true});
+
             if (event.target.closest("#domain").classList.contains("correct")) {
                 spawnRipple(event, event.target.closest("button"));
-                event.target.closest("button").focus({preventScroll: true});
             } else if (event.target.nodeName === "P" && !cellActive) {
+
                 spawnRipple(event, event.target);
-                event.target.closest("button").focus({preventScroll: true});
             } else if (!cellActive) {
                 spawnRipple(event, event.target.querySelector("p"));
-                event.target.closest("button").focus({preventScroll: true});
             }
+
+
         })
     })
 

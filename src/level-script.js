@@ -1,13 +1,14 @@
-let ROWS = 3;
-let COLS = 3;
-let MAXLENGTH = 1;
-let DOMAIN = [1, 2, 3]
-let SOLUTION = [[3, null, 2], [1, 3, null], [null, 3, 1]];
+let ROWS;
+let COLS;
+let MAXLENGTH;
+let DOMAIN;
+let SOLUTION;
+let NEXT_LEVEL = null;
+let tabdCells;
 
-let tabdCells = [[null, null, null], [null, null, null], [null, null, null]];
+
 
 function initLevel() {
-    
     const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");
     const HIGHLIGHT_TOGGLE = document.getElementById("highlight_toggle");
     const STICKY_TOGGLE = document.getElementById("sticky_toggle");
@@ -51,7 +52,6 @@ function initLevel() {
     CANCELOUT_TOGGLE.addEventListener("change", (e) => {
         use_cancelout = CANCELOUT_TOGGLE.checked;
     });
-
 
     
     // Show propositions when they're rendered (should be near-instant)
@@ -170,7 +170,7 @@ function initLevel() {
 
         if (flag) {
             // Partly for suspense
-            setTimeout(success, 125); 
+            setTimeout(success, 200); 
         }
     }
 
@@ -210,19 +210,37 @@ function initLevel() {
         
         animateGridSuccess(1);
 
-        document.getElementById("domain").classList.add("correct");
-        
+        if (NEXT_LEVEL !== null) {
+            setTimeout(() => {   
+                document.getElementById("domain").classList.add("correct");
+                document.getElementById("domain").querySelector("button").onclick = () => {
+                    Router(NEXT_LEVEL);
+                    history.pushState({loc:NEXT_LEVEL}, "");
+                }
+            }, 1000);
+        } else {
+            setTimeout(() => {
+                document.documentElement.style.setProperty('--successPrompt', "'Return home...'");
+                document.getElementById("domain").classList.add("correct");
+                document.getElementById("domain").querySelector("button").onclick = () => {
+                    Router("index.html");
+                    history.pushState({loc:"index.html"}, "");
+                }            }, 1000);
+        }
+
+
         domainList.forEach((button) => {
             button.onfocus = "";
             button.onblur = "";
+            button.blur();
         });
+
         
         cellList.forEach((cell) => {
             cell.tabIndex = -1;
             cell.onfocus = function () {this.blur();};
             cell.onblur = "";
             cell.removeEventListener("keydown", inp);
-            
         });
 
         undoButton.removeEventListener("pointerdown", undo);
@@ -274,7 +292,7 @@ function initLevel() {
                     redoStack = [];
                     redoButton.classList.remove("usable");
                     
-                    insert(this, domain.textContent);
+                    insert(this, domain.textContent.trim());
 
                 }.bind(this);
 
@@ -376,7 +394,7 @@ function initLevel() {
                     redoStack = [];
                     redoButton.classList.remove("usable");
 
-                    insert(cell, button.textContent);
+                    insert(cell, button.textContent.trim());
 
                 };
 
@@ -568,6 +586,7 @@ function initLevel() {
         let undone = prevState[1];
         let done = cell.firstChild.innerHTML;
 
+
         if (undone === "") {
             cell.firstChild.classList.add("dismiss");
 
@@ -594,6 +613,8 @@ function initLevel() {
         let cell = prevState[0];
         let redone = prevState[1];
         let done = cell.firstChild.innerHTML;
+
+
 
         if (redone === "") {
             cell.firstChild.classList.add("dismiss");

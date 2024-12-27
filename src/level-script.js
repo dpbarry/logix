@@ -36,6 +36,24 @@ function initLevel() {
     var cellActive = false;
     var domainActive = false;
 
+    let cellFactor = Math.max(ROWS, COLS);
+
+    if (cellFactor > 3) {
+        if (ROWS >= COLS) {
+            document.documentElement.style.setProperty('--cellFactor', 2.9 / cellFactor);
+            document.documentElement.style.setProperty('--fontFactor', 2.9 / cellFactor);
+        } else {
+            document.documentElement.style.setProperty('--cellFactor', 3.8 / cellFactor);
+            document.documentElement.style.setProperty('--fontFactor', 3.8 / cellFactor);
+        }
+    } else if (cellFactor < 3) {
+        document.documentElement.style.setProperty('--cellFactor', (4 - cellFactor) * 0.765);
+        document.documentElement.style.setProperty('--fontFactor', (4 - cellFactor) * 0.65);
+
+    } else {
+        document.documentElement.style.setProperty('--cellFactor', 1);
+        document.documentElement.style.setProperty('--fontFactor', 1);
+    }
 
     HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
         use_highlight = HIGHLIGHT_TOGGLE.checked;
@@ -187,11 +205,11 @@ function initLevel() {
         }
         else if (i < ROWS) {
             transitionStage = "background-size .24s linear";
-            delay = 399;
+            delay = (i === 2) ? 399 : 239;
         }
         else if (i == ROWS) {
             transitionStage = "background-size .4s ease-out";
-            delay = 239;
+            delay = (i === 2) ? 399 : 239;
         }
 
         setTimeout(function (stage) {
@@ -210,25 +228,25 @@ function initLevel() {
         
         animateGridSuccess(1);
 
-        if (NEXT_LEVEL !== null) {
-            setTimeout(() => {   
+        tabdCells[0][0].addEventListener("transitionend", () => {
+            
+            if (NEXT_LEVEL !== null) {
                 document.getElementById("domain").classList.add("correct");
                 domainList[0].onclick = () => {
                     Router(NEXT_LEVEL);
                     history.pushState({loc:NEXT_LEVEL}, "");
-                }
-            }, 1000);
-        } else {
-            setTimeout(() => {
+                };
+            } else {
                 document.documentElement.style.setProperty('--successPrompt', "'Return home...'");
                 
                 document.getElementById("domain").classList.add("correct");
                 domainList[0].onclick = () => {
                     Router("index.html");
                     history.pushState({loc:"index.html"}, "");
-                }            }, 1000);
-        }
+                };
+            }
 
+        });
 
         domainList.forEach((button) => {
             button.onfocus = "";

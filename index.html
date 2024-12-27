@@ -79,60 +79,67 @@
        var script = document.createElement("script");
        script.text = await (await fetch(`src/levels/${path}.js`)).text();
 
-
-       document.body.classList.remove("fadein");
-       document.body.classList.add("fadeout");
-
-       setTimeout(function() {
-         document.body.replaceWith(newBody.body);
-
-         document.body.classList.remove("fadeout");
-         document.body.classList.add("fadein");
-
-         document.head.appendChild(script).parentNode.removeChild(script);
-         
-         initDialogs();
-         renderMathInElement(document.body);
-         initLevel();
-       }, 200);
+         // script.text = await (await fetch(`src/levels/${path}.js`, {
+         // headers: {
+         //  'Cache-Control': 'no-cache'
+         // }})).text();
 
 
-       sessionStorage.setItem("loc", path);
-     }
+         console.log(script.innerHTML);
 
-     
-     const Router = (path) => {
-       if (path === "index.html" || path === "logix") {
-         goHome();
-       } else {
-         goLevel(path);
+         document.body.classList.remove("fadein");
+         document.body.classList.add("fadeout");
+
+         setTimeout(function() {
+           document.body.replaceWith(newBody.body);
+
+           document.body.classList.remove("fadeout");
+           document.body.classList.add("fadein");
+
+           document.head.appendChild(script).parentNode.removeChild(script);
+           
+           initDialogs();
+           renderMathInElement(document.body);
+           initLevel();
+         }, 200);
+
+
+         sessionStorage.setItem("loc", path);
        }
-     };
-     
 
-     function segment(pathName) {
-       url = pathName.replace(/\/+$/, '');
-       return url.substr(url.lastIndexOf('/') + 1);
-     }
+       
+       const Router = (path) => {
+         if (path === "index.html" || path === "logix") {
+           goHome();
+         } else {
+           goLevel(path);
+         }
+       };
+       
 
-
-     let cacheLoc = sessionStorage.getItem("loc");
-     
-     if (cacheLoc) {
-       Router(cacheLoc);
-       history.replaceState({loc:cacheLoc}, "");
-     } else {
-       Router(segment(location.pathname));
-       history.replaceState({loc:segment(location.pathname)}, "");
-     }
+       function segment(pathName) {
+         url = pathName.replace(/\/+$/, '');
+         return url.substr(url.lastIndexOf('/') + 1);
+       }
 
 
-     
-     window.addEventListener("load", () => {
-       window.addEventListener("popstate", (e) => {
-         Router(e.state.loc);
+       let cacheLoc = sessionStorage.getItem("loc");
+       
+       if (cacheLoc) {
+         Router(cacheLoc);
+         history.replaceState({loc:cacheLoc}, "");
+       } else {
+         Router(segment(location.pathname));
+         history.replaceState({loc:segment(location.pathname)}, "");
+       }
+
+
+       
+       window.addEventListener("load", () => {
+         window.addEventListener("popstate", (e) => {
+           Router(e.state.loc);
+         });
        });
-     });
     </script>
 
     

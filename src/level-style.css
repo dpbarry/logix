@@ -16,9 +16,11 @@
   --domainButtonHeight: 56px;
   --bgColor:  #FFF;
   --baseColor: black;
-  --cellColor: #FFF;
+  --cellColor: hsl(0, 0%, 99%);
   --buttonColor: #FFF;
   --successPrompt: "Next level...";
+  --cellFactor: 1;
+  --fontFactor: 1;
 }
 
 body {
@@ -322,6 +324,7 @@ body {
     background-size: 100% 0;
     background-position: bottom;
     z-index: 1;
+    
     color: var(--baseColor);
   }
   td:not(.given, .x_axis, .y_axis)::before {
@@ -831,9 +834,9 @@ td {
   }
   @media (height < 750px) {
     #grid td {
-      width: clamp(24px, calc(13.5vh - (750px - 100vh)/15), 105px);
-      height: clamp(24px, calc(13.5vh - (750px - 100vh)/15), 105px);
-      font-size: clamp(1rem, calc(9vh - (750px - 100vh)/15), 4rem);
+      width: clamp(24px, calc(var(--cellFactor) * 13.5vh - (750px - 100vh)/15), calc(var(--cellFactor) * 105px));
+      height: clamp(24px, calc(var(--cellFactor) * 13.5vh - (750px - 100vh)/15), calc(var(--cellFactor) * 105px));
+      font-size: clamp(1rem, calc(var(--fontFactor) * 9vh - (750px - 100vh)/15), var(--fontFactor) *  4rem);
     }
   }
   #grid {

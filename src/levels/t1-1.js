@@ -1,9 +1,9 @@
-ROWS = 3;
-COLS = 3;
+ROWS = 2;
+COLS = 2;
 MAXLENGTH = 1;
-DOMAIN = [1, 2, 3];
-SOLUTION = [[3, null, 2], [1, 3, null], [null, 3, 1]];
+DOMAIN = [1, 2, 3, 4];
+SOLUTION = [[2, 3], [1, 4]];
 NEXT_LEVEL = "t1-2";
 
-tabdCells = [[null, null, null], [null, null, null], [null, null, null]];
+tabdCells = [[null, null], [null, null]];
 

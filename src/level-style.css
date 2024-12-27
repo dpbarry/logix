@@ -755,8 +755,8 @@ td {
     gap: 0;
   }
   #toolbar {
-    width: calc(100% - (min(5vh, 50px) + 6px));
-    margin-left: calc(6px + min(5vh, 50px));
+    width: calc(100% - (min(5vh, 30px) + 6px));
+    margin-left: calc(6px + min(5vh, 30px));
     min-height: clamp(40px, 7.5vh, 58px);
     position: relative;
     top: clamp(40px, 7.5vh, 58px);
@@ -784,8 +784,8 @@ td {
     }
   }
   #domain {
-    margin-left: calc(6px + min(5vh, 50px));
-    width: calc(100% - (min(5vh, 50px) + 6px));
+    margin-left: calc(6px + min(5vh, 30px));
+    width: calc(100% - (min(5vh, 30px) + 6px));
     flex-wrap: nowrap;
     gap: 5px;
   }
@@ -838,6 +838,6 @@ td {
   }
   #grid {
     margin: 0;
-    margin-right: 5.09vh;
+    margin-right: 4.7vh;
   }
 }

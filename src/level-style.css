@@ -16,11 +16,11 @@
   --domainButtonHeight: 56px;
   --bgColor:  #FFF;
   --baseColor: black;
-  --cellColor: hsl(0, 0%, 99%);
+  --cellColor: hsl(0, 0%, 100%);
   --buttonColor: #FFF;
   --successPrompt: "Next level...";
-  --cellFactor: 1;
-  --fontFactor: 1;
+  --rows: 2;
+  --cols: 2;
 }
 
 body {
@@ -87,7 +87,7 @@ body {
     --lightBlue: rgb(110,155,250,.5) ;
     --darkBlue: rgb(110,155,250,.73);
     box-shadow: 0 0 3px 1px rgb(110,155,250,.4) !important;
-   
+    
   }
 
 
@@ -306,18 +306,31 @@ body {
 
 #grid {
   align-self: center;
-  border-spacing: 4px;
-  margin: -4px;
+  grid-gap: 5px;
 
-  td {
+  display: grid;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  
+  grid-template-columns: min(5vh, 30px) repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr) min(5vh, 30px);
+
+  width: 49vh;
+  height: 49vh;
+
+  
+  span {
     font-family: "computer modern serif";
     border: 1px solid var(--baseColor);
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    border-radius: 4px;
+    border-radius: 6px;
     transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s;
-    width: clamp(24px, 13.5vh, 105px);
-    height: clamp(24px, 13.5vh, 105px);
+
+    width: 100%;
+    height: 100%;
+    
     font-size: clamp(1rem, 9vh, 4rem);
     background-image: linear-gradient(#A4C1A0 , #A4C1A0);
     background-repeat: no-repeat;
@@ -326,8 +339,10 @@ body {
     z-index: 1;
     
     color: var(--baseColor);
+
+    align-content: center;
   }
-  td:not(.given, .x_axis, .y_axis)::before {
+  span:not(.given, .x_axis, .y_axis)::before {
     content: "";
     background-color: #F1EEDC;
     opacity: 0;
@@ -338,26 +353,26 @@ body {
     transition: opacity 0.2s;
     z-index: -1;
   }
-  td:not(.x_axis, .y_axis) {
+  span:not(.x_axis, .y_axis) {
     cursor: pointer;
     background-color: var(--cellColor);
 
   }
 
 
-  td.given {
+  span.given {
     background-color: #D0D0D0;
   }
-  td.given > .ripple {
+  span.given > .ripple {
     background-color: rgba(220,220,220,0.65);
   }
 
-  td.correct > .ripple {
+  span.correct > .ripple {
     background-color: rgba(220,255,220,0.1);
 
   }
 
-  td.noticed::before {
+  span.noticed::before {
     opacity: 0.5;
 
     &.run {
@@ -365,24 +380,24 @@ body {
     }
   }
 
-  td.correct {
+  span.correct {
     background-size: 100% 100%;
     box-shadow: unset !important;
   }
 
   .x_axis, .y_axis {
     border: 0px;
-    font-size: clamp(0.85rem, 3.25vh, 1.8rem);
+    font-size: clamp(0.85rem, 3.5vh, 2rem);
     width: min(5vh, 30px);
     height: min(5vh, 30px);
     z-index: -1;
   }
 
-  td:focus {
+  span:focus {
     background: hsl(50, 46%, 90%) !important;
   }
 
-  td > p {
+  span > p {
     margin: 0;
     padding: 0;
     position: relative;
@@ -716,7 +731,7 @@ body {
 }
 
 /* For ripple */
-td {
+#grid span {
   position: relative;
   overflow: hidden;
 }
@@ -724,7 +739,7 @@ td {
 
 
 /* Landscape layout */
-@media (orientation: landscape) {
+@media (orientation: landscape) and (width > 900px), (height < 400px) {
 
   #menu { right: clamp(15px, 1.75vw, 22px); }
 
@@ -747,6 +762,7 @@ td {
     bottom: 5vh;
     display: flex;
     flex-direction: column;
+    width: 30vw;
     min-height: 50vh;
     max-height: 80vh;
     align-items: center;
@@ -754,7 +770,7 @@ td {
   }
 
   #wrap_toolbar_domain {
-    margin-top: calc(1vh - clamp(40px, 7.5vh, 58px));
+    margin-top: calc(1.2vh - clamp(40px, 7.5vh, 58px));
     gap: 0;
   }
   #toolbar {
@@ -792,11 +808,20 @@ td {
     flex-wrap: nowrap;
     gap: 5px;
   }
+
+  @media (width > 700px) {
+    #grid {
+      width: calc(49vh + (100vw - 700px)/10);
+      height: calc(49vh + (100vw - 700px)/10);
+
+      
+    }
+  }
 }
 
 
 /* Portrait layout */
-@media (orientation: portrait) {
+@media (orientation: portrait) and (height > 400px), (width < 900px) and (height > 400px) {
   #menu { right: 3vw; }
 
   #wrap_main {
@@ -826,19 +851,22 @@ td {
       gap: calc((100vh - 700px) / 13);
     }
   }
+
+  @media (height < 700px) {
+    #grid {
+      height: calc(49vh - (700px - 100vh)/5);
+      width: calc(49vh - (700px - 100vh)/5);
+
+    }
+  }
   #domain {
     width: 90vw;
     flex-direction: row;
     flex-basis: 100%;
     gap: 5px;
   }
-  @media (height < 750px) {
-    #grid td {
-      width: clamp(24px, calc(var(--cellFactor) * 13.5vh - (750px - 100vh)/15), calc(var(--cellFactor) * 105px));
-      height: clamp(24px, calc(var(--cellFactor) * 13.5vh - (750px - 100vh)/15), calc(var(--cellFactor) * 105px));
-      font-size: clamp(1rem, calc(var(--fontFactor) * 9vh - (750px - 100vh)/15), var(--fontFactor) *  4rem);
-    }
-  }
+
+  
   #grid {
     margin: 0;
     margin-right: 4.7vh;

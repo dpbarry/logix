@@ -15,7 +15,7 @@ function initLevel() {
     const CANCELOUT_TOGGLE = document.getElementById("cancelout_toggle");
 
     // fetch all inputs and cells
-    const cellList = document.querySelectorAll('td:not(.x_axis, .y_axis)');
+    const cellList = document.querySelectorAll('#grid span:not(.x_axis, .y_axis)');
     const domainList = document.querySelectorAll('#domain button');
     const entryList = document.querySelectorAll('.entry');
 
@@ -36,24 +36,9 @@ function initLevel() {
     var cellActive = false;
     var domainActive = false;
 
-    let cellFactor = Math.max(ROWS, COLS);
+    document.documentElement.style.setProperty('--rows', ROWS);
+    document.documentElement.style.setProperty('--cols', COLS);
 
-    if (cellFactor > 3) {
-        if (ROWS >= COLS) {
-            document.documentElement.style.setProperty('--cellFactor', 2.9 / cellFactor);
-            document.documentElement.style.setProperty('--fontFactor', 2.9 / cellFactor);
-        } else {
-            document.documentElement.style.setProperty('--cellFactor', 3.8 / cellFactor);
-            document.documentElement.style.setProperty('--fontFactor', 3.8 / cellFactor);
-        }
-    } else if (cellFactor < 3) {
-        document.documentElement.style.setProperty('--cellFactor', (4 - cellFactor) * 0.765);
-        document.documentElement.style.setProperty('--fontFactor', (4 - cellFactor) * 0.65);
-
-    } else {
-        document.documentElement.style.setProperty('--cellFactor', 1);
-        document.documentElement.style.setProperty('--fontFactor', 1);
-    }
 
     HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
         use_highlight = HIGHLIGHT_TOGGLE.checked;
@@ -213,10 +198,10 @@ function initLevel() {
         }
 
         setTimeout(function (stage) {
-            tabdCells[ROWS-i].forEach((td) => {
-                td.style.transition = this;
-                td.classList.add("correct");
-                td.classList.remove("noticed");
+            tabdCells[ROWS-i].forEach((cell) => {
+                cell.style.transition = this;
+                cell.classList.add("correct");
+                cell.classList.remove("noticed");
             });
             animateGridSuccess(i+1);
         }.bind(transitionStage), delay);
@@ -570,7 +555,7 @@ function initLevel() {
         return rippleEl;
     }
 
-    document.querySelectorAll('td:not(.x_axis, .y_axis)').forEach(element => {
+    document.querySelectorAll('#grid span:not(.x_axis, .y_axis)').forEach(element => {
         element.addEventListener("pointerdown",  (event) => {
             if (!domainActive) {
                 spawnRipple(event, element);

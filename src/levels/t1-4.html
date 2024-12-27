@@ -1,208 +1,201 @@
-    <div id="wrap_home_level">
-        <button id="home"></button>
-        <h1 id="level" onClick="">1.4</h1>
-        <p id="difficulty"> Training </p>
-    </div>
-    <div id="overlay"></div>
-    <div id="menu">
-        <input id="menu_checkbox" type="checkbox" checked>
-        <span id="chevron"></span>
-        <ul>
-            <li id="info" class="dialog_button" onclick="showModal('info_dialog')"></li>
-            <li id="dictionary" class="dialog_button" onclick="showModal('dictionary_dialog')"></li>
-            <li id="notes" class="dialog_button" onclick="showModal('notes_dialog')"></li>
-            <li id="settings" class="dialog_button" onclick="showModal('settings_dialog')"></li>
-        </ul>
-        <dialog id="info_dialog">
-            <a class="close"></a>
-            <h1>Info</h1>
-        </dialog>
+<div id="wrap_home_level">
+    <button id="home"></button>
+    <h1 id="level" onClick="">1.4</h1>
+    <p id="difficulty"> Training </p>
+</div>
+<div id="overlay"></div>
+<div id="menu">
+    <input id="menu_checkbox" type="checkbox" checked>
+    <span id="chevron"></span>
+    <ul>
+        <li id="info" class="dialog_button" onclick="showModal('info_dialog')"></li>
+        <li id="dictionary" class="dialog_button" onclick="showModal('dictionary_dialog')"></li>
+        <li id="notes" class="dialog_button" onclick="showModal('notes_dialog')"></li>
+        <li id="settings" class="dialog_button" onclick="showModal('settings_dialog')"></li>
+    </ul>
+    <dialog id="info_dialog">
+        <a class="close"></a>
+        <h1>Info</h1>
+    </dialog>
 
-        <dialog id="dictionary_dialog">
-            <a class="close"></a>
-            <h1>Dictionary</h1>
-        </dialog>
+    <dialog id="dictionary_dialog">
+        <a class="close"></a>
+        <h1>Dictionary</h1>
+    </dialog>
 
-        <dialog id="notes_dialog">
-            <a class="close"></a>
-            <h1>Notes</h1>
-        </dialog>
+    <dialog id="notes_dialog">
+        <a class="close"></a>
+        <h1>Notes</h1>
+    </dialog>
 
-        <dialog id="settings_dialog">
-            <a class="close"></a>
-            <h1>Settings</h1>
-            <div id="configs">
-                <label for="sticky_toggle"> Sticky Input </label>
-                <input id="sticky_toggle" type="checkbox" checked>
-                <p>Input selection persists after filling a cell</p>
-                
-                <label for="highlight_toggle"> Highlight </label>
-                <input id="highlight_toggle" type="checkbox" checked>
-                <p>Highlight appearances of selected cell in propositions</p>
-                
-                <label for="crosshairs_toggle"> Crosshairs </label>
-                <input id="crosshairs_toggle" type="checkbox">
-                <p>Emphasize row and column of selected cell</p>
-
-                <label for="cancelout_toggle"> Cancel Out </label>
-                <input id="cancelout_toggle" type="checkbox" checked>
-                <p>Clear a cell by inputting its current value</p>
-            </div>
-        </dialog>
-    </div>
-
-    <div id="wrap_main">
-        <ul id="propositions">
-            <li>
-                <span class="entry" id="e1e1"> \(
-                    \lang	
-                    \begin{smallmatrix}
-                    1 \\
-                    1
-                    \end{smallmatrix} \rang
-                    \)
-                </span>
-                \( > \)
-                <span class="entry"  id="e1e3"> \(
-                    \lang
-                    \begin{smallmatrix}
-                    1 \\
-                    3
-                    \end{smallmatrix} \rang
-                    \)
-                </span>
-            </li>
-            <li>
-                <span class="entry" id="e2e1">
-                    \(\lang	
-                    \begin{smallmatrix}
-                    2 \\
-                    1
-                    \end{smallmatrix} \rang \)
-                </span>
-                \( = \) 
-                <span class="entry" id="e1e1"> \(
-                    \lang	
-                    \begin{smallmatrix}
-                    1 \\
-                    1
-                    \end{smallmatrix} \rang
-                    \) </span>
-                \( - \)
-
-                <span class="entry" id="e1e3"> \(
-                    
-                    \lang	
-                    \begin{smallmatrix}
-                    1 \\
-                    3
-                    \end{smallmatrix} \rang
-                    \)
-                </span>
-            </li>
-            <li>
-                <span class="entry" id="e2e2">
-                    \(\lang	
-                    \begin{smallmatrix}
-                    2 \\
-                    2
-                    \end{smallmatrix} \rang \)</span>
-
-                \( \neq \)
-
-                <span class="entry" id="e2e1"> \(
-                    \lang	
-                    \begin{smallmatrix}
-                    2 \\
-                    1
-                    \end{smallmatrix} \rang \) </span>
-
-                \( \neq \)
-
-                <span class="entry" id="e1e3"> \(
-                    \lang	
-                    \begin{smallmatrix}
-                    1 \\
-                    3
-                    \end{smallmatrix} \rang
-                    \)
-                </span>
-            </li>
-            <li>
-                <span class="entry" id="e3e2">
-                    \(\lang	
-                    \begin{smallmatrix}
-                    3 \\
-                    2
-                    \end{smallmatrix} \rang \) </span>
-
-                >
-
-                <span class="entry" id="e3e3"> \(
-                    \lang	
-                    \begin{smallmatrix}
-                    3 \\
-                    3
-                    \end{smallmatrix} \rang \) </span>
-
-                \( + \)
-
-                <span class="entry" id="e2e1"> \(
-
-                    \lang	
-                    \begin{smallmatrix}
-                    2 \\
-                    1
-                    \end{smallmatrix} \rang
-                    \)
-                </span>
-            </li>
+    <dialog id="settings_dialog">
+        <a class="close"></a>
+        <h1>Settings</h1>
+        <div id="configs">
+            <label for="sticky_toggle"> Sticky Input </label>
+            <input id="sticky_toggle" type="checkbox" checked>
+            <p>Input selection persists after filling a cell</p>
             
-        </ul>
-        <div id="wrap_grid_domain">
-            <table id="grid">            
-                <tr>
-                    
-                    <td class="y_axis">1</td>
-                    <td><p></p></td>
-                    <td class="given">2</td>
-                    <td><p></p></td>
-                </tr>
-                <tr>
-                    <td class="y_axis">2</td>
-                    <td><p></p></td>
-                    <td><p></p></td>
-                    <td class="given">3</td>
-                </tr>
-                <tr>
-                    <td class="y_axis">3</td>
-                    <td class="given">1</td>
-                    <td><p></p></td>
-                    <td><p></p></td>
-                </tr>
-                
-                <tr>
-                    <td class="x_axis"></td>
-                    <td class="x_axis">1</td>
-                    <td class="x_axis">2</td>
-                    <td class="x_axis">3</td>
-                </tr>
-            </table>
-            <div id="wrap_toolbar_domain">
-                <div id="toolbar">
-                    <button id="pencil"> </button>
+            <label for="highlight_toggle"> Highlight </label>
+            <input id="highlight_toggle" type="checkbox" checked>
+            <p>Highlight appearances of selected cell in propositions</p>
+            
+            <label for="crosshairs_toggle"> Crosshairs </label>
+            <input id="crosshairs_toggle" type="checkbox">
+            <p>Emphasize row and column of selected cell</p>
 
-                    <button id="undo"></button>
-                    <button id="redo"></button>
-                </div>
-                <div id="domain">
-                    <button data-value="1">
-                        <p class="front">1</p></button>
-                    <button data-value="2">
-                        <p class="front">2</p></button>
-                    <button data-value="3">
-                        <p class="front">3</p></button>
-                </div>
+            <label for="cancelout_toggle"> Cancel Out </label>
+            <input id="cancelout_toggle" type="checkbox" checked>
+            <p>Clear a cell by inputting its current value</p>
+        </div>
+    </dialog>
+</div>
+
+<div id="wrap_main">
+    <ul id="propositions">
+        <li>
+            <span class="entry" id="e1e1"> \(
+                \lang	
+                \begin{smallmatrix}
+                1 \\
+                1
+                \end{smallmatrix} \rang
+                \)
+            </span>
+            \( > \)
+            <span class="entry"  id="e1e3"> \(
+                \lang
+                \begin{smallmatrix}
+                1 \\
+                3
+                \end{smallmatrix} \rang
+                \)
+            </span>
+        </li>
+        <li>
+            <span class="entry" id="e2e1">
+                \(\lang	
+                \begin{smallmatrix}
+                2 \\
+                1
+                \end{smallmatrix} \rang \)
+            </span>
+            \( = \) 
+            <span class="entry" id="e1e1"> \(
+                \lang	
+                \begin{smallmatrix}
+                1 \\
+                1
+                \end{smallmatrix} \rang
+                \) </span>
+            \( - \)
+
+            <span class="entry" id="e1e3"> \(
+                
+                \lang	
+                \begin{smallmatrix}
+                1 \\
+                3
+                \end{smallmatrix} \rang
+                \)
+            </span>
+        </li>
+        <li>
+            <span class="entry" id="e2e2">
+                \(\lang	
+                \begin{smallmatrix}
+                2 \\
+                2
+                \end{smallmatrix} \rang \)</span>
+
+            \( \neq \)
+
+            <span class="entry" id="e2e1"> \(
+                \lang	
+                \begin{smallmatrix}
+                2 \\
+                1
+                \end{smallmatrix} \rang \) </span>
+
+            \( \neq \)
+
+            <span class="entry" id="e1e3"> \(
+                \lang	
+                \begin{smallmatrix}
+                1 \\
+                3
+                \end{smallmatrix} \rang
+                \)
+            </span>
+        </li>
+        <li>
+            <span class="entry" id="e3e2">
+                \(\lang	
+                \begin{smallmatrix}
+                3 \\
+                2
+                \end{smallmatrix} \rang \) </span>
+
+            >
+
+            <span class="entry" id="e3e3"> \(
+                \lang	
+                \begin{smallmatrix}
+                3 \\
+                3
+                \end{smallmatrix} \rang \) </span>
+
+            \( + \)
+
+            <span class="entry" id="e2e1"> \(
+
+                \lang	
+                \begin{smallmatrix}
+                2 \\
+                1
+                \end{smallmatrix} \rang
+                \)
+            </span>
+        </li>
+        
+    </ul>
+    <div id="wrap_grid_domain">
+        <div id="grid">            
+            <span class="y_axis">1</span>
+            <span><p></p></span>
+            <span class="given">2</span>
+            <span><p></p></span>
+            
+            <span class="y_axis">2</span>
+            <span><p></p></span>
+            <span><p></p></span>
+            <span class="given">3</span>
+            
+            <span class="y_axis">3</span>
+            <span class="given">1</span>
+            <span><p></p></span>
+            <span><p></p></span>
+            
+            <span class="x_axis"></span>
+            <span class="x_axis">1</span>
+            <span class="x_axis">2</span>
+            <span class="x_axis">3</span>
+        </div>
+        <div id="wrap_toolbar_domain">
+            <div id="toolbar">
+                <button id="pencil"> </button>
+
+                <button id="undo"></button>
+                <button id="redo"></button>
+            </div>
+            <div id="domain">
+                <button data-value="1">
+                    <p class="front">1</p></button>
+                <button data-value="2">
+                    <p class="front">2</p></button>
+                <button data-value="3">
+                    <p class="front">3</p></button>
             </div>
         </div>
     </div>
+</div>

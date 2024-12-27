@@ -213,7 +213,7 @@ function initLevel() {
         if (NEXT_LEVEL !== null) {
             setTimeout(() => {   
                 document.getElementById("domain").classList.add("correct");
-                document.getElementById("domain").querySelector("button").onclick = () => {
+                domainList[0].onclick = () => {
                     Router(NEXT_LEVEL);
                     history.pushState({loc:NEXT_LEVEL}, "");
                 }
@@ -221,8 +221,9 @@ function initLevel() {
         } else {
             setTimeout(() => {
                 document.documentElement.style.setProperty('--successPrompt', "'Return home...'");
+                
                 document.getElementById("domain").classList.add("correct");
-                document.getElementById("domain").querySelector("button").onclick = () => {
+                domainList[0].onclick = () => {
                     Router("index.html");
                     history.pushState({loc:"index.html"}, "");
                 }            }, 1000);
@@ -234,6 +235,10 @@ function initLevel() {
             button.onblur = "";
             button.blur();
         });
+
+        domainList[0].addEventListener("pointerdown", () => {
+            domainList[0].classList.add("activated");
+        })
 
         
         cellList.forEach((cell) => {

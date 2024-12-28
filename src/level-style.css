@@ -325,8 +325,8 @@ body {
   grid-template-columns: min(5vh, 30px) repeat(var(--cols), 1fr);
   grid-template-rows: repeat(var(--rows), 1fr) min(5vh, 30px);
 
-  width: min(49vh, 72vw);
-  height: min(49vh, 72vw);
+  width: min(49vh, 78vw);
+  height: min(49vh, 78vw);
 
   
   span {

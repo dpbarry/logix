@@ -13,14 +13,19 @@
 
 
 :root {
-  --domainButtonHeight: 56px;
   --bgColor:  #FFF;
   --baseColor: black;
   --cellColor: hsl(0, 0%, 100%);
   --buttonColor: #FFF;
+  
   --successPrompt: "Next level...";
   --rows: 2;
   --cols: 2;
+  --fontFactor: 1;
+  
+
+  --domainButtonHeight: 56px;
+  --gridGap: 7px;
 }
 
 body {
@@ -48,6 +53,8 @@ body {
       color: transparent;
       font-size: 0;
     }
+
+    pointer-events: none;
 
   }
 
@@ -306,18 +313,20 @@ body {
 
 #grid {
   align-self: center;
-  grid-gap: 5px;
+  grid-gap: var(--gridGap);
 
   display: grid;
   align-items: center;
   align-content: center;
   justify-items: center;
+
+
   
   grid-template-columns: min(5vh, 30px) repeat(var(--cols), 1fr);
   grid-template-rows: repeat(var(--rows), 1fr) min(5vh, 30px);
 
-  width: min(49vh, 80vw);
-  height: min(49vh, 80vw);
+  width: min(49vh, 72vw);
+  height: min(49vh, 72vw);
 
   
   span {
@@ -325,13 +334,13 @@ body {
     border: 1px solid var(--baseColor);
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    border-radius: 6px;
-    transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s;
+    border-radius: 2px;
+    transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s, transform 0.1s ease;
 
     width: 100%;
     height: 100%;
     
-    font-size: clamp(1rem, 9vh, 4rem);
+    font-size: clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
     background-image: linear-gradient(#A4C1A0 , #A4C1A0);
     background-repeat: no-repeat;
     background-size: 100% 0;
@@ -340,6 +349,8 @@ body {
     
     color: var(--baseColor);
 
+    box-sizing: border-box;
+    
     align-content: center;
   }
   span:not(.given, .x_axis, .y_axis)::before {
@@ -356,10 +367,11 @@ body {
   span:not(.x_axis, .y_axis) {
     cursor: pointer;
     background-color: var(--cellColor);
-
   }
+  
+  
 
-
+  
   span.given {
     background-color: #D0D0D0;
   }
@@ -770,12 +782,12 @@ body {
   }
 
   #wrap_toolbar_domain {
-    margin-top: calc(1.2vh - clamp(40px, 7.5vh, 58px));
+    margin-top: calc(2vh - clamp(40px, 7.5vh, 58px));
     gap: 0;
   }
   #toolbar {
-    width: calc(100% - (min(5vh, 30px) + 6px));
-    margin-left: calc(6px + min(5vh, 30px));
+    width: calc(100% - (min(5vh, 30px) + var(--gridGap)));
+    margin-left: calc(var(--gridGap) + min(5vh, 30px));
     min-height: clamp(40px, 7.5vh, 58px);
     position: relative;
     top: clamp(40px, 7.5vh, 58px);
@@ -803,16 +815,16 @@ body {
     }
   }
   #domain {
-    margin-left: calc(6px + min(5vh, 30px));
-    width: calc(100% - (min(5vh, 30px) + 6px));
+    margin-left: calc(var(--gridGap) + min(5vh, 30px));
+    width: calc(100% - (min(5vh, 30px) + var(--gridGap)));
     flex-wrap: nowrap;
     gap: 5px;
   }
 
   @media (width > 700px) {
     #grid {
-      width: calc(49vh + (100vw - 700px)/10);
-      height: calc(49vh + (100vw - 700px)/10);
+      width: min(calc(49vh + (100vw - 700px)/15), 80vh);
+      height: min(calc(49vh + (100vw - 700px)/15), 80vh);
 
       
     }

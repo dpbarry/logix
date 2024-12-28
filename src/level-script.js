@@ -39,6 +39,17 @@ function initLevel() {
     document.documentElement.style.setProperty('--rows', ROWS);
     document.documentElement.style.setProperty('--cols', COLS);
 
+    const max = Math.max(ROWS, COLS);
+
+    if (max < 3) {
+        document.documentElement.style.setProperty('--fontFactor', 1 + (3 - max) / 2);
+    } else if (max > 3) {
+        document.documentElement.style.setProperty('--fontFactor', 1 - (3 - max) / max);
+    } else {
+        document.documentElement.style.setProperty('--fontFactor', 1);
+
+    }
+
 
     HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
         use_highlight = HIGHLIGHT_TOGGLE.checked;
@@ -572,7 +583,7 @@ function initLevel() {
             event.preventDefault();
             event.target.closest("button").focus({preventScroll: true});
 
-            if (event.target.closest("#domain").classList.contains("correct")) {
+            if (event.target.closest("#domain").classList.contains("correct")) {                
                 spawnRipple(event, event.target.closest("button"));
             } else if (event.target.nodeName === "P" && !cellActive) {
                 spawnRipple(event, event.target);

@@ -860,7 +860,7 @@ body {
   }
   @media (height > 700px) {
     #wrap_grid_domain {
-      gap: calc((100vh - 700px) / 13);
+      gap: calc((100vh - 700px) / 4);
     }
   }
 
@@ -881,6 +881,6 @@ body {
   
   #grid {
     margin: 0;
-    margin-right: 4.7vh;
+    margin-right: 4.35vh;
   }
 }

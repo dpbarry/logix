@@ -56,6 +56,9 @@ function initLevel() {
         use_cancelout = CANCELOUT_TOGGLE.checked;
     });
 
+    tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
+
+
     
     // Show propositions when they're rendered (should be near-instant)
     document.fonts.ready.then(() => {

@@ -25,7 +25,8 @@
   
 
   --domainButtonHeight: 56px;
-  --gridGap: 7px;
+  --gridGap: 2px;
+  --gridBorderRadius: 15px;
 }
 
 body {
@@ -311,9 +312,28 @@ body {
   justify-content: center;
 }
 
+#grid::after {
+  content: "";
+  position: absolute;
+  width: calc(100% - (min(5vh, 30px) + var(--gridGap)));
+  height: calc(100% - (min(5vh, 30px) + var(--gridGap)));
+
+  left: calc(min(5vh, 30px) + var(--gridGap));
+  bottom: calc(min(5vh, 30px) + var(--gridGap));
+
+  border-radius: var(--gridBorderRadius);
+
+  box-shadow: 0 0 20px #EEE;
+  outline: 2px solid #333;
+  
+  background: #333;
+}
+
 #grid {
   align-self: center;
   grid-gap: var(--gridGap);
+
+  position: relative;
 
   display: grid;
   align-items: center;
@@ -331,10 +351,10 @@ body {
   
   span {
     font-family: "computer modern serif";
-    border: 1px solid var(--baseColor);
+    border: 0px solid var(--baseColor);
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    border-radius: 2px;
+    border-radius: 0px;
     transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s, transform 0.1s ease;
 
     width: 100%;
@@ -368,6 +388,21 @@ body {
     cursor: pointer;
     background-color: var(--cellColor);
   }
+
+  .topleft {
+    border-top-left-radius: var(--gridBorderRadius);
+  }
+  .topright {
+    border-top-right-radius: var(--gridBorderRadius);
+  }
+  .bottomleft {
+    border-bottom-left-radius: var(--gridBorderRadius);
+  }
+  .bottomright {
+    border-bottom-right-radius: var(--gridBorderRadius);
+  }
+
+  
   
   
 
@@ -860,7 +895,7 @@ body {
   }
   @media (height > 700px) {
     #wrap_grid_domain {
-      gap: calc((100vh - 700px) / 4);
+      gap: calc((100vh - 700px) / 6);
     }
   }
 

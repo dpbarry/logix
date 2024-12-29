@@ -81,7 +81,7 @@ function initLevel() {
     for (let i=0, j=0; i < cellList.length; i++) {
         let row = 1+Math.floor(j/ROWS);
         let col = 1+j%COLS;
-        cellList[i].id = `c${row}.${col}`;
+        cellList[i].id = `c${row}-${col}`;
         tabdCells[row-1][col-1] = cellList[i];
         j++;
     } 
@@ -367,18 +367,18 @@ function initLevel() {
     }
 
     function noticeCell (event) {
-        let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
+        let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         level.querySelector("#" + cell).classList.add("noticed");
     }
 
     function removeNoticeCell (event) {
-        let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
+        let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         level.querySelector("#" + cell).classList.remove("noticed");
     }
 
     function jumpToCell (event) {
         event.preventDefault();
-        let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
+        let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         window.setTimeout(() => {
             fakeRipple = new PointerEvent("pointerdown");
             fakeRipple.simulated = true;

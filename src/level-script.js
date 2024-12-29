@@ -368,12 +368,12 @@ function initLevel() {
 
     function noticeCell (event) {
         let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
-        level.getElementById(cell).classList.add("noticed");
+        level.querySelector("#" + cell).classList.add("noticed");
     }
 
     function removeNoticeCell (event) {
         let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
-        level.getElementById(cell).classList.remove("noticed");
+        level.querySelector("#" + cell).classList.remove("noticed");
     }
 
     function jumpToCell (event) {
@@ -382,8 +382,8 @@ function initLevel() {
         window.setTimeout(() => {
             fakeRipple = new PointerEvent("pointerdown");
             fakeRipple.simulated = true;
-            level.getElementById(cell).dispatchEvent(fakeRipple);
-            level.getElementById(cell).focus();
+            level.querySelector("#" + cell).dispatchEvent(fakeRipple);
+            level.querySelector("#" + cell).focus();
         }, 0);
     }
 

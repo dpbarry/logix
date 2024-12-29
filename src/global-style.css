@@ -21,15 +21,26 @@ html, body {
 }
 
 body {
-  opacity: 1;
-  transition: opacity 0.2s;
+  overflow: hidden;
 }
-body.fadeout {
+.page.slideout {
   opacity: 0;
 }
 
-body.fadein {
+.page {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+
   opacity: 1;
+  transition: opacity 0.18s, translate 0.4s;
+
+  will-change: opacity;
+
+  
+  @starting-style {
+    opacity: 0;
+  }
 }
 
 .nudged {

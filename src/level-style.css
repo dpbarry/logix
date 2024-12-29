@@ -30,6 +30,7 @@
 
 body {
   background-color: var(--bgColor);
+
 }
 
 #domain.correct {
@@ -323,8 +324,6 @@ body {
   justify-items: center;
 
   @starting-style {
-    opacity: 0;
-
     
   }
   perspective: 800px;
@@ -386,7 +385,7 @@ body {
 
   
   span.given {
-    background-color: #E0E0E0;
+    background-color: #DFDFDF;
   }
   span.given > .ripple {
     background-color: rgba(220,220,220,0.65);
@@ -449,7 +448,6 @@ body {
   position: relative;
   
   @starting-style {
-    translate:  0 -15px;
   }
   transition: translate 0.25s;
   
@@ -478,8 +476,6 @@ body {
 
   li {
     padding: 4px;
-    color:  transparent;
-    transition: color 0.15s;
     width: 95%;
 
     &:first-child { margin-top: auto; }

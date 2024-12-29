@@ -30,12 +30,22 @@
         <link rel="stylesheet" href="src/home-style.css">
         <link rel="stylesheet" href="src/level-style.css">
 
+
+
+        
     </head>
     
-    <body></body>
+    <body>
+        <div class="page"></div>
+    </body>
+    <script src="src/global-script.js"></script>
+    
+    <script src="src/level-script.js"></script>
+
+    <script src="src/home-script.js"></script>
 
 
-    <script>
+    <script defer="defer">
      const parser = new DOMParser();
 
      function fetchedBody(event, newBody) {
@@ -46,20 +56,34 @@
 
      async function goHome() {
 
-       let newBodyText = await (await fetch('src/home.html')).text();
-       let newBody = parser.parseFromString(newBodyText, 'text/html');
+       let newPageText = await (await fetch('src/home.html')).text();
+       let newPageDoc = parser.parseFromString(newPageText, 'text/html');
 
-       document.body.classList.remove("fadein");
-       document.body.classList.add("fadeout");
+       let oldPage = document.body.querySelector(".page");
+       let newPage = newPageDoc.body.querySelector(".page");
 
-       setTimeout(function() {
-         document.body.replaceWith(newBody.body);
-         document.body.classList.remove("fadeout");
-         document.body.classList.add("fadein");
-         
+       newPage.style.display = "none";
+       
+       document.body.append(newPage);
+       oldPage.classList.add("slideout");
+
+       setTimeout(() => {
          setupHome();
          initDialogs();
-       }, 200);
+       }, 0);
+
+       document.fonts.ready.then(() => {
+         oldPage.classList.add("slideout");
+         
+         setTimeout(function() {
+           newPage.style.display = "block";
+         }, 10);
+
+         setTimeout(function() {
+           oldPage.remove();
+         }, 175);
+
+       });       
 
        sessionStorage.setItem("loc", "index.html");
      }
@@ -71,79 +95,85 @@
 
        var response = await fetch(`src/levels/${path}.html`);
        if (!response.ok) return;
+
+       let oldPage = document.body.querySelector(".page");
        
-       let newBodyText = await response.text();
-       let newBody = parser.parseFromString(newBodyText, 'text/html');
+       let newPageText = await response.text();
+       let newPageDoc = parser.parseFromString(newPageText, 'text/html');
+       let newPage = newPageDoc.body.querySelector(".page");
+       
+       let newScript = document.createElement("script");
+       newScript.text = await (await fetch(`src/levels/${path}.js`)).text();
+
+       newPage.style.display = "none";
+
+       document.head.appendChild(newScript).parentNode.removeChild(newScript);
+       document.body.append(newPage);
+
+       setTimeout(() => {
+         renderMathInElement(newPage);
+         initDialogs();
+         initLevel();
+       }, 1);
+       
        
 
-       var script = document.createElement("script");
-       script.text = await (await fetch(`src/levels/${path}.js`)).text();
 
-         // script.text = await (await fetch(`src/levels/${path}.js`, {
-         // headers: {
-         //  'Cache-Control': 'no-cache'
-         // }})).text();
-
-
-         document.body.classList.remove("fadein");
-         document.body.classList.add("fadeout");
+       document.fonts.ready.then(() => {
+         oldPage.classList.add("slideout");
+         
+         setTimeout(function() {
+           newPage.style.display = "block";
+         }, 10);
 
          setTimeout(function() {
-           document.body.replaceWith(newBody.body);
-
-           document.body.classList.remove("fadeout");
-           document.body.classList.add("fadein");
-
-           document.head.appendChild(script).parentNode.removeChild(script);
-           
-           initDialogs();
-           renderMathInElement(document.body);
-           initLevel();
-         }, 200);
+           oldPage.remove();
+         }, 175);
 
 
-         sessionStorage.setItem("loc", path);
-       }
 
-       
-       const Router = (path) => {
-         if (path === "index.html" || path === "logix") {
-           goHome();
-         } else {
-           goLevel(path);
-         }
-       };
-       
-
-       function segment(pathName) {
-         url = pathName.replace(/\/+$/, '');
-         return url.substr(url.lastIndexOf('/') + 1);
-       }
-
-
-       let cacheLoc = sessionStorage.getItem("loc");
-       
-       if (cacheLoc) {
-         Router(cacheLoc);
-         history.replaceState({loc:cacheLoc}, "");
-       } else {
-         Router(segment(location.pathname));
-         history.replaceState({loc:segment(location.pathname)}, "");
-       }
-
-
-       
-       window.addEventListener("load", () => {
-         window.addEventListener("popstate", (e) => {
-           Router(e.state.loc);
-         });
        });
+       sessionStorage.setItem("loc", path);
+
+
+       
+     }
+
+     
+     const Router = (path) => {
+       if (path === "index.html" || path === "logix") {
+         goHome();
+       } else {
+         goLevel(path);
+       }
+     };
+     
+
+     function segment(pathName) {
+       url = pathName.replace(/\/+$/, '');
+       return url.substr(url.lastIndexOf('/') + 1);
+     }
+
+
+     let cacheLoc = sessionStorage.getItem("loc");
+     
+     if (cacheLoc) {
+       Router(cacheLoc);
+       history.replaceState({loc:cacheLoc}, "");
+     } else {
+       Router(segment(location.pathname));
+       history.replaceState({loc:segment(location.pathname)}, "");
+     }
+
+
+     
+     window.addEventListener("load", () => {
+       window.addEventListener("popstate", (e) => {
+         Router(e.state.loc);
+       });
+     });
     </script>
 
     
-    <script src="src/global-script.js"></script>
-    
-    <script src="src/level-script.js"></script>
 
-    <script src="src/home-script.js"></script>
 </html>

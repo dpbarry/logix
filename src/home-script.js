@@ -61,7 +61,5 @@ function setupHome() {
         history.pushState({loc:"index.html"}, "");
     }
 
-    
 
-    
 }

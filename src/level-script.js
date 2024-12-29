@@ -9,22 +9,27 @@ let tabdCells;
 
 
 function initLevel() {
-    const CROSSHAIRS_TOGGLE = document.getElementById("crosshairs_toggle");
-    const HIGHLIGHT_TOGGLE = document.getElementById("highlight_toggle");
-    const STICKY_TOGGLE = document.getElementById("sticky_toggle");
-    const CANCELOUT_TOGGLE = document.getElementById("cancelout_toggle");
+    document.body.style.setProperty('--rows', ROWS);
+    document.documentElement.style.setProperty('--cols', COLS);
+
+    const level = Array.from(document.body.querySelectorAll(".page")).pop();
+
+    const CROSSHAIRS_TOGGLE = level.querySelector("#crosshairs_toggle");
+    const HIGHLIGHT_TOGGLE = level.querySelector("#highlight_toggle");
+    const STICKY_TOGGLE = level.querySelector("#sticky_toggle");
+    const CANCELOUT_TOGGLE = level.querySelector("#cancelout_toggle");
 
     // fetch all inputs and cells
-    const cellList = document.querySelectorAll('#grid span:not(.x_axis, .y_axis)');
-    const domainList = document.querySelectorAll('#domain button');
-    const entryList = document.querySelectorAll('.entry');
+    const cellList = level.querySelectorAll('#grid span:not(.x_axis, .y_axis)');
+    const domainList = level.querySelectorAll('#domain button');
+    const entryList = level.querySelectorAll('.entry');
 
     var undoStack = [];
     var redoStack = [];
 
-    const undoButton = document.getElementById("undo");
-    const redoButton = document.getElementById("redo");
-    const pencilButton = document.getElementById("pencil");
+    const undoButton = level.querySelector("#undo");
+    const redoButton = level.querySelector("#redo");
+    const pencilButton = level.querySelector("#pencil");
 
     var values = new Map();
 
@@ -36,8 +41,6 @@ function initLevel() {
     var cellActive = false;
     var domainActive = false;
 
-    document.documentElement.style.setProperty('--rows', ROWS);
-    document.documentElement.style.setProperty('--cols', COLS);
 
     const max = Math.max(ROWS, COLS);
 
@@ -72,13 +75,7 @@ function initLevel() {
 
     
     // Show propositions when they're rendered (should be near-instant)
-    document.fonts.ready.then(() => {
-        document.querySelectorAll("#propositions li").forEach((li) => {
-            li.style.color = "var(--baseColor)";
-        });
-        verticalScroll(document.querySelector('#propositions'), 7);
-        horizontalScroll(document.querySelector('#domain'));
-    });
+    
 
     // id cells with their coordinates
     for (let i=0, j=0; i < cellList.length; i++) {
@@ -230,7 +227,7 @@ function initLevel() {
         tabdCells[0][0].addEventListener("transitionend", () => {
             
             if (NEXT_LEVEL !== null) {
-                document.getElementById("domain").classList.add("correct");
+                level.querySelector("#domain").classList.add("correct");
                 domainList[0].onclick = () => {
                     Router(NEXT_LEVEL);
                     history.pushState({loc:NEXT_LEVEL}, "");
@@ -238,7 +235,7 @@ function initLevel() {
             } else {
                 document.documentElement.style.setProperty('--successPrompt', "'Return home...'");
                 
-                document.getElementById("domain").classList.add("correct");
+                level.querySelector("#domain").classList.add("correct");
                 domainList[0].onclick = () => {
                     Router("index.html");
                     history.pushState({loc:"index.html"}, "");
@@ -332,7 +329,7 @@ function initLevel() {
         setTimeout(function () {
             cellActive = false;
 
-            if (use_sticky && !(document.getElementById("grid").contains(document.activeElement))
+            if (use_sticky && !(level.querySelector("#grid").contains(document.activeElement))
                 && document.activeElement.parentNode.id != "toolbar" && document.activeElement != document.body) {
                 this.focus();
 
@@ -371,12 +368,12 @@ function initLevel() {
 
     function noticeCell (event) {
         let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
-        document.getElementById(cell).classList.add("noticed");
+        level.getElementById(cell).classList.add("noticed");
     }
 
     function removeNoticeCell (event) {
         let cell = "c" + this.id.charAt(1) + "." + this.id.charAt(3);
-        document.getElementById(cell).classList.remove("noticed");
+        level.getElementById(cell).classList.remove("noticed");
     }
 
     function jumpToCell (event) {
@@ -385,8 +382,8 @@ function initLevel() {
         window.setTimeout(() => {
             fakeRipple = new PointerEvent("pointerdown");
             fakeRipple.simulated = true;
-            document.getElementById(cell).dispatchEvent(fakeRipple);
-            document.getElementById(cell).focus();
+            level.getElementById(cell).dispatchEvent(fakeRipple);
+            level.getElementById(cell).focus();
         }, 0);
     }
 
@@ -500,22 +497,21 @@ function initLevel() {
         el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
     }
 
-    document.querySelector('#propositions').addEventListener('scroll', (e) => {
+    level.querySelector('#propositions').addEventListener('scroll', (e) => {
         const el = e.currentTarget;
         verticalScroll(el, 7);
     });
 
-    document.querySelector('#domain').addEventListener('scroll', (e) => {
+    level.querySelector('#domain').addEventListener('scroll', (e) => {
         const el = e.currentTarget;
         horizontalScroll(el);
     });
 
     window.onresize = function(event) {
-        verticalScroll(document.querySelector('#propositions'), 7);
+        verticalScroll(level.querySelector('#propositions'), 7);
     }
 
 
-    horizontalScroll(document.querySelector('#domain'));
 
 
     // given the id of a cell, emphasize borders of cells in that row and column
@@ -538,7 +534,7 @@ function initLevel() {
     rippleStack = [];
     function spawnRipple(mouseEvent, element) {
         rippleStack.push(element);
-        document.querySelectorAll(".ripple").forEach((r) => {
+        level.querySelectorAll(".ripple").forEach((r) => {
             if (element === rippleStack[rippleStack.length-1])
                 r.remove();
         });
@@ -569,7 +565,7 @@ function initLevel() {
         return rippleEl;
     }
 
-    document.querySelectorAll('#grid span:not(.x_axis, .y_axis)').forEach(element => {
+    level.querySelectorAll('#grid span:not(.x_axis, .y_axis)').forEach(element => {
         element.addEventListener("pointerdown",  (event) => {
             if (!domainActive) {
                 spawnRipple(event, element);
@@ -578,7 +574,7 @@ function initLevel() {
         });
     });
 
-    document.querySelectorAll('#domain button').forEach(element => {
+    level.querySelectorAll('#domain button').forEach(element => {
         element.addEventListener("pointerdown", (event) => {
             event.preventDefault();
             event.target.closest("button").focus({preventScroll: true});
@@ -658,8 +654,7 @@ function initLevel() {
 
 
 
-
-    document.getElementById("wrap_home_level").onclick = function () {
+    level.querySelector("#wrap_home_level").onclick = function () {
         if (window.event.ctrlKey || window.event.shiftKey) {
             // Interestingly, Chrome will only actually focus the
             // new window if you were holding shift
@@ -669,4 +664,10 @@ function initLevel() {
             history.pushState({loc:"index.html"}, "");
         }
     }
+
+    
+
+    verticalScroll(level.querySelector('#propositions'), 7);
+    horizontalScroll(level.querySelector('#domain'));
+    
 }

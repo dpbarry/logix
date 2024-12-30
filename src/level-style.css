@@ -15,7 +15,7 @@
 :root {
   --bgColor:  #FFF;
   --baseColor: black;
-  --cellColor: hsl(0, 0%, 100%);
+  --cellColor: hsl(0, 0%, 95.5%);
   --buttonColor: #FFF;
   
   --successPrompt: "Next level...";
@@ -23,9 +23,16 @@
   --cols: 2;
   --fontFactor: 1;
   
+  --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
+  --gridGap: 5px;
+  --gridPadding: 20px;
+  --gridBorderWidth: 3px;
+  --gridOffset: 1.5vh;
+  --fullGridSize: calc(min(47vh, 85vw) - var(--gridPadding));
+  --baseGridSize: calc(var(--fullGridSize) - var(--gridPadding) - 2 * var(--gridBorderWidth));
 
   --domainButtonHeight: 56px;
-  --gridGap: 4px;
+
 }
 
 body {
@@ -312,46 +319,111 @@ body {
   justify-content: center;
 }
 
+
+
+#wrap_axis_grid {
+  display: grid;
+
+  grid-template-columns:  var(--axisFontSize) var(--fullGridSize);
+  grid-template-rows: var(--fullGridSize) var(--axisFontSize);
+
+  justify-content: center;
+
+  width: 100%;
+
+  position: relative;
+  
+}
+
+
+#y-axis, #x-axis {
+  display: flex;
+  font-family: "Computer Modern Serif";
+
+  span {
+    font-size: var(--axisFontSize);
+    width: 100%;
+    align-content: center;
+    text-align: center;
+    height: 100%;
+    cursor: default;
+    z-index: -1;
+    font-style: italic;
+
+    box-sizing: border-box;
+  }
+}
+#y-axis {
+  flex-direction: column;
+
+  gap: var(--gridGap);
+
+  position: relative;
+  top: calc(var(--gridPadding) + 4px);
+  right: 3px;
+
+  width: min-content;
+  height: calc(var(--fullGridSize) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
+
+
+}
+
+#x-axis {
+  flex-direction: row;
+  
+  position: relative;
+  left: calc(var(--axisFontSize) + var(--gridBorderWidth) + var(--gridPadding) - 4px);
+
+  gap: var(--gridGap);
+
+  height: min-content;
+  width: calc(var(--fullGridSize) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
+
+}
+
+
+#grid::after {
+  content: "";
+  position: absolute;
+  background-color: white;
+  top: -2.5%;
+  width: 75%;
+  height: 105%;
+}
 #grid {
   align-self: center;
   grid-gap: var(--gridGap);
 
+  padding: var(--gridPadding);
   position: relative;
 
   display: grid;
   align-items: center;
   align-content: center;
   justify-items: center;
-
-  @starting-style {
-    
-  }
-  perspective: 800px;
-
-
-  transition: opacity 0.8s;
-
+  box-sizing: border-box;
   
-  grid-template-columns: min(5vh, 30px) repeat(var(--cols), 1fr);
-  grid-template-rows: repeat(var(--rows), 1fr) min(5vh, 30px);
+  border: var(--gridBorderWidth) solid black;
+  border-radius: 2px;
+  
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
 
-  width: min(49vh, 88vw);
-  height: min(49vh, 88vw);
+  width:  var(--fullGridSize);
+  height: var(--fullGridSize);
 
   
   span {
-    
     font-family: "computer modern serif";
-    border: 1px solid var(--baseColor);
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    border-radius: 2px;
     transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s, transform 0.8s ease;
-
     
     width: 100%;
     height: 100%;
-    
+
+    border-radius: 2px;
+
     font-size: clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
     background-image: linear-gradient(#A4C1A0 , #A4C1A0);
     background-repeat: no-repeat;
@@ -362,11 +434,18 @@ body {
     color: var(--baseColor);
 
     box-sizing: border-box;
-    
-    align-content: center;
+
+    display:flex;
+
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
 
+
+    
+
   }
+
   span:not(.given, .x_axis, .y_axis)::before {
     content: "";
     background-color: #F1EEDC;
@@ -380,12 +459,14 @@ body {
   }
   span:not(.x_axis, .y_axis, .given) {
     background-color: var(--cellColor);
+    border-bottom: 3px solid black;
   }
   
 
+
   
-  span.given {
-    background-color: #DFDFDF;
+  span.given p {
+    
   }
   span.given > .ripple {
     background-color: rgba(220,220,220,0.65);
@@ -409,14 +490,7 @@ body {
     box-shadow: unset !important;
   }
 
-  .x_axis, .y_axis {
-    border: 0px;
-    font-size: clamp(0.85rem, 3.5vh, 2rem);
-    width: min(5vh, 30px);
-    height: min(5vh, 30px);
-    cursor: default;
-    z-index: -1;
-  }
+  
 
   span:focus {
     background: hsl(50, 46%, 90%) !important;
@@ -426,8 +500,19 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
+    overflow: hidden;
     pointer-events: none; /* Don't interfere with ripple */
 
+    transition: background 0.4s;
+
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+
+    z-index: 5;
+
+    width:  clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
+    height:  100%;
+    
     &.insert {
       animation: fade 0.16s cubic-bezier(.35,1,1,1) forwards;
     }
@@ -436,6 +521,7 @@ body {
     }
   }
 }
+
 
 
 @keyframes fade {
@@ -552,6 +638,7 @@ body {
   gap: 2px;
   margin-top: -25px;
   align-items: center;
+  width: 100%;
 }
 
 #toolbar {
@@ -799,12 +886,12 @@ body {
   }
 
   #wrap_toolbar_domain {
-    margin-top: calc(2vh - clamp(40px, 7.5vh, 58px));
+    margin-top: calc(2.25vh - clamp(40px, 7.5vh, 58px));
     gap: 0;
   }
   #toolbar {
-    width: calc(100% - (min(5vh, 30px) + var(--gridGap)));
-    margin-left: calc(var(--gridGap) + min(5vh, 30px));
+    margin-left: var(--axisFontSize);
+    width:  var(--fullGridSize);
     min-height: clamp(40px, 7.5vh, 58px);
     position: relative;
     top: clamp(40px, 7.5vh, 58px);
@@ -832,18 +919,12 @@ body {
     }
   }
   #domain {
-    margin-left: calc(var(--gridGap) + min(5vh, 30px));
-    width: calc(100% - (min(5vh, 30px) + var(--gridGap)));
+    margin-left: var(--axisFontSize);
+    width:  var(--fullGridSize);
     flex-wrap: nowrap;
     gap: 5px;
   }
 
-  @media (width > 700px) {
-    #grid {
-      width: min(calc(49vh + (100vw - 700px)/30), 80vh);
-      height: min(calc(49vh + (100vw - 700px)/30), 80vh);
-    }
-  }
 }
 
 
@@ -879,13 +960,6 @@ body {
     }
   }
 
-  @media (height < 700px) {
-    #grid {
-      height: calc(49vh - (700px - 100vh)/5);
-      width: calc(49vh - (700px - 100vh)/5);
-
-    }
-  }
   #domain {
     width: 90vw;
     flex-direction: row;
@@ -894,8 +968,7 @@ body {
   }
 
   
-  #grid {
-    margin: 0;
-    margin-right: 4.35vh;
+  #wrap_axis_grid {
+    right: var(--gridOffset);
   }
 }

@@ -565,6 +565,7 @@ function initLevel() {
         return rippleEl;
     }
 
+    
     level.querySelectorAll('#grid span:not(.x_axis, .y_axis)').forEach(element => {
         element.addEventListener("pointerdown",  (event) => {
             if (!domainActive) {

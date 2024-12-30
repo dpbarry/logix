@@ -15,8 +15,12 @@
 :root {
   --bgColor:  #FFF;
   --baseColor: black;
-  --cellColor: hsl(0, 0%, 95.5%);
+  --cellColor: hsl(200, 15%, 96%);
+  --cellBottomColor: hsl(200, 15%, 25%);
   --buttonColor: #FFF;
+  --highlightColor: hsl(50, 45%, 88%);
+  --darkHighlightColor: hsl(50, 20%, 50%);
+  --accentColor: hsl(50, 45%, 95%);
   
   --successPrompt: "Next level...";
   --rows: 2;
@@ -24,7 +28,7 @@
   --fontFactor: 1;
   
   --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
-  --gridGap: 5px;
+  --gridGap: 8px;
   --gridPadding: 20px;
   --gridBorderWidth: 3px;
   --gridOffset: 1.5vh;
@@ -382,14 +386,15 @@ body {
 }
 
 
-#grid::after {
+#grid::before {
   content: "";
   position: absolute;
   background-color: white;
   top: -2.5%;
-  width: 75%;
+  width: 77.5%;
   height: 105%;
 }
+
 #grid {
   align-self: center;
   grid-gap: var(--gridGap);
@@ -417,12 +422,15 @@ body {
     font-family: "computer modern serif";
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    transition: background-color .19s ease-in, outline-color 0.2s ease, box-shadow 0.15s, transform 0.8s ease;
+    transition: background-color .16s ease-in, outline-color 0.2s ease, transform 0.8s ease;
     
     width: 100%;
     height: 100%;
 
-    border-radius: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
 
     font-size: clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
     background-image: linear-gradient(#A4C1A0 , #A4C1A0);
@@ -439,37 +447,38 @@ body {
 
     justify-content: center;
     align-items: center;
+    
     cursor: pointer;
 
-
-    
+    &:has(.ripple) {
+      transition: background-color .21s ease-in, outline-color 0.2s ease, transform 0.8s ease;
+    }
 
   }
 
-  span:not(.given, .x_axis, .y_axis)::before {
-    content: "";
-    background-color: #F1EEDC;
-    opacity: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0; right: 0; top: 0; bottom: 0;
-    transition: opacity 0.2s;
-    z-index: -1;
-  }
-  span:not(.x_axis, .y_axis, .given) {
+
+  
+  span:not(.given) {
     background-color: var(--cellColor);
-    border-bottom: 3px solid black;
+    border-bottom: 3px solid var(--cellBottomColor);
+
+    &::before {
+      content: "";
+      background-color: var(--highlightColor);
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0; right: 0; top: 0; bottom: 0;
+      transition: opacity 0.2s;
+      z-index: -1;
+    }
   }
   
-
-
   
-  span.given p {
-    
-  }
-  span.given > .ripple {
-    background-color: rgba(220,220,220,0.65);
+  span.given:not(.correct) {
+    pointer-events: none;
+    cursor: default;
   }
 
   span.correct > .ripple {
@@ -477,23 +486,18 @@ body {
 
   }
 
-  span.noticed::before {
-    opacity: 0.5;
-
-    &.run {
-      transform: scale(110);
-    }
+  span.noticed {
+    background-color: var(--accentColor);
   }
 
   span.correct {
     background-size: 100% 100%;
-    box-shadow: unset !important;
   }
 
   
 
   span:focus {
-    background: hsl(50, 46%, 90%) !important;
+    background: var(--highlightColor) !important;
   }
 
   span > p {
@@ -511,7 +515,6 @@ body {
     z-index: 5;
 
     width:  clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
-    height:  100%;
     
     &.insert {
       animation: fade 0.16s cubic-bezier(.35,1,1,1) forwards;
@@ -533,8 +536,6 @@ body {
 #propositions {
   position: relative;
   
-  @starting-style {
-  }
   transition: translate 0.25s;
   
   font-size: clamp(1.5rem, 4vh, 2rem);
@@ -587,9 +588,9 @@ body {
       position: absolute;
       left: 0; right: 0; top: 0; bottom: 0;
       transition: opacity 0.225s ease-out;
-      background-color: hsl(50, 46%, 90%);
+      background-color: var(--highlightColor);
       box-shadow: 0 2px 1px -1px #EEE, 0 0 1px 0px #DDD;
-      border: 1px solid  hsl(50, 20%, 75%);
+      border: 1px solid var(--darkHighlightColor);
 
       z-index: -1;
     }
@@ -745,7 +746,7 @@ body {
     position: relative;
     font-family: "computer modern serif";
     font-size: 2.5rem;
-    background-color: var(-buttonColor);
+    background-color: var(--buttonColor);
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -808,7 +809,7 @@ body {
   button:focus p {
     transition: bottom 0.125s cubic-bezier(.3, .7, .4, 1.25), background 0.4s;
 
-    background-color: hsl(50, 46%, 90%);
+    background-color: var(--highlightColor);
     bottom: 6px;
 
     zoom: 0.99;
@@ -829,7 +830,7 @@ body {
 }
 
 .ripple {
-  background:  hsl(50, 46%, 90%);
+  background: var(--highlightColor);
   width: 3px;
   height: 3px;
   border-radius: 100%;
@@ -952,7 +953,7 @@ body {
 
   #wrap_toolbar_domain {
     position: relative;
-    bottom: 4px;
+    top: 10px;
   }
   @media (height > 700px) {
     #wrap_grid_domain {

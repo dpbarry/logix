@@ -19,9 +19,10 @@ function initLevel() {
     const STICKY_TOGGLE = level.querySelector("#sticky_toggle");
     const CANCELOUT_TOGGLE = level.querySelector("#cancelout_toggle");
 
+    const domain = level.querySelector("#domain");
     // fetch all inputs and cells
     const cellList = level.querySelectorAll('#grid span:not(.x_axis, .y_axis)');
-    const domainList = level.querySelectorAll('#domain button');
+    const domainList = domain.querySelectorAll('button');
     const entryList = level.querySelectorAll('.entry');
 
     var undoStack = [];
@@ -185,44 +186,17 @@ function initLevel() {
 
     
 
-    function animateGridSuccess (i) {
-        if (i > ROWS) return;
-
-        var transitionStage = "";
-        var delay = 0;
-        
-        if (i == 1) {
-            transitionStage = "background-size 0.4s ease-in";
-        }
-        else if (i < ROWS) {
-            transitionStage = "background-size .24s linear";
-            delay = (i === 2) ? 399 : 239;
-        }
-        else if (i == ROWS) {
-            transitionStage = "background-size .4s ease-out";
-            delay = (i === 2) ? 399 : 239;
-        }
-
-        setTimeout(function (stage) {
-            tabdCells[ROWS-i].forEach((cell) => {
-                cell.style.transition = this;
-                cell.classList.add("correct");
-                cell.classList.remove("noticed");
-            });
-            animateGridSuccess(i+1);
-        }.bind(transitionStage), delay);
-    }
 
     function success() {
         crosshairs("not-a-cell");
         highlight("not-a-cell");
-        
-        animateGridSuccess(1);
 
-        tabdCells[0][0].addEventListener("transitionend", () => {
+        level.querySelector("#grid").classList.add("correct");
+
+        tabdCells[0][0].addEventListener("animationend", () => {
             
             if (NEXT_LEVEL !== null) {
-                level.querySelector("#domain").classList.add("correct");
+                domain.classList.add("correct");
                 domainList[0].onclick = () => {
                     Router(NEXT_LEVEL);
                     history.pushState({loc:NEXT_LEVEL}, "");
@@ -230,14 +204,20 @@ function initLevel() {
             } else {
                 document.documentElement.style.setProperty('--successPrompt', "'Return home...'");
                 
-                level.querySelector("#domain").classList.add("correct");
+                domain.classList.add("correct");
+      
+                
                 domainList[0].onclick = () => {
                     Router("index.html");
                     history.pushState({loc:"index.html"}, "");
                 };
             }
+            horizontalScroll(level.querySelector("#domain"), 7);
+
 
         });
+
+        
 
         domainList.forEach((button) => {
             button.onfocus = "";
@@ -294,6 +274,7 @@ function initLevel() {
                     
                     if (debounced === 0) {
                         domain.classList.add("pushed");
+                        
                         debounced++;
                     }
                     let text = this.querySelector("p");
@@ -443,7 +424,7 @@ function initLevel() {
         button.onblur = releaseInput;
 
         button.querySelector("p").addEventListener("transitionend", (e) => {
-            if (e.target === null || e.target.classList.contains("ripple") || !(e.target.closest("button").classList.contains("pushed"))) return;
+            if (e.target === null || e.target.classList.contains("ripple") || !(e.target.closest("button").classList.contains("pushed")) || e.elapsedTime < 0.08) return;
             e.target.closest("button").classList.remove("pushed");
 
             setTimeout( () => {debounced--;}, 85);
@@ -632,16 +613,30 @@ function initLevel() {
 
 function verticalScroll(el, moe) {
     const isScrollable = (el.scrollHeight - moe > el.clientHeight);
-        if (!isScrollable) {
-        el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
+    if (!isScrollable) {
+        el.style.maskImage = "";
+        el.style.overflowY = "visible";
+
         return;
     }
     
     // One pixel is added to the height to account for non-integer heights.
     const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
     const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
-    el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
-    el.classList.toggle('is-top-overflowing', !isScrolledToTop);
+
+    let top = 0;
+    let bottom =0;
+    
+    if (!isScrolledToBottom) {
+        bottom = 40;
+    }
+
+    if (!isScrolledToTop) {
+        top = 40;
+    }
+
+    el.style.maskImage = `linear-gradient(to bottom, transparent 0, black ${top}px, black calc(100% - ${bottom}px), transparent 100%)`;
+
 }
 
 
@@ -649,15 +644,28 @@ function verticalScroll(el, moe) {
 function horizontalScroll(el, moe) {
     const isScrollable = (el.scrollWidth - moe > el.clientWidth);
 
-    // GUARD: If element is not scrollable, remove all classes
     if (!isScrollable) {
-        el.classList.remove('is-left-overflowing', 'is-right-overflowing');
+        el.style.maskImage = "";
+        el.style.overflowX = "visible";
+
         return;
     }
-  
+    
     // One pixel is added to the height to account for non-integer heights.
     const isScrolledToRight = el.scrollWidth  < el.clientWidth + el.scrollLeft + 1;
     const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
-    el.classList.toggle('is-right-overflowing', !isScrolledToRight);
-    el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
+
+
+    let left = 0;
+    let right = 0;
+    
+    if (!isScrolledToRight) {
+        right = 40;
+    }
+
+    if (!isScrolledToLeft) {
+        left = 40;
+    }
+
+    el.style.maskImage = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
 }

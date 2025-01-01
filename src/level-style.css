@@ -1,26 +1,20 @@
-
-@property --lightBlue {
-  syntax: '<color>';
-  initial-value: rgb(110,155,250,.28);
-  inherits: false;
-}
-
-@property --darkBlue {
-  syntax: '<color>';
-  initial-value: rgb(110,155,250,.51);
-  inherits: false;
-}
-
-
 :root {
   --bgColor:  #FFF;
   --baseColor: black;
-  --cellColor: hsl(200, 15%, 96%);
-  --cellBottomColor: hsl(200, 15%, 25%);
-  --buttonColor: #FFF;
-  --highlightColor: hsl(50, 45%, 88%);
-  --darkHighlightColor: hsl(50, 20%, 50%);
-  --accentColor: hsl(50, 45%, 95%);
+  /*
+     --cellColor: hsl(200, 15%, 96%);
+     --cellBottomColor: hsl(200, 15%, 25%);
+   */
+
+  --lightestShade: hsl(50, 18%, 95%);
+  --lighterShade: hsl(50, 25%, 92%);
+  --darkShade: hsl(50, 20%, 50%);
+  --darkerShade: hsl(50, 18%, 35%);
+  --darkestShade: hsl(50, 18%, 25%);
+
+  --focusColor: hsl(50, 43%, 85%);
+  --emphasisColor: hsl(50, 43%, 44%);
+  --correctColor: hsl(130, 35%, 35%);
   
   --successPrompt: "Next level...";
   --rows: 2;
@@ -36,12 +30,23 @@
   --baseGridSize: calc(var(--fullGridSize) - var(--gridPadding) - 2 * var(--gridBorderWidth));
 
   --domainButtonHeight: 56px;
-
 }
+
+@property --lightBlue {
+  syntax: '<color>';
+  initial-value: rgb(110,155,250,.28);
+  inherits: false;
+}
+
+@property --darkBlue {
+  syntax: '<color>';
+  initial-value: rgb(110,155,250,.51);
+  inherits: false;
+}
+
 
 body {
   background-color: var(--bgColor);
-
 }
 
 #domain.correct {
@@ -50,30 +55,29 @@ body {
   gap: 0px;
   bottom: calc(0.15 * var(--domainButtonHeight));
 
+  overflow: hidden;
 
   button:not(:first-child) {
-    transition: width 1.25s, font-size 1.25s, padding 1.25s, border 1.25s, flex-basis 1.25s, bottom 0.35s;
-    box-shadow: none;
-    border: 0px;
+    transition:   width 0.8s ease, min-width 0.8s; bottom 0.35s ease;
+
+    will-change: width, min-width, bottom;
+
     width: 0;
     bottom: -8px;
+    min-width: 0px;
 
-    &::before {transition: opacity 0.25s; opacity: 0;}
+    &::before {transition: opacity 0.1s; opacity: 0;}
     p {
-      transition: font-size 0.25s, border 0.25s, color 0.25s;
-      border: 0;
-      color: transparent;
-      font-size: 0;
+      transition: opacity 0.35s;
+      opacity: 0;
     }
 
     pointer-events: none;
-
   }
 
 
   button:first-child {
     height: var(--domainButtonHeight);
-    flex-basis: 100%;
     width: 100%;
     border: 1px solid black;
     background: repeating-linear-gradient(45deg, var(--lightBlue),  var(--darkBlue) , var(--lightBlue) 600px);
@@ -82,7 +86,6 @@ body {
     transition: --lightBlue 0.25s, --darkBlue 0.25s, box-shadow 0.25s;
 
     box-shadow: 0 0 3px 1px rgb(110,155,250,.17) !important;
-
 
     overflow: hidden;
     
@@ -121,7 +124,7 @@ body {
     content: var(--successPrompt);
     background: transparent;
     font-family: "Source Serif 4";
-    animation: spring 1s ease-out forwards;
+    animation: spring 0.8s ease-out forwards;
     font-weight: 375;
     font-style: italic;
     height: 100%;
@@ -395,6 +398,12 @@ body {
   height: 105%;
 }
 
+@keyframes fill-animation {
+  0% {     background-image: linear-gradient(#000 , #000); }
+  100% {             background-image: linear-gradient(#A4C1A0 , #A4C1A0);
+  }
+}
+
 #grid {
   align-self: center;
   grid-gap: var(--gridGap);
@@ -422,28 +431,21 @@ body {
     font-family: "computer modern serif";
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    transition: background-color .16s ease-in, outline-color 0.2s ease, transform 0.8s ease;
+    transition: background-color .1s ease-in, outline-color 0.2s ease, transform 0.8s ease;
     
     width: 100%;
     height: 100%;
 
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border-radius: 2px;
 
     font-size: clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
-    background-image: linear-gradient(#A4C1A0 , #A4C1A0);
-    background-repeat: no-repeat;
-    background-size: 100% 0;
-    background-position: bottom;
-    z-index: 1;
-    
     color: var(--baseColor);
+    
+    z-index: 1;
 
     box-sizing: border-box;
 
-    display:flex;
+    display: flex;
 
     justify-content: center;
     align-items: center;
@@ -457,47 +459,46 @@ body {
   }
 
 
-  
-  span:not(.given) {
-    background-color: var(--cellColor);
-    border-bottom: 3px solid var(--cellBottomColor);
 
-    &::before {
+  span:not(.given) {
+    background-color: var(--lightestShade);
+    
+    &::after {
       content: "";
-      background-color: var(--highlightColor);
-      opacity: 0;
+      background-color: var(--darkestShade);
       position: absolute;
       width: 100%;
-      height: 100%;
-      left: 0; right: 0; top: 0; bottom: 0;
-      transition: opacity 0.2s;
+      height: 0.062em;
+      left: 0; right: 0; bottom: 0;
+      transition: width 0.5s, left 0.5s, background-color 0.1s;
+      box-sizing: border-box;
       z-index: -1;
+
+      
     }
   }
+
+  
+  span:hover, span.noticed {
+    background-color: var(--lighterShade);
+    &::after {
+      background-color: var(--emphasisColor);
+    }
+  }
+
   
   
-  span.given:not(.correct) {
+  
+  span.given {
     pointer-events: none;
     cursor: default;
   }
 
-  span.correct > .ripple {
-    background-color: rgba(220,255,220,0.1);
-
-  }
-
-  span.noticed {
-    background-color: var(--accentColor);
-  }
-
-  span.correct {
-    background-size: 100% 100%;
-  }
-
-  
-
   span:focus {
-    background: var(--highlightColor) !important;
+    background: var(--focusColor);
+    &::after {
+      background-color: var(--emphasisColor);
+    }
   }
 
   span > p {
@@ -508,6 +509,7 @@ body {
     pointer-events: none; /* Don't interfere with ripple */
 
     transition: background 0.4s;
+    will-change: bottom, opacity;
 
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -525,11 +527,35 @@ body {
   }
 }
 
+#grid.correct {
+  span::after {
+    width: 0%;
+    left: 50%;
+  }
+  span {
+    background-color .4s ease-in, outline-color 0.2s ease, transform 0.8s ease;
+    pointer-events: none;
+    cursor: default;
+    background-color: transparent;
+    outline: 0;
+    p {
+      animation: correctFlash 0.9s forwards;
+      animation-delay: 400ms;
 
+    }
+  }
+  
+}
 
 @keyframes fade {
   from { bottom: 12px; opacity: 0; }
   to { bottom: 0px; opacity: 1; }
+}
+
+@keyframes correctFlash {
+  0% { transform: scale(1); color: var(--baseColor); }
+  50% { transform: scale(1.4); color: var(--correctColor); }
+  100% {transform: scale(1.2); color: var(--correctColor); }
 }
 
 
@@ -555,11 +581,6 @@ body {
 
   scrollbar-width: none;
   overflow-x: auto;
-
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
-  --top-mask-size: 0px;
-  --bottom-mask-size: 0px;
 
   li {
     padding: 4px;
@@ -588,9 +609,9 @@ body {
       position: absolute;
       left: 0; right: 0; top: 0; bottom: 0;
       transition: opacity 0.225s ease-out;
-      background-color: var(--highlightColor);
+      background-color: var(--focusColor);
       box-shadow: 0 2px 1px -1px #EEE, 0 0 1px 0px #DDD;
-      border: 1px solid var(--darkHighlightColor);
+      border: 1px solid var(--darkShade);
 
       z-index: -1;
     }
@@ -609,15 +630,6 @@ body {
 
     }
   }
-}
-
-
-#propositions.is-top-overflowing {
-  --top-mask-size: 40px !important;
-}
-
-#propositions.is-bottom-overflowing {
-  --bottom-mask-size: 40px !important;
 }
 
 
@@ -739,13 +751,9 @@ body {
   transition: opacity 1s;
   height: var(--domainButtonHeight);
 
+
   padding-top: calc(0.15 * var(--domainButtonHeight)); /* account for button visuals being 85% */
 
-  -webkit-mask-image: linear-gradient(to right, transparent 0, black var(--left-mask-size, 0), black calc(100% - var(--right-mask-size, 0)), transparent 100%);
-  
-  mask-image: linear-gradient(to right, transparent 0, black var(--left-mask-size, 0), black calc(100% - var(--right-mask-size, 0)), transparent 100%);
-  --left-mask-size: 0px;
-  --right-mask-size: 0px;
 
   button {
     width: 100%;
@@ -754,7 +762,6 @@ body {
     position: relative;
     font-family: "computer modern serif";
     font-size: 2.5rem;
-    background-color: var(--buttonColor);
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -762,6 +769,8 @@ body {
     border: none;
     background: transparent;
     padding: 0;
+
+
 
 
     &::before {
@@ -774,19 +783,22 @@ body {
       border-radius: 11px;
       background: linear-gradient(
         to left,
-        hsl(340deg 0% 45%) 0%,
-        hsl(340deg 0% 60%) 8%,
-        hsl(340deg 0% 60%) 92%,
-        hsl(340deg 0% 45%) 100%
+        var(--darkerShade) 0%,
+        var(--darkShade) 8%,
+        var(--darkShade) 92%,
+        var(--darkerShade) 100%
       );
 
+      filter: saturate(0.4);
       transition: filter 0.2s;
     }
+
 
     p {
       margin: 0;
       position: relative;
       z-index: 0;
+
 
       height: 85%;
       width: 100%;
@@ -797,32 +809,38 @@ body {
       border-radius: 11px;
       color: black;
 
+
       display: flex;
       align-items: center;
       justify-content: center;
       
 
-      background: white;
-      will-change: transform;
+
+      background-color: var(--lightestShade);
+      will-change: bottom;
       bottom: 8px;
-      transition: bottom 0.07s ease-out, background 0.4s;
+      transition: bottom 0.07s ease-out, background 0.1s;
     }
   }
+
 
   @media (hover: hover) and (pointer: fine) {
     button:hover p {
       bottom: 9px;
+      background-color: var(--lighterShade);
     }
   }
-  button:focus p {
+  button:not(.pushed):focus p {
     transition: bottom 0.125s cubic-bezier(.3, .7, .4, 1.25), background 0.4s;
 
-    background-color: var(--highlightColor);
+
+    background: var(--focusColor);
     bottom: 6px;
 
-    zoom: 0.99;
 
+    zoom: 0.99;
   }
+
 
   button:focus::before {
     filter: brightness(0.75);
@@ -830,23 +848,18 @@ body {
   button.pushed p {
     transition: bottom 0.125s cubic-bezier(.3, .7, .4, 1.25), background 0.4s;
 
+
     bottom: 6px;
+
 
     zoom: 0.99;
   }
 
-}
 
-#domain.is-left-overflowing {
-  --left-mask-size: 48px !important;
-}
-
-#domain.is-right-overflowing {
-  --right-mask-size: 48px !important;
 }
 
 .ripple {
-  background: var(--highlightColor);
+  background: var(--focusColor);
   width: 3px;
   height: 3px;
   border-radius: 100%;

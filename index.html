@@ -91,7 +91,7 @@
      async function goLevel(path) {
        let flag = path.charAt(0);
 
-       if (!"tnde".includes(flag))  return; 
+       if (!"TNDE".includes(flag))  return; 
 
        var response = await fetch(`src/levels/${path}.html`);
        if (!response.ok) return;
@@ -123,6 +123,9 @@
          
          setTimeout(function() {
            newPage.style.display = "block";
+
+           verticalScroll(newPage.querySelector('#propositions'), 7);
+           horizontalScroll(newPage.querySelector('#domain'), 7);           
          }, 10);
 
          setTimeout(function() {

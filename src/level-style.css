@@ -620,6 +620,7 @@ body {
   --bottom-mask-size: 40px !important;
 }
 
+
 #propositions::-webkit-scrollbar {
   display: none;
 }
@@ -732,6 +733,7 @@ body {
 #domain {
   padding: 0;
   display: flex;
+  overflow-x: auto;
   align-items: center;
   position: relative;
   transition: opacity 1s;
@@ -739,9 +741,15 @@ body {
 
   padding-top: calc(0.15 * var(--domainButtonHeight)); /* account for button visuals being 85% */
 
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black var(--left-mask-size, 0), black calc(100% - var(--right-mask-size, 0)), transparent 100%);
+  
+  mask-image: linear-gradient(to right, transparent 0, black var(--left-mask-size, 0), black calc(100% - var(--right-mask-size, 0)), transparent 100%);
+  --left-mask-size: 0px;
+  --right-mask-size: 0px;
 
   button {
     width: 100%;
+    min-width: 80px;
     height: 60px;
     position: relative;
     font-family: "computer modern serif";
@@ -827,6 +835,14 @@ body {
     zoom: 0.99;
   }
 
+}
+
+#domain.is-left-overflowing {
+  --left-mask-size: 48px !important;
+}
+
+#domain.is-right-overflowing {
+  --right-mask-size: 48px !important;
 }
 
 .ripple {
@@ -922,7 +938,6 @@ body {
   #domain {
     margin-left: var(--axisFontSize);
     width:  var(--fullGridSize);
-    flex-wrap: nowrap;
     gap: 5px;
   }
 

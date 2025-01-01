@@ -47,7 +47,7 @@ function initLevel() {
     if (max < 3) {
         document.documentElement.style.setProperty('--fontFactor', 1 + (3 - max) / 2);
     } else if (max > 3) {
-        document.documentElement.style.setProperty('--fontFactor', 1 - (3 - max) / max);
+        document.documentElement.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
     } else {
         document.documentElement.style.setProperty('--fontFactor', 1);
 
@@ -71,19 +71,14 @@ function initLevel() {
     });
 
     tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
-
-
-    
-    // Show propositions when they're rendered (should be near-instant)
     
 
     // id cells with their coordinates
-    for (let i=0, j=0; i < cellList.length; i++) {
-        let row = 1+Math.floor(j/ROWS);
-        let col = 1+j%COLS;
+    for (let i=0; i < cellList.length; i++) {
+        let row = 1+Math.floor(i/ROWS);
+        let col = 1+i%COLS;
         cellList[i].id = `c${row}-${col}`;
         tabdCells[row-1][col-1] = cellList[i];
-        j++;
     } 
 
     cellList.forEach((cell) => {
@@ -459,43 +454,7 @@ function initLevel() {
     });
 
 
-    function verticalScroll(el, moe) {
-        const isScrollable = (el.scrollHeight - moe > el.clientHeight);
-        
-        // GUARD: If element is not scrollable, remove all classes
-        if (!isScrollable) {
-            el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
-            return;
-        }
-        
-        // Otherwise, the element is overflowing!
-        // Now we just need to find out which direction it is overflowing to (can be both).
-        // One pixel is added to the height to account for non-integer heights.
-        const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
-        const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
-        el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
-        el.classList.toggle('is-top-overflowing', !isScrolledToTop);
-    }
-
-
-
-    function horizontalScroll(el) {
-        const isScrollable = (el.scrollWidth > el.clientWidth);
-
-        // GUARD: If element is not scrollable, remove all classes
-        if (!isScrollable) {
-            el.classList.remove('is-left-overflowing', 'is-right-overflowing');
-            return;
-        }
-        
-        // Otherwise, the element is overflowing!
-        // Now we just need to find out which direction it is overflowing to (can be both).
-        // One pixel is added to the height to account for non-integer heights.
-        const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollRight + 1;
-        const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
-        el.classList.toggle('is-right-overflowing', !isScrolledToRight);
-        el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
-    }
+    
 
     level.querySelector('#propositions').addEventListener('scroll', (e) => {
         const el = e.currentTarget;
@@ -504,11 +463,12 @@ function initLevel() {
 
     level.querySelector('#domain').addEventListener('scroll', (e) => {
         const el = e.currentTarget;
-        horizontalScroll(el);
+        horizontalScroll(el, 7);
     });
 
     window.onresize = function(event) {
         verticalScroll(level.querySelector('#propositions'), 7);
+        horizontalScroll(level.querySelector("#domain"), 7);
     }
 
 
@@ -667,8 +627,37 @@ function initLevel() {
     }
 
     
+}
 
-    verticalScroll(level.querySelector('#propositions'), 7);
-    horizontalScroll(level.querySelector('#domain'));
+
+function verticalScroll(el, moe) {
+    const isScrollable = (el.scrollHeight - moe > el.clientHeight);
+        if (!isScrollable) {
+        el.classList.remove('is-bottom-overflowing', 'is-top-overflowing');
+        return;
+    }
     
+    // One pixel is added to the height to account for non-integer heights.
+    const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+    const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
+    el.classList.toggle('is-bottom-overflowing', !isScrolledToBottom);
+    el.classList.toggle('is-top-overflowing', !isScrolledToTop);
+}
+
+
+
+function horizontalScroll(el, moe) {
+    const isScrollable = (el.scrollWidth - moe > el.clientWidth);
+
+    // GUARD: If element is not scrollable, remove all classes
+    if (!isScrollable) {
+        el.classList.remove('is-left-overflowing', 'is-right-overflowing');
+        return;
+    }
+  
+    // One pixel is added to the height to account for non-integer heights.
+    const isScrolledToRight = el.scrollWidth  < el.clientWidth + el.scrollLeft + 1;
+    const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
+    el.classList.toggle('is-right-overflowing', !isScrolledToRight);
+    el.classList.toggle('is-left-overflowing', !isScrolledToLeft);
 }

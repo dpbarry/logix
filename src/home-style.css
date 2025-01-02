@@ -138,6 +138,8 @@
     background: hsl(120 20% 80%);
     border: 1px solid #888;
   }
+
+  
 }
 
 #normal {
@@ -357,7 +359,10 @@ ul.droplist {
     transform: translateY(0);
     opacity: 1;
   }
-  
+}
+
+.trainstage:not(.dropped) + .droplist {
+  li { pointer-events: none; cursor: default; }
 }
 
 

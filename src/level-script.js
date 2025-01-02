@@ -151,6 +151,18 @@ function initLevel() {
         }
         
         if (DOMAIN.includes(parseInt(event.key))) {
+            if (debounced === 0) {
+
+                let button = null;
+                domainList.forEach( (b) => {
+                    if (b.textContent.trim() === event.key) {
+                        button = b;
+                    }
+                });
+                button.classList.add("pushed");
+                
+                debounced++;
+            }
             insert(event.target, event.key);
             
         } else if (event.key === "Backspace") {
@@ -205,7 +217,7 @@ function initLevel() {
                 document.documentElement.style.setProperty('--successPrompt', "'Return home...'");
                 
                 domain.classList.add("correct");
-      
+                
                 
                 domainList[0].onclick = () => {
                     Router("index.html");

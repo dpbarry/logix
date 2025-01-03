@@ -16,9 +16,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Puzzle Level Generator</title>
 
+        <script src="data-parser.js"></script>
         
         <style>
-         
          body {
            font-family: "Source Serif 4";
            margin: 20px;
@@ -130,6 +130,7 @@
          }
         </style>
     </head>
+    
     <body>
         <h1>Level Generator</h1>
 
@@ -172,6 +173,7 @@
             <ul id="preview"></ul>
             <input autocomplete="off" id="proposition">
             <button onclick="updateProplist()">Update Proplist</button>
+            <button onclick="popProp()">86</button>
         </div>
 
         <div class="section">
@@ -180,19 +182,50 @@
         </div>
 
         <div class="section">
-            <button onclick="generateFiles()">Generate Files</button>
+            <button onclick='generateFiles()'>Generate Files</button>
             <div id="output"></div>
         </div>
 
         <script>
+         function generateFiles() {
+           // Query general information
+           const levelNumber = document.getElementById("levelNumber").value.trim();
+           const difficulty = document.getElementById("difficulty").value.trim();
+           const nextLevel = document.getElementById("nextLevel").value.trim();
+           const domain = document.getElementById("domain").value.trim();
 
+           // Query grid settings
+           const rows = document.getElementById("rows").value.trim();
+           const cols = document.getElementById("cols").value.trim();
 
-         
-         setTimeout( () => {
-           renderMathInElement(document.getElementById("preview"));
-         }, 5);
-         
-         function updateGrid(isBlank) {
+           // Query given values from the grid
+           const givenCells = Array.from(document.querySelectorAll("#given input")).map(input => input.value.trim() || "?");
+
+           // Query propositions
+           const propositions = Array.from(document.querySelectorAll("#proplist li")).map(li => li.textContent.trim());
+
+           // Query solution values from the solution grid
+           const solutionCells = Array.from(document.querySelectorAll("#solution input")).map(input => input.value.trim() || ".");
+
+           // Structure the content
+           const content = [
+             `levelNumber=${levelNumber}`,
+             `difficulty=${difficulty}`,
+             `nextLevel=${nextLevel}`,
+             `domain=${domain}`,
+             `rows=${rows}`,
+             `cols=${cols}`,
+             `given=${givenCells}`,
+             `propositions=${propositions.join("@")}`,
+             `solution=${solutionCells}`
+           ].join("\n");
+
+           // Generate the txt file
+           createDownload(`_${difficulty.charAt(0)}${levelNumber.replace('.', '-')}.html`, content);
+           parseDataFile(content);
+         }
+
+         function updateGrid() {
            const rows = parseInt(document.getElementById('rows').value);
            const cols = parseInt(document.getElementById('cols').value);
            const grids = document.querySelectorAll('.grid');
@@ -200,8 +233,6 @@
            grids.forEach((grid) => {
              grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
              grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-
-             if (!isBlank) return;
 
              grid.innerHTML = '';
 
@@ -216,6 +247,8 @@
              }
            });
          }
+
+         updateGrid();
 
          function updateProplist() {
            const li = document.createElement('li');
@@ -235,173 +268,13 @@
 
            prop.value = "";
          }
-         
-         async function generateFiles() {
-           const levelNumber = document.getElementById('levelNumber').value;
-           const difficulty = document.getElementById('difficulty').value;
-           const nextLevel = document.getElementById('nextLevel').value;
-           const domain = document.getElementById('domain').value.split(',').map(Number);
-           const rows = parseInt(document.getElementById('rows').value);
-           const cols = parseInt(document.getElementById('cols').value);
-           const previewProps = document.getElementById('proplist').children;
-           const propositions = document.getElementById('proplist').children;
-           const given = Array.from(document.getElementById('given').children);
 
-           const solution = Array.from(document.getElementById('solution').children).map( (x) => parseInt(x.value));
-           const maxlength = document.getElementById("domain").value.split(',').reduce((longest, current) => {
-             return current.length > longest.length ? current : longest;
-           }, "").length;
+         function popProp() {
+           document.getElementById("proplist").lastChild.remove();
+           document.getElementById("preview").lastChild.remove();
 
-           const parser = new DOMParser();
-
-
-           // Save copy for future modification
-           let saveText = await (await fetch('level-maker.html')).text();
-           let save = parser.parseFromString(saveText, 'text/html');
-
-           ["levelNumber", "difficulty", "nextLevel", "domain", "rows", "cols", "proplist", "given", "solution"].forEach( (id) => {
-             
-             if (save.getElementById(id).value !== undefined) {
-               save.getElementById(id).defaultValue = document.getElementById(id).value;
-
-             } else if (id === "proplist") {
-               save.getElementById("proplist").append(...(Array.from(propositions).map(x => x.cloneNode(true))));
-               save.getElementById("preview").append(...(Array.from(previewProps).map(x => x.cloneNode(true))));
-
-             } else {
-               let docGridNodes = Array.from(document.getElementById(id).children);
-               let saveGrid = save.getElementById(id);
-               docGridNodes.forEach ( (li) => {
-                 let newLi = li.cloneNode(true);
-                 newLi.defaultValue = li.value;
-                 saveGrid.appendChild(newLi);
-               });
-             }
-           });
-
-
-           
-           let templateText = await (await fetch('level-template.html')).text();
-           let page = parser.parseFromString(templateText, 'text/html');
-
-           page.getElementById("level").innerHTML = levelNumber;
-           page.getElementById("difficulty").innerHTML = difficulty;
-
-           Array.from(propositions).forEach((li) => {
-             let text = li.textContent;
-             let varCounter = 1;
-
-             // identify entries to wrap in spans
-             const pattern = /\\lang\s*\\begin\{smallmatrix\}\s*([\s\S]*?)\s*\\end\{smallmatrix\}\s*\\rang/g;
-
-             li.innerHTML = text.replace(pattern, (match, content) => {
-               const [n, _, m] = content.split("\\").map(s => s.trim());
-
-               let id;
-               if (!isNaN(n) && !isNaN(m)) {
-                 id = `${n}e${m}`;
-               } else {
-                 id = `v${varCounter++}`;
-               }
-
-               return `<span class="entry" id="e${id}">\\( ${match} \\)</span>`;
-             });
-
-             li.childNodes.forEach((node) => {
-               if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
-                 node.textContent = `\\( ${node.textContent.trim()} \\)`;
-               }
-             });
-           });
-
-
-           page.getElementById("propositions").append(...propositions);
-
-           
-           for (let i = 1; i <= rows; i++) {
-             num = document.createElement("span");
-             num.innerHTML = i;
-             page.getElementById("y-axis").appendChild(num);
-           }      
-           for (let i = 1; i <= cols; i++) {
-             num = document.createElement("span");
-             num.innerHTML = i;
-             page.getElementById("x-axis").appendChild(num);
-           }
-
-           
-           given.forEach( (cell) => {
-             let newCell = document.createElement("span");
-             let p = document.createElement("p");
-             if (cell.value) {
-               p.innerHTML = cell.value;
-               newCell.classList.add("given");
-             }
-             newCell.appendChild(p);
-             page.getElementById("grid").appendChild(newCell);
-           });
-
-
-           domain.forEach( (n) => {
-             let button = document.createElement("button");
-             let p = document.createElement("p");
-
-             p.innerHTML = n;
-
-             button.appendChild(p);
-             
-             page.getElementById("domain").appendChild(button);
-           });
-
-           
-           solArray = [...Array(rows)].map(e => Array(cols).fill(null));
-
-           for (let i=0; i < rows; i++) {
-             for (let j=0; j < cols; j++) {
-               solArray[i][j] = solution[i+j];
-             }
-           } 
-
-           const script =`ROWS = ${rows};
-           COLS = ${cols};
-           DOMAIN = ${JSON.stringify(domain)};
-           MAXLENGTH = ${maxlength};
-
-           SOLUTION = ${JSON.stringify(solArray)};
-           NEXT_LEVEL = "${nextLevel}";
-           `;
-
-           fileLevelNumber = levelNumber.split(".").join("-");
-
-           createDownload(`${difficulty.charAt(0)}${fileLevelNumber}.html`, page.body.innerHTML);
-           createDownload(`${difficulty.charAt(0)}${fileLevelNumber}.js`, script);
-           createDownload(`_${difficulty.charAt(0)}${fileLevelNumber}.html`, "<!DOCTYPE html>\n" + save.documentElement.outerHTML);
-         }
-
-         function createDownload(filename, content) {
-           const blob = new Blob([content], { type: 'text/plain' });
-           
-           const link = document.createElement('a');
-           link.href = URL.createObjectURL(blob);
-           link.download = filename;
-           link.textContent = `Download ${filename}`;
-           
-           document.getElementById('output').appendChild(link);
-           document.getElementById('output').appendChild(document.createElement('br'));
-
-           
-           link.click();
-         }
-
-
-
-         // If this is a data file, don't wipe the grids' default values
-         if (Array.from(document.getElementById("given").children).every( x =>
-           !x.value) && Array.from(document.getElementById("solution").children).every(x => !x.value)) {
-           updateGrid(true);
-         } else {
-           updateGrid(false);
          }
         </script>
+
     </body>
 </html>

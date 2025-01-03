@@ -1,6 +1,5 @@
 let ROWS;
 let COLS;
-let MAXLENGTH;
 let DOMAIN;
 let SOLUTION;
 let NEXT_LEVEL = null;
@@ -25,6 +24,7 @@ function initLevel() {
     const domainList = domain.querySelectorAll('button');
     const entryList = level.querySelectorAll('.entry');
 
+    const MAXLENGTH = Math.max(...DOMAIN.map(num => num.toString().length));
     var undoStack = [];
     var redoStack = [];
 

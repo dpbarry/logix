@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Update Levels</title>
+        <script src="data-parser.js"></script>
+    </head>
+
+    <body>
+        <input type="file" id="fileInput" accept=".txt" multiple>
+    </body>
+    <script>
+     document.getElementById('fileInput').addEventListener('change', (event) => {
+       batchParse(event.target.files);
+     });
+
+
+     async function batchParse(files) {
+       for (const file of files) {
+         let fileContent = await file.text();
+         parseDataFile(fileContent);
+       }
+     }
+    </script>

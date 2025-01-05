@@ -53,22 +53,16 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
 
             let id;
             if (!isNaN(n) && !isNaN(m)) {
-                id = `${n}e${m}`;
+                id = `e${n}e${m}`;
             } else {
                 id = `v${varCounter++}`;
             }
 
-            return `\\kern0.08em <span class="entry" id="e${id}">\\( ${match} \\)</span> \\kern0.08em`;
+            return `\\htmlClass{entry}{\\htmlId{${id}}{${match}}}`;
         });
 
         li = page.createElement("li");
-        li.innerHTML = propositions[i];
-
-        li.childNodes.forEach((node) => {
-            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
-                node.textContent = `\\( ${node.textContent.trim()} \\)`;
-            }
-        });
+        li.innerHTML = "\\(" + propositions[i] + "\\)";
 
         propositions[i] = li;
     }

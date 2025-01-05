@@ -1,0 +1,9 @@
+levelNumber=1.2
+difficulty=Training
+nextLevel=T1-3
+domain=1,2,3,4,5
+rows=3
+cols=2
+given=2,?,?,4,3,?
+propositions=\lang \begin{smallmatrix} 1 \\ 2 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 1 \\ 1 \end{smallmatrix} \rang + 1@\lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 2 \\ 2 \end{smallmatrix} \rang - 2@\lang \begin{smallmatrix} 3 \\ 2 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang + \lang \begin{smallmatrix} 1 \\ 2 \end{smallmatrix} \rang
+solution=.,3,2,.,.,5

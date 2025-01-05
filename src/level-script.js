@@ -8,7 +8,7 @@ let tabdCells;
 
 
 function initLevel() {
-    document.body.style.setProperty('--rows', ROWS);
+    document.documentElement.style.setProperty('--rows', ROWS);
     document.documentElement.style.setProperty('--cols', COLS);
 
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
@@ -22,7 +22,7 @@ function initLevel() {
     // fetch all inputs and cells
     const cellList = level.querySelectorAll('#grid span:not(.x_axis, .y_axis)');
     const domainList = domain.querySelectorAll('button');
-    const entryList = level.querySelectorAll('.entry');
+    const entryList = Array.from(level.querySelectorAll('.entry')).map(x => x.firstChild);
 
     const MAXLENGTH = Math.max(...DOMAIN.map(num => num.toString().length));
     var undoStack = [];
@@ -51,8 +51,21 @@ function initLevel() {
         document.documentElement.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
     } else {
         document.documentElement.style.setProperty('--fontFactor', 1);
-
     }
+
+    
+    if (ROWS > COLS) {
+        document.documentElement.style.setProperty('--heightFactor', 1);
+        document.documentElement.style.setProperty('--widthFactor', COLS / ROWS);
+    } else if (COLS > ROWS) {
+        document.documentElement.style.setProperty('--heightFactor', ROWS / COLS);
+        document.documentElement.style.setProperty('--widthFactor', 1);
+    } else {
+        document.documentElement.style.setProperty('--heightFactor', 1);
+        document.documentElement.style.setProperty('--widthFactor', 1);
+    }
+    
+
 
 
     HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
@@ -74,13 +87,16 @@ function initLevel() {
     tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
     
 
+    console.log(ROWS, COLS);
     // id cells with their coordinates
-    for (let i=0; i < cellList.length; i++) {
-        let row = 1+Math.floor(i/ROWS);
-        let col = 1+i%COLS;
-        cellList[i].id = `c${row}-${col}`;
-        tabdCells[row-1][col-1] = cellList[i];
-    } 
+    for (let i = 0; i < ROWS; i++) {
+        for (let j = 0; j < COLS; j++) {
+            const index = i * COLS + j; 
+            cellList[index].id = `c${i+1}-${j+1}`;
+            tabdCells[i][j] = cellList[index]; 
+        }
+    }
+
 
     cellList.forEach((cell) => {
         // Set up values map
@@ -346,9 +362,9 @@ function initLevel() {
 
             if (entry.id ===
                 "e" + id.charAt(1) + "e" + id.charAt(3)) {
-                entry.classList.add("highlight");
+                entry.parentNode.classList.add("highlight");
             } else {
-                entry.classList.remove("highlight");
+                entry.parentNode.classList.remove("highlight");
             }
         }
                          );
@@ -356,6 +372,7 @@ function initLevel() {
 
     function noticeCell (event) {
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
+        console.log(this, cell);
         level.querySelector("#" + cell).classList.add("noticed");
     }
 

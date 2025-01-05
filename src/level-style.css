@@ -19,17 +19,26 @@
   --successPrompt: "Next level...";
   --rows: 2;
   --cols: 2;
+  
   --fontFactor: 1;
+  --widthFactor: 1;
+  --heightFactor: 1;
+  --widthSubtrahend: 0;
+  --heightSubtrahend: 0;
   
   --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
   --gridGap: 8px;
   --gridPadding: 20px;
-  --gridBorderWidth: 3px;
+  --gridBorderWidth: 4px;
   --gridOffset: 1.5vh;
-  --fullGridSize: calc(min(47vh, 85vw) - var(--gridPadding));
-  --baseGridSize: calc(var(--fullGridSize) - var(--gridPadding) - 2 * var(--gridBorderWidth));
+  --maxGridWidth: calc(min(38vh, 80vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+    --gridWidth: calc(var(--widthFactor) * min(38vh, 80vw) - (1 - var(--widthFactor)) * var(--gridGap));
+    --gridHeight: calc(var(--heightFactor) * min(38vh, 80vw) - (1 - var(--heightFactor)) * var(--gridGap));
+    
+    --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+    --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
-  --domainButtonHeight: 56px;
+    --domainButtonHeight: 56px;
 }
 
 @property --lightBlue {
@@ -331,8 +340,8 @@ body {
 #wrap_axis_grid {
   display: grid;
 
-  grid-template-columns:  var(--axisFontSize) var(--fullGridSize);
-  grid-template-rows: var(--fullGridSize) var(--axisFontSize);
+  grid-template-columns:  var(--axisFontSize) var(--fullGridWidth);
+  grid-template-rows: var(--fullGridHeight) var(--axisFontSize);
 
   justify-content: center;
 
@@ -354,7 +363,7 @@ body {
     text-align: center;
     height: 100%;
     cursor: default;
-    z-index: -1;
+    z-index: 1;
     font-style: italic;
 
     box-sizing: border-box;
@@ -370,7 +379,7 @@ body {
   right: 3px;
 
   width: min-content;
-  height: calc(var(--fullGridSize) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
+  height: calc(var(--fullGridHeight) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
 
 
 }
@@ -384,7 +393,7 @@ body {
   gap: var(--gridGap);
 
   height: min-content;
-  width: calc(var(--fullGridSize) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
+  width: calc(var(--fullGridWidth) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
 
 }
 
@@ -393,16 +402,11 @@ body {
   content: "";
   position: absolute;
   background-color: white;
-  top: -2.5%;
+  top: -5%;
   width: 77.5%;
-  height: 105%;
+  height: 110%;
 }
 
-@keyframes fill-animation {
-  0% {     background-image: linear-gradient(#000 , #000); }
-  100% {             background-image: linear-gradient(#A4C1A0 , #A4C1A0);
-  }
-}
 
 #grid {
   align-self: center;
@@ -415,7 +419,7 @@ body {
   align-items: center;
   align-content: center;
   justify-items: center;
-  box-sizing: border-box;
+  box-sizing: content-box;
   
   border: var(--gridBorderWidth) solid black;
   border-radius: 2px;
@@ -423,8 +427,8 @@ body {
   grid-template-columns: repeat(var(--cols), 1fr);
   grid-template-rows: repeat(var(--rows), 1fr);
 
-  width:  var(--fullGridSize);
-  height: var(--fullGridSize);
+  width:  var(--gridWidth);
+  height: var(--gridHeight);
 
   
   span {
@@ -435,7 +439,7 @@ body {
     
     width: 100%;
     height: 100%;
-
+    
     border-radius: 2px;
 
     font-size: clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
@@ -463,29 +467,14 @@ body {
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    &::after {
-      content: "";
-      background-color: var(--darkestShade);
-      position: absolute;
-      width: 100%;
-      height: 0.062em;
-      left: 0; right: 0; bottom: 0;
-      transition: width 0.5s, left 0.5s, background-color 0.1s;
-      box-sizing: border-box;
-      z-index: -1;
-
-      
-    }
+    border-bottom: 4px solid var(--darkestShade);
   }
 
 
   @media(hover: hover) and (pointer: fine) {
     span:hover, span.noticed {
       background-color: var(--lighterShade);
-      &::after {
-        background-color: var(--emphasisColor);
-      }
-
+       border-color: var(--emphasisColor);
     }
   }
   span.noticed {
@@ -607,7 +596,8 @@ body {
       padding-top: 4px;
       display: inline-block;
       position: relative;
-
+      .mspace { margin-right: 0 !important; }
+      + span {margin-left: 0.18em; }
     }
     span.entry::before {
       content: "";
@@ -665,7 +655,7 @@ body {
   gap: 2px;
   margin-top: -25px;
   align-items: center;
-  width: 100%;
+  width: var(--maxGridWidth);
 }
 
 #toolbar {
@@ -770,7 +760,7 @@ body {
 
   button {
     width: 100%;
-    min-width: 80px;
+    min-width: max(40px, 8vh);
     height: 60px;
     position: relative;
     font-family: "computer modern serif";
@@ -933,14 +923,13 @@ body {
     gap: 0;
   }
   #toolbar {
-    margin-left: var(--axisFontSize);
-    width:  var(--fullGridSize);
+    left: calc(var(--widthFactor) * var(--axisFontSize));
+    width: 100%;
     min-height: clamp(40px, 7.5vh, 58px);
     position: relative;
     top: clamp(40px, 7.5vh, 58px);
 
 
-    max-height:0;
 
     #pencil {
       position: absolute;
@@ -962,8 +951,9 @@ body {
     }
   }
   #domain {
-    margin-left: var(--axisFontSize);
-    width:  var(--fullGridSize);
+    left: calc(var(--widthFactor) * var(--axisFontSize));
+    width: 100%;
+    height: 100%;
     gap: 5px;
   }
 
@@ -995,6 +985,7 @@ body {
   #wrap_toolbar_domain {
     position: relative;
     top: 10px;
+    width: 100%;
   }
   @media (height > 700px) {
     #wrap_grid_domain {

@@ -435,7 +435,7 @@ body {
     font-family: "computer modern serif";
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    transition: background-color .1s ease-in, outline-color 0.2s ease, transform 0.8s ease;
+    transition: background-color .1s ease-in, border .1s ease-in, outline-color 0.2s ease, transform 0.8s ease;
     
     width: 100%;
     height: 100%;
@@ -494,15 +494,14 @@ body {
 
   span:focus {
     background: var(--focusColor);
-    &::after {
-      background-color: var(--emphasisColor);
-    }
+    border-color: var(--emphasisColor);
   }
 
   span > p {
     margin: 0;
     padding: 0;
     position: relative;
+    margin-top: 0.1em;
     overflow: hidden;
     pointer-events: none; /* Don't interfere with ripple */
 
@@ -526,16 +525,13 @@ body {
 }
 
 #grid.correct {
-  span::after {
-    width: 0%;
-    left: 50%;
-  }
   span {
-    background-color .4s ease-in, outline-color 0.2s ease, transform 0.8s ease;
+    transition: background-color .2s ease-in, border .2s, outline-color 0.2s ease;
     pointer-events: none;
     cursor: default;
     background-color: transparent;
-    outline: 0;
+    outline-color: transparent;
+    border-color: transparent;
     p {
       animation: correctFlash 0.9s forwards;
       animation-delay: 400ms;
@@ -918,6 +914,7 @@ body {
     flex-grow: 0.5;
   }
 
+
   #wrap_toolbar_domain {
     margin-top: calc(2.25vh - clamp(40px, 7.5vh, 58px));
     gap: 0;
@@ -928,8 +925,6 @@ body {
     min-height: clamp(40px, 7.5vh, 58px);
     position: relative;
     top: clamp(40px, 7.5vh, 58px);
-
-
 
     #pencil {
       position: absolute;

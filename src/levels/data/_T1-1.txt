@@ -1,6 +1,6 @@
 levelNumber=1.1
 difficulty=Training
-nextLevel=T1.2
+nextLevel=T1-2
 domain=1,2,3,4
 rows=3
 cols=3

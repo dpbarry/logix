@@ -88,8 +88,6 @@ function initLevel() {
 
     tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
     
-
-    console.log(ROWS, COLS);
     // id cells with their coordinates
     for (let i = 0; i < ROWS; i++) {
         for (let j = 0; j < COLS; j++) {
@@ -407,7 +405,6 @@ function initLevel() {
 
     function noticeCell (event) {
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
-        console.log(this, cell);
         level.querySelector("#" + cell).classList.add("noticed");
     }
 

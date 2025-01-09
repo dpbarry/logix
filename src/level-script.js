@@ -500,7 +500,7 @@ function initLevel() {
 
     level.querySelector('#propositions').addEventListener('scroll', (e) => {
         const el = e.currentTarget;
-        verticalScroll(el, 7);
+        horizontalVerticalScroll(el, 7);
     });
 
     level.querySelector('#domain').addEventListener('scroll', (e) => {
@@ -509,7 +509,8 @@ function initLevel() {
     });
 
     window.onresize = function(event) {
-        verticalScroll(level.querySelector('#propositions'), 7);
+        horizontalVerticalScroll(level.querySelector("#propositions"), 7);
+
         horizontalScroll(level.querySelector("#domain"), 7);
     }
 
@@ -705,6 +706,9 @@ function verticalScroll(el, moe) {
 
         return;
     }
+
+    el.style.overflowY = "auto";
+
     
     // One pixel is added to the height to account for non-integer heights.
     const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
@@ -736,6 +740,9 @@ function horizontalScroll(el, moe) {
 
         return;
     }
+
+    el.style.overflowX = "auto";
+
     
     // One pixel is added to the height to account for non-integer heights.
     const isScrolledToRight = el.scrollWidth  < el.clientWidth + el.scrollLeft + 1;
@@ -755,3 +762,52 @@ function horizontalScroll(el, moe) {
 
     el.style.maskImage = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
 }
+
+function horizontalVerticalScroll(el, moe) {
+    let horizontalMask = "";
+    let verticalMask = "";
+
+    let isScrollable = el.scrollWidth - moe > el.clientWidth;
+
+    if (!isScrollable) {
+        el.style.overflowX = "visible";
+    } else {
+        el.style.overflowX = "auto";
+
+        const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollLeft + 1;
+        const isScrolledToLeft = el.scrollLeft === 0;
+
+        let left = isScrolledToLeft ? 0 : 40;
+        let right = isScrolledToRight ? 0 : 40;
+
+        horizontalMask = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
+    }
+
+    isScrollable = el.scrollHeight - moe > el.clientHeight;
+
+    if (!isScrollable) {
+        el.style.overflowY = "visible";
+    } else {
+        el.style.overflowY = "auto";
+
+        const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+        const isScrolledToTop = el.scrollTop === 0;
+
+        let top = isScrolledToTop ? 0 : 40;
+        let bottom = isScrolledToBottom ? 0 : 40;
+
+        verticalMask = `linear-gradient(to bottom, transparent 0, black ${top}px, black calc(100% - ${bottom}px), transparent 100%)`;
+    }
+
+    if (horizontalMask && verticalMask) {
+        el.style.maskImage = `${horizontalMask}, ${verticalMask}`;
+        el.style.maskComposite = "intersect"; 
+    } else if (horizontalMask) {
+        el.style.maskImage = horizontalMask;
+    } else if (verticalMask) {
+        el.style.maskImage = verticalMask;
+    } else {
+        el.style.maskImage = "";
+    }
+}
+

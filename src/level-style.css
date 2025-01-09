@@ -31,9 +31,9 @@
   --gridPadding: 20px;
   --gridBorderWidth: 4px;
   --gridOffset: 1.5vh;
-  --maxGridWidth: calc(min(38vh, 66vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-  --gridWidth: calc(var(--widthFactor) * min(38vh, 66vw) - (1 - var(--widthFactor)) * var(--gridGap));
-  --gridHeight: calc(var(--heightFactor) * min(38vh, 66vw) - (1 - var(--heightFactor)) * var(--gridGap));
+  --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap));
+  --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap));
   
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
@@ -597,9 +597,13 @@ body {
   scrollbar-width: none;
   overflow-x: auto;
 
+  min-width: var(--maxGridWidth);
+  max-width: 93vw;
   li {
     padding: 3.5px;
     width: 95%;
+
+    white-space: nowrap;
 
     &:first-child { margin-top: auto; }
     &:last-child { margin-bottom: auto; }
@@ -995,7 +999,6 @@ body {
     margin-bottom: 1vh;
     align-self: center;
     text-align: center;
-    width: 70vw;
     height: 32.75vh; /* REDUCED WHEN <4 PROPOSITIONS */
     li {
       width: unset;

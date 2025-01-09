@@ -31,9 +31,9 @@
   --gridPadding: 20px;
   --gridBorderWidth: 4px;
   --gridOffset: 1.5vh;
-  --maxGridWidth: calc(min(38vh, 60vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-  --gridWidth: calc(var(--widthFactor) * min(38vh, 60vw) - (1 - var(--widthFactor)) * var(--gridGap));
-  --gridHeight: calc(var(--heightFactor) * min(38vh, 60vw) - (1 - var(--heightFactor)) * var(--gridGap));
+  --maxGridWidth: calc(min(38vh, 66vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  --gridWidth: calc(var(--widthFactor) * min(38vh, 66vw) - (1 - var(--widthFactor)) * var(--gridGap));
+  --gridHeight: calc(var(--heightFactor) * min(38vh, 66vw) - (1 - var(--heightFactor)) * var(--gridGap));
   
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
@@ -179,6 +179,7 @@ body {
   width: min-content;
   height: 37px;
   cursor: pointer;
+  margin-bottom: 2px;
 }
 
 #home {
@@ -213,11 +214,11 @@ body {
   font-family: "source serif 4";
   font-style: italic;
   font-weight: 365;
-  font-size: 0.9rem;
+  font-size: 0.87rem;
   display: block;
   max-height: 2px;
   position: relative;
-  bottom: 14px;
+  bottom: 14.5px;
   margin: 0;
   width: 100%;
   opacity: 0;
@@ -344,8 +345,10 @@ body {
   grid-template-rows: var(--fullGridHeight) var(--axisFontSize);
 
   justify-content: center;
+  align-content: center;
 
   width: 100%;
+  height: calc(var(--maxGridWidth) + var(--axisFontSize));
 
   position: relative;
   
@@ -595,7 +598,7 @@ body {
   overflow-x: auto;
 
   li {
-    padding: 4px;
+    padding: 3.5px;
     width: 95%;
 
     &:first-child { margin-top: auto; }
@@ -662,6 +665,7 @@ body {
   flex-direction: column;
   justify-content: center;
   width: calc(var(--maxGridWidth) + var(--axisFontSize));
+  
 }
 
 #wrap_toolbar_domain {

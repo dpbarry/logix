@@ -31,9 +31,9 @@
   --gridPadding: 20px;
   --gridBorderWidth: 4px;
   --gridOffset: 1.5vh;
-  --maxGridWidth: calc(min(38vh, 80vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-  --gridWidth: calc(var(--widthFactor) * min(38vh, 80vw) - (1 - var(--widthFactor)) * var(--gridGap));
-  --gridHeight: calc(var(--heightFactor) * min(38vh, 80vw) - (1 - var(--heightFactor)) * var(--gridGap));
+  --maxGridWidth: calc(min(38vh, 73vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  --gridWidth: calc(var(--widthFactor) * min(38vh, 73vw) - (1 - var(--widthFactor)) * var(--gridGap));
+  --gridHeight: calc(var(--heightFactor) * min(38vh, 73vw) - (1 - var(--heightFactor)) * var(--gridGap));
   
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));

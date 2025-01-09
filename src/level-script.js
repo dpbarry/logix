@@ -134,25 +134,32 @@ function initLevel() {
     
 
     function insert(cell, value) {
+        let text = cell.querySelector("p");
+        let opts = cell.querySelector("ul");
 
         if (candidateMode) {
-            let opts = cell.querySelector("ul");
-
-            if (opts === null) {
-                opts = document.createElement("ul");
+            if (text.innerHTML.trim()) {
+                text.classList.add("dismiss");
+                text.addEventListener("animationend", endDismissWipe);
             }
-
+            
             let newLi = document.createElement("li");
             newLi.innerText = value;
 
+            if (opts === null) {
+                opts = document.createElement("ul");
+                opts.appendChild(newLi);
+                cell.appendChild(opts);
+                return;
+            }
             opts.appendChild(newLi);
-
-            cell.appendChild(opts);
-
+            
             return;
         }
 
-        let text = cell.querySelector("p");
+        if (opts && opts.children) {
+            opts.replaceChildren();
+        }
 
         if (use_cancelout && text.innerHTML.trim() === value.trim()) {
             flushInsert = new AnimationEvent("animationend");
@@ -191,7 +198,7 @@ function initLevel() {
             redoStack = [];
             redoButton.classList.remove("usable");
             
-            if (debounced === 0) {
+            if (debounced === 0 || candidateMode) {
 
                 let button = null;
                 domainList.forEach( (b) => {
@@ -366,8 +373,11 @@ function initLevel() {
         setTimeout(function () {
             cellActive = false;
 
-            if (use_sticky && !(level.querySelector("#grid").contains(document.activeElement))
-                && document.activeElement.parentNode.id != "toolbar" && document.activeElement != document.body) {
+            if (use_sticky
+                && !(level.querySelector("#grid").contains(document.activeElement))
+                && document.activeElement.parentNode.id != "toolbar"
+                && document.activeElement != document.body
+                || pencilButtonClicked) {
                 this.focus();
 
             } else {
@@ -399,13 +409,33 @@ function initLevel() {
             } else {
                 entry.parentNode.classList.remove("highlight");
             }
-        }
-                         );
+        });
     }
+
+    function noticeEntry (event) {
+        let entry = "e" + this.id.charAt(1) + "e" + this.id.charAt(3);
+        let enclose = level.querySelector("#" + entry).parentNode;
+        enclose.classList.add("noticed");
+
+        if (this.classList.contains("given")) {
+            enclose.classList.add("given");
+        }
+    }
+
+    function removeNoticeEntry (event) {
+        let entry = "e" + this.id.charAt(1) + "e" + this.id.charAt(3);
+        level.querySelector("#" + entry).parentNode.classList.remove("noticed");
+    }
+
 
     function noticeCell (event) {
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
-        level.querySelector("#" + cell).classList.add("noticed");
+        let td = level.querySelector("#" + cell)
+        td.classList.add("noticed");
+
+        if (td.classList.contains("given")) {
+            this.parentNode.classList.add("given");
+        }
     }
 
     function removeNoticeCell (event) {
@@ -424,7 +454,10 @@ function initLevel() {
         }, 0);
     }
 
-
+    cellList.forEach( (cell) => {
+        cell.addEventListener("mouseover", noticeEntry);
+        cell.addEventListener("mouseleave", removeNoticeEntry);
+    });
     entryList.forEach( (entry) => {
         entry.addEventListener("mouseover", noticeCell);
         entry.addEventListener("mouseleave", removeNoticeCell);
@@ -464,8 +497,12 @@ function initLevel() {
         setTimeout(function () {
             domainActive = false;
 
-            if (use_sticky && document.activeElement.parentNode.id != "domain" && document.activeElement.parentNode.id != "toolbar"
-                && document.activeElement != document.body) {
+            if (use_sticky
+                && document.activeElement.parentNode.id != "domain"
+                && document.activeElement.parentNode.id != "toolbar"
+                && document.activeElement != document.body
+                || pencilButtonClicked
+               ) {
                 e.target.focus({preventScroll: true});
             } else {
                 cellList.forEach((cell) => {
@@ -660,7 +697,11 @@ function initLevel() {
 
     
 
+    let pencilButtonClicked = false;
     function candidateToggle(e) {
+        pencilButtonClicked = true;
+
+        setTimeout( () => pencilButtonClicked = false, 10);
         candidateMode = !candidateMode;
         if (candidateMode) {
             e.target.classList.add("active");

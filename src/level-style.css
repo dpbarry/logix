@@ -12,8 +12,8 @@
   --darkerShade: hsl(50, 18%, 35%);
   --darkestShade: hsl(50, 18%, 25%);
 
-  --focusColor: hsl(50, 43%, 85%);
-  --emphasisColor: hsl(50, 43%, 44%);
+  --focusColor: hsl(50, 37%, 86%);
+  --emphasisColor: hsl(50, 37%, 45%);
   --correctColor: hsl(130, 35%, 35%);
   
   --successPrompt: "Next level...";
@@ -474,9 +474,12 @@ body {
 
 
   @media(hover: hover) and (pointer: fine) {
-    span:hover {
+    span:not(.given):hover {
       background-color: var(--lighterShade);
       border-color: var(--emphasisColor);
+    }
+    span.given:hover {
+      color: #AAA;
     }
   }
   span:not(.given).noticed {
@@ -485,12 +488,11 @@ body {
   }
 
   span.given.noticed {
-    color: var(--emphasisColor);
+    color: #AAA;
   }
   
   
   span.given {
-    pointer-events: none;
     cursor: default;
 
     .ripple {
@@ -537,11 +539,22 @@ body {
     height: 100%;
     padding: 0;
     width: 80%;
+    height: 88%;
     flex-wrap: wrap;
     position: absolute;
-    gap: 5px;
+    gap: 2px;
     margin: 0;
-    justify-content: space-evenly;
+    margin-top: 0.1em;
+    justify-content: center;
+    
+
+    li {
+      transform: 0;
+      transition: transform 0.2s;
+      @starting-style {
+        transform: translateY(100%);
+      }
+    }
   }
 }
 
@@ -639,6 +652,10 @@ body {
       cursor: default;
     }
 
+    span.entry.given::before {
+      filter: saturate(0.1);
+    }
+
     @media (hover: hover) and (pointer: fine) {
 
       span.entry:not(.correct, .highlight):hover::before {
@@ -647,6 +664,13 @@ body {
         transition: opacity 0.1s ease-in;
 
       }
+
+    }
+
+    span.entry:not(.correct, .highlight).noticed::before {
+      opacity: 0.5;
+
+      transition: opacity 0.1s ease-in;
     }
     span.entry.highlight::before {
       opacity: 1;
@@ -756,7 +780,9 @@ body {
 
   #pencil.active::after {
     opacity: 1;
+    filter: invert(56%) sepia(63%) saturate(351%) hue-rotate(13deg) brightness(89%) contrast(82%);
   }
+
   #undo:not(.usable), #redo:not(.usable), #pencil:not(.usable) {
     cursor: default;
     pointer-events: none;

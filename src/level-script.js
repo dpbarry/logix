@@ -42,6 +42,8 @@ function initLevel() {
     var cellActive = false;
     var domainActive = false;
 
+    let candidateMode = false;
+
 
     const max = Math.max(ROWS, COLS);
 
@@ -134,6 +136,23 @@ function initLevel() {
     
 
     function insert(cell, value) {
+
+        if (candidateMode) {
+            let opts = cell.querySelector("ul");
+
+            if (opts === null) {
+                opts = document.createElement("ul");
+            }
+
+            let newLi = document.createElement("li");
+            newLi.innerText = value;
+
+            opts.appendChild(newLi);
+
+            cell.appendChild(opts);
+
+            return;
+        }
 
         let text = cell.querySelector("p");
 
@@ -291,10 +310,7 @@ function initLevel() {
         pencilButton.classList.remove("usable");
 
         entryList.forEach((entry) => {
-            entry.removeEventListener("mouseover", noticeCell);
-            entry.removeEventListener("mouseleave", removeNoticeCell);
-            entry.removeEventListener("pointerdown", jumpToCell);
-            entry.classList.add("correct");
+            entry.parentNode.style.pointerEvents = "none";
         })
         
         // Only blur what might be a domain button after handler is removed
@@ -641,6 +657,31 @@ function initLevel() {
     undoButton.addEventListener("pointerdown", undo);
 
     redoButton.addEventListener("pointerdown", redo);
+
+    pencilButton.addEventListener("pointerdown", candidateToggle);
+
+    
+
+    function candidateToggle(e) {
+        candidateMode = !candidateMode;
+        if (candidateMode) {
+            e.target.classList.add("active");
+        } else {
+            e.target.classList.remove("active");
+        }
+    }
+
+
+    
+    level.querySelectorAll("#pencil, #undo, #redo").forEach(li => {
+        li.addEventListener("pointerdown", (event) => {
+            event.target.classList.add("nudged");
+
+            event.target.addEventListener("pointerup", (event) => {
+                event.target.classList.remove("nudged");
+            })
+        })
+    });
 
 
 

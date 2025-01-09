@@ -43,7 +43,7 @@ body {
   }
 }
 
-.nudged {
+.nudged, .nudged::after {
   transform: scale(0.95);
 }
 

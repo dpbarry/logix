@@ -463,7 +463,6 @@ body {
   }
 
 
-
   span:not(.given) {
     background-color: var(--lightestShade);
     
@@ -525,6 +524,21 @@ body {
     &.dismiss {
       animation: fade 0.12s cubic-bezier(.65,-0.4,0,0) forwards reverse;
     }
+  }
+
+  span ul {
+    list-style-type: none;
+    display: flex;
+    font-size: 1.05rem;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+    width: 80%;
+    flex-wrap: wrap;
+    position: absolute;
+    gap: 5px;
+    margin: 0;
+    justify-content: space-evenly;
   }
 }
 
@@ -725,19 +739,21 @@ body {
       filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .1));
 
     }
-    #pencil:hover::after, #undo.usable:hover::after, #redo.usable:hover::after {
+    #pencil.usable:hover::after, #undo.usable:hover::after, #redo.usable:hover::after {
       opacity: 1;
     }
 
   }
 
-  #undo:not(.usable), #redo:not(.usable) {
+  #pencil.active::after {
+    opacity: 1;
+  }
+  #undo:not(.usable), #redo:not(.usable), #pencil:not(.usable) {
     cursor: default;
-
+    pointer-events: none;
     &::after {
       opacity: 0.35;
     }
-
   }
 
   #undo.usable::after, #redo.usable::after {

@@ -32,13 +32,13 @@
   --gridBorderWidth: 4px;
   --gridOffset: 1.5vh;
   --maxGridWidth: calc(min(38vh, 80vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-    --gridWidth: calc(var(--widthFactor) * min(38vh, 80vw) - (1 - var(--widthFactor)) * var(--gridGap));
-    --gridHeight: calc(var(--heightFactor) * min(38vh, 80vw) - (1 - var(--heightFactor)) * var(--gridGap));
-    
-    --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-    --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  --gridWidth: calc(var(--widthFactor) * min(38vh, 80vw) - (1 - var(--widthFactor)) * var(--gridGap));
+  --gridHeight: calc(var(--heightFactor) * min(38vh, 80vw) - (1 - var(--heightFactor)) * var(--gridGap));
+  
+  --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
-    --domainButtonHeight: 56px;
+  --domainButtonHeight: 56px;
 }
 
 @property --lightBlue {
@@ -435,7 +435,7 @@ body {
     font-family: "computer modern serif";
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    transition: background-color .1s ease-in, border .1s ease-in, outline-color 0.2s ease, transform 0.8s ease;
+    transition: background-color .1s ease-in, border .1s ease-in, outline-color 0.2s ease, color .1s ease-in, transform 0.8s ease;
     
     width: 100%;
     height: 100%;
@@ -472,27 +472,31 @@ body {
 
 
   @media(hover: hover) and (pointer: fine) {
-    span:hover, span.noticed {
+    span:hover {
       background-color: var(--lighterShade);
-       border-color: var(--emphasisColor);
+      border-color: var(--emphasisColor);
     }
   }
-  span.noticed {
+  span:not(.given).noticed {
     background-color: var(--lighterShade);
-    &::after {
-      background-color: var(--emphasisColor);
-    }
+    border-color: var(--emphasisColor);
   }
 
-  
+  span.given.noticed {
+    color: var(--emphasisColor);
+  }
   
   
   span.given {
     pointer-events: none;
     cursor: default;
+
+    .ripple {
+      display: none;
+    }
   }
 
-  span:focus {
+  span:not(.given):focus {
     background: var(--focusColor);
     border-color: var(--emphasisColor);
   }

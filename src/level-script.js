@@ -122,8 +122,16 @@ function initLevel() {
         text.innerHTML = text.innerHTML.substring(0, text.innerHTML.length-1);
         text.removeEventListener("animationend", endDismiss);
         values.set(e.target.parentNode, text.innerHTML);
-
     }
+
+    function endDismissWipe(e) {
+        let text = e.target;
+        text.classList.remove("dismiss");
+        text.innerHTML = "";
+        text.removeEventListener("animationend", endDismissWipe);
+        values.set(e.target.parentNode, "");
+    }
+    
 
     function insert(cell, value) {
 
@@ -135,7 +143,7 @@ function initLevel() {
 
             setTimeout(() => {
                 text.classList.add("dismiss");
-                text.addEventListener("animationend", endDismiss);
+                text.addEventListener("animationend", endDismissWipe);
             }, 1); // ensure insert handler has been removed
             return;
         }
@@ -157,31 +165,42 @@ function initLevel() {
     function inp (event) {
         let text = event.target.querySelector("p");
 
-        if (DOMAIN.includes(parseInt(event.key)) || event.key === "Backspace") { 
+        
+        if (!(text.innerText.length === MAXLENGTH) && DOMAIN.some(x => x.toString().startsWith(text.innerText + event.key))) {
             if (undoStack.length == 0) {
                 undoButton.classList.add("usable");
             }
             undoStack.push([event.target, text.innerHTML]);
             redoStack = [];
             redoButton.classList.remove("usable");
-        }
-        
-        if (DOMAIN.includes(parseInt(event.key))) {
+            
             if (debounced === 0) {
 
                 let button = null;
                 domainList.forEach( (b) => {
-                    if (b.textContent.trim() === event.key) {
+                    if (b.textContent.trim() === (text.innerText + event.key)) {
                         button = b;
                     }
                 });
-                button.classList.add("pushed");
+
+                if (button !== null) {
+                    button.classList.add("pushed");
+                    
+                    debounced++;
+                    
+                }
                 
-                debounced++;
+                insert(event.target, text.innerText + event.key);
             }
-            insert(event.target, event.key);
             
         } else if (event.key === "Backspace") {
+            if (undoStack.length == 0) {
+                undoButton.classList.add("usable");
+            }
+            undoStack.push([event.target, text.innerHTML]);
+            redoStack = [];
+            redoButton.classList.remove("usable");
+            
             flushInsert = new AnimationEvent("animationend");
             text.dispatchEvent(flushInsert);
 

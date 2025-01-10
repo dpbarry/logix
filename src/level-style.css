@@ -292,22 +292,14 @@ body {
     transform: none;
   }
 
-  li {
-    display: block;
+  .dialog_button {
     height: 39px;
     width: 100%;
     margin-bottom: 14px;
-
-    cursor: pointer;
-
-    z-index: 1; /* Otherwise hitbox gets covered by #wrap_main spacing */
-
-    opacity: 1;
-    transition: opacity 0.2s, transform 0.1s;
   }
 
-  @media(hover: hover) and (pointer: fine) {
-    li:hover { opacity: 0.72; }
+  @media (hover: hover) and (pointer: fine) {
+    .dialog_button:hover { opacity: 0.72; }
   }
 
 
@@ -317,17 +309,7 @@ body {
   #settings { content: url("../assets/SETTINGS.svg"); }
 }
 
-#configs {
-  margin-left: 2vw;
-  margin-right: 2vw;
-  font-size: 1.4rem;
-  font-weight: 400;
-  display:flex;
-  align-items: flex-end;
-  justify-content: left;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+
 
 
 #wrap_main {

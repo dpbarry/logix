@@ -1,7 +1,7 @@
 <div class="page home">
     <button id="about" class="home dialog_button" onclick="showModal('info_dialog')"></button>
 
-    <button id="preferences" class="home dialog_button" onclick="showModal('preferences_dialog')"></button>
+    <button id="settings" class="home dialog_button" onclick="showModal('settings_dialog')"></button>
 
     <div id="overlay"></div>
 
@@ -9,19 +9,27 @@
         <a class="close"></a>
         <h1>Info</h1>
     </dialog>
-    <dialog id="preferences_dialog">
-        <a class="close"></a>
-        <h1>Preferences</h1>
-        <div id="options">
-            <label for="theme"> Theme </label>
-            <input id="theme" type="checkbox" checked>
-            <p>todo</p>
+  <dialog id="settings_dialog">
+            <a class="close"></a>
+            <h1>Settings</h1>
+            <div id="configs">
+                <label for="sticky_toggle"> Sticky Input </label>
+                <input id="sticky_toggle" type="checkbox" checked="">
+                <p>Input selection persists after filling a cell</p>
+                
+                <label for="highlight_toggle"> Highlight </label>
+                <input id="highlight_toggle" type="checkbox" checked="">
+                <p>Highlight appearances of selected cell in propositions</p>
+                
+                <label for="crosshairs_toggle"> Crosshairs </label>
+                <input id="crosshairs_toggle" type="checkbox">
+                <p>Emphasize row and column of selected cell</p>
 
-            <label for="language"> Language </label>
-            <input id="language" type="checkbox" checked>
-            <p>todo</p>
-        </div>
-    </dialog>
+                <label for="cancelout_toggle"> Cancel Out </label>
+                <input id="cancelout_toggle" type="checkbox" checked="">
+                <p>Clear a cell by inputting its current value</p>
+            </div>
+  </dialog>
 
 
 
@@ -216,8 +224,6 @@
                 <li id="E34" class="level-button locked">34</li>
                 <li id="E35" class="level-button locked">35</li>
             </ul>
-
         </ul>
-
     </div>
 </div>

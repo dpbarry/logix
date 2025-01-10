@@ -2,7 +2,7 @@ function setupHome() {
     const stages = document.querySelectorAll(".trainstage");
 
     function toggleDropped(e) {
-        if (e.type == "keydown" && e.key != " " && e.key != "Enter") return;
+        if (e.type === "keydown" && e.key !== " " && e.key !== "Enter") return;
         
         let target = e.target.closest(".trainstage");
 
@@ -14,45 +14,42 @@ function setupHome() {
             })
             target.classList.add("dropped");
         }
-        
         target.blur();
     }
 
-    
-    stages.forEach((s) => {
-        s.onclick = toggleDropped;
-        s.onkeydown = toggleDropped;
-        s.tabIndex = 0;
+    stages.forEach( (stage) => {
+        stage.onclick = toggleDropped;
+        stage.onkeydown = toggleDropped;
+        stage.tabIndex = 0;
     });
 
     document.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
+        b.tabIndex = 0;
         
         b.onclick = function (e) {
-            e.target.classList.add("activated");
+            // e.target.classList.add("activated");
 
-            setTimeout(function () {
+            setTimeout( () => {
                 Router(e.target.id);
                 history.pushState({loc:e.target.id}, "");
-            }, 50);
+            }, 15);
         };
         
         b.onkeydown = function (e) {
-            if (e.key != " " && e.key != "Enter") return;
-            e.target.classList.add("activated");
+            if (e.key !== " " && e.key !== "Enter") return;
+            
+            // e.target.classList.add("activated");
+            
             setTimeout(function () {
                 Router(e.target.id);
                 history.pushState({loc:e.target.id}, "");
-            }, 50);
+            }, 15);
         };
-
-        
     });
 
-    
-    document.querySelectorAll(".level-button").forEach(l => {
-        if (!l.classList.contains("locked")) l.tabIndex = 0;
-        l.addEventListener("pointerdown", (e) => {
-            l.classList.add("nudged");
+    document.querySelectorAll(".level-button").forEach(b => {
+        b.addEventListener("pointerdown", (e) => {
+            b.classList.add("nudged");
         });
     });
 
@@ -60,6 +57,4 @@ function setupHome() {
         Router("index.html");
         history.pushState({loc:"index.html"}, "");
     }
-
-
 }

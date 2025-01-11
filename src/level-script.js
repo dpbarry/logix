@@ -188,7 +188,6 @@ function initLevel() {
 
     function inp (event) {
         let text = event.target.querySelector("p");
-
         
         if (!(text.innerText.length === MAXLENGTH) && DOMAIN.some(x => x.toString().startsWith(text.innerText + event.key))) {
             if (undoStack.length == 0) {
@@ -455,6 +454,7 @@ function initLevel() {
     }
 
     cellList.forEach( (cell) => {
+        if (cell.classList.contains("given")) return;
         cell.addEventListener("mouseover", noticeEntry);
         cell.addEventListener("mouseleave", removeNoticeEntry);
     });

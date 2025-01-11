@@ -27,7 +27,7 @@
   --heightSubtrahend: 0;
   
   --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
-  --gridGap: 8px;
+  --gridGap: 7px;
   --gridPadding: 20px;
   --gridBorderWidth: 4px;
   --gridOffset: 1.5vh;
@@ -455,15 +455,14 @@ body {
   }
 
 
-  @media(hover: hover) and (pointer: fine) {
-    span:not(.given):hover {
-      background-color: var(--lighterShade);
-      border-color: var(--emphasisColor);
-    }
-    span.given:hover {
-      color: #AAA;
-    }
+  span:not(.given):hover {
+    background-color: var(--lighterShade);
+    border-color: var(--emphasisColor);
   }
+  span.given:hover {
+    color: #AAA;
+  }
+  
   span:not(.given).noticed {
     background-color: var(--lighterShade);
     border-color: var(--emphasisColor);
@@ -638,16 +637,14 @@ body {
       filter: saturate(0.1);
     }
 
-    @media (hover: hover) and (pointer: fine) {
 
-      span.entry:not(.correct, .highlight):hover::before {
-        opacity: 0.5;
+    span.entry:not(.correct, .highlight):hover::before {
+      opacity: 0.5;
 
-        transition: opacity 0.1s ease-in;
-
-      }
+      transition: opacity 0.1s ease-in;
 
     }
+
 
     span.entry:not(.correct, .highlight).noticed::before {
       opacity: 0.5;

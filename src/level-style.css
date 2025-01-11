@@ -225,6 +225,11 @@ body {
   transition: opacity 0.3s;
 }
 
+#menu:has(#menu_checkbox:checked) ~ #wrap_main > #propositions {
+  min-width: calc(var(--maxGridWidth) - 75px);
+  max-width: calc(92vw - 75px);
+}
+
 #menu {
   position: absolute;
   top: 2vmin;
@@ -593,7 +598,9 @@ body {
   overflow-x: auto;
 
   min-width: var(--maxGridWidth);
-  max-width: 93vw;
+  max-width: 92vw;
+
+  transition: max-width 0.1s, min-width 0.1s;
   li {
     padding: 3.5px;
     width: 95%;

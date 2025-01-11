@@ -735,6 +735,10 @@ function initLevel() {
         }
     }
 
+       setTimeout(() => {
+        level.querySelector("#propositions").style.animationDuration = "0.14s";
+    }, 250);
+
     
 }
 

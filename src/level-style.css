@@ -225,11 +225,6 @@ body {
   transition: opacity 0.3s;
 }
 
-#menu:has(#menu_checkbox:checked) ~ #wrap_main > #propositions {
-  min-width: calc(var(--maxGridWidth) - 75px);
-  max-width: calc(92vw - 75px);
-}
-
 #menu {
   position: absolute;
   top: 2vmin;
@@ -597,10 +592,8 @@ body {
   scrollbar-width: none;
   overflow-x: auto;
 
-  min-width: var(--maxGridWidth);
-  max-width: 92vw;
 
-  transition: max-width 0.1s, min-width 0.1s;
+  transition: width 0.1s;
   li {
     padding: 3.5px;
     width: 95%;
@@ -1015,11 +1008,23 @@ body {
     align-self: center;
     text-align: center;
     height: 32.75vh; /* REDUCED WHEN <4 PROPOSITIONS */
+    width: 85vw;
+
     li {
       width: unset;
     }
   }
 
+  #menu:has(#menu_checkbox:checked) ~ #wrap_main > #propositions {
+    animation: shrinkPropositions forwards;
+    animation-duration: 0s;
+  }
+
+  #menu:not(:has(#menu_checkbox:checked)) ~ #wrap_main > #propositions {
+    animation: expandPropositions forwards;
+    animation-duration: 0s;
+  }
+  
   #wrap_toolbar_domain {
     position: relative;
     top: 10px;
@@ -1042,4 +1047,14 @@ body {
   #wrap_axis_grid {
     right: var(--gridOffset);
   }
+}
+
+@keyframes shrinkPropositions {
+  from {width: 85vw; }
+  to { width: calc(85vw - 75px); }
+}
+
+@keyframes expandPropositions {
+  from {width: calc(85vw - 75px); }
+  to { width: 85vw; }
 }

@@ -127,11 +127,17 @@
          setTimeout(function() {
            newPage.style.display = "block";
 
-           horizontalVerticalScroll(newPage.querySelector("#prop_container"), 7);
-           centerPropositions(newPage.querySelector("#prop_container"));
+           setTimeout(function() {
+             horizontalVerticalScroll(newPage.querySelector("#prop_container"), 7);
+             centerPropositions(newPage.querySelector("#prop_container"));
 
-           horizontalScroll(newPage.querySelector('#domain'), 7);           
+             horizontalScroll(newPage.querySelector('#domain'), 7);
+             
+             
+           }, 100);
          }, 10);
+
+         
 
          setTimeout(function() {
            oldPage.remove();

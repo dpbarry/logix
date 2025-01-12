@@ -849,9 +849,6 @@ function horizontalVerticalScroll(el, moe) {
         let left = isScrolledToLeft ? 0 : 40;
         let right = isScrolledToRight ? 0 : 40;
 
-        if (moe === -32) {
-            right = 40;
-        }
         horizontalMask = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
     }
 

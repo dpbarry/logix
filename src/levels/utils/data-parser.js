@@ -42,7 +42,11 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
     page.getElementById("level").innerHTML = levelNumber;
     page.getElementById("difficulty").innerHTML = difficulty;
 
-    for (let i =0; i < propositions.length; i++ ) {
+    if (levelNumber !== "1.1" || difficulty !== "Training") {
+        page.getElementById("menu_checkbox").removeAttribute('checked');
+    }
+    
+    for (let i =0; i < propositions.length; i++) {
         let varCounter = 1;
 
         // identify entries to wrap in spans

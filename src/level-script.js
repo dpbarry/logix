@@ -18,6 +18,7 @@ function initLevel() {
     const STICKY_TOGGLE = level.querySelector("#sticky_toggle");
     const CANCELOUT_TOGGLE = level.querySelector("#cancelout_toggle");
 
+    const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
     // fetch all inputs and cells
     const cellList = level.querySelectorAll('#grid span:not(.x_axis, .y_axis)');
@@ -44,6 +45,8 @@ function initLevel() {
 
     let candidateMode = false;
 
+    let menuDropped = level.querySelector("#menu_checkbox").checked;
+
 
     const max = Math.max(ROWS, COLS);
 
@@ -66,7 +69,6 @@ function initLevel() {
         document.documentElement.style.setProperty('--heightFactor', 1);
         document.documentElement.style.setProperty('--widthFactor', 1);
     }
-    
 
 
 
@@ -119,15 +121,15 @@ function initLevel() {
     function endDismiss(e) {
         let text = e.target;
         text.classList.remove("dismiss");
-        text.innerHTML = text.innerHTML.substring(0, text.innerHTML.length-1);
+        text.innerText = text.innerText.substring(0, text.innerText.length-1);
         text.removeEventListener("animationend", endDismiss);
-        values.set(e.target.parentNode, text.innerHTML);
+        values.set(e.target.parentNode, text.innerText);
     }
 
     function endDismissWipe(e) {
         let text = e.target;
         text.classList.remove("dismiss");
-        text.innerHTML = "";
+        text.innerText = "";
         text.removeEventListener("animationend", endDismissWipe);
         values.set(e.target.parentNode, "");
     }
@@ -138,13 +140,13 @@ function initLevel() {
         let opts = cell.querySelector("ul");
 
         if (candidateMode) {
-            if (text.innerHTML.trim()) {
+            if (text.innerText.trim()) {
                 text.classList.add("dismiss");
                 text.addEventListener("animationend", endDismissWipe);
             }
             
             let newLi = document.createElement("li");
-            newLi.innerText = value;
+            newLi.innerText = value.trim();
 
             if (opts === null) {
                 opts = document.createElement("ul");
@@ -161,7 +163,7 @@ function initLevel() {
             opts.replaceChildren();
         }
 
-        if (use_cancelout && text.innerHTML.trim() === value.trim()) {
+        if (use_cancelout && text.innerText.trim() === value.trim()) {
             flushInsert = new AnimationEvent("animationend");
             text.dispatchEvent(flushInsert);
 
@@ -175,7 +177,7 @@ function initLevel() {
         text.dispatchEvent(flushDismiss);
         
         setTimeout(() => {
-            text.innerHTML = value;
+            text.innerText = value.trim();
             text.classList.add("insert");
             text.addEventListener("animationend", endInsert);
         }, 1); // ensure dismiss handler has been removed
@@ -187,40 +189,28 @@ function initLevel() {
     }
 
     function inp (event) {
-        let text = event.target.querySelector("p");
-        
-        if (!(text.innerText.length === MAXLENGTH) && DOMAIN.some(x => x.toString().startsWith(text.innerText + event.key))) {
-            if (undoStack.length == 0) {
-                undoButton.classList.add("usable");
-            }
-            undoStack.push([event.target, text.innerHTML]);
-            redoStack = [];
-            redoButton.classList.remove("usable");
-            
-            if (debounced === 0 || candidateMode) {
+        let text = event.target.querySelector("p").innerText.trim();
 
-                let button = null;
-                domainList.forEach( (b) => {
-                    if (b.textContent.trim() === (text.innerText + event.key)) {
-                        button = b;
-                    }
-                });
+        let button = null;
 
-                if (button !== null) {
-                    button.classList.add("pushed");
-                    
-                    debounced++;
-                    
-                }
-                
-                insert(event.target, text.innerText + event.key);
-            }
-            
+        if (text.length < MAXLENGTH) {
+            if (DOMAIN.some(x => x.toString().startsWith(text + event.key))) {
+                pressButton(text + event.key);
+                insert(event.target, text + event.key);
+            } else if (DOMAIN.some(x => x.toString().startsWith(event.key))) {
+                pressButton(event.key);
+                insert(event.target, event.key);
+            } else {
+                return;
+            }  
+        } else if (DOMAIN.some(x => x.toString().startsWith(event.key))) {
+            pressButton(event.key);
+            insert(event.target, event.key);   
         } else if (event.key === "Backspace") {
             if (undoStack.length == 0) {
                 undoButton.classList.add("usable");
             }
-            undoStack.push([event.target, text.innerHTML]);
+            undoStack.push([event.target, text.innerText]);
             redoStack = [];
             redoButton.classList.remove("usable");
             
@@ -232,8 +222,39 @@ function initLevel() {
                 text.addEventListener("animationend", endDismiss);
             }, 1); // ensure insert handler has been removed
 
+            return;         
+        } else {
+            return;
         }
+
+        
+        if (undoStack.length === 0) {
+            undoButton.classList.add("usable");
+        }
+        undoStack.push([event.target, text]);
+        redoStack = [];
+        redoButton.classList.remove("usable");
+        
+        
+        
         checkGrid();
+    }
+
+    function pressButton(text) {
+        if (debounced === 0 || candidateMode) {
+
+            domainList.forEach( (b) => {
+                if (b.textContent.trim() === (text)) {
+                    button = b;
+                }
+            });
+
+            if (button !== null) {
+                button.classList.add("pushed");
+                
+                debounced++;
+            }
+        }
     }
 
     function checkGrid() {
@@ -254,7 +275,7 @@ function initLevel() {
         }
     }
 
-    
+
 
 
     function success() {
@@ -325,7 +346,7 @@ function initLevel() {
 
 
     let debounced = 0;
-    
+
     function lockCell () {
         crosshairs(this.id);
         highlight(this.id);
@@ -350,7 +371,7 @@ function initLevel() {
                     if (undoStack.length === 0) {
                         undoButton.classList.add("usable");
                     }
-                    undoStack.push([this, this.firstChild.innerHTML]);
+                    undoStack.push([this, this.firstChild.innerText.trim()]);
                     redoStack = [];
                     redoButton.classList.remove("usable");
                     
@@ -412,8 +433,11 @@ function initLevel() {
     }
 
     function noticeEntry (event) {
-        let entry = "e" + this.id.charAt(1) + "e" + this.id.charAt(3);
-        let enclose = level.querySelector("#" + entry).parentNode;
+        let entry = level.querySelector("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
+
+        if (entry === null) return;
+        
+        let enclose = entry.parentNode;
         enclose.classList.add("noticed");
 
         if (this.classList.contains("given")) {
@@ -422,8 +446,11 @@ function initLevel() {
     }
 
     function removeNoticeEntry (event) {
-        let entry = "e" + this.id.charAt(1) + "e" + this.id.charAt(3);
-        level.querySelector("#" + entry).parentNode.classList.remove("noticed");
+        let entry = level.querySelector("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
+
+        if (entry === null) return;
+        
+        entry.parentNode.classList.remove("noticed");
     }
 
 
@@ -454,7 +481,6 @@ function initLevel() {
     }
 
     cellList.forEach( (cell) => {
-        if (cell.classList.contains("given")) return;
         cell.addEventListener("mouseover", noticeEntry);
         cell.addEventListener("mouseleave", removeNoticeEntry);
     });
@@ -479,7 +505,7 @@ function initLevel() {
                     if (undoStack.length == 0) {
                         undoButton.classList.add("usable");
                     }
-                    undoStack.push([cell, text.innerHTML]);
+                    undoStack.push([cell, text.innerText.trim()]);
                     redoStack = [];
                     redoButton.classList.remove("usable");
 
@@ -533,7 +559,7 @@ function initLevel() {
     });
 
 
-    
+
 
     level.querySelector('#propositions').addEventListener('scroll', (e) => {
         const el = e.currentTarget;
@@ -545,10 +571,26 @@ function initLevel() {
         horizontalScroll(el, 7);
     });
 
-    window.onresize = function(event) {
-        horizontalVerticalScroll(level.querySelector("#propositions"), 7);
 
-        horizontalScroll(level.querySelector("#domain"), 7);
+    level.querySelector("#menu_checkbox").onclick = () => {
+        let longestProp = 0;
+        let sub = (menuDropped) ? 0 : 64;
+        menuDropped = !menuDropped;
+        propositions.querySelectorAll("li > span").forEach( (s) => {
+            if (s.offsetWidth > longestProp) {
+                longestProp = s.offsetWidth;
+            }
+        });
+
+        document.documentElement.style.setProperty('--longestProposition', longestProp - sub + "px");
+
+    };
+    
+    window.onresize = function(event) {
+        alignPropositionBorders(propositions.querySelectorAll("li > span"));
+        horizontalVerticalScroll(propositions, 7);
+
+        horizontalScroll(domain, 7);
     }
 
 
@@ -605,7 +647,7 @@ function initLevel() {
         return rippleEl;
     }
 
-    
+
     level.querySelectorAll('#grid span:not(.x_axis, .y_axis)').forEach(element => {
         element.addEventListener("pointerdown",  (event) => {
             if (!domainActive) {
@@ -643,7 +685,7 @@ function initLevel() {
 
         let cell = prevState[0];
         let undone = prevState[1];
-        let done = cell.firstChild.innerHTML;
+        let done = cell.firstChild.innerText;
 
 
         if (undone === "") {
@@ -671,7 +713,7 @@ function initLevel() {
 
         let cell = prevState[0];
         let redone = prevState[1];
-        let done = cell.firstChild.innerHTML;
+        let done = cell.firstChild.innerText;
 
 
 
@@ -695,7 +737,7 @@ function initLevel() {
 
     pencilButton.addEventListener("pointerdown", candidateToggle);
 
-    
+
 
     let pencilButtonClicked = false;
     function candidateToggle(e) {
@@ -711,7 +753,7 @@ function initLevel() {
     }
 
 
-    
+
     level.querySelectorAll("#pencil, #undo, #redo").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
             event.target.classList.add("nudged");
@@ -734,12 +776,6 @@ function initLevel() {
             history.pushState({loc:"index.html"}, "");
         }
     }
-
-       setTimeout(() => {
-        level.querySelector("#propositions").style.animationDuration = "0.14s";
-    }, 250);
-
-    
 }
 
 
@@ -856,3 +892,14 @@ function horizontalVerticalScroll(el, moe) {
     }
 }
 
+function alignPropositionBorders(props) {
+    let longestProp = 0;
+
+    props.forEach( (s) => {
+        if (s.offsetWidth > longestProp) {
+            longestProp = s.offsetWidth;
+        }
+    });
+
+    document.documentElement.style.setProperty('--longestProposition', longestProp + "px");
+}

@@ -127,6 +127,8 @@
          setTimeout(function() {
            newPage.style.display = "block";
 
+           alignPropositionBorders(newPage.querySelectorAll("#propositions li > span"));
+
            horizontalVerticalScroll(newPage.querySelector("#propositions"), 7);
 
            horizontalScroll(newPage.querySelector('#domain'), 7);           

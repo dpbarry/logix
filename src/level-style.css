@@ -38,6 +38,7 @@
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
+  --longestProposition: 400px;
   --domainButtonHeight: 56px;
 }
 
@@ -229,6 +230,8 @@ body {
   position: absolute;
   top: 2vmin;
 
+  z-index: 0;
+
   /* Align #chevron */
   text-align: center;
 
@@ -330,7 +333,6 @@ body {
   align-content: center;
 
   width: 100%;
-  height: calc(var(--maxGridWidth) + var(--axisFontSize));
 
   position: relative;
   
@@ -594,15 +596,23 @@ body {
 
   transition: width 0.1s;
   li {
-    padding: 3.5px;
-    width: 95%;
-
+    width: 100%;
     white-space: nowrap;
+
 
     &:first-child { margin-top: auto; }
     &:last-child { margin-bottom: auto; }
 
-    + li {
+    &:has(+ li) > span::after {
+      content: "";
+      min-width: var(--longestProposition);
+      width: 100%;
+      height: 3px;
+      margin-top: 3px;
+      display: block;
+      position: relative;
+      left: 0;
+      
       border-top: 1px solid #000000;
     }
 
@@ -1013,14 +1023,24 @@ body {
   }
 
   #menu:has(#menu_checkbox:checked) ~ #wrap_main > #propositions {
-    animation: shrinkPropositions forwards;
-    animation-duration: 0s;
+    right: 32px;
+    transition: right 0.12s;
+    li {
+      padding-left: 64px;
+      transition: padding 0.12s;
+    }
   }
 
   #menu:not(:has(#menu_checkbox:checked)) ~ #wrap_main > #propositions {
-    animation: expandPropositions forwards;
-    animation-duration: 0s;
+    right: 0px;
+    transition: right 0.12s;
+    li {
+      padding-left: 0;
+      transition: padding 0.12s;
+    }
   }
+
+  
   
   #wrap_toolbar_domain {
     position: relative;
@@ -1043,15 +1063,7 @@ body {
   
   #wrap_axis_grid {
     right: var(--gridOffset);
+    height: calc(var(--maxGridWidth) + var(--axisFontSize));
   }
 }
 
-@keyframes shrinkPropositions {
-  from {width: 85vw; }
-  to { width: calc(85vw - 75px); }
-}
-
-@keyframes expandPropositions {
-  from {width: calc(85vw - 75px); }
-  to { width: 85vw; }
-}

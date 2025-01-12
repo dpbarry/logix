@@ -574,13 +574,15 @@ function initLevel() {
 
     level.querySelector("#menu_checkbox").onclick = () => {
         let longestProp = 0;
-        let sub = (menuDropped) ? 0 : 64;
-        menuDropped = !menuDropped;
+        
         propositions.querySelectorAll("li > span").forEach( (s) => {
             if (s.offsetWidth > longestProp) {
                 longestProp = s.offsetWidth;
             }
         });
+
+        let sub = (menuDropped) ? 0 : 64;
+        menuDropped = !menuDropped;
 
         document.documentElement.style.setProperty('--longestProposition', longestProp - sub + "px");
         horizontalVerticalScroll(propositions, 7);
@@ -593,6 +595,13 @@ function initLevel() {
 
         horizontalScroll(domain, 7);
     }
+
+    screen.orientation.addEventListener("change", (event) => {
+        alignPropositionBorders(propositions.querySelectorAll("li > span"));
+        horizontalVerticalScroll(propositions, 7);
+
+        horizontalScroll(domain, 7);
+    });
 
     // given the id of a cell, emphasize borders of cells in that row and column
     function crosshairs(id) {

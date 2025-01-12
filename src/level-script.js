@@ -45,8 +45,6 @@ function initLevel() {
 
     let candidateMode = false;
 
-    let pseudoScroll = false;
-
     let menuDropped = level.querySelector("#menu_checkbox").checked;
 
 
@@ -574,13 +572,6 @@ function initLevel() {
     });
 
 
-    level.querySelector("#menu_checkbox").onclick = () => {
-        menuDropped = !menuDropped;
-        horizontalVerticalScroll(propositions.parentNode, menuDropped ? -32 : 32);
-        centerPropositions(propositions.parentNode);
-
-    };
-    
     window.onresize = function(event) {
         horizontalVerticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
@@ -590,7 +581,6 @@ function initLevel() {
     screen.orientation.addEventListener("change", (event) => {
         horizontalVerticalScroll(propositions.parentNode, 7);
         centerPropositions(propositions.parentNode);
-
         horizontalScroll(domain, 7);
     });
 
@@ -896,7 +886,5 @@ function horizontalVerticalScroll(el, moe) {
 }
 
 function centerPropositions(el) {
-    pseudoScroll = true;
-
     el.scrollLeft = (el.firstElementChild.offsetWidth - el.offsetWidth) / 2;
 }

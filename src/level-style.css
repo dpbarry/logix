@@ -68,7 +68,7 @@ body {
   overflow: hidden;
 
   button:not(:first-child) {
-    transition:   width 0.8s ease, min-width 0.8s; bottom 0.35s ease;
+    transition: width 0.8s ease, min-width 0.8s; bottom 0.35s ease;
 
     will-change: width, min-width, bottom;
 
@@ -569,6 +569,12 @@ body {
   100% {transform: scale(1.2); color: var(--correctColor); }
 }
 
+#prop_container {
+  width: 300px; /* Limit the visible width */
+  height: 200px; /* Limit the visible height */
+  overflow: auto; /* Enable scrolling */
+  position: relative;
+}
 
 #propositions {
   position: relative;
@@ -579,41 +585,35 @@ body {
 
   cursor: default;
 
-  display: flex;
+  display: inline-block;
   flex-direction: column;
   justify-content: flex-start;
 
   margin: 0;
-  margin-left: 12.5vw;
   padding: 0;
 
   text-align: center;
   list-style-type: none; /* no bullet points */
 
-  scrollbar-width: none;
-  overflow-x: auto;
+  overflow: visible;
 
 
   transition: width 0.1s;
   li {
     width: 100%;
     white-space: nowrap;
-
+    padding: 0.1em;
 
     &:first-child { margin-top: auto; }
     &:last-child { margin-bottom: auto; }
 
-    &:has(+ li) > span::after {
-      content: "";
-      min-width: var(--longestProposition);
-      width: 100%;
-      height: 3px;
-      margin-top: 3px;
+    &:has(+ li)::after {
+      content: '';
       display: block;
+      width: 100%; /* Matches the natural width of the text */
+      border-bottom: 1px solid black;
       position: relative;
-      left: 0;
-      
-      border-top: 1px solid #000000;
+      top: 0.1em;
     }
 
     span.entry {
@@ -670,7 +670,7 @@ body {
 }
 
 
-#propositions::-webkit-scrollbar {
+#prop_container::-webkit-scrollbar {
   display: none;
 }
 #domain::-webkit-scrollbar {
@@ -945,17 +945,21 @@ body {
     #domain button { font-size: calc(2.5rem - (700px - 100vh)/25);}
   }
 
-  #propositions {
-    margin: 0;
-    position: relative;
-    bottom: 5vh;
-    display: flex;
-    flex-direction: column;
+  #prop_container {
     width: 30vw;
     min-height: 50vh;
     max-height: 80vh;
+    margin: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     align-items: center;
     flex-grow: 0.5;
+  }
+  #propositions {
+    min-width: 100%;
   }
 
 
@@ -1009,38 +1013,42 @@ body {
     align-content: center;
     align-items: center;
   }
-  #propositions {
+
+  #prop_container {
+    height: 32.75vh; /* REDUCED WHEN <4 PROPOSITIONS */
+    width: 85vw;
     margin: 0;
     margin-bottom: 1vh;
     align-self: center;
     text-align: center;
-    height: 32.75vh; /* REDUCED WHEN <4 PROPOSITIONS */
-    width: 85vw;
+  }
+  #propositions {
 
-    li {
-      width: unset;
-    }
+    min-width: 85vw;
+
   }
 
-  #menu:has(#menu_checkbox:checked) ~ #wrap_main > #propositions {
+  #menu:has(#menu_checkbox:checked) ~ #wrap_main #prop_container {
     right: 32px;
-    transition: right 0.12s;
+
+    #propositions {
+      margin-right: 32px;
+    }
     li {
-      padding-left: 64px;
-      transition: padding 0.12s;
+      margin-left: 32px;
     }
   }
 
-  #menu:not(:has(#menu_checkbox:checked)) ~ #wrap_main > #propositions {
+  #menu:not(:has(#menu_checkbox:checked)) ~ #wrap_main #prop_container {
     right: 0px;
-    transition: right 0.12s;
+    #propositions {
+      margin-right: 0;
+    }
     li {
-      padding-left: 0;
-      transition: padding 0.12s;
+      margin-left: 0;
     }
   }
 
-  
   
   #wrap_toolbar_domain {
     position: relative;
@@ -1050,6 +1058,15 @@ body {
   @media (height > 700px) {
     #wrap_grid_domain {
       gap: calc((100vh - 700px) / 6);
+    }
+  }
+
+  @media (width < 420px) {
+    #wrap_toolbar_domain {
+      top: calc(10px + (420px - 100vw) / 1.5);
+    }
+    #wrap_axis_grid {
+      top: calc((420px - 100vw) / 5);
     }
   }
 

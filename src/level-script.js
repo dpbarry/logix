@@ -45,6 +45,8 @@ function initLevel() {
 
     let candidateMode = false;
 
+    let pseudoScroll = false;
+
     let menuDropped = level.querySelector("#menu_checkbox").checked;
 
 
@@ -561,7 +563,7 @@ function initLevel() {
 
 
 
-    level.querySelector('#propositions').addEventListener('scroll', (e) => {
+    level.querySelector('#prop_container').addEventListener('scroll', (e) => {
         const el = e.currentTarget;
         horizontalVerticalScroll(el, 7);
     });
@@ -573,32 +575,21 @@ function initLevel() {
 
 
     level.querySelector("#menu_checkbox").onclick = () => {
-        let longestProp = 0;
-        
-        propositions.querySelectorAll("li > span").forEach( (s) => {
-            if (s.offsetWidth > longestProp) {
-                longestProp = s.offsetWidth;
-            }
-        });
-
-        let sub = (menuDropped) ? 0 : 64;
         menuDropped = !menuDropped;
+        horizontalVerticalScroll(propositions.parentNode, menuDropped ? -32 : 32);
+        centerPropositions(propositions.parentNode);
 
-        document.documentElement.style.setProperty('--longestProposition', longestProp - sub + "px");
-        horizontalVerticalScroll(propositions, 7);
-
-    }
+    };
     
     window.onresize = function(event) {
-        alignPropositionBorders(propositions.querySelectorAll("li > span"));
-        horizontalVerticalScroll(propositions, 7);
-
+        horizontalVerticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
+        centerPropositions(propositions.parentNode);
     }
 
     screen.orientation.addEventListener("change", (event) => {
-        alignPropositionBorders(propositions.querySelectorAll("li > span"));
-        horizontalVerticalScroll(propositions, 7);
+        horizontalVerticalScroll(propositions.parentNode, 7);
+        centerPropositions(propositions.parentNode);
 
         horizontalScroll(domain, 7);
     });
@@ -868,6 +859,9 @@ function horizontalVerticalScroll(el, moe) {
         let left = isScrolledToLeft ? 0 : 40;
         let right = isScrolledToRight ? 0 : 40;
 
+        if (moe === -32) {
+            right = 40;
+        }
         horizontalMask = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
     }
 
@@ -897,16 +891,12 @@ function horizontalVerticalScroll(el, moe) {
     } else {
         el.style.maskImage = "";
     }
+
+    
 }
 
-function alignPropositionBorders(props) {
-    let longestProp = 0;
+function centerPropositions(el) {
+    pseudoScroll = true;
 
-    props.forEach( (s) => {
-        if (s.offsetWidth > longestProp) {
-            longestProp = s.offsetWidth;
-        }
-    });
-
-    document.documentElement.style.setProperty('--longestProposition', longestProp + "px");
+    el.scrollLeft = (el.firstElementChild.offsetWidth - el.offsetWidth) / 2;
 }

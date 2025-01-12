@@ -583,8 +583,9 @@ function initLevel() {
         });
 
         document.documentElement.style.setProperty('--longestProposition', longestProp - sub + "px");
+        horizontalVerticalScroll(propositions, 7);
 
-    };
+    }
     
     window.onresize = function(event) {
         alignPropositionBorders(propositions.querySelectorAll("li > span"));
@@ -592,9 +593,6 @@ function initLevel() {
 
         horizontalScroll(domain, 7);
     }
-
-
-
 
     // given the id of a cell, emphasize borders of cells in that row and column
     function crosshairs(id) {

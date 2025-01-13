@@ -195,7 +195,7 @@ body {
   cursor: pointer;
 }
 
-#wrap_home_level:has(~ #menu > #menu_checkbox:checked) #level, #wrap_home_level:has(~ #menu > #menu_checkbox:checked) #difficulty {
+#wrap_home_level:has(~ #menu  #menu_checkbox:checked) #level, #wrap_home_level:has(~ #menu #menu_checkbox:checked) #difficulty {
   opacity: 1;
 }
 
@@ -228,10 +228,14 @@ body {
 
 #menu {
   position: absolute;
-  top: 2vmin;
 
-  z-index: 0;
+  display: flex;
 
+  z-index: 1;
+
+  top: 2.25vmin;
+  right: 0.25vmin;
+  
   /* Align #chevron */
   text-align: center;
 
@@ -241,8 +245,8 @@ body {
     height: 45px;
 
     position: absolute;
-    top: -6px;
-    left: -6px;
+    top: -3px;
+    left: -20px;
 
     cursor: pointer;
 
@@ -252,53 +256,73 @@ body {
 
   #chevron {
     position: relative;
-    top: 0px;
-    transition: top 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
+    top: 4px;
+    margin-right: 13px;
+
+    height: 39px;
+
+    align-content: center;
   }
 
-  #chevron:before {
+  #chevron::before {
     content: "";
 
     display: inline-block;
-    height: 24px;
-    width: 24px;
+    height: 18px;
+    width: 18px;
 
     border-bottom: 3px solid #000000;
     border-right: 3px solid #000000;
-    border-radius: 0px;
+    border-radius: 1px;
 
-    rotate: 45deg;
-    transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
+    rotate: 135deg;
+    transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0), height 0.2s, width 0.2s;
   }
 
   #menu_checkbox:checked ~ #chevron:before {
     transform: rotate(180deg);
   }
-  #menu_checkbox:checked ~ #chevron {
-    /* Counteract apparent upwards-shift caused by rotating chevron */
-    top: 15px;
-  }
 
   ul {
     width: 100%;
-    margin-top: 22px;
+    margin: 0;
     padding: 0;
 
     list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    
 
-    transform: translateY(-500%);
+    transform: translateX(199px);
     will-change: transform;
-    transition: transform 0.35s cubic-bezier(0.77,0.2,0.05,1.0);
+    transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
   }
 
-  #menu_checkbox:checked ~ ul {
+  
+  ul:has(#menu_checkbox:checked)  {
     transform: none;
+
+    #menu_checkbox {
+      width: 30px;
+      left: -9px;
+    }
+    #chevron::before {
+      height: 12px;
+      width: 12px;
+    }
+
+    .dialog_button {
+      left: 0;
+    }
   }
 
   .dialog_button {
     height: 39px;
     width: 100%;
-    margin-bottom: 14px;
+    margin-right: 10px;
+
+    position: relative;
+    left: 20px;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -311,7 +335,6 @@ body {
   #notes { content: url("../assets/NOTES.svg"); }
   #settings { content: url("../assets/SETTINGS.svg"); }
 }
-
 
 
 
@@ -462,7 +485,7 @@ body {
     border-color: var(--emphasisColor);
   }
   span.given:hover {
-    color: #AAA;
+    color: #777;
   }
   
   span:not(.given).noticed {
@@ -471,7 +494,7 @@ body {
   }
 
   span.given.noticed {
-    color: #AAA;
+    color: #777;
   }
   
   
@@ -591,7 +614,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
 
-  margin: 0;
+  margin: auto;
   padding: 0;
 
   text-align: center;
@@ -929,8 +952,6 @@ body {
 /* Landscape layout */
 @media (orientation: landscape) and (width > 900px), (height < 400px) {
 
-  #menu { right: clamp(15px, 1.75vw, 22px); }
-
   #wrap_main {
     gap: 2.25vw;
     width: 90%;
@@ -945,14 +966,13 @@ body {
   }
 
   #prop_container {
-    width: 30vw;
+    min-width: 20vw;
     min-height: 50vh;
     max-height: 80vh;
     margin: 0;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
 
     align-items: center;
     flex-grow: 0.5;
@@ -1005,7 +1025,6 @@ body {
 
 /* Portrait layout */
 @media (orientation: portrait) and (height > 400px), (width < 900px) and (height > 400px) {
-  #menu { right: 3vw; }
 
   #wrap_main {
     margin-top: -1px;
@@ -1040,13 +1059,13 @@ body {
 
   @media (width < 420px) {
     /*
-    #wrap_toolbar_domain {
-      top: calc(10px + (420px - 100vw) / 1.5);
-    }
-    #wrap_axis_grid {
-      top: calc((420px - 100vw) / 5);
-    }
-    */
+       #wrap_toolbar_domain {
+       top: calc(10px + (420px - 100vw) / 1.5);
+       }
+       #wrap_axis_grid {
+       top: calc((420px - 100vw) / 5);
+       }
+     */
   }
 
   #domain {

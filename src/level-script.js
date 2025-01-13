@@ -189,11 +189,27 @@ function initLevel() {
     }
 
     function inp (event) {
-        let text = event.target.querySelector("p").innerText.trim();
+        let node = event.target.querySelector("p");
+        let text = node.innerText.trim();
 
         let button = null;
 
-        if (text.length < MAXLENGTH) {
+        if (event.key === "Backspace") {
+            if (undoStack.length == 0) {
+                undoButton.classList.add("usable");
+            }
+            undoStack.push([event.target, text]);
+            redoStack = [];
+            redoButton.classList.remove("usable");
+            
+            flushInsert = new AnimationEvent("animationend");
+            node.dispatchEvent(flushInsert);
+
+            setTimeout(() => {
+                node.classList.add("dismiss");
+                node.addEventListener("animationend", endDismiss);
+            }, 1); // ensure insert handler has been removed
+        } else if (text.length < MAXLENGTH) {
             if (DOMAIN.some(x => x.toString().startsWith(text + event.key))) {
                 pressButton(text + event.key);
                 insert(event.target, text + event.key);
@@ -206,23 +222,6 @@ function initLevel() {
         } else if (DOMAIN.some(x => x.toString().startsWith(event.key))) {
             pressButton(event.key);
             insert(event.target, event.key);   
-        } else if (event.key === "Backspace") {
-            if (undoStack.length == 0) {
-                undoButton.classList.add("usable");
-            }
-            undoStack.push([event.target, text.innerText]);
-            redoStack = [];
-            redoButton.classList.remove("usable");
-            
-            flushInsert = new AnimationEvent("animationend");
-            text.dispatchEvent(flushInsert);
-
-            setTimeout(() => {
-                text.classList.add("dismiss");
-                text.addEventListener("animationend", endDismiss);
-            }, 1); // ensure insert handler has been removed
-
-            return;         
         } else {
             return;
         }
@@ -241,6 +240,7 @@ function initLevel() {
     }
 
     function pressButton(text) {
+        let button = null;
         if (debounced === 0 || candidateMode) {
 
             domainList.forEach( (b) => {

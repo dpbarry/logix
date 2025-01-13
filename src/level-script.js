@@ -433,15 +433,19 @@ function initLevel() {
     }
 
     function noticeEntry (event) {
-        let entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
-
+        let entries;
+        if (event.id) {
+            entries = level.querySelectorAll("#e" + event.id.charAt(1) + "e" + event.id.charAt(3));
+        } else {
+            entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
+        }
         entries.forEach( (entry) => {
             if (entry === null) return;
             
             let enclose = entry.parentNode;
             enclose.classList.add("noticed");
 
-            if (this.classList.contains("given")) {
+            if (level.querySelector("#c" + entry.id.charAt(1) + "-" + entry.id.charAt(3)).classList.contains("given")) {
                 enclose.classList.add("given");
             }
             
@@ -449,8 +453,12 @@ function initLevel() {
     }
 
     function removeNoticeEntry (event) {
-        let entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
-
+        let entries;
+        if (event.id) {
+            entries = level.querySelectorAll("#e" + event.id.charAt(1) + "e" + event.id.charAt(3));
+        } else {
+            entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
+        }
         entries.forEach( (entry) => {
             if (entry === null) return;
             
@@ -462,6 +470,7 @@ function initLevel() {
 
 
     function noticeCell (event) {
+        noticeEntry(this);
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         let td = level.querySelector("#" + cell)
         td.classList.add("noticed");
@@ -472,6 +481,7 @@ function initLevel() {
     }
 
     function removeNoticeCell (event) {
+        removeNoticeEntry(this);
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         level.querySelector("#" + cell).classList.remove("noticed");
     }

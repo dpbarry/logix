@@ -20,9 +20,10 @@ html, body {
   height: 100%;
 }
 
-body {
+body, .page {
   overflow: hidden;
 }
+
 .page.slideout {
   opacity: 0;
 }

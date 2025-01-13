@@ -433,25 +433,32 @@ function initLevel() {
     }
 
     function noticeEntry (event) {
-        let entry = level.querySelector("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
+        let entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
 
-        if (entry === null) return;
-        
-        let enclose = entry.parentNode;
-        enclose.classList.add("noticed");
+        entries.forEach( (entry) => {
+            if (entry === null) return;
+            
+            let enclose = entry.parentNode;
+            enclose.classList.add("noticed");
 
-        if (this.classList.contains("given")) {
-            enclose.classList.add("given");
-        }
+            if (this.classList.contains("given")) {
+                enclose.classList.add("given");
+            }
+            
+        });
     }
 
     function removeNoticeEntry (event) {
-        let entry = level.querySelector("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
+        let entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
 
-        if (entry === null) return;
-        
-        entry.parentNode.classList.remove("noticed");
+        entries.forEach( (entry) => {
+            if (entry === null) return;
+            
+            entry.parentNode.classList.remove("noticed");
+        });
+
     }
+    
 
 
     function noticeCell (event) {
@@ -679,7 +686,7 @@ function initLevel() {
         if (undone === "") {
             cell.firstChild.classList.add("dismiss");
 
-            cell.firstChild.addEventListener("animationend", endDismiss);
+            cell.firstChild.addEventListener("animationend", endDismissWipe);
 
         } else {
             insert(cell, undone);
@@ -708,7 +715,7 @@ function initLevel() {
         if (redone === "") {
             cell.firstChild.classList.add("dismiss");
 
-            cell.firstChild.addEventListener("animationend", endDismiss);
+            cell.firstChild.addEventListener("animationend", endDismissWipe);
         } else {
             insert(cell, redone);
         }

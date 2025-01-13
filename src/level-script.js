@@ -14,7 +14,6 @@ function initLevel() {
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
 
     const CROSSHAIRS_TOGGLE = level.querySelector("#crosshairs_toggle");
-    const HIGHLIGHT_TOGGLE = level.querySelector("#highlight_toggle");
     const STICKY_TOGGLE = level.querySelector("#sticky_toggle");
     const CANCELOUT_TOGGLE = level.querySelector("#cancelout_toggle");
 
@@ -35,7 +34,6 @@ function initLevel() {
 
     var values = new Map();
 
-    var use_highlight = HIGHLIGHT_TOGGLE.checked;
     var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
     var use_sticky = STICKY_TOGGLE.checked;
     var use_cancelout = CANCELOUT_TOGGLE.checked;
@@ -69,12 +67,7 @@ function initLevel() {
         document.documentElement.style.setProperty('--heightFactor', 1);
         document.documentElement.style.setProperty('--widthFactor', 1);
     }
-
-
-
-    HIGHLIGHT_TOGGLE.addEventListener("change", (e) => {
-        use_highlight = HIGHLIGHT_TOGGLE.checked;
-    });
+    
 
     CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
         use_crosshairs = CROSSHAIRS_TOGGLE.checked;
@@ -420,7 +413,6 @@ function initLevel() {
     });
 
     function highlight(id) {
-        if (!use_highlight) return;
         entryList.forEach( (entry) => {
 
             if (entry.id ===

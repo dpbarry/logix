@@ -43,8 +43,6 @@ function initLevel() {
 
     let candidateMode = false;
 
-    let menuDropped = level.querySelector("#menu_checkbox").checked;
-
 
     const max = Math.max(ROWS, COLS);
 
@@ -112,6 +110,11 @@ function initLevel() {
     }
 
     function endDismiss(e) {
+
+        if (e.target.nodeName === "LI") {
+            e.target.remove();
+            return;
+        }
         let text = e.target;
         text.classList.remove("dismiss");
         text.innerText = text.innerText.substring(0, text.innerText.length-1);
@@ -120,6 +123,10 @@ function initLevel() {
     }
 
     function endDismissWipe(e) {
+        if (e.target.nodeName === "LI") {
+            e.target.parentNode.remove();
+            return;
+        }
         let text = e.target;
         text.classList.remove("dismiss");
         text.innerText = "";
@@ -133,11 +140,17 @@ function initLevel() {
         let opts = cell.querySelector("ul");
 
         if (candidateMode) {
+
+            // For now, not possible to type multi-digit numbers..
+            if (!DOMAIN.some(x => x.toString().trim() === value.trim())) {
+                return;
+            }
+
             if (text.innerText.trim()) {
                 text.classList.add("dismiss");
                 text.addEventListener("animationend", endDismissWipe);
             }
-            
+
             let newLi = document.createElement("li");
             newLi.innerText = value.trim();
 
@@ -147,13 +160,22 @@ function initLevel() {
                 cell.appendChild(opts);
                 return;
             }
-            opts.appendChild(newLi);
+
+            let match = Array.from(opts.children).find( x => x.innerText.trim() === value.trim());
+            if (match) {
+                if (use_cancelout) {
+                    match.classList.add("dismiss");
+                    match.addEventListener("transitionend", endDismiss);
+                }
+            } else {
+                opts.appendChild(newLi);
+            }
             
             return;
         }
 
-        if (opts && opts.children) {
-            opts.replaceChildren();
+        if (opts) {
+            opts.remove();
         }
 
         if (use_cancelout && text.innerText.trim() === value.trim()) {
@@ -184,10 +206,33 @@ function initLevel() {
     function inp (event) {
         let node = event.target.querySelector("p");
         let text = node.innerText.trim();
+        let opts = event.target.querySelector("ul");
+        let optsCopy = opts ? opts.cloneNode(true) : null;
 
         let button = null;
 
         if (event.key === "Backspace") {
+            if (opts) {
+                console.log(opts);
+                if (undoStack.length == 0) {
+                    undoButton.classList.add("usable");
+                }
+                
+                opts.children[opts.children.length - 1].classList.add("dismiss");
+                opts.children[opts.children.length - 1].addEventListener("transitionend", endDismiss);
+
+                if (undoStack.length == 0) {
+                    undoButton.classList.add("usable");
+                }
+                undoStack.push([event.target, optsCopy]);
+                redoStack = [];
+                redoButton.classList.remove("usable");
+                
+                
+                return;
+            } else if (!text) {
+                return;
+            }
             if (undoStack.length == 0) {
                 undoButton.classList.add("usable");
             }
@@ -202,6 +247,8 @@ function initLevel() {
                 node.classList.add("dismiss");
                 node.addEventListener("animationend", endDismiss);
             }, 1); // ensure insert handler has been removed
+
+            return;
         } else if (text.length < MAXLENGTH) {
             if (DOMAIN.some(x => x.toString().startsWith(text + event.key))) {
                 pressButton(text + event.key);
@@ -211,7 +258,7 @@ function initLevel() {
                 insert(event.target, event.key);
             } else {
                 return;
-            }  
+            }
         } else if (DOMAIN.some(x => x.toString().startsWith(event.key))) {
             pressButton(event.key);
             insert(event.target, event.key);   
@@ -219,16 +266,22 @@ function initLevel() {
             return;
         }
 
-        
+
         if (undoStack.length === 0) {
             undoButton.classList.add("usable");
         }
-        undoStack.push([event.target, text]);
+
+        if (opts) {
+            undoStack.push([event.target, optsCopy]);
+        } else {
+            undoStack.push([event.target, text]);
+        }
+        
         redoStack = [];
         redoButton.classList.remove("usable");
-        
-        
-        
+
+
+
         checkGrid();
     }
 
@@ -358,13 +411,20 @@ function initLevel() {
                         
                         debounced++;
                     }
-                    let text = this.querySelector("p");
+
+                    let opts = this.querySelector("ul");
 
                     
                     if (undoStack.length === 0) {
                         undoButton.classList.add("usable");
                     }
-                    undoStack.push([this, this.firstChild.innerText.trim()]);
+                    
+                    if (opts) {
+                        undoStack.push([this, opts.cloneNode(true)]);
+                    } else {
+                        undoStack.push([this, this.firstChild.innerText.trim()]);
+                    }
+
                     redoStack = [];
                     redoButton.classList.remove("usable");
                     
@@ -458,7 +518,7 @@ function initLevel() {
         });
 
     }
-    
+
 
 
     function noticeCell (event) {
@@ -509,12 +569,19 @@ function initLevel() {
             
             cellList.forEach((cell) => {
                 cell.onfocus = function () {
-                    let text = cell.querySelector("p")
-
+                    let text = cell.querySelector("p");
+                    let opts = cell.querySelector("ul");
+                    
                     if (undoStack.length == 0) {
                         undoButton.classList.add("usable");
                     }
-                    undoStack.push([cell, text.innerText.trim()]);
+                    if (opts) {
+                        undoStack.push([cell, opts.cloneNode(true)]);
+                    } else {
+                        undoStack.push([cell, text.innerText.trim()]);
+                    }
+
+
                     redoStack = [];
                     redoButton.classList.remove("usable");
 
@@ -672,6 +739,7 @@ function initLevel() {
     })
 
 
+    
     function undo(e) {
         if (undoStack.length === 0) return;
         let prevState = undoStack.pop();
@@ -682,23 +750,55 @@ function initLevel() {
 
         let cell = prevState[0];
         let undone = prevState[1];
-        let done = cell.firstChild.innerText;
+        let done = cell.querySelector("ul") ? cell.querySelector("ul") : cell.firstChild.innerText.trim();
+        let doneCopy = done.nodeName === "UL" ? done.cloneNode(true) : done;
+        
+        if (undone.nodeName === "UL") {
+            if (done.nodeName !== "UL") {
 
+                cell.firstChild.classList.add("dismiss");
+                cell.firstChild.addEventListener("animationend", endDismissWipe);
 
-        if (undone === "") {
-            cell.firstChild.classList.add("dismiss");
+                cell.appendChild(undone);
+            } else if (undone.children.length === done.children.length) {
 
-            cell.firstChild.addEventListener("animationend", endDismissWipe);
-
+                done.children[done.children.length - 1].remove();
+                done.appendChild(undone.children[undone.children.length - 1]);
+            } else if (done.children.length < undone.children.length) {
+                let doneSet = new Set(Array.from(done.children).map(x => x.innerText.trim()));
+                done.appendChild(
+                    Array.from(undone.children).find(x => !(doneSet.has(x.innerText.trim()))));
+            } else {
+                
+                done.children[done.children.length - 1].classList.add("dismiss");
+                done.children[done.children.length - 1].addEventListener("transitionend", endDismiss);
+            }
+        } else if (undone === "") {
+            if (done.nodeName === "UL") {
+                done.firstChild.classList.add("dismiss");
+                done.firstChild.addEventListener("transitionend", endDismissWipe);
+            } else {
+                cell.firstChild.classList.add("dismiss");
+                cell.firstChild.addEventListener("animationend", endDismissWipe);
+            }
         } else {
+            if (done.nodeName === "UL") {
+                done.firstChild.classList.add("dismiss");
+                done.firstChild.addEventListener("transitionend", endDismissWipe);
+            }
+            let temp = candidateMode;
+            candidateMode = false;
             insert(cell, undone);
+            candidateMode = true;
         }
 
         if (redoStack.length === 0) {
             redoButton.classList.add("usable");
         }
-        redoStack.push([cell, done]);
+        redoStack.push([cell, doneCopy]);
+
     }
+
 
     function redo(e) {
         if (redoStack.length === 0) return;
@@ -710,23 +810,56 @@ function initLevel() {
 
         let cell = prevState[0];
         let redone = prevState[1];
-        let done = cell.firstChild.innerText;
+        let done = cell.querySelector("ul") ? cell.querySelector("ul") : cell.firstChild.innerText.trim();
+        let doneCopy = done.nodeName === "UL" ? done.cloneNode(true) : done;
 
 
+        if (redone.nodeName === "UL") {
+            if (done.nodeName !== "UL") {
+                cell.firstChild.classList.add("dismiss");
+                cell.firstChild.addEventListener("animationend", endDismissWipe);
 
-        if (redone === "") {
-            cell.firstChild.classList.add("dismiss");
+                cell.appendChild(redone);
+            } else if (done.children.length === redone.children.length) {
+                done.children[done.children.length - 1].remove();
+                done.appendChild(redone.children[redone.children.length - 1]);
+            } else if (done.children.length < redone.children.length) {
+               let doneSet = new Set(Array.from(done.children).map(x => x.innerText.trim()));
+                done.appendChild(
+                    Array.from(redone.children).find(x => !(doneSet.has(x.innerText.trim()))));
+            } else {
+                done.children[done.children.length - 1].classList.add("dismiss");
+                done.children[done.children.length - 1].addEventListener("transitionend", endDismiss);
+            }
+        } else if (redone === "") {
+            if (done.nodeName == "UL") {
+                done.firstChild.classList.add("dismiss");
+                done.firstChild.addEventListener("transitionend", endDismissWipe);
+            } else {
+                cell.firstChild.classList.add("dismiss");
 
-            cell.firstChild.addEventListener("animationend", endDismissWipe);
+                cell.firstChild.addEventListener("animationend", endDismissWipe);
+            }
         } else {
+            if (done.nodeName == "UL") {
+                done.firstChild.classList.add("dismiss");
+                done.firstChild.addEventListener("transitionend", endDismissWipe);
+            }
+            let temp = candidateMode;
+            candidateMode = false;
             insert(cell, redone);
+            candidateMode = true;
         }
 
         if (undoStack.length === 0) {
             undoButton.classList.add("usable");
         }
-        undoStack.push([cell, done]);
+        
+
+        undoStack.push([cell, doneCopy]);
+
     }
+
 
     undoButton.addEventListener("pointerdown", undo);
 

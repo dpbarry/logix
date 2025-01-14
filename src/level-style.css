@@ -38,6 +38,8 @@
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
+  --cellFontSize: clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
+
   --longestProposition: 400px;
   --domainButtonHeight: 56px;
 }
@@ -451,7 +453,7 @@ body {
     
     border-radius: 2px;
 
-    font-size: clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
+    font-size: var(--cellFontSize);
     color: var(--baseColor);
     
     z-index: 1;
@@ -559,7 +561,11 @@ body {
       transform: 0;
       transition: transform 0.2s;
       @starting-style {
-        transform: translateY(100%);
+        transform: translateY(170%);
+      }
+      &.dismiss {
+        transition: transform 0.05s;
+        transform: translateY(500%);
       }
     }
   }
@@ -574,7 +580,7 @@ body {
     outline-color: transparent;
     border-color: transparent;
     p {
-      animation: correctFlash 0.9s forwards;
+      animation: correctFlash 0.75s forwards;
       animation-delay: 400ms;
 
     }
@@ -588,9 +594,9 @@ body {
 }
 
 @keyframes correctFlash {
-  0% { transform: scale(1); color: var(--baseColor); }
-  50% { transform: scale(1.4); color: var(--correctColor); }
-  100% {transform: scale(1.2); color: var(--correctColor); }
+  0% { font-size: var(--cellFontSize); color: var(--baseColor); }
+  50% { font-size: calc(var(--cellFontSize) * 1.7); color: var(--correctColor); }
+  100% { font-size: calc(var(--cellFontSize) * 1.35); color: var(--correctColor); }
 }
 
 #prop_container {
@@ -773,10 +779,6 @@ body {
   }
 
   @media (hover: hover) and (pointer: fine) {
-    #pencil:hover, #undo:hover, #redo:hover {
-      filter: drop-shadow( 0px 2px 1px rgba(0, 0, 0, .1));
-
-    }
     #pencil.usable:hover::after, #undo.usable:hover::after, #redo.usable:hover::after {
       opacity: 1;
     }
@@ -785,7 +787,7 @@ body {
 
   #pencil.active::after {
     opacity: 1;
-    filter: invert(56%) sepia(63%) saturate(351%) hue-rotate(13deg) brightness(89%) contrast(82%);
+    filter: drop-shadow( 4px 4px 1.5px rgba(0, 0, 0, .3))
   }
 
   #undo:not(.usable), #redo:not(.usable), #pencil:not(.usable) {

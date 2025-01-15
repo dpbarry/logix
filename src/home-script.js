@@ -77,8 +77,8 @@ function setupHome() {
     document.getElementById("shortcut").onclick = function () {
         Router('T1-1');
         history.pushState({loc:'T1-1'}, "");
-        document.getElementById("info_dialog").classList.add("hide");
+        document.getElementById("about_dialog").classList.add("hide");
         
-        document.getElementById("info_dialog").addEventListener("transitionend", closeDialog);
+        document.getElementById("about_dialog").addEventListener("transitionend", closeDialog);
     }
 }

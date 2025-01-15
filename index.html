@@ -39,17 +39,25 @@
         <dialog id="settings_dialog">
             <a class="close"></a>
             <h1>Settings</h1>
+            
             <div id="configs">
+                <div id="wrap_theme">
+                    <label> Theme (WIP) </label>
+                    <input type="radio" id="litlight" class="theme" name="theme" type="checkbox" checked>
+                    <input type="radio" id="frostlight" class="theme" name="theme" type="checkbox">
+                    <input type="radio" id="litdark" class="theme" name="theme" type="checkbox">
+                    <input type="radio" id="frostdark" class="theme" name="theme" type="checkbox">
+                </div>              
                 <label for="sticky_toggle"> Sticky Input </label>
-                <input id="sticky_toggle" type="checkbox" checked>
+                <input id="sticky_toggle" type="checkbox" class="toggle" checked>
                 <p>Input selection persists after filling a cell</p>
                 
                 <label for="crosshairs_toggle"> Crosshairs </label>
-                <input id="crosshairs_toggle" type="checkbox">
+                <input id="crosshairs_toggle" type="checkbox" class="toggle">
                 <p>Emphasize row and column of selected cell</p>
 
                 <label for="cancelout_toggle"> Cancel Out </label>
-                <input id="cancelout_toggle" type="checkbox" checked>
+                <input id="cancelout_toggle" type="checkbox" class="toggle" checked>
                 <p>Clear a cell by inputting its current value</p>
             </div>
         </dialog>

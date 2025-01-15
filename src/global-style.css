@@ -12,6 +12,21 @@
   &:focus {outline: none;}
 }
 
+:root {
+  --bgColor:  #FFF;
+  --baseColor: black;
+ 
+  --lightestShade: hsl(50, 18%, 95%);
+  --lighterShade: hsl(50, 25%, 92%);
+  --darkShade: hsl(50, 20%, 50%);
+  --darkerShade: hsl(50, 18%, 35%);
+  --darkestShade: hsl(50, 18%, 25%);
+
+  --focusColor: hsl(50, 37%, 86%);
+  --emphasisColor: hsl(50, 37%, 45%);
+  --correctColor: hsl(130, 35%, 35%);
+}
+
 /*  Prevent mismatch between viewport and body dimensions */
 html, body {
   padding: 0;
@@ -22,6 +37,7 @@ html, body {
 
 body, .page {
   overflow: hidden;
+  background-color: var(--bgColor);
 }
 
 .page.slideout {
@@ -179,6 +195,7 @@ dialog {
   }
 }
 
+
 #configs {
   margin-left: 2vw;
   margin-right: 2vw;
@@ -191,10 +208,57 @@ dialog {
   gap: 10px;
 
   
-  label {
-    margin-right: 1px;
+
+  #wrap_theme {
+    width: 100%;
+    display: flex;
+    label {margin-right: 10px;}
   }
-  input {
+  .theme {
+    margin: 0;
+    margin-bottom: 2px;
+    appearance: none;
+    height: 30px;
+    width: 30px;
+    background-color: #C0C0C0;
+    position: relative;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid #BBB;
+    margin-right: 4px;
+    
+    &::after {
+      content: "";
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 25%;
+      left: 25%;
+      border-radius: 8px;
+
+    }
+  }
+
+  #frostdark {
+    margin-right: auto;
+  }
+
+  #litlight, #frostlight {
+    background-color: #FFF;
+  }
+  #litdark, #frostdark {
+    background-color: #111;
+  }
+
+  #litlight::after, #litdark::after {
+    background-color: hsl(50, 37%, 45%);
+  }
+
+  #frostlight::after, #frostdark::after {
+    background-color: hsl(200, 37%, 45%);
+  }
+  .toggle {
     margin: 0;
     margin-bottom: 2px;
     appearance: none;
@@ -207,7 +271,7 @@ dialog {
     transition: all 0.2s ease;
   }
 
-  input::before {
+  .toggle::before {
     content: '';
     display: block;
     height: 18px;
@@ -228,11 +292,11 @@ dialog {
     filter: brightness(94%);
   }
 
-  input:checked {
+  .toggle:checked {
     background-color: #A4C1A0;
   }
 
-  input:checked::before {
+  .toggle:checked::before {
     background-color: #3e4d3c;
     left: calc(100% - 16px);
   }

@@ -8,8 +8,8 @@ let tabdCells;
 
 
 function initLevel() {
-    document.documentElement.style.setProperty('--rows', ROWS);
-    document.documentElement.style.setProperty('--cols', COLS);
+    ROOT.style.setProperty('--rows', ROWS);
+    ROOT.style.setProperty('--cols', COLS);
 
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
 
@@ -44,23 +44,23 @@ function initLevel() {
     const max = Math.max(ROWS, COLS);
 
     if (max < 3) {
-        document.documentElement.style.setProperty('--fontFactor', 1 + (3 - max) / 2);
+        ROOT.style.setProperty('--fontFactor', 1 + (3 - max) / 2);
     } else if (max > 3) {
-        document.documentElement.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
+        ROOT.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
     } else {
-        document.documentElement.style.setProperty('--fontFactor', 1);
+        ROOT.style.setProperty('--fontFactor', 1);
     }
 
     
     if (ROWS > COLS) {
-        document.documentElement.style.setProperty('--heightFactor', 1);
-        document.documentElement.style.setProperty('--widthFactor', COLS / ROWS);
+        ROOT.style.setProperty('--heightFactor', 1);
+        ROOT.style.setProperty('--widthFactor', COLS / ROWS);
     } else if (COLS > ROWS) {
-        document.documentElement.style.setProperty('--heightFactor', ROWS / COLS);
-        document.documentElement.style.setProperty('--widthFactor', 1);
+        ROOT.style.setProperty('--heightFactor', ROWS / COLS);
+        ROOT.style.setProperty('--widthFactor', 1);
     } else {
-        document.documentElement.style.setProperty('--heightFactor', 1);
-        document.documentElement.style.setProperty('--widthFactor', 1);
+        ROOT.style.setProperty('--heightFactor', 1);
+        ROOT.style.setProperty('--widthFactor', 1);
     }
     
 
@@ -361,7 +361,7 @@ function initLevel() {
                     history.pushState({loc:NEXT_LEVEL}, "");
                 };
             } else {
-                document.documentElement.style.setProperty('--successPrompt', "'Return home...'");
+                ROOT.style.setProperty('--successPrompt', "'Return home...'");
                 
                 domain.classList.add("correct");
                 

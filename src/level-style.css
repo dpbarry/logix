@@ -263,8 +263,10 @@ body {
     z-index: 1;
   }
 
-  #menu_checkbox:hover + #chevron::before {
-    opacity: 0.65;
+  @media (hover: hover) and (pointer: fine) {
+    #menu_checkbox:hover + #chevron::before {
+      opacity: 0.65;
+    }
   }
 
 

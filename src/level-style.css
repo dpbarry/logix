@@ -184,6 +184,7 @@ body {
   height: 37px;
   cursor: pointer;
   margin-bottom: 2px;
+  transition: opacity 0.05s;
 }
 
 #home {
@@ -196,6 +197,12 @@ body {
   flex-basis: 100%;
   background-color: transparent;
   cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #wrap_home_level:hover {
+    opacity: 0.65;
+  }
 }
 
 #wrap_home_level:has(~ #menu  #menu_checkbox:checked) #level, #wrap_home_level:has(~ #menu #menu_checkbox:checked) #difficulty {
@@ -256,6 +263,11 @@ body {
     z-index: 1;
   }
 
+  #menu_checkbox:hover + #chevron::before {
+    opacity: 0.65;
+  }
+
+
   #chevron {
     position: relative;
     top: 4px;
@@ -276,13 +288,14 @@ body {
     border-bottom: 3px solid #000000;
     border-right: 3px solid #000000;
     border-radius: 1px;
+    opacity: 1;
 
     rotate: 135deg;
-    transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0), height 0.2s, width 0.2s;
+    transition: rotate 0.3s cubic-bezier(0.77,0.2,0.05,1.0), height 0.2s, width 0.2s, opacity 0.05s;
   }
 
   #menu_checkbox:checked ~ #chevron:before {
-    transform: rotate(180deg);
+    rotate: -45deg;
   }
 
   ul {
@@ -324,10 +337,6 @@ body {
 
   .dialog_button:last-of-type {
     margin-right: 0;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .dialog_button:hover { opacity: 0.72; }
   }
 
 
@@ -595,8 +604,8 @@ body {
 
 @keyframes correctFlash {
   0% { font-size: var(--cellFontSize); color: var(--baseColor); }
-  50% { font-size: calc(var(--cellFontSize) * 1.7); color: var(--correctColor); }
-  100% { font-size: calc(var(--cellFontSize) * 1.35); color: var(--correctColor); }
+  50% { font-size: calc(var(--cellFontSize) * 1.6); color: var(--correctColor); }
+  100% { font-size: calc(var(--cellFontSize) * 1.25); color: var(--correctColor); }
 }
 
 #prop_container {
@@ -987,7 +996,8 @@ body {
   #toolbar {
     left: var(--axisFontSize);
     width: 100%;
-    min-height: clamp(40px, 7.5vh, 58px);
+    min-height: var(--domainButtonHeight);
+    max-height: var(--domainButtonHeight);
     position: relative;
     top: clamp(40px, 7.5vh, 58px);
 
@@ -1001,19 +1011,18 @@ body {
       position: absolute;
 
       right: -38px;
-      bottom: max(min(30px, calc(30px - (750px - 100vh)/16)), 12px);
+      bottom: max(min(28px, calc(28px - (750px - 100vh)/12)), 12px);
     }
     #redo {
       position: absolute;
 
       right: -38px;
-      bottom: max(min(-2px, calc(-2px - (750px - 100vh)/16)), -17px);
+      bottom: max(min(-4px, calc(-4px - (750px - 100vh)/12)), -17px);
     }
   }
   #domain {
     left: var(--axisFontSize);
     width: 100%;
-    height: 100%;
     gap: 5px;
   }
 

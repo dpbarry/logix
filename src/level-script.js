@@ -16,6 +16,7 @@ function initLevel() {
     const CROSSHAIRS_TOGGLE = level.querySelector("#crosshairs_toggle");
     const STICKY_TOGGLE = level.querySelector("#sticky_toggle");
     const CANCELOUT_TOGGLE = level.querySelector("#cancelout_toggle");
+    const MENU_TOGGLE = level.querySelector("#menu_checkbox");
 
     const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
@@ -25,22 +26,25 @@ function initLevel() {
     const entryList = Array.from(level.querySelectorAll('.entry')).map(x => x.firstChild);
 
     const MAXLENGTH = Math.max(...DOMAIN.map(num => num.toString().length));
-    var undoStack = [];
-    var redoStack = [];
+    let undoStack = [];
+    let redoStack = [];
 
     const undoButton = level.querySelector("#undo");
     const redoButton = level.querySelector("#redo");
     const pencilButton = level.querySelector("#pencil");
 
-    var values = new Map();
+    let values = new Map();
 
-    var use_crosshairs = CROSSHAIRS_TOGGLE.checked;
-    var use_sticky = STICKY_TOGGLE.checked;
-    var use_cancelout = CANCELOUT_TOGGLE.checked;
+    let use_crosshairs = CROSSHAIRS_TOGGLE.checked;
+    let use_sticky = STICKY_TOGGLE.checked;
+    let use_cancelout = CANCELOUT_TOGGLE.checked;
 
-    var cellActive = false;
-    var domainActive = false;
-
+    let tabbed = false;
+    tabMenu();
+    
+    let cellActive = false;
+    let domainActive = false;
+    
     let candidateMode = false;
 
 
@@ -79,6 +83,46 @@ function initLevel() {
         use_cancelout = CANCELOUT_TOGGLE.checked;
     });
 
+    MENU_TOGGLE.addEventListener("change", (e) => {
+        tabMenu();
+    });
+
+    function tabMenu() {
+        if (MENU_TOGGLE.checked) {
+            level.querySelectorAll("#menu li").forEach( (li) => {
+                li.tabIndex = 0;
+            });
+        } else {
+            level.querySelectorAll("#menu li").forEach( (li) => {
+                li.tabIndex = -1;
+            });
+        }
+    }
+
+    level.querySelector("#tab_catch").addEventListener("focus", (e) => {
+        if (MENU_TOGGLE.checked) {
+            setTimeout( () => {
+                level.querySelector("#menu li").focus();
+            }, 10);
+        } else {
+            setTimeout( () => {
+                Array.from(cellList).find( x => x.tabIndex === 0).focus();
+            }, 10);
+        }
+    });
+
+    level.querySelector("#backtab_catch").addEventListener("focus", (e) => {
+        if (!e.relatedTarget) {
+            setTimeout( () => {
+                Array.from(cellList).find( x => x.tabIndex === 0).focus();
+            }, 10);
+        } else {
+            setTimeout( () => {
+                Array.from(cellList).reverse().find( x => x.tabIndex === 0).focus();
+            }, 10);
+        }
+    });
+
     tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
     
     // id cells with their coordinates
@@ -95,11 +139,11 @@ function initLevel() {
         // Set up values map
         values.set(cell, null);
 
-        // Allow kid-gloved typing
         if (cell.classList.contains("given")) return;
 
-        cell.tabIndex = 0;
-        
+        // Allow kid-gloved typing
+
+        cell.tabIndex = 0;        
         cell.addEventListener("keydown", inp);
     });
 
@@ -199,8 +243,6 @@ function initLevel() {
 
         values.set(cell, value);
         checkGrid();
-
-
     }
 
     function inp (event) {
@@ -213,7 +255,6 @@ function initLevel() {
 
         if (event.key === "Backspace") {
             if (opts) {
-                console.log(opts);
                 if (undoStack.length == 0) {
                     undoButton.classList.add("usable");
                 }
@@ -304,11 +345,11 @@ function initLevel() {
     }
 
     function checkGrid() {
-        var flag = true;
+        let flag = true;
 
         values.forEach((value, key) => {
-            var row = parseInt(key.id.charAt(1));
-            var col = parseInt(key.id.charAt(3));
+            let row = parseInt(key.id.charAt(1));
+            let col = parseInt(key.id.charAt(3));
             
             if (value != SOLUTION[row - 1][col - 1]) {
                 flag = false;
@@ -362,6 +403,12 @@ function initLevel() {
             button.blur();
         });
 
+        setTimeout( () => {
+            domainList[0].tabIndex = 0;
+
+            cellList.forEach((cell) => {
+            });
+        }, 150);
         domainList[0].addEventListener("pointerdown", () => {
             domainList[0].classList.add("activated");
         })
@@ -448,8 +495,9 @@ function initLevel() {
 
             if (use_sticky
                 && !(level.querySelector("#grid").contains(document.activeElement))
-                && document.activeElement.parentNode.id != "toolbar"
-                && document.activeElement != document.body
+                && document.activeElement.parentNode.id !== "toolbar"
+                && document.activeElement !== document.body
+                && !tabbed
                 || pencilButtonClicked) {
                 this.focus();
 
@@ -569,6 +617,7 @@ function initLevel() {
             
             cellList.forEach((cell) => {
                 cell.onfocus = function () {
+                    if (tabbed) return;
                     let text = cell.querySelector("p");
                     let opts = cell.querySelector("ul");
                     
@@ -603,6 +652,7 @@ function initLevel() {
                 && document.activeElement.parentNode.id != "domain"
                 && document.activeElement.parentNode.id != "toolbar"
                 && document.activeElement != document.body
+                && !tabbed
                 || pencilButtonClicked
                ) {
                 e.target.focus({preventScroll: true});
@@ -663,7 +713,7 @@ function initLevel() {
     // given the id of a cell, emphasize borders of cells in that row and column
     function crosshairs(id) {
         if (!use_crosshairs) return;
-        for (var i = 0; i < cellList.length; i++) {
+        for (let i = 0; i < cellList.length; i++) {
             // check that the cell matches in row or column
             if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
                 cellList[i].style.outlineColor = "black";
@@ -789,7 +839,7 @@ function initLevel() {
             let temp = candidateMode;
             candidateMode = false;
             insert(cell, undone);
-            candidateMode = true;
+            candidateMode = temp;
         }
 
         if (redoStack.length === 0) {
@@ -824,7 +874,7 @@ function initLevel() {
                 done.children[done.children.length - 1].remove();
                 done.appendChild(redone.children[redone.children.length - 1]);
             } else if (done.children.length < redone.children.length) {
-               let doneSet = new Set(Array.from(done.children).map(x => x.innerText.trim()));
+                let doneSet = new Set(Array.from(done.children).map(x => x.innerText.trim()));
                 done.appendChild(
                     Array.from(redone.children).find(x => !(doneSet.has(x.innerText.trim()))));
             } else {
@@ -848,7 +898,7 @@ function initLevel() {
             let temp = candidateMode;
             candidateMode = false;
             insert(cell, redone);
-            candidateMode = true;
+            candidateMode = temp;
         }
 
         if (undoStack.length === 0) {
@@ -859,6 +909,42 @@ function initLevel() {
         undoStack.push([cell, doneCopy]);
 
     }
+
+
+    document.addEventListener('keydown', (e) => {
+        if (document.querySelector('dialog[open]')) {
+            return;
+        }
+
+        if (e.key === "u") {
+            undo();
+        }
+
+        if (e.key === "r") {
+            redo();
+        }
+
+        if (e.key === "c") {
+            candidateToggle();
+        }
+
+        if (e.key === "m") {
+            
+            MENU_TOGGLE.checked = !MENU_TOGGLE.checked;
+            changed = new AnimationEvent("change");
+            MENU_TOGGLE.dispatchEvent(changed);
+        }
+
+        if (e.key === "h") {
+            Router("index.html");
+            history.pushState({loc:"index.html"}, "");
+        }
+
+        if (e.key === "Tab") {
+            tabbed = true;
+            setTimeout(() => { tabbed = false }, 10);
+        }
+    });
 
 
     undoButton.addEventListener("pointerdown", undo);
@@ -876,9 +962,9 @@ function initLevel() {
         setTimeout( () => pencilButtonClicked = false, 10);
         candidateMode = !candidateMode;
         if (candidateMode) {
-            e.target.classList.add("active");
+            pencilButton.classList.add("active");
         } else {
-            e.target.classList.remove("active");
+            pencilButton.classList.remove("active");
         }
     }
 

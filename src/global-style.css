@@ -59,12 +59,18 @@ body, .page {
   z-index: 1;
 
   opacity: 1;
-  transition: opacity 0.2s, transform 0.1s, left 0.2s;
+  transition: opacity 0.05s, transform 0.1s;
 }
 
 @media(hover: hover) and (pointer: fine) {
-  .dialog_button.home:hover { opacity: 0.72; }
+  .dialog_button:hover { opacity: 0.65; }
 }
+
+.dialog_button:focus {
+  opacity: 0.65;
+}
+
+
 
 #configs {
   margin-left: 2vw;

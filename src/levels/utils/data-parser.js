@@ -106,6 +106,7 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
         p.innerHTML = n;
 
         button.appendChild(p);
+        button.tabIndex = -1;
         
         page.getElementById("domain").appendChild(button);
     });

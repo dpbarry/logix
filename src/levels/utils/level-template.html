@@ -1,7 +1,8 @@
 <div class="page level">
-    
+    <span id="backtab_catch" tabindex="0"></span>
+
     <div id="wrap_home_level">
-        <button id="home"></button>
+        <button id="home" tabindex="-1"></button>
 
         <h1 id="level" onClick=""></h1>
 
@@ -10,7 +11,7 @@
     <div id="overlay"></div>
     <div id="menu">
         <ul>
-            <input id="menu_checkbox" type="checkbox" checked>
+            <input id="menu_checkbox" type="checkbox" tabindex="-1" checked>
             <span id="chevron"></span>
             <li id="info" class="dialog_button" onclick="showModal('info_dialog')"></li>
             <li id="dictionary" class="dialog_button" onclick="showModal('dictionary_dialog')"></li>
@@ -44,10 +45,6 @@
                 <label for="cancelout_toggle"> Cancel Out </label>
                 <input id="cancelout_toggle" type="checkbox" checked>
                 <p>Clear a cell by inputting its current value</p>
-
-                <label for="impatient_toggle"> Impatient </label>
-                <input id="impatient_toggle" type="checkbox" checked>
-                <p>[TODO] Automatically jump to next cell</p>
             </div>
         </dialog>
     </div>
@@ -81,10 +78,10 @@
             
             <div id="wrap_toolbar_domain">
                 <div id="toolbar">
-                    <button id="pencil" class="usable"> </button>
+                    <button id="pencil" class="usable" tabindex="-1"> </button>
 
-                    <button id="undo"></button>
-                    <button id="redo"></button>
+                    <button id="undo" tabindex="-1"></button>
+                    <button id="redo" tabindex="-1"></button>
                 </div>
                 <div id="domain">
                     
@@ -92,4 +89,6 @@
             </div>
         </div>
     </div>
+
+    <span id="tab_catch" tabindex="0"></span>
 </div>

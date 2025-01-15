@@ -70,7 +70,12 @@ function initDialogs() {
             event.target.addEventListener("pointerup", (event) => {
                 event.target.classList.remove("nudged");
             })
-        })
+        });
+
+        li.addEventListener("keydown", (e) => {
+            if (e.key !== " " && e.key !== "Enter") return;
+            showModal(li.id + "_dialog");
+        });
     });
 
     document.body.addEventListener("pointerup", (e) => {

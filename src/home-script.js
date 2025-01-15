@@ -6,13 +6,25 @@ function setupHome() {
         
         let target = e.target.closest(".trainstage");
 
+        document.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
+            b.tabIndex = -1;
+        });
+
         if (target.classList.contains("dropped")) {
             target.classList.remove("dropped");
+            target.tabIndex = 0;
         } else {
             stages.forEach((s) => {
                 s.classList.remove("dropped");
-            })
+                s.tabIndex = 0;
+            });
+
             target.classList.add("dropped");
+            document.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
+                b.tabIndex = 0;
+            });
+            target.tabIndex = -1;
+
         }
         target.blur();
     }
@@ -23,8 +35,10 @@ function setupHome() {
         stage.tabIndex = 0;
     });
 
+    document.querySelector(".dropped").tabIndex = -1;
+
     document.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
-        b.tabIndex = 0;
+        b.tabIndex = -1;
         
         b.onclick = function (e) {
             // e.target.classList.add("activated");
@@ -46,6 +60,8 @@ function setupHome() {
             }, 15);
         };
     });
+
+    document.querySelectorAll(".dropped + ul > .level-button").forEach( b => b.tabIndex = 0 );
 
     document.querySelectorAll(".level-button").forEach(b => {
         b.addEventListener("pointerdown", (e) => {

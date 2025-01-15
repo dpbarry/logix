@@ -605,9 +605,9 @@ body {
 }
 
 @keyframes correctFlash {
-  0% { font-size: var(--cellFontSize); color: var(--baseColor); }
-  50% { font-size: calc(var(--cellFontSize) * 1.6); color: var(--correctColor); }
-  100% { font-size: calc(var(--cellFontSize) * 1.25); color: var(--correctColor); }
+  0% { transform: scale(1); color: var(--baseColor); }
+  50% { transform: scale(1.65); color: var(--correctColor); }
+  100% { transform: scale(1.25); color: var(--correctColor); }
 }
 
 #prop_container {

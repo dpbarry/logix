@@ -71,20 +71,6 @@ body, .page {
 }
 
 
-
-#configs {
-  margin-left: 2vw;
-  margin-right: 2vw;
-  font-size: 1.4rem;
-  font-weight: 400;
-  display:flex;
-  align-items: flex-end;
-  justify-content: left;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-
 .close {
   position: absolute;
   right: 20px;
@@ -191,6 +177,20 @@ dialog {
     text-align: center;
 
   }
+}
+
+#configs {
+  margin-left: 2vw;
+  margin-right: 2vw;
+  font-size: 1.4rem;
+  font-weight: 400;
+  display:flex;
+  align-items: flex-end;
+  justify-content: left;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  
   label {
     margin-right: 1px;
   }

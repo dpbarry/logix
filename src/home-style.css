@@ -29,6 +29,73 @@
 #about {
   background: url("../assets/INFO.svg");
   left: 20px;
+
+}
+
+#info_dialog {
+  
+  #github {
+    cursor: pointer;
+    color: hsl(200, 15%, 55%);
+    position: absolute;
+    bottom: 18px;
+    text-align: center;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    #github:hover {
+      color: hsl(200 15% 35%);
+    }
+  }
+}
+
+#precis {
+  margin-left: 2vw;
+  margin-right: 2vw;
+  display:flex;
+  align-items: flex-end;
+  justify-content: left;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 400;
+
+    margin: 0;
+    text-align: center;
+  }
+
+  a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: hsl(120 20% 60%);
+    transition: color 0.07s;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a:hover {
+      color: hsl(120 20% 40%);
+    }
+  }
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 400;
+
+    margin:0;
+    text-align: justify;
+  }
+
+  aside {
+    font-style: italic;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+
+    margin:0;
+    text-align: justify;
+  }
 }
 
 #wrap_cards {

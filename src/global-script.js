@@ -87,3 +87,8 @@ function initDialogs() {
 }
 
 
+
+const CROSSHAIRS_TOGGLE = document.querySelector("#crosshairs_toggle");
+const STICKY_TOGGLE = document.querySelector("#sticky_toggle");
+const CANCELOUT_TOGGLE = document.querySelector("#cancelout_toggle");
+

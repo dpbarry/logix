@@ -8,30 +8,14 @@
     <dialog id="info_dialog">
         <a class="close"></a>
         <h1>Info</h1>
+        <div id="precis">
+            <h2> The objective of Logix is to find the matrix induced by a set of mathematical statements. </h2>
+            <p> Not (much) math background is needed. The best way to start is with the <a id="shortcut">Training levels</a>*, which introduce new concepts incrementally. You may find yourself learning quite a bit along the way.</p>
+            <aside> *Even seasoned logicians should consider starting here to get acquainted with a few Logix-specific definitions.</aside>
+        </div>
+
+        <a id="github" href="https://github.com/dpbarry/logix"> https://github.com/dpbarry/logix </a>
     </dialog>
-  <dialog id="settings_dialog">
-            <a class="close"></a>
-            <h1>Settings</h1>
-            <div id="configs">
-                <label for="sticky_toggle"> Sticky Input </label>
-                <input id="sticky_toggle" type="checkbox" checked="">
-                <p>Input selection persists after filling a cell</p>
-                
-                <label for="highlight_toggle"> Highlight </label>
-                <input id="highlight_toggle" type="checkbox" checked="">
-                <p>Highlight appearances of selected cell in propositions</p>
-                
-                <label for="crosshairs_toggle"> Crosshairs </label>
-                <input id="crosshairs_toggle" type="checkbox">
-                <p>Emphasize row and column of selected cell</p>
-
-                <label for="cancelout_toggle"> Cancel Out </label>
-                <input id="cancelout_toggle" type="checkbox" checked="">
-                <p>Clear a cell by inputting its current value</p>
-            </div>
-  </dialog>
-
-
 
     <h1 id="main-header">LOGIX</h1>
     <div id="wrap_cards">
@@ -47,8 +31,8 @@
                 <li id="T1-3" class="level-button">1.3</li>
                 <li id="T1-4" class="level-button">1.4</li>
                 <li id="T1-5" class="level-button">1.5</li>
-                <li id="T1-6" class="level-button">1.6</li>
-                <li id="T1-7" class="level-button">1.7</li>
+                <li id="T1-6" class="level-button locked">1.6</li>
+                <li id="T1-7" class="level-button locked">1.7</li>
             </ul>
             <li id="s2" class="trainstage">
                 2. Connectives
@@ -107,7 +91,7 @@
         <ul class="card" id="normal">
             <h2> Normal </h2>
             <ul class="campaignlist">
-                <li id="N1" class="level-button">1</li>
+                <li id="N1" class="level-button locked">1</li>
                 <li id="N2" class="level-button locked">2</li>
                 <li id="N3" class="level-button locked">3</li>
                 <li id="N4" class="level-button locked">4</li>
@@ -147,7 +131,7 @@
         <ul class="card" id="difficult">
             <h2> Difficult </h2>
             <ul class="campaignlist">
-                <li id="D1" class="level-button">1</li>
+                <li id="D1" class="level-button locked">1</li>
                 <li id="D2" class="level-button locked">2</li>
                 <li id="D3" class="level-button locked">3</li>
                 <li id="D4" class="level-button locked">4</li>
@@ -188,7 +172,7 @@
         <ul class="card" id="extreme">
             <h2>Extreme</h2>
             <ul class="campaignlist">
-                <li id="E1" class="level-button">1</li>
+                <li id="E1" class="level-button locked">1</li>
                 <li id="E2" class="level-button locked">2</li>
                 <li id="E3" class="level-button locked">3</li>
                 <li id="E4" class="level-button locked">4</li>

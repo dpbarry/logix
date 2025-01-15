@@ -13,9 +13,6 @@ function initLevel() {
 
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
 
-    const CROSSHAIRS_TOGGLE = level.querySelector("#crosshairs_toggle");
-    const STICKY_TOGGLE = level.querySelector("#sticky_toggle");
-    const CANCELOUT_TOGGLE = level.querySelector("#cancelout_toggle");
     const MENU_TOGGLE = level.querySelector("#menu_checkbox");
 
     const propositions = level.querySelector("#propositions");
@@ -34,10 +31,6 @@ function initLevel() {
     const pencilButton = level.querySelector("#pencil");
 
     let values = new Map();
-
-    let use_crosshairs = CROSSHAIRS_TOGGLE.checked;
-    let use_sticky = STICKY_TOGGLE.checked;
-    let use_cancelout = CANCELOUT_TOGGLE.checked;
 
     let tabbed = false;
     tabMenu();
@@ -70,18 +63,6 @@ function initLevel() {
         document.documentElement.style.setProperty('--widthFactor', 1);
     }
     
-
-    CROSSHAIRS_TOGGLE.addEventListener("change", (e) => {
-        use_crosshairs = CROSSHAIRS_TOGGLE.checked;
-    });
-
-    STICKY_TOGGLE.addEventListener("change", (e) => {
-        use_sticky = STICKY_TOGGLE.checked;
-    });
-
-    CANCELOUT_TOGGLE.addEventListener("change", (e) => {
-        use_cancelout = CANCELOUT_TOGGLE.checked;
-    });
 
     MENU_TOGGLE.addEventListener("change", (e) => {
         tabMenu();
@@ -207,7 +188,7 @@ function initLevel() {
 
             let match = Array.from(opts.children).find( x => x.innerText.trim() === value.trim());
             if (match) {
-                if (use_cancelout) {
+                if (CANCELOUT_TOGGLE.checked) {
                     match.classList.add("dismiss");
                     match.addEventListener("transitionend", endDismiss);
                 }
@@ -222,7 +203,7 @@ function initLevel() {
             opts.remove();
         }
 
-        if (use_cancelout && text.innerText.trim() === value.trim()) {
+        if ( CANCELOUT_TOGGLE.checked && text.innerText.trim() === value.trim()) {
             flushInsert = new AnimationEvent("animationend");
             text.dispatchEvent(flushInsert);
 
@@ -405,9 +386,6 @@ function initLevel() {
 
         setTimeout( () => {
             domainList[0].tabIndex = 0;
-
-            cellList.forEach((cell) => {
-            });
         }, 150);
         domainList[0].addEventListener("pointerdown", () => {
             domainList[0].classList.add("activated");
@@ -493,7 +471,7 @@ function initLevel() {
         setTimeout(function () {
             cellActive = false;
 
-            if (use_sticky
+            if (STICKY_TOGGLE.checked
                 && !(level.querySelector("#grid").contains(document.activeElement))
                 && document.activeElement.parentNode.id !== "toolbar"
                 && document.activeElement !== document.body
@@ -648,7 +626,7 @@ function initLevel() {
         setTimeout(function () {
             domainActive = false;
 
-            if (use_sticky
+            if (STICKY_TOGGLE.checked
                 && document.activeElement.parentNode.id != "domain"
                 && document.activeElement.parentNode.id != "toolbar"
                 && document.activeElement != document.body
@@ -712,7 +690,7 @@ function initLevel() {
 
     // given the id of a cell, emphasize borders of cells in that row and column
     function crosshairs(id) {
-        if (!use_crosshairs) return;
+        if (!CROSSHAIRS_TOGGLE.checked) return;
         for (let i = 0; i < cellList.length; i++) {
             // check that the cell matches in row or column
             if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {

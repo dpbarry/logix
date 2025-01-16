@@ -15,7 +15,11 @@
 :root {
   --bgColor:  #FFF;
   --baseColor: black;
- 
+  --bracketColor: black;
+
+  --card: #F5F5F5;
+  --alpha: 0.3;
+  
   --lightestShade: hsl(50, 18%, 95%);
   --lighterShade: hsl(50, 25%, 92%);
   --darkShade: hsl(50, 20%, 50%);
@@ -25,6 +29,8 @@
   --focusColor: hsl(50, 37%, 86%);
   --emphasisColor: hsl(50, 37%, 45%);
   --correctColor: hsl(130, 35%, 35%);
+
+  --hueShiftIcons: unset ;
 }
 
 /*  Prevent mismatch between viewport and body dimensions */
@@ -76,6 +82,8 @@ body, .page {
 
   opacity: 1;
   transition: opacity 0.05s, transform 0.1s;
+
+  filter: var(--hueShiftIcons);
 }
 
 @media(hover: hover) and (pointer: fine) {
@@ -97,7 +105,7 @@ body, .page {
   border-radius: 5px;
 }
 .close:hover:before, .close:hover:after {
-  background-color: #000000;
+  filter: brightness(0.7);
 }
 .close:before, .close:after {
   border-radius: 10px;
@@ -105,7 +113,7 @@ body, .page {
   content: ' ';
   height: 28px;
   width: 1px;
-  background-color: #444444;
+  background-color: var(--darkShade);
   position: absolute;
 }
 .close:before {
@@ -130,18 +138,16 @@ body, .page {
   bottom: 0;
   z-index: 2;
 
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0,0,0,var(--alpha));
   opacity: 0;
   transition: opacity .2s;
 }
 
-#overlay:has(~ dialog[open]),
-#overlay:has(~ #menu > dialog[open]){
+html:has(dialog[open]) #overlay {
   height: 100%;
   opacity: 0.45;
 }
-#overlay:has(~ .hide ),
-#overlay:has(~ #menu > .hide) {
+html:has(dialog.hide) #overlay {
   opacity: 0 !important;
 }
 
@@ -152,12 +158,14 @@ dialog {
   position: fixed;
   margin: auto;
   display: block;
-  
+  background-color: var(--bgColor);
   font-family: "source serif 4";
   width: min(80vw, 500px);
   height: 52vh;
   visibility: hidden;
   opacity: 0;
+
+  color: var(--baseColor);
 
   border-radius: 12px;
   

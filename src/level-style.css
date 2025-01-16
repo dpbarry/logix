@@ -69,7 +69,7 @@
   button:first-child {
     height: var(--domainButtonHeight);
     width: 100%;
-    border: 1px solid black;
+    border: 1px solid var(--bracketColor);
     background: repeating-linear-gradient(45deg, var(--lightBlue),  var(--darkBlue) , var(--lightBlue) 600px);
     background-size: calc(600px/sin(45deg)) 100%;
     animation: glow 2.5s linear infinite reverse;
@@ -174,6 +174,7 @@
   border: 0;
   flex-basis: 100%;
   background-color: transparent;
+  filter: var(--hueShiftIcons);
   cursor: pointer;
 }
 
@@ -422,7 +423,7 @@
   justify-items: center;
   box-sizing: content-box;
   
-  border: var(--gridBorderWidth) solid var(--baseColor);
+  border: var(--gridBorderWidth) solid var(--bracketColor, black);
   border-radius: 2px;
   
   grid-template-columns: repeat(var(--cols), 1fr);
@@ -655,7 +656,7 @@
       left: 0; right: 0; top: 0; bottom: 0;
       transition: opacity 0.12s ease-in-out;
       background-color: var(--focusColor);
-      box-shadow: 0 2px 1px -1px #EEE, 0 0 1px 0px #DDD;
+      box-shadow: 0 2px 1px -1px var(--lighterShade);
       border: 1px solid var(--darkShade);
 
       z-index: -1;
@@ -665,7 +666,7 @@
     }
 
     span.entry.given::before {
-      filter: saturate(0.1);
+      filter: saturate(0);
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -717,7 +718,7 @@
     background-color: transparent;
     border: 0;
     box-shadow: none;
-    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1)) var(--hueShiftIcons, );
     border-radius: 50px;
     padding: 0;
   }
@@ -778,7 +779,7 @@
 
   #pencil.active::after {
     opacity: 1;
-    filter: drop-shadow( 4px 4px 1.5px rgba(0, 0, 0, .3))
+    filter: drop-shadow( 4px 4px 1.5px rgba(0, 0, 0, .3));
   }
 
   #undo:not(.usable), #redo:not(.usable), #pencil:not(.usable) {
@@ -841,7 +842,7 @@
         var(--darkerShade) 100%
       );
 
-      filter: saturate(0.4);
+      filter: saturate(0.4) brightness(0.72);
       transition: filter 0.2s;
     }
 
@@ -855,11 +856,11 @@
       height: 85%;
       width: 100%;
       overflow: hidden;
-      border: 1px solid black;
+      border: 1px solid var(--darkerShade);
       box-sizing: border-box;
       
       border-radius: 11px;
-      color: black;
+      color: var(--baseColor);
 
 
       display: flex;

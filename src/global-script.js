@@ -3,14 +3,14 @@ function showModal(id) {
 }
 
 function closeDialog (event) {
-    event.target.close();
-    event.target.classList.remove("hide");
+    event.target.closest("dialog").close();
+    event.target.closest("dialog").classList.remove("hide");
 
     document.querySelectorAll(".dialog_button").forEach( (d) => {
         d.blur();
     });
     
-    event.target.removeEventListener("transitionend", closeDialog);    
+    event.target.closest("dialog").removeEventListener("transitionend", closeDialog);    
 }
 
 function initDialogs() {
@@ -97,69 +97,95 @@ THEMES.forEach( t => {
     });
 });
 
+updateTheme();
 function updateTheme() {
     let theme = Array.from(THEMES).find(t => t.checked);
 
     if (theme.id === "litlight") {
 
         ROOT.style.setProperty('--bgColor', '#FFF');
-        ROOT.style.setProperty('--baseColor', 'black');
+        ROOT.style.setProperty('--baseColor', '#000');
+        ROOT.style.setProperty('--bracketColor', '#000');
 
-        ROOT.style.setProperty('--lightestShade', 'hsl(50, 18%, 95%)');
-        ROOT.style.setProperty('--lighterShade', 'hsl(50, 25%, 92%)');
-        ROOT.style.setProperty('--darkShade', 'hsl(50, 20%, 50%)');
-        ROOT.style.setProperty('--darkerShade', 'hsl(50, 18%, 35%)');
-        ROOT.style.setProperty('--darkestShade', 'hsl(50, 18%, 25%)');
+        ROOT.style.setProperty('--card', '#F5F5F5');
+        ROOT.style.setProperty('--alpha', '0.3');
 
-        ROOT.style.setProperty('--focusColor', 'hsl(50, 37%, 86%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(50, 37%, 45%)');
+        ROOT.style.setProperty('--lightestShade', 'hsl(50, 20%, 94%)');
+        ROOT.style.setProperty('--lighterShade', 'hsl(50, 25%, 91%)');
+        ROOT.style.setProperty('--darkShade', 'hsl(50, 25%, 50%)');
+        ROOT.style.setProperty('--darkerShade', 'hsl(50, 30%, 35%)');
+        ROOT.style.setProperty('--darkestShade', 'hsl(50, 35%, 25%)');
+
+        ROOT.style.setProperty('--focusColor', 'hsl(50, 45%, 80%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(50, 40%, 45%)');
         ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
+
+        ROOT.style.setProperty('--hueShiftIcons', '');
 
     } else if (theme.id === "frostlight") {
 
         ROOT.style.setProperty('--bgColor', '#FFF');
-        ROOT.style.setProperty('--baseColor', 'hsl(200, 15%, 20%)');
+        ROOT.style.setProperty('--baseColor', '#000');
+        ROOT.style.setProperty('--bracketColor', '#000');
 
-        ROOT.style.setProperty('--lightestShade', 'hsl(200, 10%, 98%)');
-        ROOT.style.setProperty('--lighterShade', 'hsl(200, 12%, 94%)');
-        ROOT.style.setProperty('--darkShade', 'hsl(200, 20%, 50%)');
-        ROOT.style.setProperty('--darkerShade', 'hsl(200, 22%, 40%)');
-        ROOT.style.setProperty('--darkestShade', 'hsl(200, 25%, 30%)');
+        ROOT.style.setProperty('--card', '#F5F5F5');
+        ROOT.style.setProperty('--alpha', '0.3');
 
-        ROOT.style.setProperty('--focusColor', 'hsl(200, 30%, 85%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 35%, 45%)');
-        ROOT.style.setProperty('--correctColor', 'hsl(150, 40%, 35%)');
-        ROOT.style.setProperty('--cellColor', 'hsl(200, 15%, 96%)');
+        ROOT.style.setProperty('--lightestShade', 'hsl(200, 20%, 94%)');
+        ROOT.style.setProperty('--lighterShade', 'hsl(200, 25%, 91%)');
+        ROOT.style.setProperty('--darkShade', 'hsl(200, 25%, 50%)');
+        ROOT.style.setProperty('--darkerShade', 'hsl(200, 30%, 35%)');
+        ROOT.style.setProperty('--darkestShade', 'hsl(200, 35%, 25%)');
+
+        ROOT.style.setProperty('--focusColor', 'hsl(200, 45%, 80%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 40%, 45%)');
+        ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
+
+        ROOT.style.setProperty('--hueShiftIcons', '');
+
 
     } else if (theme.id === "litdark") {
 
-        ROOT.style.setProperty('--bgColor', 'hsl(50, 18%, 15%)');
-        ROOT.style.setProperty('--baseColor', 'hsl(50, 18%, 70%)');
+        ROOT.style.setProperty('--bgColor', 'hsl(50, 18%, 6%)');
+        ROOT.style.setProperty('--baseColor', '#E5E5E5');
+        ROOT.style.setProperty('--bracketColor', 'hsl(50, 20%, 45%)');
 
-        ROOT.style.setProperty('--lightestShade', 'hsl(50, 18%, 25%)');
-        ROOT.style.setProperty('--lighterShade', 'hsl(50, 20%, 35%)');
-        ROOT.style.setProperty('--darkShade', 'hsl(50, 25%, 50%)');
-        ROOT.style.setProperty('--darkerShade', 'hsl(50, 30%, 65%)');
-        ROOT.style.setProperty('--darkestShade', 'hsl(50, 35%, 75%)');
+        ROOT.style.setProperty('--card', '#4E4E4E');
+        ROOT.style.setProperty('--alpha', '0.8');
 
-        ROOT.style.setProperty('--focusColor', 'hsl(50, 37%, 65%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(50, 37%, 45%)');
-        ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 50%)');
+        ROOT.style.setProperty('--lightestShade', 'hsl(50, 20%, 45%)');
+        ROOT.style.setProperty('--lighterShade', 'hsl(50, 25%, 40%)');
+        ROOT.style.setProperty('--darkShade', 'hsl(50, 25%, 35%)');
+        ROOT.style.setProperty('--darkerShade', 'hsl(50, 30%, 30%)');
+        ROOT.style.setProperty('--darkestShade', 'hsl(50, 30%, 20%)');
+
+        ROOT.style.setProperty('--focusColor', 'hsl(50, 40%, 30%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(50, 60%, 20%)');
+        ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
+
+        ROOT.style.setProperty('--hueShiftIcons', 'invert(95%) sepia(34%) saturate(66%) hue-rotate(195deg) brightness(111%) contrast(80%)');
+
 
     } else if (theme.id === "frostdark") {
 
-        ROOT.style.setProperty('--bgColor', 'hsl(200, 15%, 10%)');
-        ROOT.style.setProperty('--baseColor', 'hsl(200, 15%, 70%)');
+        ROOT.style.setProperty('--bgColor', 'hsl(200, 18%, 6%)');
+        ROOT.style.setProperty('--baseColor', '#E5E5E5');
+        ROOT.style.setProperty('--bracketColor', 'hsl(200, 20%, 45%)');
 
-        ROOT.style.setProperty('--lightestShade', 'hsl(200, 15%, 20%)');
-        ROOT.style.setProperty('--lighterShade', 'hsl(200, 18%, 30%)');
-        ROOT.style.setProperty('--darkShade', 'hsl(200, 20%, 45%)');
-        ROOT.style.setProperty('--darkerShade', 'hsl(200, 25%, 60%)');
-        ROOT.style.setProperty('--darkestShade', 'hsl(200, 30%, 75%)');
+        ROOT.style.setProperty('--card', '#4E4E4E');
+        ROOT.style.setProperty('--alpha', '0.8');
 
-        ROOT.style.setProperty('--focusColor', 'hsl(200, 40%, 70%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 45%, 50%)');
-        ROOT.style.setProperty('--correctColor', 'hsl(150, 50%, 45%)');
-        ROOT.style.setProperty('--cellColor', 'hsl(200, 15%, 15%)');
+        ROOT.style.setProperty('--lightestShade', 'hsl(200, 20%, 45%)');
+        ROOT.style.setProperty('--lighterShade', 'hsl(200, 25%, 40%)');
+        ROOT.style.setProperty('--darkShade', 'hsl(200, 25%, 35%)');
+        ROOT.style.setProperty('--darkerShade', 'hsl(200, 30%, 30%)');
+        ROOT.style.setProperty('--darkestShade', 'hsl(200, 30%, 20%)');
+
+        ROOT.style.setProperty('--focusColor', 'hsl(200, 40%, 35%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 60%, 20%)');
+        ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
+
+        ROOT.style.setProperty('--hueShiftIcons', 'invert(95%) sepia(34%) saturate(66%) hue-rotate(195deg) brightness(111%) contrast(80%)');
+
     }
 }

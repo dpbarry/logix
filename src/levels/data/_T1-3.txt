@@ -7,3 +7,4 @@ cols=4
 given=?,?,?,?
 propositions=\lang \begin{smallmatrix} 1 \\ 1 \end{smallmatrix} \rang < \lang \begin{smallmatrix} 1 \\ 4 \end{smallmatrix} \rang@\lang \begin{smallmatrix} 1 \\ 4 \end{smallmatrix} \rang < \lang \begin{smallmatrix} 1 \\ 2 \end{smallmatrix} \rang@\lang \begin{smallmatrix} 1 \\ 2 \end{smallmatrix} \rang > \lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang@\lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang > \lang \begin{smallmatrix} 1 \\ 4 \end{smallmatrix} \rang
 solution=5,8,7,6
+info= 

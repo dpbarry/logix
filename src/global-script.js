@@ -89,15 +89,68 @@ const CROSSHAIRS_TOGGLE = document.querySelector("#crosshairs_toggle");
 const STICKY_TOGGLE = document.querySelector("#sticky_toggle");
 const CANCELOUT_TOGGLE = document.querySelector("#cancelout_toggle");
 const THEMES = document.querySelectorAll(".theme");
+
 const ROOT = document.documentElement;
 
 THEMES.forEach( t => {
     t.addEventListener("change", () => {
         updateTheme();
+        if (t.checked) {
+            sessionStorage.setItem("theme", t.id);
+
+        }
+    });
+});
+
+[CROSSHAIRS_TOGGLE, STICKY_TOGGLE, CANCELOUT_TOGGLE].forEach(t => {
+    t.addEventListener("change", () => {
+        sessionStorage.setItem(t.id.split("_")[0], t.checked);
     });
 });
 
 updateTheme();
+
+let cacheCrosshairs = sessionStorage.getItem("crosshairs");
+let cacheSticky = sessionStorage.getItem("sticky");
+let cacheCancelout = sessionStorage.getItem("cancelout");
+let cacheTheme = sessionStorage.getItem("theme");
+
+if (cacheCrosshairs !== null) {
+    if (cacheCrosshairs === "true") {
+        CROSSHAIRS_TOGGLE.checked = true;
+    } else {
+        CROSSHAIRS_TOGGLE.removeAttribute("checked");
+    }
+}
+
+if (cacheSticky !== null) {
+    if (cacheSticky === "true") {
+        STICKY_TOGGLE.checked = true;
+    } else {
+        STICKY_TOGGLE.removeAttribute("checked");
+    }
+}
+
+if (cacheCancelout !== null) {
+    if (cacheCancelout === "true") {
+        CANCELOUT_TOGGLE.checked = true;
+    } else {
+        CANCELOUT_TOGGLE.removeAttribute("checked");
+    }
+}
+
+if (cacheTheme !== null) {
+    THEMES.forEach( t => {
+        if (t.id === cacheTheme) {
+            t.checked = true;
+            updateTheme();
+        } else {
+            t.removeAttribute("checked");
+        }
+    });
+}
+
+
 function updateTheme() {
     let theme = Array.from(THEMES).find(t => t.checked);
 

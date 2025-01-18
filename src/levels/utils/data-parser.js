@@ -7,7 +7,7 @@ async function parseDataFile(text) {
 
             if (key === 'propositions') {
                 acc[key] = value.split('@').map(item => item.trim()); // Split propositions by @
-            } else if (value.includes(',')) {
+            } else if (["domain", "given", "solution"].includes(key)) {
                 acc[key] = value.split(',').map(item => item.trim()); // Split other keys with comma-separated values
             } else {
                 acc[key] = value; // Handle plain strings
@@ -27,20 +27,23 @@ async function parseDataFile(text) {
     const given = lines['given'];
     const solution = lines['solution'].map(x => parseInt(x) || null);
     const propositions = lines['propositions'];
+    const info = lines['info'];
 
     // Generate files
-    generateHTMLFile(levelNumber, difficulty, rows, cols, given, propositions, domain);
+    generateHTMLFile(levelNumber, difficulty, rows, cols, given, propositions, domain, info);
     generateJSFile(levelNumber, difficulty, rows, cols, solution, domain, nextLevel);
 }
 
-async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, propositions, domain) {
+async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, propositions, domain, info) {
     const parser = new DOMParser();
     
-    let templateText = await (await fetch('level-template.html')).text();
+    let templateText = await (await fetch('level-template.html', {cache: "no-store"})).text();
     let page = parser.parseFromString(templateText, 'text/html');
 
     page.getElementById("level").innerHTML = levelNumber;
     page.getElementById("difficulty").innerHTML = difficulty;
+
+    page.getElementById("level_info").innerHTML = info;
 
     if (levelNumber !== "1.1" || difficulty !== "Training") {
         page.getElementById("menu_checkbox").removeAttribute('checked');

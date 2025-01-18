@@ -144,8 +144,6 @@
          initLevel();
        }, 1);
        
-       
-
        document.fonts.ready.then(() => {
          oldPage.classList.add("slideout");
          
@@ -157,24 +155,15 @@
              centerPropositions(newPage.querySelector("#prop_container"));
 
              horizontalScroll(newPage.querySelector('#domain'), 7);
-             
-             
            }, 100);
          }, 10);
-
-         
 
          setTimeout(function() {
            oldPage.remove();
          }, 175);
-
-
-
        });
-       sessionStorage.setItem("loc", path);
-
-
        
+       sessionStorage.setItem("loc", path);
      }
 
      
@@ -188,12 +177,17 @@
        window.focus();
      };
      
+     window.addEventListener("load", () => {
+       window.addEventListener("popstate", (e) => {
+         Router(e.state.loc);
+       });
+     });
 
+     
      function segment(pathName) {
        url = pathName.replace(/\/+$/, '');
        return url.substr(url.lastIndexOf('/') + 1);
      }
-
 
      let cacheLoc = sessionStorage.getItem("loc");
      
@@ -204,14 +198,6 @@
        Router(segment(location.pathname));
        history.replaceState({loc:segment(location.pathname)}, "");
      }
-
-
-     
-     window.addEventListener("load", () => {
-       window.addEventListener("popstate", (e) => {
-         Router(e.state.loc);
-       });
-     });
     </script>
 
     

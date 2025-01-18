@@ -96,7 +96,7 @@ THEMES.forEach( t => {
     t.addEventListener("change", () => {
         updateTheme();
         if (t.checked) {
-            sessionStorage.setItem("theme", t.id);
+            localStorage.setItem("theme", t.id);
 
         }
     });
@@ -104,16 +104,16 @@ THEMES.forEach( t => {
 
 [CROSSHAIRS_TOGGLE, STICKY_TOGGLE, CANCELOUT_TOGGLE].forEach(t => {
     t.addEventListener("change", () => {
-        sessionStorage.setItem(t.id.split("_")[0], t.checked);
+        localStorage.setItem(t.id.split("_")[0], t.checked);
     });
 });
 
 updateTheme();
 
-let cacheCrosshairs = sessionStorage.getItem("crosshairs");
-let cacheSticky = sessionStorage.getItem("sticky");
-let cacheCancelout = sessionStorage.getItem("cancelout");
-let cacheTheme = sessionStorage.getItem("theme");
+let cacheCrosshairs = localStorage.getItem("crosshairs");
+let cacheSticky = localStorage.getItem("sticky");
+let cacheCancelout = localStorage.getItem("cancelout");
+let cacheTheme = localStorage.getItem("theme");
 
 if (cacheCrosshairs !== null) {
     if (cacheCrosshairs === "true") {

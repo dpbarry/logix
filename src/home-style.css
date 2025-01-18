@@ -139,7 +139,7 @@
   padding: 15px;
 
   background-color: var(--card);
-  border: #DADADA 1px solid;
+  border: light-dark(#DADADA, #202020) 1px solid;
   border-radius: 5px;
   box-shadow: 0 0 4px #EAEAEA, 0 0px 2px  #C0C0C0, 0 7px 8px -8px #D0D0D0;
 
@@ -170,7 +170,7 @@
   font-size: 1.75rem;
   font-weight: 315;
   
-  border: 1px solid #888;
+  border: 1px solid light-dark(#888, #555);
   border-radius: 3px;
   
   display: flex;
@@ -198,10 +198,10 @@
 #normal {
   li {
     box-shadow: 0 2px 3px hsl(55 8% 86% / 1), 0 0 2px hsl(55 8% 91% / 1);
-    background: hsl(55 15% 85%);
+    background: hsl(55 20% 85%);
     
     &:focus {
-      background: hsl(55 20% 80%);
+      background: hsl(55 25% 80%);
       box-shadow: 0 2px 3px hsl(55 8% 85% / 1), 0 0 2px hsl(55 8% 90% / 1);
     }
   }
@@ -210,11 +210,11 @@
 #difficult {
   li {
     box-shadow: 0 2px 3px hsl(0 8% 86% / 1), 0 0 2px hsl(0 8% 91% / 1);
-    background: hsl(0 15% 85%);
+    background: hsl(0 20% 85%);
 
 
     &:focus {
-      background: hsl(0 20% 80%);
+      background: hsl(0 25% 80%);
       box-shadow: 0 2px 3px hsl(0 8% 85% / 1), 0 0 2px hsl(0 8% 90% / 1);
     }
   }
@@ -223,10 +223,10 @@
 #extreme {
   li {
     box-shadow: 0 2px 3px hsl(300 8% 86% / 1), 0 0 2px hsl(300 8% 91% / 1);
-    background: hsl(300 15% 85%);
+    background: hsl(300 20% 85%);
 
     &:focus {
-      background: hsl(300 20% 80%);
+      background: hsl(300 25% 80%);
       box-shadow: 0 2px 3px hsl(300 8% 85% / 1), 0 0 2px hsl(300 8% 90% / 1);
     }
   }
@@ -245,11 +245,11 @@
   
   .trainstage, .level-button {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
-    background: hsl(120 15% 85%);
+    background: hsl(120 20% 85%);
   }
 
   .trainstage:focus, .level-button:focus {
-    background: hsl(120 20% 80%);
+    background: hsl(120 25% 80%);
     box-shadow: 0 2px 3px hsl(120 8% 85% / 1), 0 0 2px hsl(120 8% 90% / 1);
   }
 
@@ -278,7 +278,7 @@
   font-size: 1.45rem;
   font-weight: 435;
 
-  border: 1px solid #AAA;
+  border: 1px solid light-dark(#AAA, #777);
   border-radius: 2px;
   box-shadow: 0 2px 3px #DFDFDF, 0 0 2px #EEE;
 
@@ -290,6 +290,9 @@
   &:last-of-type { margin-bottom: 0px; }
 }
 
+:root.dark .level-button, :root.dark .trainstage {
+  filter: saturate(2.9) brightness(0.8);
+}
 
 @media (hover: hover) and (pointer: fine) {
   .trainstage:hover {

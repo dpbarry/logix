@@ -175,6 +175,11 @@ function updateTheme() {
 
         ROOT.style.setProperty('--hueShiftIcons', '');
 
+        ROOT.style.colorScheme = "light";
+        ROOT.classList.remove("dark");
+
+
+
     } else if (theme.id === "frostlight") {
 
         ROOT.style.setProperty('--bgColor', '#FFF');
@@ -196,15 +201,18 @@ function updateTheme() {
 
         ROOT.style.setProperty('--hueShiftIcons', '');
 
+        ROOT.style.colorScheme = "light";
+        ROOT.classList.remove("dark");
+
 
     } else if (theme.id === "litdark") {
 
         ROOT.style.setProperty('--bgColor', 'hsl(50, 18%, 6%)');
-        ROOT.style.setProperty('--baseColor', '#E5E5E5');
+        ROOT.style.setProperty('--baseColor', 'hsl(50, 15%, 85%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(50, 20%, 45%)');
 
-        ROOT.style.setProperty('--card', '#4E4E4E');
-        ROOT.style.setProperty('--alpha', '0.8');
+        ROOT.style.setProperty('--card', 'hsl(50, 12%, 11%)');
+        ROOT.style.setProperty('--alpha', '1');
 
         ROOT.style.setProperty('--lightestShade', 'hsl(50, 20%, 45%)');
         ROOT.style.setProperty('--lighterShade', 'hsl(50, 25%, 40%)');
@@ -217,16 +225,19 @@ function updateTheme() {
         ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
 
         ROOT.style.setProperty('--hueShiftIcons', 'invert(95%) sepia(34%) saturate(66%) hue-rotate(195deg) brightness(111%) contrast(80%)');
+        
+        ROOT.style.colorScheme = "dark";
+        ROOT.classList.add("dark");
 
 
     } else if (theme.id === "frostdark") {
 
         ROOT.style.setProperty('--bgColor', 'hsl(200, 18%, 6%)');
-        ROOT.style.setProperty('--baseColor', '#E5E5E5');
+        ROOT.style.setProperty('--baseColor', 'hsl(200, 15%, 85%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(200, 20%, 45%)');
 
-        ROOT.style.setProperty('--card', '#4E4E4E');
-        ROOT.style.setProperty('--alpha', '0.8');
+        ROOT.style.setProperty('--card', 'hsl(200, 12%, 11%)');
+        ROOT.style.setProperty('--alpha', '1');
 
         ROOT.style.setProperty('--lightestShade', 'hsl(200, 20%, 45%)');
         ROOT.style.setProperty('--lighterShade', 'hsl(200, 25%, 40%)');
@@ -239,6 +250,9 @@ function updateTheme() {
         ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
 
         ROOT.style.setProperty('--hueShiftIcons', 'invert(95%) sepia(34%) saturate(66%) hue-rotate(195deg) brightness(111%) contrast(80%)');
+
+        ROOT.style.colorScheme = "dark";
+        ROOT.classList.add("dark");
 
     }
 }

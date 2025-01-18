@@ -69,20 +69,20 @@
 
 
   button:first-child {
+    --lightBlue: light-dark(rgb(110,155,250,.28), rgb(120,165,255,.5));
+    --darkBlue: light-dark(rgb(110,155,250,.51), rgb(120,165,255,.73));
     height: var(--domainButtonHeight);
     width: 100%;
-    border: 1px solid var(--bracketColor);
+    border: 1px solid light-dark(#000, #444);
     background: repeating-linear-gradient(45deg, var(--lightBlue),  var(--darkBlue) , var(--lightBlue) 600px);
     background-size: calc(600px/sin(45deg)) 100%;
     animation: glow 2.5s linear infinite reverse;
     transition: --lightBlue 0.25s, --darkBlue 0.25s, box-shadow 0.25s;
 
-    box-shadow: 0 0 3px 1px rgb(110,155,250,.17) !important;
-
     overflow: hidden;
     
     &>.ripple {
-      background: rgb(110,155,250);
+      background:  light-dark(rgb(110,155,250), rgb(70,115,210));
       transition: all .6s;
       &.run {
         opacity: 1 !important;
@@ -98,16 +98,14 @@
   }
 
   button:first-child:focus {
-    --lightBlue: rgb(110,155,250,.5) ;
-    --darkBlue: rgb(110,155,250,.73);
-    box-shadow: 0 0 3px 1px rgb(110,155,250,.4) !important;
+    --lightBlue: light-dark(rgb(110,155,250,.5), rgb(120,165,255,.75));
+    --darkBlue: light-dark(rgb(110,155,250,.73), rgb(120,165,255, .98));
     
   }
 
-
   button:first-child.activated {
     transition: --lightBlue 0.25s, --darkBlue 0.25s, box-shadow 0.25s, background 0.4s;
-    background-color: rgb(110,155,250);
+    background-color: light-dark(rgb(110,155,250), rgb(70,115,210));
     &::before {
       color: white;
     }
@@ -132,11 +130,12 @@
   }
 }
 
+
+
 @media (hover: hover) and (pointer: fine) {
   #domain.correct button:first-child:hover {
-    --lightBlue: rgb(110,155,250,.5) ;
-    --darkBlue: rgb(110,155,250,.73);
-    box-shadow: 0 0 3px 1px rgb(110,155,250,.4) !important;
+    --lightBlue: light-dark(rgb(110,155,250,.5), rgb(120,165,255,.75));
+    --darkBlue: light-dark(rgb(110,155,250,.73), rgb(120,165,255, .98));
   }
 }
 
@@ -622,11 +621,8 @@
     background-color: transparent;
     outline-color: transparent;
     border-color: transparent;
-    p {
-      animation: correctFlash 0.75s forwards;
-      animation-delay: 400ms;
-
-    }
+    animation: correctFlash 0.75s forwards;
+    animation-delay: 400ms;
   }
   
 }
@@ -1038,7 +1034,7 @@
 
     #pencil {
       position: absolute;
-      bottom: max(min(11px, calc(10px - (750px - 100vh)/12)), -7px);
+      bottom: max(min(9px, calc(9px - (750px - 100vh)/12)), -8px);
       left: -43px;
       margin: 0;
     }

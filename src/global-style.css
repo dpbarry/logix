@@ -31,6 +31,15 @@
   --correctColor: hsl(130, 35%, 35%);
 
   --hueShiftIcons: unset ;
+
+  color-scheme: light;
+  color: black;
+
+  *::before, *::after {color: black;}
+
+  &.dark *, &.dark *::before, &.dark *::after {
+    box-shadow: none !important;
+  }
 }
 
 /*  Prevent mismatch between viewport and body dimensions */
@@ -169,6 +178,7 @@ dialog {
 
   color: var(--baseColor);
 
+
   border-radius: 12px;
   
   transition: opacity 0.25s, transform cubic-bezier(.25,1,.25,1) 0.25s;
@@ -182,8 +192,9 @@ dialog::backdrop {
 dialog[open] {
   transform: scale(1);
   opacity: 1;
-  border: 0px solid rgb(0,0,0,0.15);
   visibility: visible;
+  border: 1px solid light-dark(transparent, var(--darkestShade));
+
   box-shadow: 0 0 5px rgb(0,0,0,0.05), 0 0 8px rgba(0, 0, 0, 0.075),
   0 0 30px rgb(0,0,0,0.075);
 }

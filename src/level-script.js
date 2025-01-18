@@ -694,7 +694,7 @@ function initLevel() {
         for (let i = 0; i < cellList.length; i++) {
             // check that the cell matches in row or column
             if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
-                cellList[i].style.outlineColor = "black";
+                cellList[i].style.outlineColor = "var(--baseColor)";
 
             }
             // reset the styles of other cells without messing up the axis labels
@@ -907,7 +907,6 @@ function initLevel() {
         }
 
         if (e.key === "m") {
-            
             MENU_TOGGLE.checked = !MENU_TOGGLE.checked;
             changed = new AnimationEvent("change");
             MENU_TOGGLE.dispatchEvent(changed);
@@ -921,6 +920,21 @@ function initLevel() {
         if (e.key === "Tab") {
             tabbed = true;
             setTimeout(() => { tabbed = false }, 10);
+        }
+
+        if (e.key === "i") {
+            level.querySelector("#info").click();
+        }
+
+        if (e.key === "s") {
+            level.querySelector("#settings").click();
+        }
+
+        if (e.key === "d") {
+                        level.querySelector("#dictionary").click();
+        }
+        if (e.key === "n") {
+            level.querySelector("#notes").click();
         }
     });
 

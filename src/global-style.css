@@ -173,6 +173,7 @@ dialog {
   font-family: "source serif 4";
   width: min(80vw, 500px);
   height: 52vh;
+  max-height: 400px;
   visibility: hidden;
   opacity: 0;
 
@@ -308,11 +309,11 @@ dialog {
     transition: all 0.2s ease;
   }
   input:hover {
-    filter: brightness(94%);
+    filter: brightness(90%);
   }
   input:focus {
     outline: 0;
-    filter: brightness(94%);
+    filter: brightness(90%);
   }
 
   .toggle:checked {

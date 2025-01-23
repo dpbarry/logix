@@ -37,7 +37,7 @@ function initDialogs() {
             }});
 
         dialog.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") {
+            if (e.key === "Escape" || e.key === "Enter") {
 
                 e.preventDefault();
                 dialog.classList.add("hide");
@@ -74,6 +74,7 @@ function initDialogs() {
             if (e.key !== " " && e.key !== "Enter") return;
             showModal(li.id + "_dialog");      
         });
+
     });
 
     document.body.addEventListener("pointerup", (e) => {
@@ -208,14 +209,14 @@ function updateTheme() {
     } else if (theme.id === "litdark") {
 
         ROOT.style.setProperty('--bgColor', 'hsl(50, 18%, 6%)');
-        ROOT.style.setProperty('--baseColor', 'hsl(50, 15%, 85%)');
+        ROOT.style.setProperty('--baseColor', 'hsl(50, 0%, 88%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(50, 20%, 45%)');
 
         ROOT.style.setProperty('--card', 'hsl(50, 12%, 11%)');
         ROOT.style.setProperty('--alpha', '1');
 
         ROOT.style.setProperty('--lightestShade', 'hsl(50, 20%, 45%)');
-        ROOT.style.setProperty('--lighterShade', 'hsl(50, 25%, 40%)');
+        ROOT.style.setProperty('--lighterShade', 'hsl(50, 25%, 37.5%)');
         ROOT.style.setProperty('--darkShade', 'hsl(50, 25%, 35%)');
         ROOT.style.setProperty('--darkerShade', 'hsl(50, 30%, 30%)');
         ROOT.style.setProperty('--darkestShade', 'hsl(50, 30%, 20%)');
@@ -224,7 +225,7 @@ function updateTheme() {
         ROOT.style.setProperty('--emphasisColor', 'hsl(50, 60%, 20%)');
         ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
 
-        ROOT.style.setProperty('--hueShiftIcons', 'invert(95%) sepia(34%) saturate(66%) hue-rotate(195deg) brightness(111%) contrast(80%)');
+        ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.9)');
         
         ROOT.style.colorScheme = "dark";
         ROOT.classList.add("dark");
@@ -233,14 +234,14 @@ function updateTheme() {
     } else if (theme.id === "frostdark") {
 
         ROOT.style.setProperty('--bgColor', 'hsl(200, 18%, 6%)');
-        ROOT.style.setProperty('--baseColor', 'hsl(200, 15%, 85%)');
+        ROOT.style.setProperty('--baseColor', 'hsl(200, 0%, 88%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(200, 20%, 45%)');
 
         ROOT.style.setProperty('--card', 'hsl(200, 12%, 11%)');
         ROOT.style.setProperty('--alpha', '1');
 
         ROOT.style.setProperty('--lightestShade', 'hsl(200, 20%, 45%)');
-        ROOT.style.setProperty('--lighterShade', 'hsl(200, 25%, 40%)');
+        ROOT.style.setProperty('--lighterShade', 'hsl(200, 25%, 37.5%)');
         ROOT.style.setProperty('--darkShade', 'hsl(200, 25%, 35%)');
         ROOT.style.setProperty('--darkerShade', 'hsl(200, 30%, 30%)');
         ROOT.style.setProperty('--darkestShade', 'hsl(200, 30%, 20%)');
@@ -249,10 +250,85 @@ function updateTheme() {
         ROOT.style.setProperty('--emphasisColor', 'hsl(200, 60%, 20%)');
         ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
 
-        ROOT.style.setProperty('--hueShiftIcons', 'invert(95%) sepia(34%) saturate(66%) hue-rotate(195deg) brightness(111%) contrast(80%)');
+        ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.9)');
 
         ROOT.style.colorScheme = "dark";
         ROOT.classList.add("dark");
 
     }
 }
+
+
+function killOpenDialog () {
+    let openDialog = document.querySelector("dialog[open]");
+    if (openDialog) {
+        openDialog.classList.add("hide");
+        openDialog.addEventListener("transitionend", closeDialog);
+    }
+}
+document.addEventListener('keydown', (e) => {
+
+    if (e.key === "u") {
+        try {
+            undo();
+        } catch {}
+    }
+
+    if (e.key === "r") {
+        try {
+            redo();
+        } catch {}
+    }
+
+    if (e.key === "c") {
+        try {
+            candidateToggle();
+        } catch {}
+    }
+
+    if (e.key === "m") {
+        try {
+            MENU_TOGGLE.checked = !MENU_TOGGLE.checked;
+            changed = new AnimationEvent("change");
+            MENU_TOGGLE.dispatchEvent(changed);
+        } catch {}
+    }
+
+    if (e.key === "h") {
+        Router("index.html");
+        history.pushState({loc:"index.html"}, "");
+    }
+
+    if (e.key === "Tab") {
+        tabbed = true;
+        setTimeout(() => { tabbed = false }, 10);
+    }
+
+    if (e.key === "i") {
+        killOpenDialog();
+        try {
+            document.querySelector("#info").click();
+        } catch {
+            document.querySelector("#about").click();
+        }
+    }
+
+    if (e.key === "s") {
+        killOpenDialog();
+        document.querySelector("#settings").click();
+    }
+
+    if (e.key === "d") {
+        if (document.querySelector("#dictionary")) {
+            killOpenDialog();
+            document.querySelector("#dictionary").click();
+        }
+    }
+    if (e.key === "n") {
+        if (document.querySelector("#notes")) {
+            killOpenDialog();
+            document.querySelector("#notes").click();
+        }
+    }
+});
+

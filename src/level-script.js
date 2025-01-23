@@ -4,7 +4,8 @@ let DOMAIN;
 let SOLUTION;
 let NEXT_LEVEL = null;
 let tabdCells;
-
+let tabbed = false;
+let MENU_TOGGLE = null;
 
 
 function initLevel() {
@@ -13,7 +14,7 @@ function initLevel() {
 
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
 
-    const MENU_TOGGLE = level.querySelector("#menu_checkbox");
+    MENU_TOGGLE = level.querySelector("#menu_checkbox");
 
     const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
@@ -32,7 +33,6 @@ function initLevel() {
 
     let values = new Map();
 
-    let tabbed = false;
     tabMenu();
     
     let cellActive = false;
@@ -103,6 +103,13 @@ function initLevel() {
             }, 10);
         }
     });
+
+    if (NEXT_LEVEL === "T1-2") {
+        setTimeout(()=> {
+            level.querySelector("#info").click();
+            
+        }, 250);
+    }
 
     tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
     
@@ -885,58 +892,7 @@ function initLevel() {
         
 
         undoStack.push([cell, doneCopy]);
-
     }
-
-
-    document.addEventListener('keydown', (e) => {
-        if (document.querySelector('dialog[open]')) {
-            return;
-        }
-
-        if (e.key === "u") {
-            undo();
-        }
-
-        if (e.key === "r") {
-            redo();
-        }
-
-        if (e.key === "c") {
-            candidateToggle();
-        }
-
-        if (e.key === "m") {
-            MENU_TOGGLE.checked = !MENU_TOGGLE.checked;
-            changed = new AnimationEvent("change");
-            MENU_TOGGLE.dispatchEvent(changed);
-        }
-
-        if (e.key === "h") {
-            Router("index.html");
-            history.pushState({loc:"index.html"}, "");
-        }
-
-        if (e.key === "Tab") {
-            tabbed = true;
-            setTimeout(() => { tabbed = false }, 10);
-        }
-
-        if (e.key === "i") {
-            level.querySelector("#info").click();
-        }
-
-        if (e.key === "s") {
-            level.querySelector("#settings").click();
-        }
-
-        if (e.key === "d") {
-                        level.querySelector("#dictionary").click();
-        }
-        if (e.key === "n") {
-            level.querySelector("#notes").click();
-        }
-    });
 
 
     undoButton.addEventListener("pointerdown", undo);
@@ -971,6 +927,7 @@ function initLevel() {
             })
         })
     });
+
 
 
 

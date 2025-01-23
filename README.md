@@ -1,5 +1,5 @@
 # Logix
-Given a system of propositions, derive the resulting "matrix".
+Given a system of propositions, derive the resulting matrix.
 
 Play here: https://dpbarry.github.io/logix/
 

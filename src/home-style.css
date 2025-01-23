@@ -37,12 +37,19 @@
 #about_dialog {
   
   #github {
+    background: url("../assets/INVERTOCAT.svg");
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     color: hsl(200, 15%, 55%);
     position: absolute;
-    bottom: 18px;
+    left: 20px;
+    top: 18px;
     text-align: center;
+    filter: var(--hueShiftIcons);
   }
+
 
   @media (hover: hover) and (pointer: fine) {
     #github:hover {
@@ -139,7 +146,7 @@
   padding: 15px;
 
   background-color: var(--card);
-  border: light-dark(#DADADA, #202020) 1px solid;
+  border: light-dark(#DADADA, #444) 1px solid;
   border-radius: 5px;
   box-shadow: 0 0 4px #EAEAEA, 0 0px 2px  #C0C0C0, 0 7px 8px -8px #D0D0D0;
 

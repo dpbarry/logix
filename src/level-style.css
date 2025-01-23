@@ -156,7 +156,7 @@
   flex-wrap: wrap;
   position: relative;
   gap: 3px;
-  top: 8px;
+  top: 2vh;
   left: 2.25vmin;
   width: min-content;
   height: 37px;
@@ -271,9 +271,9 @@
 
   display: flex;
 
-  z-index: 1;
+  z-index: 2;
 
-  top: 8px;
+  top: 2vh;
   right: 2.25vmin;  
   /* Align #chevron */
   text-align: center;
@@ -340,7 +340,7 @@
     flex-direction: row;
     
 
-    transform: translateX(215px);
+    transform: translateX(calc(2.25vmin + 200px));
     will-change: transform;
     transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
   }
@@ -488,7 +488,7 @@
     font-family: "computer modern serif";
     text-align: center;
     outline: 1px solid transparent; /* For crosshairs */
-    transition: background-color .12s ease-in-out, border .12s ease-in-out, outline-color 0.2s ease, color .1s ease-in, transform 0.8s ease;
+    transition: background-color .12s ease-in-out, border .12s ease-in-out, outline-color 0.2s ease, color 0.12s ease-in-out, transform 0.8s ease;
     
     width: 100%;
     height: 100%;
@@ -904,7 +904,7 @@
       height: 85%;
       width: 100%;
       overflow: hidden;
-      border: 1px solid var(--darkerShade);
+      border: 1px solid var(--darkestShade);
       box-sizing: border-box;
       
       border-radius: 11px;
@@ -966,7 +966,7 @@
   border-radius: 100%;
   opacity: 1;
   position: absolute;
-  transition: all 0.4s cubic-bezier(.38,.23,.69,1.02);
+  transition: transform 0.4s cubic-bezier(.38,.23,.69,1.02);
   pointer-events: none;
   will-change: transform;
   z-index: -1;
@@ -974,7 +974,6 @@
 
 .ripple.run {
   transform: scale(170);
-  opacity: 0 !important;
 }
 
 /* For ripple */

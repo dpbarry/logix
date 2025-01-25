@@ -196,9 +196,10 @@ function initLevel() {
 
             let match = Array.from(opts.children).find( x => x.innerText.trim() === value.trim());
             if (match) {
-                if (CANCELOUT_TOGGLE.checked) {
-                    match.classList.add("dismiss");
-                    match.addEventListener("transitionend", endDismiss);
+                match.classList.add("dismiss");
+                match.addEventListener("transitionend", endDismiss);
+                if (!CANCELOUT_TOGGLE.checked) {
+                    opts.appendChild(newLi);
                 }
             } else {
                 opts.appendChild(newLi);
@@ -311,13 +312,13 @@ function initLevel() {
         redoButton.classList.remove("usable");
 
 
-
+        
         checkGrid();
     }
 
     function pressButton(text) {
         let button = null;
-        if (debounced === 0 || candidateMode) {
+        if (debounced === 0) {
 
             domainList.forEach( (b) => {
                 if (b.textContent.trim() === (text)) {
@@ -439,11 +440,7 @@ function initLevel() {
             domainList.forEach( (domain) => {
                 domain.onfocus = function () {
                     
-                    if (debounced === 0) {
-                        domain.classList.add("pushed");
-                        
-                        debounced++;
-                    }
+                    pressButton(domain.textContent.trim());
 
                     let opts = this.querySelector("ul");
 
@@ -896,11 +893,11 @@ function initLevel() {
     }
 
 
-    undoButton.addEventListener("pointerdown", undo);
+    undoButton.addEventListener("click", undo);
 
-    redoButton.addEventListener("pointerdown", redo);
+    redoButton.addEventListener("click", redo);
 
-    pencilButton.addEventListener("pointerdown", candidateToggle);
+    pencilButton.addEventListener("click", candidateToggle);
 
 
 

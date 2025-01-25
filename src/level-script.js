@@ -13,6 +13,7 @@ function initLevel() {
     ROOT.style.setProperty('--cols', COLS);
 
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
+    level.focus();
 
     MENU_TOGGLE = level.querySelector("#menu_checkbox");
 
@@ -929,6 +930,26 @@ function initLevel() {
     });
 
 
+    document.addEventListener('keydown', (e) => {
+
+        if (e.key === "u") {
+            undo();
+        }
+
+        if (e.key === "r") {
+            redo();
+        }
+
+        if (e.key === "c") {
+            candidateToggle();
+        }
+
+        let button = (Array.from(domainList).find(x => x.firstChild.textContent.trim() === e.key));
+        console.log(button);
+        if (button) {
+            button.focus();
+        }
+    });
 
 
     level.querySelector("#wrap_home_level").onclick = function () {

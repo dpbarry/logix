@@ -37,7 +37,7 @@ function initDialogs() {
             }});
 
         dialog.addEventListener('keydown', (e) => {
-            if (e.key === "Escape" || e.key === "Enter") {
+            if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
 
                 e.preventDefault();
                 dialog.classList.add("hide");
@@ -212,7 +212,7 @@ function updateTheme() {
         ROOT.style.setProperty('--baseColor', 'hsl(50, 0%, 88%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(50, 20%, 45%)');
 
-        ROOT.style.setProperty('--card', 'hsl(50, 12%, 11%)');
+        ROOT.style.setProperty('--card', 'hsl(50, 90%, 2%)');
         ROOT.style.setProperty('--alpha', '1');
 
         ROOT.style.setProperty('--lightestShade', 'hsl(50, 20%, 45%)');
@@ -237,7 +237,7 @@ function updateTheme() {
         ROOT.style.setProperty('--baseColor', 'hsl(200, 0%, 88%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(200, 20%, 45%)');
 
-        ROOT.style.setProperty('--card', 'hsl(200, 12%, 11%)');
+        ROOT.style.setProperty('--card', 'hsl(200, 60%, 3%)');
         ROOT.style.setProperty('--alpha', '1');
 
         ROOT.style.setProperty('--lightestShade', 'hsl(200, 20%, 45%)');
@@ -304,7 +304,7 @@ document.addEventListener('keydown', (e) => {
         setTimeout(() => { tabbed = false }, 10);
     }
 
-    if (e.key === "i") {
+    if (e.key === "i" || e.key === "a") {
         killOpenDialog();
         try {
             document.querySelector("#info").click();

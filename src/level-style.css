@@ -21,7 +21,7 @@
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
-  --cellFontSize: clamp(1rem, calc(9vh * var(--fontFactor)), calc(4rem * var(--fontFactor)));
+  --cellFontSize: clamp(1rem, calc(9vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
 
   --longestProposition: 400px;
   --domainButtonHeight: 56px;
@@ -47,7 +47,7 @@
   gap: 0px;
   bottom: calc(0.15 * var(--domainButtonHeight));
 
-  overflow: hidden;
+  overflow: visible;
 
   button:not(:first-child) {
     transition: width 0.8s ease, min-width 0.8s; bottom 0.35s ease;
@@ -156,8 +156,8 @@
   flex-wrap: wrap;
   position: relative;
   gap: 3px;
-  top: 2vh;
-  left: 2.25vmin;
+  top: clamp(0.5rem, 1.75vmin, 1rem); 
+  left: clamp(0.5rem, 1.75vmin, 1rem); 
   width: min-content;
   height: 37px;
   cursor: pointer;
@@ -242,6 +242,8 @@
     text-align: justify;
   }
 
+  hr { width: 100%; }
+
   p.big {
     font-size: 1.35rem;
   }
@@ -272,9 +274,9 @@
   display: flex;
 
   z-index: 2;
-
-  top: 2vh;
-  right: 2.25vmin;  
+  
+  top: clamp(0.5rem, 1.75vmin, 1rem); 
+  right: clamp(0.5rem, 1.5vmin, 1rem); 
   /* Align #chevron */
   text-align: center;
 
@@ -340,7 +342,7 @@
     flex-direction: row;
     
 
-    transform: translateX(calc(2.25vmin + 200px));
+    transform: translateX(calc(clamp(0.5rem, 1.5vmin, 1rem) + 200px));
     will-change: transform;
     transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
   }
@@ -487,7 +489,7 @@
   span {
     font-family: "computer modern serif";
     text-align: center;
-    outline: 1px solid transparent; /* For crosshairs */
+    outline: 2px solid transparent; /* For crosshairs */
     transition: background-color .12s ease-in-out, border .12s ease-in-out, outline-color 0.2s ease, color 0.12s ease-in-out, transform 0.8s ease;
     
     width: 100%;
@@ -585,7 +587,7 @@
   span ul {
     list-style-type: none;
     display: flex;
-    font-size: 1.05rem;
+    font-size: calc(var(--cellFontSize) / 3);
     flex-direction: column;
     height: 100%;
     padding: 0;
@@ -641,12 +643,15 @@
 #prop_container {
   width: 300px; /* Limit the visible width */
   height: 200px; /* Limit the visible height */
-  overflow: auto; /* Enable scrolling */
+  overflow: visible;
+  scroll-width: none;
+  scrollbar-color: transparent transparent;
   position: relative;
   display: block;
   align-content: center;
   z-index: 1;
 }
+
 
 #propositions {
   position: relative;
@@ -781,7 +786,7 @@
     content: "";
     background-image:url("../assets/PENCIL.svg");
     opacity: 0.45;
-    transition: opacity 0.15s, filter 0.15s;
+    transition: opacity 0.15s, filter 0.1s;
     background-size: 100% 100%;
     display: inline-block;
     height: 100%;
@@ -846,7 +851,9 @@
 #domain {
   padding: 0;
   display: flex;
-  overflow-x: auto;
+  overflow-x: visible;
+  scroll-width: none;
+  scrollbar-color: transparent transparent;
   align-items: center;
   position: relative;
   transition: opacity 1s;
@@ -862,7 +869,7 @@
     height: 60px;
     position: relative;
     font-family: "computer modern serif";
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 5.3vh, 3.25rem);
     border-radius: 5px;
     cursor: pointer;
     text-align: center;

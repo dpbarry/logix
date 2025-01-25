@@ -114,8 +114,9 @@ body, .page {
   border-radius: 5px;
   cursor: pointer
 }
+
 .close:hover:before, .close:hover:after {
-  filter: brightness(0.7);
+  opacity: 0.75;
 }
 .close:before, .close:after {
   border-radius: 10px;
@@ -173,9 +174,10 @@ dialog {
   font-family: "source serif 4";
   width: min(80vw, 500px);
   height: 52vh;
-  max-height: 400px;
+  max-height: min-content;
   visibility: hidden;
   opacity: 0;
+  padding-bottom: 35px;
 
   color: var(--baseColor);
 
@@ -219,6 +221,9 @@ dialog {
 
 
 
+#settings_dialog {
+  max-width: 400px
+}
 
 #configs {
   margin-left: 2vw;
@@ -243,13 +248,12 @@ dialog {
     margin-bottom: 2px;
     appearance: none;
     height: 30px;
-    width: 30px;
+    width: 50px;
     background-color: #C0C0C0;
     position: relative;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    border: 1px solid #BBB;
+    transition: filter 0.1s ease;
     margin-right: 4px;
     
     &::after {
@@ -259,9 +263,13 @@ dialog {
       height: 50%;
       top: 25%;
       left: 25%;
-      border-radius: 8px;
+      border-radius: 19px;
 
     }
+  }
+
+  .theme:checked {
+    border: 3px dashed var(--emphasisColor) !important;
   }
 
   #frostdark {
@@ -270,6 +278,7 @@ dialog {
 
   #litlight, #frostlight {
     background-color: #FFF;
+    border: 1px solid #CCC;
   }
   #litdark, #frostdark {
     background-color: #111;

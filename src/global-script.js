@@ -45,6 +45,8 @@ function initDialogs() {
                 dialog.addEventListener("transitionend", closeDialog);
             }
         });
+
+        dialog.ontoggle = () => {dialog.focus();}
     });
 
     document.querySelectorAll(".close").forEach( (closeButton) => {

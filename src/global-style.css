@@ -183,6 +183,9 @@ dialog {
 
 
   border-radius: 12px;
+
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
   
   transition: opacity 0.25s, transform cubic-bezier(.25,1,.25,1) 0.25s;
   transform: scale(0);

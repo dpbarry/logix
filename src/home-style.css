@@ -116,6 +116,7 @@
       cursor: pointer;
       text-decoration: underline;
       color: hsl(120 20% 60%);
+      
       transition: color 0.07s;
     }
 
@@ -131,19 +132,11 @@
       font-size: 1.1rem;
       font-weight: 400;
       width: 100%;
+      font-style: italic;
       margin:0;
       text-align: center;
     }
 
-    aside {
-      font-style: italic;
-      margin: 0;
-      font-size: 0.9rem;
-      font-weight: 400;
-
-      margin:0;
-      text-align: justify;
-    }
   }
 
 }

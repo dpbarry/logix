@@ -593,6 +593,7 @@
     padding: 0;
     width: 80%;
     height: 88%;
+    pointer-events: none;
     flex-wrap: wrap;
     position: absolute;
     gap: 2px;
@@ -644,7 +645,7 @@
   width: 300px; /* Limit the visible width */
   height: 200px; /* Limit the visible height */
   overflow: visible;
-  scroll-width: none;
+  scrollbar-width: none;
   scrollbar-color: transparent transparent;
   position: relative;
   display: block;
@@ -852,7 +853,7 @@
   padding: 0;
   display: flex;
   overflow-x: visible;
-  scroll-width: none;
+  scrollbar-width: none;
   scrollbar-color: transparent transparent;
   align-items: center;
   position: relative;

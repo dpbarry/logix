@@ -480,7 +480,7 @@ function initLevel() {
             cellActive = false;
 
             if (STICKY_TOGGLE.checked
-                && !(level.querySelector("#grid").contains(document.activeElement))
+                && !(document.activeElement.matches("#grid span"))
                 && document.activeElement.parentNode.id !== "toolbar"
                 && document.activeElement !== document.body
                 && !tabbed
@@ -934,19 +934,26 @@ function initLevel() {
 
         if (e.key === "u") {
             undo();
+            return;
         }
 
         if (e.key === "r") {
             redo();
+            return;
         }
 
         if (e.key === "c") {
             candidateToggle();
+            return;
+        }
+
+        if (e.key === "Escape") {
+            document.activeElement.blur();
+            return;
         }
 
         let button = (Array.from(domainList).find(x => x.firstChild.textContent.trim() === e.key));
-        console.log(button);
-        if (button) {
+        if (button && document.activeElement !== button && !document.activeElement.matches("#grid span")) {
             button.focus();
         }
     });

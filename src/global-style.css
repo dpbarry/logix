@@ -272,7 +272,7 @@ dialog {
   }
 
   .theme:checked {
-    border: 3px dashed var(--emphasisColor) !important;
+    border: 3px solid var(--emphasisColor) !important;
   }
 
   #frostdark {
@@ -280,11 +280,10 @@ dialog {
   }
 
   #litlight, #frostlight {
-    background-color: #FFF;
-    border: 1px solid #CCC;
+    background-color: #DDD;
   }
   #litdark, #frostdark {
-    background-color: #111;
+    background-color: #222;
   }
 
   #litlight::after, #litdark::after {

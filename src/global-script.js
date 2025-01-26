@@ -66,10 +66,10 @@ function initDialogs() {
     document.querySelectorAll(".dialog_button").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
             event.target.classList.add("nudged");
-
             event.target.addEventListener("pointerup", (event) => {
                 event.target.classList.remove("nudged");
             });
+           
         });
 
         li.addEventListener("keydown", (e) => {

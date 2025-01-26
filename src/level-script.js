@@ -13,7 +13,6 @@ function initLevel() {
     ROOT.style.setProperty('--cols', COLS);
 
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
-    level.focus();
 
     MENU_TOGGLE = level.querySelector("#menu_checkbox");
 
@@ -430,7 +429,6 @@ function initLevel() {
     function lockCell () {
         crosshairs(this.id);
         highlight(this.id);
-
         
         setTimeout(function () {
             cellActive = true;
@@ -439,7 +437,6 @@ function initLevel() {
 
             domainList.forEach( (domain) => {
                 domain.onfocus = function () {
-                    
                     pressButton(domain.textContent.trim());
 
                     let opts = this.querySelector("ul");
@@ -470,6 +467,7 @@ function initLevel() {
 
     function fillCell () {
 
+
         crosshairs("not-a-cell");
         highlight("not-a-cell");
 
@@ -478,10 +476,10 @@ function initLevel() {
 
             if (STICKY_TOGGLE.checked
                 && !(document.activeElement.matches("#grid span"))
-                && document.activeElement.parentNode.id !== "toolbar"
                 && document.activeElement !== document.body
                 && !tabbed
-                || pencilButtonClicked) {
+                || toolClicked) {
+
                 this.focus();
 
             } else {
@@ -495,7 +493,6 @@ function initLevel() {
             }
             
         }.bind(this), 1);
-
     }
 
     cellList.forEach( (cell) => {
@@ -632,13 +629,13 @@ function initLevel() {
             domainActive = false;
 
             if (STICKY_TOGGLE.checked
-                && document.activeElement.parentNode.id != "domain"
-                && document.activeElement.parentNode.id != "toolbar"
-                && document.activeElement != document.body
+                && document.activeElement.parentNode.id !== "domain"
+                && document.activeElement !== document.body
                 && !tabbed
-                || pencilButtonClicked
+                || toolClicked
                ) {
                 e.target.focus({preventScroll: true});
+
             } else {
                 cellList.forEach((cell) => {
                     cell.blur();
@@ -662,8 +659,6 @@ function initLevel() {
 
             setTimeout( () => {debounced--;}, 85);
         });
-
-        button.querySelector("p").onfocus = () => { button.focus(); };
         
     });
 
@@ -756,14 +751,15 @@ function initLevel() {
 
     level.querySelectorAll('#domain button').forEach(element => {
         element.addEventListener("pointerdown", (event) => {
-            event.preventDefault();
-            event.target.closest("button").focus({preventScroll: true});
 
             if (event.target.closest("#domain").classList.contains("correct")) {                
                 spawnRipple(event, event.target.closest("button"));
+                
             } else if (event.target.nodeName === "P" && !cellActive) {
+                element.focus({preventScroll: true});
                 spawnRipple(event, event.target);
             } else if (!cellActive) {
+                element.focus({preventScroll: true});
                 spawnRipple(event, event.target.querySelector("p"));
             }
 
@@ -899,13 +895,17 @@ function initLevel() {
 
     pencilButton.addEventListener("click", candidateToggle);
 
+    [undoButton, redoButton, pencilButton].forEach( b => {
+        b.addEventListener("click", () => {
+            toolClicked = true;
 
+            setTimeout( () => toolClicked = false, 10);
+            
+        });
+    });
 
-    let pencilButtonClicked = false;
+    let toolClicked = false;
     function candidateToggle(e) {
-        pencilButtonClicked = true;
-
-        setTimeout( () => pencilButtonClicked = false, 10);
         candidateMode = !candidateMode;
         if (candidateMode) {
             pencilButton.classList.add("active");
@@ -951,7 +951,7 @@ function initLevel() {
 
         let button = (Array.from(domainList).find(x => x.firstChild.textContent.trim() === e.key));
         if (button && document.activeElement !== button && !document.activeElement.matches("#grid span")) {
-            button.focus();
+            button.focus({preventScroll: true});
         }
     });
 

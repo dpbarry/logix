@@ -238,7 +238,7 @@ function setupHome() {
         
 
         const deltaX =  startX - e.clientX;
-        momentum += (deltaX / 27);x
+        momentum += (deltaX / 27);
 
         if (momentum > 10) {
             scrollCards(true);

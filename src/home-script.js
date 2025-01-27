@@ -153,9 +153,8 @@ function setupHome() {
 
     cards.forEach( (c) => {
         c.onclick = () => {
-            setTimeout( () => {
-                scrollCardsTo(c); 
-            }, 0);
+            if (!cardView) return;
+            scrollCardsTo(c); 
 
         };
         
@@ -176,7 +175,7 @@ function setupHome() {
     let momentum = 0;
 
     carousel.addEventListener('wheel', function (event) {
-        momentum += event.deltaY ? event.deltaY : event.deltaX;
+        momentum += 0.5 * (event.deltaY ? event.deltaY : event.deltaX);
 
         if (momentum > 10) {
             scrollCards(true);
@@ -206,18 +205,16 @@ function setupHome() {
 
     function scrollCardsTo (c) {
         if (c.classList.contains("upcard")) return;
-        setTimeout( () => { 
-            cards.forEach( (x) => {
-                if (x.classList.contains("upcard")) {
-                    x.classList.remove("upcard");
-                    x.style.zIndex -= 5;
-                }
-            });
-            
-            c.classList.add("upcard");
-            updateCardStagger(c);
-
+        cards.forEach( (x) => {
+            if (x.classList.contains("upcard")) {
+                x.classList.remove("upcard");
+                x.style.zIndex -= 5;
+            }
         });
+        
+        c.classList.add("upcard");
+        updateCardStagger(c);
+
     }
 
     let isDragging = false;
@@ -226,20 +223,22 @@ function setupHome() {
 
 
     carousel.addEventListener('pointerdown', (e) => {
-        setTimeout( () => { isDragging = true; }, 5);
+        if (!cardView) return;
+        isDragging = true; 
         startX = e.clientX; 
-        carousel.style.cursor = 'grabbing'; 
+        carousel.classList.add("grabbing");
     });
 
     let debounceScroll = 0;
     document.addEventListener('pointermove', (e) => {
+        if (!cardView) return;
         if (!isDragging) return;
         if (debounceScroll) return;
         debounceScroll++;
         
 
         const deltaX =  startX - e.clientX;
-        momentum += (deltaX / 27);
+        momentum += (deltaX / 27);x
 
         if (momentum > 10) {
             scrollCards(true);
@@ -251,15 +250,23 @@ function setupHome() {
         debounceScroll--;
     });
 
-    document.addEventListener('pointerup', () => {
-        setTimeout( () => { isDragging = false; }, 10);
-        carousel.style.cursor = 'pointer'; 
+    document.addEventListener('pointerup', (e) => {
+        if (!cardView) return;
+        e.preventDefault();
+        isDragging = false;
+        carousel.classList.remove("grabbing"); 
     });
 
     document.getElementById("leftnav").onclick = () => {
+        if (document.getElementById("training").classList.contains("upcard")) {
+            scrollCardsTo(Array.from(cards)[3]);
+        }
         scrollCards(false);
     }
     document.getElementById("rightnav").onclick = () => {
+        if (document.getElementById("extreme").classList.contains("upcard")) {
+            scrollCardsTo(Array.from(cards)[0]);
+        }
         scrollCards(true);
     }
 

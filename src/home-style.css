@@ -214,14 +214,31 @@
   
   .card:not(.upcard) {
     cursor: pointer;
+    
     .level-button, .trainstage {
       pointer-events: none;
+    }
+    
+    #wrap_cards.grabbing & {
+      cursor: grabbing;
+      .level-button, .trainstage {
+        cursor: grabbing;
+      }
     }
   }
 
   .upcard {
     clip-path: none;
     box-shadow: 0 0 4px #EAEAEA, 0 0px 2px  #C0C0C0, 0 7px 8px -8px #D0D0D0, 18px 0 20px -10px rgba(0,0,0,0.3), -18px 0 20px -10px rgba(0,0,0,0.3);
+    cursor: grab;
+
+    #wrap_cards.grabbing & {
+
+      cursor: grabbing;
+      .level-button, .trainstage {
+        cursor: grabbing;
+      }
+    }
     
     &:first-child.card {
       box-shadow: 0 0 4px #EAEAEA, 0 0px 2px  #C0C0C0, 0 7px 8px -8px #D0D0D0, 18px 0 20px -10px rgba(0,0,0,0.3);
@@ -247,7 +264,12 @@
 
     &.hover {  rotate: 4deg; }  }
 
+  #wrap_cards.grabbing .card {
+    &.hover { rotate: unset; }
+  }
+
   #navbar {
+    
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -261,9 +283,27 @@
       height: 12px;
       width: 12px;
       border-radius: 100%;
-      background-color: light-dark(#333, #AAA);
-      transition: transform 0.1s;
+      background-color: light-dark(#555, #AAA);
+      box-shadow: 0 0 2px #ddd, 0 3px 3px -3px #aaa;
+      
+      transition: scale 0.1s, opacity 0.1s;
       cursor: pointer;
+      &::before {
+        content: "";
+        position: relative;
+        display: block;
+        bottom: 0;
+        height: 12px;
+        width: 12px;
+        scale: 3;
+        cursor: pointer;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          opacity: 0.65;
+        }
+      }
     }
 
     button {
@@ -277,32 +317,59 @@
 
       cursor: pointer;
 
-      border-bottom: 8px solid light-dark(#333, #AAA);
-      border-right: 8px solid light-dark(#333, #AAA);
+      border-bottom: 8px solid light-dark(#555, #AAA);
+      border-right: 8px solid light-dark(#555, #AAA);
       border-radius: 4px;
 
-      transition: transform 0.2s cubic-bezier(0.77,0.2,0.05,1.0);
+      transition: scale 0.2s cubic-bezier(0.77,0.2,0.05,1.0), opacity 0.1s;
+
+      &::before {
+        content: "";
+        position: relative;
+        display: block;
+        bottom: 0;
+        height: 22px;
+        width: 22px;
+        scale: 1.8;
+        cursor: pointer;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          opacity: 0.65;
+        }
+      }
     }
 
     #leftnav {
-      left: -5px;
+      left: -12px;
       rotate: 135deg;
-      
+      filter: drop-shadow(2px -2px 1px light-dark(#d8d8d8, transparent));
     }
     #rightnav {
-      right: -5px;
+      right: -12px;
       rotate: -45deg;
+      filter: drop-shadow(-2px 2px 1px light-dark(#d8d8d8, transparent));
     }
+    --op: unset;
+
   }
+
 
   #wrap_cards:has(#training.upcard) ~ #navbar #nav1,
   #wrap_cards:has(#normal.upcard) ~ #navbar #nav2,
   #wrap_cards:has(#difficult.upcard) ~ #navbar #nav3,
   #wrap_cards:has(#extreme.upcard) ~ #navbar #nav4
   {
-    transform: scale(1.7);
+    scale: 1.7;
+    &::before {scale: 1.7647;}
+    &:hover {
+      opacity: 1;
+    }
   }
- 
+  
+  
+  
 }
 
 

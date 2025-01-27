@@ -54,7 +54,6 @@ function setupHome() {
         b.onkeydown = function (e) {
             if (e.key !== " " && e.key !== "Enter" || !(e.target.closest(".card").classList.contains("upcard"))) return;
             
-            // e.target.classList.add("activated");
             
             setTimeout(function () {
                 Router(e.target.id);
@@ -154,18 +153,8 @@ function setupHome() {
 
     cards.forEach( (c) => {
         c.onclick = () => {
-            if (c.classList.contains("upcard")) return;
-            setTimeout( () => { 
-                cards.forEach( (x) => {
-                    if (x.classList.contains("upcard")) {
-                        x.classList.remove("upcard");
-                        x.style.zIndex -= 5;
-                    }
-                });
-                
-                c.classList.add("upcard");
-                updateCardStagger(c);
-                
+            setTimeout( () => {
+                scrollCardsTo(c); 
             }, 0);
 
         };
@@ -185,7 +174,7 @@ function setupHome() {
 
     let carousel = document.getElementById("wrap_cards");
     let momentum = 0;
-    
+
     carousel.addEventListener('wheel', function (event) {
         momentum += event.deltaY ? event.deltaY : event.deltaX;
 
@@ -215,6 +204,22 @@ function setupHome() {
         updateCardStagger(sibling);
     }
 
+    function scrollCardsTo (c) {
+        if (c.classList.contains("upcard")) return;
+        setTimeout( () => { 
+            cards.forEach( (x) => {
+                if (x.classList.contains("upcard")) {
+                    x.classList.remove("upcard");
+                    x.style.zIndex -= 5;
+                }
+            });
+            
+            c.classList.add("upcard");
+            updateCardStagger(c);
+
+        });
+    }
+
     let isDragging = false;
     let startX = 0;
     let initialLeft = 0;
@@ -226,22 +231,51 @@ function setupHome() {
         carousel.style.cursor = 'grabbing'; 
     });
 
+    let debounceScroll = 0;
     document.addEventListener('pointermove', (e) => {
         if (!isDragging) return;
+        if (debounceScroll) return;
+        debounceScroll++;
+        
 
         const deltaX =  startX - e.clientX;
-        momentum += (deltaX / 50);
+        momentum += (deltaX / 27);
 
         if (momentum > 10) {
             scrollCards(true);
-            
+            startX = e.clientX;
         } else if (momentum < -10) {
             scrollCards(false);
+            startX = e.clientX;
         }
+        debounceScroll--;
     });
 
     document.addEventListener('pointerup', () => {
         setTimeout( () => { isDragging = false; }, 10);
         carousel.style.cursor = 'pointer'; 
     });
+
+    document.getElementById("leftnav").onclick = () => {
+        scrollCards(false);
+    }
+    document.getElementById("rightnav").onclick = () => {
+        scrollCards(true);
+    }
+
+    document.getElementById("nav1").onclick = () => {
+        scrollCardsTo(Array.from(cards)[0]);
+    };
+    
+    document.getElementById("nav2").onclick = () => {
+        scrollCardsTo(Array.from(cards)[1]);
+    };
+    
+    document.getElementById("nav3").onclick = () => {
+        scrollCardsTo(Array.from(cards)[2]);
+    };
+    
+    document.getElementById("nav4").onclick = () => {
+        scrollCardsTo(Array.from(cards)[3]);
+    };
 }

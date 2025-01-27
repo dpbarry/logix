@@ -157,6 +157,8 @@
   gap: 15px;
   justify-content: flex-start;
   align-items: center;
+
+  touch-action: none;
   
   scrollbar-width: none;
 }
@@ -200,9 +202,10 @@
   }
 }
 
+#navbar {display: none;}
 @media (width < 1450px) {
   .card {
-    --offset: min(calc((1450px - 100vw) / 2.8), 310px);
+    --offset: min(calc((1450px - 100vw) / 2.8), 320px);
     position: relative;
     bottom: 0;
     margin-left: calc(-1 * var(--offset));
@@ -244,7 +247,65 @@
 
     &.hover {  rotate: 4deg; }  }
 
+  #navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
+    bottom: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(100px, 40vw, 290px);
+
+    span {
+      height: 12px;
+      width: 12px;
+      border-radius: 100%;
+      background-color: light-dark(#333, #AAA);
+      transition: transform 0.1s;
+      cursor: pointer;
+    }
+
+    button {
+      content: "";
+      position: fixed;
+      height: 22px;
+      width: 22px;
+      background: none;
+      border: none;
+      padding: 0;
+
+      cursor: pointer;
+
+      border-bottom: 8px solid light-dark(#333, #AAA);
+      border-right: 8px solid light-dark(#333, #AAA);
+      border-radius: 4px;
+
+      transition: transform 0.2s cubic-bezier(0.77,0.2,0.05,1.0);
+    }
+
+    #leftnav {
+      left: -5px;
+      rotate: 135deg;
+      
+    }
+    #rightnav {
+      right: -5px;
+      rotate: -45deg;
+    }
+  }
+
+  #wrap_cards:has(#training.upcard) ~ #navbar #nav1,
+  #wrap_cards:has(#normal.upcard) ~ #navbar #nav2,
+  #wrap_cards:has(#difficult.upcard) ~ #navbar #nav3,
+  #wrap_cards:has(#extreme.upcard) ~ #navbar #nav4
+  {
+    transform: scale(1.7);
+  }
+ 
 }
+
+
 
 
 .level-button {

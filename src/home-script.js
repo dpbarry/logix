@@ -2,7 +2,7 @@ function setupHome() {
     const stages = document.querySelectorAll(".trainstage");
 
     function toggleDropped(e) {
-        if (e.type === "keydown" && e.key !== " " && e.key !== "Enter") return;
+        if (e.type === "keydown" && e.key !== " " && e.key !== "Enter" || !(e.target.closest(".card").classList.contains("upcard"))) return;
         
         let target = e.target.closest(".trainstage");
 
@@ -43,6 +43,8 @@ function setupHome() {
         b.onclick = function (e) {
             // e.target.classList.add("activated");
 
+            if (!e.target.closest(".card").classList.contains("upcard")) return;
+            
             setTimeout( () => {
                 Router(e.target.id);
                 history.pushState({loc:e.target.id}, "");
@@ -50,7 +52,7 @@ function setupHome() {
         };
         
         b.onkeydown = function (e) {
-            if (e.key !== " " && e.key !== "Enter") return;
+            if (e.key !== " " && e.key !== "Enter" || !(e.target.closest(".card").classList.contains("upcard"))) return;
             
             // e.target.classList.add("activated");
             
@@ -65,6 +67,7 @@ function setupHome() {
 
     document.querySelectorAll(".level-button").forEach(b => {
         b.addEventListener("pointerdown", (e) => {
+            if (!e.target.closest(".card").classList.contains("upcard")) return;
             b.classList.add("nudged");
         });
     });
@@ -81,4 +84,164 @@ function setupHome() {
         
         document.getElementById("about_dialog").addEventListener("transitionend", closeDialog);
     }
+
+    function updateCardStagger(upcard) {
+        
+        let i = 0;
+        let j = 1;
+        let hitTop = false;
+        cards.forEach( (x) => {
+            x.classList.remove("hover");
+            if (x === upcard) {
+                hitTop = true;
+                x.style.zIndex = j--;
+                x.style.transform = "scale(1)";
+                return;
+            }
+
+            x.style.zIndex = j;
+            
+            i = (hitTop) ? i : i + 1;
+            j = (hitTop) ? j - 1 : j + 1;
+        });
+        
+        
+        upcard.style.zIndex = parseInt(upcard.style.zIndex) + 5;
+
+        for (let x = 0; x < 4; ++x) {
+            let cur = Array.from(cards)[x];
+            let scaleFactor = (100 - (Math.abs(x - i) * 1.9)) / 100;
+            let brightFactor = (100 - (Math.abs(x - i) * 1.35)) / 100;
+
+            cur.style.transform = `scale(${scaleFactor})`;
+
+            if (x === i) {
+                setTimeout( () => {
+                    cur.style.transform = "none";
+                }, 100);
+            }
+            cur.style.filter = `brightness(${brightFactor})`
+        }
+
+    }
+
+
+    let cardView;
+    let cards = document.querySelectorAll(".card");
+    
+    if (window.matchMedia("(width < 1450px)").matches) {
+        updateCardStagger(document.querySelector(".upcard"));
+        cardView = true;
+    }
+    
+    window.onresize = () => {
+        if (window.matchMedia("(width < 1450px)").matches) {
+            updateCardStagger(document.querySelector(".upcard"));
+            cardView = true;
+        } else if (cardView) {
+            cardView = false;
+            cards.forEach( c => {
+                c.style.transform = "scale(1)";
+                c.style.filter = "brightness(1)"
+                setTimeout( () => {
+                    c.style.transform = "none";
+                    c.style.filter = "none";
+                }, 100);
+            });
+        }
+    }
+
+
+    cards.forEach( (c) => {
+        c.onclick = () => {
+            if (c.classList.contains("upcard")) return;
+            setTimeout( () => { 
+                cards.forEach( (x) => {
+                    if (x.classList.contains("upcard")) {
+                        x.classList.remove("upcard");
+                        x.style.zIndex -= 5;
+                    }
+                });
+                
+                c.classList.add("upcard");
+                updateCardStagger(c);
+                
+            }, 0);
+
+        };
+        
+        c.addEventListener("mouseover", (e) => {
+            e.target.closest(".card").classList.add("hover");
+        });
+        c.addEventListener("mousemove", (e) => {
+            e.target.closest(".card").classList.add("hover");
+        });
+
+        c.addEventListener("mouseleave", (e) => {
+            e.target.closest(".card").classList.remove("hover");
+        });
+        
+    });
+
+    let carousel = document.getElementById("wrap_cards");
+    let momentum = 0;
+    
+    carousel.addEventListener('wheel', function (event) {
+        momentum += event.deltaY ? event.deltaY : event.deltaX;
+
+        if (momentum > 10) {
+            scrollCards(true);
+            
+        } else if (momentum < -10) {
+            scrollCards(false);
+        }
+
+    }, {passive: true});
+
+
+    function scrollCards (right) {
+        momentum = 0;
+        let sibling = right ? document.querySelector(".upcard").nextElementSibling : document.querySelector(".upcard").previousElementSibling;
+        if (!sibling) return;
+
+        cards.forEach( (x) => {                
+            if (x.classList.contains("upcard")) {
+                x.classList.remove("upcard");
+                x.style.zIndex -= 5;
+            }   
+        });
+        
+        sibling.classList.add("upcard");
+        updateCardStagger(sibling);
+    }
+
+    let isDragging = false;
+    let startX = 0;
+    let initialLeft = 0;
+
+
+    carousel.addEventListener('pointerdown', (e) => {
+        setTimeout( () => { isDragging = true; }, 5);
+        startX = e.clientX; 
+        carousel.style.cursor = 'grabbing'; 
+    });
+
+    document.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+
+        const deltaX =  startX - e.clientX;
+        momentum += (deltaX / 50);
+
+        if (momentum > 10) {
+            scrollCards(true);
+            
+        } else if (momentum < -10) {
+            scrollCards(false);
+        }
+    });
+
+    document.addEventListener('pointerup', () => {
+        setTimeout( () => { isDragging = false; }, 10);
+        carousel.style.cursor = 'pointer'; 
+    });
 }

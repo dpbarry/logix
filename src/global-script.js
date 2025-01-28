@@ -337,7 +337,6 @@ document.addEventListener('keydown', (e) => {
 
 function verticalScroll(el, moe) {
     el.style.overflow = "auto";
-    console.log(el.scrollHeight);
     const isScrollable = (el.scrollHeight - moe > el.clientHeight);
     if (!isScrollable) {
         el.style.maskImage = "";
@@ -449,4 +448,13 @@ function horizontalVerticalScroll(el, moe) {
     }
 
     
+}
+function vh(percent) {
+    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    return (percent * h) / 100;
+}
+
+function vw(percent) {
+  var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  return (percent * w) / 100;
 }

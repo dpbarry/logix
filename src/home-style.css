@@ -16,7 +16,7 @@
   font-size: 3.1rem;
 }
 
-.page.home {
+#wrap_cards * {
   touch-action: none;
 }
 
@@ -173,7 +173,7 @@
 .card {
   min-width: 295px;
   max-width: 295px;
-  height: clamp(40px, 70vh, 450px);
+  height: clamp(40px, 70vh, 453px);
   padding: 15px;
 
   transition: rotate 0.15s ease-out, transform .1s, filter .1s;
@@ -412,7 +412,7 @@
   
   cursor: pointer;
 
-  transition: transform 0.2s, opacity 0.2s, background 0.1s, border 0.12s, font-weight 0.12s;
+  transition: transform 0.12s, opacity 0.2s, background 0.1s, border 0.12s, font-weight 0.12s;
 }
 
 .level-button:focus {
@@ -470,6 +470,12 @@
 }
 
 #training {
+  max-height: 453px;
+  transition: rotate 0.15s ease-out, transform .1s, filter .1s, max-height 0.15s;
+  &:not(:has(.dropped)) {
+    max-height: 326px;
+  }
+  
   .trainstage, .level-button {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
     background: hsl(120 20% 85%);
@@ -492,7 +498,7 @@
 }
 
 .trainstage {
-  width: calc(100% - 11px - 1px); /* Align edge with droplist */
+  width: calc(100% - 11px - 2px); /* Align edge with droplist */
   min-height: 48px;
   max-height: 48px;
   padding-left: 11px;
@@ -608,10 +614,8 @@
 }
 
 .droplist {
-  max-height: 0px;
   margin-bottom: 0;
-
-  will-change: max-height, margin-bottom;
+  max-height: 0;
   transition: max-height 0.12s ease-out, margin-bottom 0.12s ease-out;
 
   .level-button {
@@ -627,16 +631,30 @@
 .trainstage.dropped + .droplist {
   max-height: 200px;
   margin-bottom: 11px;
-  transition: max-height 0.12s ease-in, margin-bottom 0.12s ease-in;
 
+  li {
+    animation: buffer 0.13s forwards;
+  }
   .level-button {
     transform: translateY(0);
     opacity: 1;
   }
 }
 
-.trainstage:not(.dropped) + .droplist {
-  li { display: none; }
+@keyframes buffer {
+  0%, 100% {visibility: visible}
 }
 
+.trainstage:not(.dropped) + .droplist .level-button {
+  @starting-style {
+    display: none;
+    pointer-events: none;
+  }
+  animation: displayOut 0s forwards;
+  animation-delay: 130ms; 
+}
+
+@keyframes displayOut {
+  0%, 100% {display: none; pointer-events: none;}
+}
 

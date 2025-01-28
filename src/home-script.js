@@ -1,5 +1,9 @@
 function setupHome() {
     const stages = document.querySelectorAll(".trainstage");
+    const trainingCard = document.getElementById("training");
+    const wrapStages = document.getElementById("wrap_stages");
+    const scrollContainers = document.querySelectorAll("#wrap_stages, .campaignlist");
+    
 
     function toggleDropped(e) {
         if (e.type === "keydown" && e.key !== " " && e.key !== "Enter" || !(e.target.closest(".card").classList.contains("upcard"))) return;
@@ -13,6 +17,7 @@ function setupHome() {
         if (target.classList.contains("dropped")) {
             target.classList.remove("dropped");
             target.tabIndex = 0;
+            
         } else {
             stages.forEach((s) => {
                 s.classList.remove("dropped");
@@ -24,10 +29,18 @@ function setupHome() {
                 b.tabIndex = 0;
             });
             target.tabIndex = -1;
-
         }
         target.blur();
+        
     }
+
+    let block = false;
+    wrapStages.addEventListener("animationend", (e) => {
+        if (block) return;
+        block = true;
+        verticalScroll(wrapStages, vh(70) >= 450 ? 100 : 1);
+        setTimeout( () => {block = false}, 10);
+    });
 
     stages.forEach( (stage) => {
         stage.onclick = toggleDropped;
@@ -70,6 +83,7 @@ function setupHome() {
             b.classList.add("nudged");
         });
     });
+
 
     document.getElementById("main-header").onclick = function () {
         Router("index.html");
@@ -127,12 +141,12 @@ function setupHome() {
 
     let cardView = false;
     let cards = document.querySelectorAll(".card");
-    
+
     if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
         updateCardStagger(document.querySelector(".upcard"));
         cardView = true;
     }
-    
+
     window.onresize = () => {
         scrollFadeCards();
         if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
@@ -228,18 +242,23 @@ function setupHome() {
     let startX = 0;
     let initialLeft = 0;
 
-    holding = false;
-    carousel.addEventListener('pointerdown', (e) => {
+    let holding = false;
+    carousel.parentNode.addEventListener('pointerdown', (e) => {
         if (!cardView) return;
+        event.preventDefault();
+
         holding = true;
         startX = e.clientX; 
         carousel.classList.add("grabbing");
     });
 
+    document.addEventListener("pointercancel", (event) => {console.log(event.srcElement)});
+
     let debounceScroll = 0;
-    document.querySelector(".page.home").addEventListener('pointermove', (e) => {
+    document.addEventListener('pointermove', (e) => {
         if (!cardView) return;
         if (!holding) return;
+
         if (debounceScroll) return;
         debounceScroll++;
 
@@ -294,15 +313,15 @@ function setupHome() {
     document.getElementById("nav1").onclick = () => {
         scrollCardsTo(Array.from(cards)[0]);
     };
-    
+
     document.getElementById("nav2").onclick = () => {
         scrollCardsTo(Array.from(cards)[1]);
     };
-    
+
     document.getElementById("nav3").onclick = () => {
         scrollCardsTo(Array.from(cards)[2]);
     };
-    
+
     document.getElementById("nav4").onclick = () => {
         scrollCardsTo(Array.from(cards)[3]);
     };
@@ -315,8 +334,9 @@ function setupHome() {
     });
 
     function scrollFadeCards() {
-        [...cards].forEach( c => {
-            verticalScroll(c.querySelector(".campaignlist, #wrap_stages"), 3);
+        verticalScroll(wrapStages, vh(70) >= 450 ? 100 : 1);
+        [...cards].slice(1).forEach( c => {
+            verticalScroll(c.querySelector(".campaignlist"), 1);
         });
     }
 }

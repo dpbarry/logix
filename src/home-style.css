@@ -147,11 +147,6 @@
   padding-left: 4px;
   padding-right: 4px;
 
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-
   display: flex;
   flex-direction: row;
   gap: 15px;
@@ -174,8 +169,7 @@
 .card {
   min-width: 295px;
   max-width: 295px;
-  min-height: 450px;
-  max-height: 450px;
+  height: clamp(40px, 70vh, 450px);
   padding: 15px;
 
   transition: rotate 0.15s ease-out, transform .1s, filter .1s;
@@ -192,6 +186,8 @@
   align-items: center;
   justify-content: flex-start;
 
+  overflow-y: hidden;
+
   h2 {
     font-family: "Source Serif 4";
     font-size: 1.85rem;
@@ -202,14 +198,128 @@
   }
 }
 
+#wrap_levelselect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: min(2.5vh, 30px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
 #navbar {display: none;}
+
 @media (width < 1450px) {
+  #wrap_levelselect {
+    margin-top: 26px;
+  }
+
+  #navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    
+    width: clamp(130px, 60vw, 400px);
+
+    span {
+      height: 12px;
+      width: 12px;
+      border-radius: 100%;
+      background-color: transparent;
+      box-shadow: inset 0 0 0 2px transparent;
+      border: 1.5px solid light-dark(#777, #999);
+      filter: drop-shadow(0 1px 1px light-dark(#e7e7e7, #000));
+      
+      transition: scale 0.1s ease-out, opacity 0.1s;
+      cursor: pointer;
+      &::before {
+        content: "";
+        position: relative;
+        display: block;
+        bottom: 0;
+        height: 10px;
+        width: 10px;
+        scale: 3;
+        cursor: pointer;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          opacity: 0.65;
+        }
+      }
+    }
+
+    button {
+      content: "";
+      height: 22px;
+      width: 22px;
+      background: none;
+      border: none;
+      padding: 0;
+
+      cursor: pointer;
+
+      border-bottom: 7px solid light-dark(#555, #888);
+      border-right: 7px solid light-dark(#555, #888);
+      border-radius: 4px;
+
+      &::before {
+        content: "";
+        position: relative;
+        display: block;
+        bottom: 0;
+        height: 22px;
+        width: 22px;
+        scale: 1.8;
+        cursor: pointer;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          opacity: 0.65;
+        }
+      }
+    }
+
+    #leftnav {
+      left: -12px;
+      rotate: 135deg;
+      filter: drop-shadow(2px -2px 1px light-dark(#eaeaea, #000));
+    }
+    #rightnav {
+      right: -12px;
+      rotate: -45deg;
+      filter: drop-shadow(-2px 2px 1px light-dark(#eaeaea, #000));
+    }
+    
+  }
+
+  
+  #wrap_cards:has(#training.upcard) ~ #navbar #nav1,
+  #wrap_cards:has(#normal.upcard) ~ #navbar #nav2,
+  #wrap_cards:has(#difficult.upcard) ~ #navbar #nav3,
+  #wrap_cards:has(#extreme.upcard) ~ #navbar #nav4
+  {
+    scale: 1.8;
+    &::before {scale: 1.66;}
+    box-shadow: inset 0 0 0 2px #555;
+    border-color: transparent;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@media (width < 1450px) and (width > 600px) {
   .card {
-    --offset: min(calc((1450px - 100vw) / 2.8), 320px);
+    --offset: clamp(140px, calc((1450px - 100vw) / 2.8), 290px);
     position: relative;
     bottom: 0;
     margin-left: calc(-1 * var(--offset));
     backface-visibility: hidden;
+    will-change: rotate;
   }
   
   .card:not(.upcard) {
@@ -267,108 +377,13 @@
   #wrap_cards.grabbing .card {
     &.hover { rotate: unset; }
   }
-
-  #navbar {
-    
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    position: absolute;
-    bottom: 75px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: clamp(100px, 40vw, 290px);
-
-    span {
-      height: 12px;
-      width: 12px;
-      border-radius: 100%;
-      background-color: light-dark(#555, #AAA);
-      box-shadow: 0 0 2px #ddd, 0 3px 3px -3px #aaa;
-      
-      transition: scale 0.1s, opacity 0.1s;
-      cursor: pointer;
-      &::before {
-        content: "";
-        position: relative;
-        display: block;
-        bottom: 0;
-        height: 12px;
-        width: 12px;
-        scale: 3;
-        cursor: pointer;
-      }
-
-      @media (hover: hover) and (pointer: fine) {
-        &:hover {
-          opacity: 0.65;
-        }
-      }
-    }
-
-    button {
-      content: "";
-      position: fixed;
-      height: 22px;
-      width: 22px;
-      background: none;
-      border: none;
-      padding: 0;
-
-      cursor: pointer;
-
-      border-bottom: 8px solid light-dark(#555, #AAA);
-      border-right: 8px solid light-dark(#555, #AAA);
-      border-radius: 4px;
-
-      transition: scale 0.2s cubic-bezier(0.77,0.2,0.05,1.0), opacity 0.1s;
-
-      &::before {
-        content: "";
-        position: relative;
-        display: block;
-        bottom: 0;
-        height: 22px;
-        width: 22px;
-        scale: 1.8;
-        cursor: pointer;
-      }
-
-      @media (hover: hover) and (pointer: fine) {
-        &:hover {
-          opacity: 0.65;
-        }
-      }
-    }
-
-    #leftnav {
-      left: -12px;
-      rotate: 135deg;
-      filter: drop-shadow(2px -2px 1px light-dark(#d8d8d8, transparent));
-    }
-    #rightnav {
-      right: -12px;
-      rotate: -45deg;
-      filter: drop-shadow(-2px 2px 1px light-dark(#d8d8d8, transparent));
-    }
-    --op: unset;
-
-  }
+}
 
 
-  #wrap_cards:has(#training.upcard) ~ #navbar #nav1,
-  #wrap_cards:has(#normal.upcard) ~ #navbar #nav2,
-  #wrap_cards:has(#difficult.upcard) ~ #navbar #nav3,
-  #wrap_cards:has(#extreme.upcard) ~ #navbar #nav4
-  {
-    scale: 1.7;
-    &::before {scale: 1.7647;}
-    &:hover {
-      opacity: 1;
-    }
-  }
-  
-  
+
+}
+
+@media (width <= 600px ) {
   
 }
 
@@ -451,12 +466,6 @@
 }
 
 #training {
-  /* With chapter open, keep height the same as other cards;
-     otherwise, allow it to shrink */
-  transition: rotate 0.15s ease-out, transform .1s, filter .1s, min-height .1s;
-  min-height: 0;
-  &:has(.dropped) { min-height: 450px; }
-  
   .trainstage, .level-button {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
     background: hsl(120 20% 85%);
@@ -480,7 +489,8 @@
 
 .trainstage {
   width: calc(100% - 11px - 1px); /* Align edge with droplist */
-  height: 50px;
+  min-height: 48px;
+  max-height: 48px;
   padding-left: 11px;
   margin-bottom: 10px;
   
@@ -560,7 +570,7 @@
   border-radius: 0px;
 
   rotate: 45deg;
-  transition: transform 0.2s cubic-bezier(0.77,0.2,0.05,1.0);
+  transition: transform 0.12s cubic-bezier(0.77,0.2,0.05,1.0);
 }
 
 .trainstage.dropped .dropdown_chevron:before {
@@ -582,10 +592,16 @@
   list-style-type: none;
 }
 
-.campaignlist {
-  margin-bottom: 0;
+.campaignlist, #wrap_stages {
+  overflow: auto;
+  scrollbar-width: none;
+  padding: 0.5px;
+}
 
-  overflow: visibile; /* Change when more levels */
+#wrap_stages {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 100%;
 }
 
 .droplist {
@@ -593,7 +609,7 @@
   margin-bottom: 0;
 
   will-change: max-height, margin-bottom;
-  transition: max-height 0.2s, margin-bottom 0.2s;
+  transition: max-height 0.12s ease-out, margin-bottom 0.12s ease-out;
 
   .level-button {
     transform: translateY(-20px);
@@ -608,6 +624,7 @@
 .trainstage.dropped + .droplist {
   max-height: 200px;
   margin-bottom: 11px;
+  transition: max-height 0.12s ease-in, margin-bottom 0.12s ease-in;
 
   .level-button {
     transform: translateY(0);
@@ -616,7 +633,7 @@
 }
 
 .trainstage:not(.dropped) + .droplist {
-  li { pointer-events: none; cursor: default; }
+  li { display: none; }
 }
 
 

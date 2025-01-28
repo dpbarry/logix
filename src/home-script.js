@@ -87,7 +87,7 @@ function setupHome() {
     function updateCardStagger(upcard) {
         
         let i = 0;
-        let j = 1;
+        let j = 4;
         let hitTop = false;
         cards.forEach( (x) => {
             x.classList.remove("hover");
@@ -125,16 +125,17 @@ function setupHome() {
     }
 
 
-    let cardView;
+    let cardView = false;
     let cards = document.querySelectorAll(".card");
     
-    if (window.matchMedia("(width < 1450px)").matches) {
+    if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
         updateCardStagger(document.querySelector(".upcard"));
         cardView = true;
     }
     
     window.onresize = () => {
-        if (window.matchMedia("(width < 1450px)").matches) {
+        scrollFadeCards();
+        if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
             updateCardStagger(document.querySelector(".upcard"));
             cardView = true;
         } else if (cardView) {
@@ -152,10 +153,11 @@ function setupHome() {
 
 
     cards.forEach( (c) => {
-        c.onclick = () => {
-            if (!cardView) return;
-            scrollCardsTo(c); 
+        c.onclick = () => {            
+            if (!cardView || isDragging) return;
+            isDragging = false;
 
+            scrollCardsTo(c);
         };
         
         c.addEventListener("mouseover", (e) => {
@@ -175,6 +177,9 @@ function setupHome() {
     let momentum = 0;
 
     carousel.addEventListener('wheel', function (event) {
+        let parentList = event.target.closest(".campaignlist, #wrap_stages");
+        if (parentList && event.deltaY && parentList.style.overflowY === "auto") return;
+        if (!cardView) return;
         momentum += 0.5 * (event.deltaY ? event.deltaY : event.deltaX);
 
         if (momentum > 10) {
@@ -188,6 +193,7 @@ function setupHome() {
 
 
     function scrollCards (right) {
+        if (!cardView) return;
         momentum = 0;
         let sibling = right ? document.querySelector(".upcard").nextElementSibling : document.querySelector(".upcard").previousElementSibling;
         if (!sibling) return;
@@ -204,6 +210,7 @@ function setupHome() {
     }
 
     function scrollCardsTo (c) {
+        if (!cardView) return;
         if (c.classList.contains("upcard")) return;
         cards.forEach( (x) => {
             if (x.classList.contains("upcard")) {
@@ -221,10 +228,10 @@ function setupHome() {
     let startX = 0;
     let initialLeft = 0;
 
-
+    holding = false;
     carousel.addEventListener('pointerdown', (e) => {
         if (!cardView) return;
-        isDragging = true; 
+        holding = true;
         startX = e.clientX; 
         carousel.classList.add("grabbing");
     });
@@ -232,18 +239,25 @@ function setupHome() {
     let debounceScroll = 0;
     document.addEventListener('pointermove', (e) => {
         if (!cardView) return;
-        if (!isDragging) return;
+        if (!holding) return;
         if (debounceScroll) return;
         debounceScroll++;
-        
 
         const deltaX =  startX - e.clientX;
-        momentum += (deltaX / 27);
+        momentum += (deltaX / 30);
 
-        if (momentum > 10) {
+        if (momentum < -10 && document.getElementById("training").classList.contains("upcard")
+            || momentum > 10 && document.getElementById("extreme").classList.contains("upcard")) {
+            momentum = 0;
+            startX = e.clientX;
+        } else if (momentum > 10) {
+            isDragging = true;
+
             scrollCards(true);
             startX = e.clientX;
         } else if (momentum < -10) {
+            isDragging = true;
+
             scrollCards(false);
             startX = e.clientX;
         }
@@ -252,22 +266,29 @@ function setupHome() {
 
     document.addEventListener('pointerup', (e) => {
         if (!cardView) return;
-        e.preventDefault();
-        isDragging = false;
-        carousel.classList.remove("grabbing"); 
+        holding = false;
+        carousel.classList.remove("grabbing");
+
+        if (isDragging) {
+            setTimeout( () => {
+                isDragging = false;
+            }, 5);
+        }
     });
 
     document.getElementById("leftnav").onclick = () => {
         if (document.getElementById("training").classList.contains("upcard")) {
             scrollCardsTo(Array.from(cards)[3]);
+        } else {
+            scrollCards(false);
         }
-        scrollCards(false);
     }
     document.getElementById("rightnav").onclick = () => {
         if (document.getElementById("extreme").classList.contains("upcard")) {
             scrollCardsTo(Array.from(cards)[0]);
+        } else {
+            scrollCards(true);
         }
-        scrollCards(true);
     }
 
     document.getElementById("nav1").onclick = () => {
@@ -285,4 +306,17 @@ function setupHome() {
     document.getElementById("nav4").onclick = () => {
         scrollCardsTo(Array.from(cards)[3]);
     };
+
+
+    screen.orientation.addEventListener("change", scrollFadeCards);
+
+    [...cards].forEach( c => {
+        c.querySelector(".campaignlist, #wrap_stages").addEventListener("scroll", scrollFadeCards);
+    });
+
+    function scrollFadeCards() {
+        [...cards].forEach( c => {
+            verticalScroll(c.querySelector(".campaignlist, #wrap_stages"), 3);
+        });
+    }
 }

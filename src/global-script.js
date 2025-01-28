@@ -69,7 +69,7 @@ function initDialogs() {
             event.target.addEventListener("pointerup", (event) => {
                 event.target.classList.remove("nudged");
             });
-           
+            
         });
 
         li.addEventListener("keydown", (e) => {
@@ -334,3 +334,119 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+
+function verticalScroll(el, moe) {
+    el.style.overflow = "auto";
+    console.log(el.scrollHeight);
+    const isScrollable = (el.scrollHeight - moe > el.clientHeight);
+    if (!isScrollable) {
+        el.style.maskImage = "";
+        el.style.overflow = "visible";
+
+        return;
+    }
+    el.style.overflowY = "auto";
+
+    
+    // One pixel is added to the height to account for non-integer heights.
+    const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+    const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
+
+    let top = 0;
+    let bottom =0;
+    
+    if (!isScrolledToBottom) {
+        bottom = 40;
+    }
+
+    if (!isScrolledToTop) {
+        top = 40;
+    }
+
+    el.style.maskImage = `linear-gradient(to bottom, transparent 0, black ${top}px, black calc(100% - ${bottom}px), transparent 100%)`;
+
+}
+
+
+
+function horizontalScroll(el, moe) {
+    const isScrollable = (el.scrollWidth - moe > el.clientWidth);
+
+    if (!isScrollable) {
+        el.style.maskImage = "";
+        el.style.overflow = "visible";
+
+        return;
+    }
+
+    el.style.overflowX = "auto";
+
+    
+    // One pixel is added to the height to account for non-integer heights.
+    const isScrolledToRight = el.scrollWidth  < el.clientWidth + el.scrollLeft + 1;
+    const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
+
+
+    let left = 0;
+    let right = 0;
+    
+    if (!isScrolledToRight) {
+        right = 40;
+    }
+
+    if (!isScrolledToLeft) {
+        left = 40;
+    }
+
+    el.style.maskImage = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
+}
+
+function horizontalVerticalScroll(el, moe) {
+    let horizontalMask = "";
+    let verticalMask = "";
+
+    let isScrollable = el.scrollWidth - moe > el.clientWidth;
+
+    if (!isScrollable) {
+        el.style.overflowX = "visible";
+    } else {
+        el.style.overflowX = "auto";
+
+        const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollLeft + 1;
+        const isScrolledToLeft = el.scrollLeft === 0;
+
+        let left = isScrolledToLeft ? 0 : 40;
+        let right = isScrolledToRight ? 0 : 40;
+
+        horizontalMask = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
+    }
+
+    isScrollable = el.scrollHeight - moe > el.clientHeight;
+
+    if (!isScrollable) {
+        el.style.overflowY = "visible";
+    } else {
+        el.style.overflowY = "auto";
+
+        const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
+        const isScrolledToTop = el.scrollTop === 0;
+
+        let top = isScrolledToTop ? 0 : 40;
+        let bottom = isScrolledToBottom ? 0 : 40;
+
+        verticalMask = `linear-gradient(to bottom, transparent 0, black ${top}px, black calc(100% - ${bottom}px), transparent 100%)`;
+    }
+
+    if (horizontalMask && verticalMask) {
+        el.style.maskImage = `${horizontalMask}, ${verticalMask}`;
+        el.style.maskComposite = "intersect"; 
+    } else if (horizontalMask) {
+        el.style.maskImage = horizontalMask;
+    } else if (verticalMask) {
+        el.style.maskImage = verticalMask;
+    } else {
+        el.style.maskImage = "";
+    }
+
+    
+}

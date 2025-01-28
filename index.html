@@ -103,6 +103,12 @@
          
          setTimeout(function() {
            newPage.style.display = "block";
+           setTimeout( () => {
+             newPage.querySelectorAll(".campaignlist, #wrap_stages").forEach( (c) => {
+               verticalScroll(c, 3);
+             });
+             
+           }, 10); 
          }, 10);
 
          setTimeout(function() {

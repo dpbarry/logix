@@ -4,11 +4,7 @@
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-
   &:focus {outline: none;}
 }
 
@@ -173,8 +169,8 @@ dialog {
   background-color: var(--bgColor);
   font-family: "source serif 4";
   width: min(80vw, 500px);
-  height: 52vh;
-  max-height: min-content;
+  height: min-content;
+  max-height: 52vh;
   visibility: hidden;
   opacity: 0;
   padding-bottom: 35px;

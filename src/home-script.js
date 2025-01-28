@@ -237,7 +237,7 @@ function setupHome() {
     });
 
     let debounceScroll = 0;
-    document.addEventListener('pointermove', (e) => {
+    document.querySelector(".page.home").addEventListener('pointermove', (e) => {
         if (!cardView) return;
         if (!holding) return;
         if (debounceScroll) return;

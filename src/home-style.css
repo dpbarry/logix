@@ -16,6 +16,10 @@
   font-size: 3.1rem;
 }
 
+.page.home {
+  touch-action: none;
+}
+
 .dialog_button.home {
   position: absolute;
   top: clamp(1rem, 2vmin, 1.75rem); 
@@ -261,8 +265,8 @@
 
       cursor: pointer;
 
-      border-bottom: 7px solid light-dark(#555, #888);
-      border-right: 7px solid light-dark(#555, #888);
+      border-bottom: 7px solid light-dark(#555, #999);
+      border-right: 7px solid light-dark(#555, #999);
       border-radius: 4px;
 
       &::before {
@@ -304,7 +308,7 @@
   {
     scale: 1.8;
     &::before {scale: 1.66;}
-    box-shadow: inset 0 0 0 2px #555;
+    box-shadow: inset 0 0 0 2px light-dark(#555, #999) !important;
     border-color: transparent;
     &:hover {
       opacity: 1;
@@ -319,7 +323,7 @@
     bottom: 0;
     margin-left: calc(-1 * var(--offset));
     backface-visibility: hidden;
-    will-change: rotate;
+    will-change: scale, rotate;
   }
   
   .card:not(.upcard) {
@@ -595,7 +599,6 @@
 .campaignlist, #wrap_stages {
   overflow: auto;
   scrollbar-width: none;
-  padding: 0.5px;
 }
 
 #wrap_stages {

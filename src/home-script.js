@@ -1,12 +1,22 @@
 function setupHome() {
     const stages = document.querySelectorAll(".trainstage");
     const trainingCard = document.getElementById("training");
+    const extremeCard = document.getElementById("extreme");
     const wrapStages = document.getElementById("wrap_stages");
     const scrollContainers = document.querySelectorAll("#wrap_stages, .campaignlist");
+
     
+    document.querySelectorAll(".card li").forEach( (li) => {
+        li.onfocus = (e) => {
+            let thisCard = e.target.closest(".card");
+            if (!thisCard.classList.contains("upcard")) {
+                scrollCardsTo(thisCard);
+            }
+        };
+    });
 
     function toggleDropped(e) {
-        if (e.type === "keydown" && e.key !== " " && e.key !== "Enter" || !(e.target.closest(".card").classList.contains("upcard"))) return;
+        if (e.type === "keydown" && e.key !== " " && e.key !== "Enter") return;
         
         let target = e.target.closest(".trainstage");
 
@@ -265,8 +275,8 @@ function setupHome() {
         const deltaX =  startX - e.clientX;
         momentum += (deltaX / 30);
 
-        if (momentum < -10 && document.getElementById("training").classList.contains("upcard")
-            || momentum > 10 && document.getElementById("extreme").classList.contains("upcard")) {
+        if (momentum < -10 && trainingCard.classList.contains("upcard")
+            || momentum > 10 && extremeCard.classList.contains("upcard")) {
             momentum = 0;
             startX = e.clientX;
         } else if (momentum > 10) {
@@ -295,15 +305,29 @@ function setupHome() {
         }
     });
 
-    document.getElementById("leftnav").onclick = () => {
-        if (document.getElementById("training").classList.contains("upcard")) {
+
+
+    const leftnav = document.getElementById("leftnav");
+    const rightnav = document.getElementById("rightnav");
+
+    leftnav.onpointerdown = (e) => {
+        e.target.classList.add("nudged");
+
+    }
+    rightnav.onpointerdown = (e) => {
+        e.target.classList.add("nudged");
+    }
+
+    
+    leftnav.onclick = () => {
+        if (trainingCard.classList.contains("upcard")) {
             scrollCardsTo(Array.from(cards)[3]);
         } else {
             scrollCards(false);
         }
     }
-    document.getElementById("rightnav").onclick = () => {
-        if (document.getElementById("extreme").classList.contains("upcard")) {
+    rightnav.onclick = () => {
+        if (extremeCard.classList.contains("upcard")) {
             scrollCardsTo(Array.from(cards)[0]);
         } else {
             scrollCards(true);
@@ -329,8 +353,8 @@ function setupHome() {
 
     screen.orientation.addEventListener("change", scrollFadeCards);
 
-    [...cards].forEach( c => {
-        c.querySelector(".campaignlist, #wrap_stages").addEventListener("scroll", scrollFadeCards);
+    scrollContainers.forEach( c => {
+        c.addEventListener("scroll", scrollFadeCards);
     });
 
     function scrollFadeCards() {

@@ -320,7 +320,7 @@ function setupHome() {
 
     let holding = false;
     carousel.parentNode.addEventListener('pointerdown', (e) => {
-        if (!cardView && !mobileView) return;
+        if (!cardView && !mobileView || e.target.closest("#navbar")) return;
         event.preventDefault();
 
         holding = true;
@@ -356,7 +356,14 @@ function setupHome() {
     });
 
     touchMode = mobileView;
-    document.onpointerdown = (e) => {touchMode = (e.pointerType !== "mouse"); carousel.onscroll = mobileSwipe; };
+    document.onpointerdown = (e) => {
+        if (e.pointerType !== "mouse" && !e.target.closest("#navbar")) {
+            touchMode = true;
+            carousel.onscroll = mobileSwipe;
+        } else {
+            touchMode = false;
+        }
+    };
 
     document.addEventListener('pointerup', (e) => {
         if (!cardView && !mobileView) return;

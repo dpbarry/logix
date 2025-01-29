@@ -380,7 +380,7 @@ function setupHome() {
         carousel.onscroll = "";
 
 
-        let amt = right ? cardWidth : -cardWidth;
+        let amt = right ? cardWidth + 20 : -cardWidth - 20;
         let capture = carousel.scrollLeft;
         carousel.scrollBy({
             top: 0,
@@ -415,7 +415,7 @@ function setupHome() {
         carousel.onscroll = "";
 
 
-        let amt = (destination - frontCard) * 326;
+        let amt = (destination - frontCard) * (cardWidth + 20);
         carousel.scrollBy({
             top: 0,
             left: amt,

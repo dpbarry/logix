@@ -220,20 +220,26 @@
   min-height: 30vh;
   max-height: 70vh;
   h1 {margin-bottom: 5px;}
+  padding-bottom: 20px;
 }
 #level_info {
-  margin-left: 2vw;
-  margin-right: 2vw;
-  font-weight: 400;
+  padding-left: 2vw;
+  padding-right: 2vw;
   display:flex;
+
+  max-height: calc(70vh - 20px);
+  height: 100%;
+  box-sizing: border-box;
   
   flex-wrap: wrap;
   gap: 10px;
-
-  margin-bottom: 3px;
-  
+  scrollbar-width: none;
+    
   .mspace { margin-right: 0.18em !important; }
   .entrystyle + span {margin-left: -0.1em; }
+  &.overflowing {
+    padding-bottom: 20px;
+  }
   p {
     margin: 0;
     font-weight: 350;

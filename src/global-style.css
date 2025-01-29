@@ -163,6 +163,7 @@ dialog {
   outline: 0;
   
   position: fixed;
+  
   margin: auto;
   display: block;
   background-color: var(--bgColor);
@@ -173,6 +174,7 @@ dialog {
   visibility: hidden;
   opacity: 0;
   padding-bottom: 35px;
+  overflow: clip;
 
   color: var(--baseColor);
 

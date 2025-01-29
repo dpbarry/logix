@@ -15,6 +15,7 @@ function initLevel() {
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
 
     MENU_TOGGLE = level.querySelector("#menu_checkbox");
+    const info = level.querySelector("#level_info");
 
     const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
@@ -680,12 +681,14 @@ function initLevel() {
         horizontalVerticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
         centerPropositions(propositions.parentNode);
+        fadeInfo();
     }
 
     screen.orientation.addEventListener("change", (event) => {
         horizontalVerticalScroll(propositions.parentNode, 7);
         centerPropositions(propositions.parentNode);
         horizontalScroll(domain, 7);
+        fadeInfo();
     });
 
     // given the id of a cell, emphasize borders of cells in that row and column
@@ -966,7 +969,25 @@ function initLevel() {
             history.pushState({loc:"index.html"}, "");
         }
     }
+    function fadeInfo() {
+        verticalScroll(info, 7);     
+        if (info.style.overflow !== "visible") {
+            info.classList.add("overflowing");
+        } else {
+            info.classList.remove("overflowing");
+        }
+    }
+    
+
+    info.parentNode.addEventListener("open", () => {
+        info.scroll(0,0);
+        fadeInfo();        
+    });
+    info.addEventListener("scroll", () => {
+        fadeInfo();
+    });
 }
+
 
 
 function centerPropositions(el) {

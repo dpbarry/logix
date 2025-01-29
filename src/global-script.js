@@ -1,6 +1,9 @@
 function showModal(id) {
-    document.getElementById(id).showModal();
+    let modal = document.getElementById(id);
+    modal.showModal();
+    modal.dispatchEvent(new Event("open"));
 }
+
 
 function closeDialog (event) {
     event.target.closest("dialog").close();
@@ -352,14 +355,14 @@ function verticalScroll(el, moe) {
     const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
 
     let top = 0;
-    let bottom =0;
+    let bottom=0;
     
     if (!isScrolledToBottom) {
-        bottom = 40;
+        bottom = el.dataset.masksize || 40;
     }
 
     if (!isScrolledToTop) {
-        top = 40;
+        top = el.dataset.masksize || 40;
     }
 
     el.style.maskImage = `linear-gradient(to bottom, transparent 0, black ${top}px, black calc(100% - ${bottom}px), transparent 100%)`;
@@ -390,11 +393,11 @@ function horizontalScroll(el, moe) {
     let right = 0;
     
     if (!isScrolledToRight) {
-        right = 40;
+        right = el.dataset.masksize || 40;
     }
 
     if (!isScrolledToLeft) {
-        left = 40;
+        left = el.dataset.masksize || 40;
     }
 
     el.style.maskImage = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
@@ -414,8 +417,8 @@ function horizontalVerticalScroll(el, moe) {
         const isScrolledToRight = el.scrollWidth < el.clientWidth + el.scrollLeft + 1;
         const isScrolledToLeft = el.scrollLeft === 0;
 
-        let left = isScrolledToLeft ? 0 : 40;
-        let right = isScrolledToRight ? 0 : 40;
+        let left = isScrolledToLeft ? 0 : ( el.dataset.masksize || 40 );
+        let right = isScrolledToRight ? 0 : ( el.dataset.masksize || 40 );
 
         horizontalMask = `linear-gradient(to right, transparent 0, black ${left}px, black calc(100% - ${right}px), transparent 100%)`;
     }
@@ -430,8 +433,8 @@ function horizontalVerticalScroll(el, moe) {
         const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
         const isScrolledToTop = el.scrollTop === 0;
 
-        let top = isScrolledToTop ? 0 : 40;
-        let bottom = isScrolledToBottom ? 0 : 40;
+        let top = isScrolledToTop ? 0 : ( el.dataset.masksize || 40 );
+        let bottom = isScrolledToBottom ? 0 : ( el.dataset.masksize || 40 );
 
         verticalMask = `linear-gradient(to bottom, transparent 0, black ${top}px, black calc(100% - ${bottom}px), transparent 100%)`;
     }
@@ -455,6 +458,6 @@ function vh(percent) {
 }
 
 function vw(percent) {
-  var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-  return (percent * w) / 100;
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    return (percent * w) / 100;
 }

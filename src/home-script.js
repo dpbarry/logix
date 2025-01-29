@@ -238,6 +238,12 @@ function setupHome() {
             return;
         }
     }
+
+    function noMobileSwipe() {
+        swiping = false;
+        carousel.onscroll = "";
+        carousel.style.scrollSnapType = "";
+    }
     
     carousel.addEventListener('wheel', function (event) {
         if (debounceScroll || debounceMobile || swiping) return;
@@ -247,11 +253,9 @@ function setupHome() {
             swiping = true;
             carousel.style.scrollSnapType = "x mandatory";
             carousel.scrollBy(0,0)
-            
             return;
         }
-        swiping = false;
-        carousel.style.scrollSnapType = "";
+        noMobileSwipe();
 
         console.log(momentum);
         let parentList = event.target.closest(".campaignlist, #wrap_stages");
@@ -373,10 +377,10 @@ function setupHome() {
         if (!cardView && !mobileView) return;
 
         holding = false;
-        swiping = false;
 
         carousel.classList.remove("grabbing");
-
+        noMobileSwipe();
+        
         if (isDragging) {
             setTimeout( () => {
                 isDragging = false;
@@ -389,8 +393,7 @@ function setupHome() {
         if (!cardView && !mobileView) return;
 
         holding = false;
-        swiping = false;
-        carousel.onscroll = "";
+        noMobileSwipe();
         
         carousel.classList.remove("grabbing");
         if (isDragging) {
@@ -407,8 +410,7 @@ function setupHome() {
         debounceMobile++;
         momentum = 0;
         carousel.addEventListener("scrollend", rebounceMobile);
-        carousel.onscroll = "";
-
+        noMobileSwipe();
 
         let amt = right ? cardWidth + 20 : -cardWidth - 20;
         let capture = carousel.scrollLeft;

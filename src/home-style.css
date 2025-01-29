@@ -23,7 +23,9 @@
 .page.home {
   align-content: center;
 }
-
+html {
+  overscroll-behavior-x: none;
+}
 .dialog_button.home {
   position: absolute;
   top: clamp(1rem, 2vmin, 1.75rem); 
@@ -155,13 +157,14 @@
   padding-left: 4px;
   padding-right: 4px;
 
+  box-sizing: border-box;
+
   display: flex;
   flex-direction: row;
   gap: 15px;
   justify-content: flex-start;
   align-items: center;
 
-  touch-action: none;
   
   scrollbar-width: none;
 }
@@ -180,7 +183,7 @@
   height: clamp(40px, 70vh, 453px);
   padding: 15px;
 
-  transition: rotate 0.15s ease-out, transform .1s, filter .1s;
+  transition: rotate 0.15s ease-out, transform .1s ease-out, filter .1s ease-out;
 
   background-color: var(--card);
   border: light-dark(#DADADA, #333) 1px solid;
@@ -306,8 +309,8 @@
   #wrap_cards:has(#difficult.upcard) ~ #navbar #nav3,
   #wrap_cards:has(#extreme.upcard) ~ #navbar #nav4
   {
-  
- background-color: light-dark(#555, #888);
+    
+    background-color: light-dark(#555, #888);
     &:hover {
       opacity: 1;
     }
@@ -321,7 +324,7 @@
     bottom: 0;
     margin-left: calc(-1 * var(--offset));
     backface-visibility: hidden;
-    will-change: scale, rotate;
+    will-change: rotate;
   }
   
   .card:not(.upcard) {
@@ -383,10 +386,28 @@
 
 
 
-}
 
 @media (width <= 600px ) {
-  
+  .card:first-child {
+    margin-left: calc(0.5 * (100% - 326px)) !important;
+  }
+  #wrap_cards {
+    overflow-x: auto;
+    gap: 0px;
+  }
+  .card:last-child {
+    margin-right: calc(0.5 * (100% - 326px)) !important;
+  }
+
+  .card {
+    scroll-snap-align: center;
+  }
+
+  .card:not(.upcard) {
+    filter: brightness(0.97);
+    transform: scale(0.92);
+    cursor: pointer;
+  }
 }
 
 

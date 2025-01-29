@@ -107,6 +107,10 @@
              newPage.querySelectorAll(".campaignlist, #wrap_stages").forEach( (c) => {
                verticalScroll(c, 1);
              });
+
+             trainingCard = newPage.querySelector("#training");
+             cardWidth = trainingCard.getBoundingClientRect().width;
+
              
            }, 100); 
          }, 10);

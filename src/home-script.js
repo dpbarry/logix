@@ -1,9 +1,20 @@
+let cardWidth;
+let supportsSnapChanging = ("onscrollsnapchanging" in window);
+
 function setupHome() {
     const stages = document.querySelectorAll(".trainstage");
     const trainingCard = document.getElementById("training");
     const extremeCard = document.getElementById("extreme");
     const wrapStages = document.getElementById("wrap_stages");
     const scrollContainers = document.querySelectorAll("#wrap_stages, .campaignlist");
+    
+    let cardView = false;
+    let mobileView = false;
+    let debounceScroll = 0;
+
+    let cards = document.querySelectorAll(".card");
+    let cardsArray = [...cards];
+    let frontCard = cardsArray.indexOf(document.querySelector(".upcard"));
 
     
     document.querySelectorAll(".card li").forEach( (li) => {
@@ -132,7 +143,7 @@ function setupHome() {
         upcard.style.zIndex = parseInt(upcard.style.zIndex) + 5;
 
         for (let x = 0; x < 4; ++x) {
-            let cur = Array.from(cards)[x];
+            let cur = cardsArray[x];
             let scaleFactor = (100 - (Math.abs(x - i) * 1.9)) / 100;
             let brightFactor = (100 - (Math.abs(x - i) * 1.35)) / 100;
 
@@ -140,7 +151,8 @@ function setupHome() {
 
             if (x === i) {
                 setTimeout( () => {
-                    cur.style.transform = "none";
+                    if (cur.classList.contains("upcard"))
+                        cur.style.transform = "none";
                 }, 100);
             }
             cur.style.filter = `brightness(${brightFactor})`
@@ -149,12 +161,13 @@ function setupHome() {
     }
 
 
-    let cardView = false;
-    let cards = document.querySelectorAll(".card");
 
     if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
-        updateCardStagger(document.querySelector(".upcard"));
         cardView = true;
+        updateCardStagger(document.querySelector(".upcard"));
+    } else if (window.matchMedia("(width <= 600px)").matches) {
+        mobileView = true;
+        updateMobile();
     }
 
     window.onresize = () => {
@@ -162,23 +175,35 @@ function setupHome() {
         if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
             updateCardStagger(document.querySelector(".upcard"));
             cardView = true;
+            mobileView = false;
         } else if (cardView) {
             cardView = false;
             cards.forEach( c => {
                 c.style.transform = "scale(1)";
                 c.style.filter = "brightness(1)"
                 setTimeout( () => {
-                    c.style.transform = "none";
-                    c.style.filter = "none";
+                    c.style.transform = "";
+                    c.style.filter = "";
                 }, 100);
             });
+        }
+
+        if (window.matchMedia("(width <= 600px)").matches) {
+            mobileView = true;
+            mobileScrollTo(document.querySelector(".upcard"));
         }
     }
 
 
     cards.forEach( (c) => {
         c.onclick = () => {            
-            if (!cardView || isDragging) return;
+            if (isDragging) return;
+            
+            if (mobileView) {
+                mobileScrollTo(c);
+            }
+            if (!cardView) return;
+            
             isDragging = false;
 
             scrollCardsTo(c);
@@ -199,29 +224,53 @@ function setupHome() {
 
     let carousel = document.getElementById("wrap_cards");
     let momentum = 0;
-
+    let swiping = false;
+    
     carousel.addEventListener('wheel', function (event) {
+        if (supportsSnapChanging && mobileView && event.deltaX) {
+            swiping = true;
+            carousel.style.scrollSnapType = "x mandatory";
+            carousel.scrollBy(0,0)
+            return;
+        }
+        swiping = false;
+        carousel.style.scrollSnapType = "";
+
         let parentList = event.target.closest(".campaignlist, #wrap_stages");
         if (parentList && event.deltaY && parentList.style.overflowY === "auto") return;
-        if (!cardView) return;
-        momentum += 0.5 * (event.deltaY ? event.deltaY : event.deltaX);
+        if (!cardView && !mobileView) return;
 
+        momentum += 0.15 * (event.deltaY ? event.deltaY : event.deltaX);
+
+        if (event.deltaY < 0 && momentum > 0 || event.deltaY > 0 && momentum < 0) momentum = 0;
+
+        if (debounceScroll) return;
         if (momentum > 10) {
-            scrollCards(true);
+            if (mobileView) {
+                mobileScroll(true);
+            } else {
+                scrollCards(true);
+            }
             
         } else if (momentum < -10) {
-            scrollCards(false);
+            if (mobileView) {
+                mobileScroll(false);
+            } else {
+                scrollCards(false);
+            }
         }
 
     }, {passive: true});
 
 
     function scrollCards (right) {
-        if (!cardView) return;
+        if (!cardView || debounceScroll) return;
         momentum = 0;
         let sibling = right ? document.querySelector(".upcard").nextElementSibling : document.querySelector(".upcard").previousElementSibling;
         if (!sibling) return;
 
+        debounceScroll++;
+        
         cards.forEach( (x) => {                
             if (x.classList.contains("upcard")) {
                 x.classList.remove("upcard");
@@ -231,6 +280,7 @@ function setupHome() {
         
         sibling.classList.add("upcard");
         updateCardStagger(sibling);
+        debounceScroll--;
     }
 
     function scrollCardsTo (c) {
@@ -262,15 +312,10 @@ function setupHome() {
         carousel.classList.add("grabbing");
     });
 
-    document.addEventListener("pointercancel", (event) => {console.log(event.srcElement)});
 
-    let debounceScroll = 0;
     document.addEventListener('pointermove', (e) => {
         if (!cardView) return;
         if (!holding) return;
-
-        if (debounceScroll) return;
-        debounceScroll++;
 
         const deltaX =  startX - e.clientX;
         momentum += (deltaX / 30);
@@ -290,7 +335,6 @@ function setupHome() {
             scrollCards(false);
             startX = e.clientX;
         }
-        debounceScroll--;
     });
 
     document.addEventListener('pointerup', (e) => {
@@ -305,8 +349,85 @@ function setupHome() {
         }
     });
 
+    let debounceMobile = 0;
+    function mobileScroll(right) {
+        if (debounceMobile) return;
+        debounceMobile++;
+        momentum = 0;
+        carousel.addEventListener("scrollend", rebounceMobile);
+
+        let amt = right ? cardWidth : -cardWidth;
+        let capture = carousel.scrollLeft;
+        carousel.scrollBy({
+            top: 0,
+            left: amt,
+            behavior: "smooth",
+        });        
+
+        setTimeout( () => {
+            if (capture !== carousel.scrollLeft) {
+                frontCard = right ? (frontCard === 3 ? 3 : ++frontCard)
+                    : (frontCard === 0 ? 0 : --frontCard);
+                
+                updateMobile();
+            } else {carousel.dispatchEvent(new Event("scrollend")); }
+        }, 100);
+
+        
+    }
+
+    function rebounceMobile() {
+        debounceMobile--;
+        carousel.removeEventListener("scrollend", rebounceMobile);
+    }
+
+    function mobileScrollTo(card) {
+        if (debounceMobile) return;
+        let destination = cardsArray.indexOf(card);
+        if (destination === frontCard) return;
+        debounceMobile++;
+        momentum = 0;
+        carousel.addEventListener("scrollend", rebounceMobile);
 
 
+
+        let amt = (destination - frontCard) * 346;
+        carousel.scrollBy({
+            top: 0,
+            left: amt,
+            behavior: "smooth",
+        });
+        frontCard = destination;
+        updateMobile();
+    }
+
+    function updateMobile() {
+        cardsArray.map( (c) => {
+            if (c===cardsArray[frontCard])
+                c.classList.add("upcard");
+            else
+                c.classList.remove("upcard")});
+    }
+
+    if (supportsSnapChanging) {
+        carousel.onscrollsnapchanging = event => {
+            if (!swiping) return;
+            frontCard = cardsArray.indexOf(event.snapTargetInline);
+            updateMobile();
+            
+        };
+        carousel.onscrollsnapend = event => {
+            if (!swiping) return;
+            swiping = false;
+        };
+        carousel.onscrollend = () => {carousel.style.scrollSnapType = "";};
+    } else {
+        carousel.style.touchAction = "none";
+        carousel.style.overflow = "hidden";
+    }
+
+
+    
     const leftnav = document.getElementById("leftnav");
     const rightnav = document.getElementById("rightnav");
 
@@ -320,34 +441,58 @@ function setupHome() {
 
     
     leftnav.onclick = () => {
-        if (trainingCard.classList.contains("upcard")) {
-            scrollCardsTo(Array.from(cards)[3]);
+        if (mobileView && trainingCard.classList.contains("upcard")) {
+            mobileScrollTo(extremeCard);
+        } else if (mobileView) {
+            mobileScroll(false);
+        } else if (trainingCard.classList.contains("upcard")) {
+            scrollCardsTo(extremeCard);
         } else {
             scrollCards(false);
         }
     }
     rightnav.onclick = () => {
-        if (extremeCard.classList.contains("upcard")) {
-            scrollCardsTo(Array.from(cards)[0]);
+        if (mobileView && extremeCard.classList.contains("upcard")) {
+            mobileScrollTo(trainingCard);
+        } else if (mobileView) {
+            mobileScroll(true);
+        } else if (extremeCard.classList.contains("upcard")) {
+            scrollCardsTo(trainingCard);
         } else {
             scrollCards(true);
         }
     }
 
     document.getElementById("nav1").onclick = () => {
-        scrollCardsTo(Array.from(cards)[0]);
+        if (mobileView) {
+            mobileScrollTo(trainingCard);
+        } else if (cardView) {
+            scrollCardsTo(trainingCard);
+        }
     };
 
     document.getElementById("nav2").onclick = () => {
-        scrollCardsTo(Array.from(cards)[1]);
+        if (mobileView) {
+            mobileScrollTo(cardsArray[1]);
+        } else if (cardView) {
+            scrollCardsTo(cardsArray[1]);
+        }
     };
 
     document.getElementById("nav3").onclick = () => {
-        scrollCardsTo(Array.from(cards)[2]);
+        if (mobileView) {
+            mobileScrollTo(cardsArray[2]);
+        } else if (cardView) {
+            scrollCardsTo(cardsArray[2]);
+        }
     };
 
     document.getElementById("nav4").onclick = () => {
-        scrollCardsTo(Array.from(cards)[3]);
+        if (mobileView) {
+            mobileScrollTo(cardsArray[3]);
+        } else if (cardView) {
+            scrollCardsTo(cardsArray[3]);
+        }
     };
 
 
@@ -359,7 +504,7 @@ function setupHome() {
 
     function scrollFadeCards() {
         verticalScroll(wrapStages, vh(70) >= 450 ? 100 : 1);
-        [...cards].slice(1).forEach( c => {
+        cardsArray.slice(1).forEach( c => {
             verticalScroll(c.querySelector(".campaignlist"), 1);
         });
     }

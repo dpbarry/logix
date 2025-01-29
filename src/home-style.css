@@ -16,9 +16,6 @@
   font-size: 3.1rem;
 }
 
-#wrap_cards * {
-}
-
 .page.home {
   align-content: center;
 }
@@ -327,11 +324,13 @@ html {
     }
   }
 
+ 
   #wrap_cards.grabbing .card {
     cursor: grabbing;
     .level-button, .trainstage {
       cursor: grabbing;
     }
+    
   }
 
   .upcard {     cursor: grab;  }
@@ -394,6 +393,9 @@ html {
 
   #wrap_cards.grabbing .card {
     &.hover { rotate: unset; }
+  }
+  #wrap_levelselect * {
+    touch-action: none;
   }
 }
 

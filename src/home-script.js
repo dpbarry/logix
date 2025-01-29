@@ -7,7 +7,8 @@ function setupHome() {
     const extremeCard = document.getElementById("extreme");
     const wrapStages = document.getElementById("wrap_stages");
     const scrollContainers = document.querySelectorAll("#wrap_stages, .campaignlist");
-    
+    let carousel = document.getElementById("wrap_cards");
+
     let cardView = false;
     let mobileView = false;
     let debounceScroll = 0;
@@ -224,7 +225,6 @@ function setupHome() {
         
     });
 
-    let carousel = document.getElementById("wrap_cards");
     let momentum = 0;
     let swiping = false;
 
@@ -240,10 +240,14 @@ function setupHome() {
     }
     
     carousel.addEventListener('wheel', function (event) {
+        if (debounceScroll || debounceMobile || swiping) return;
+        if (!cardView && !mobileView) return;
+
         if (supportsSnapChanging && mobileView && event.deltaX) {
             swiping = true;
             carousel.style.scrollSnapType = "x mandatory";
             carousel.scrollBy(0,0)
+            
             return;
         }
         swiping = false;
@@ -252,13 +256,11 @@ function setupHome() {
 
         let parentList = event.target.closest(".campaignlist, #wrap_stages");
         if (parentList && event.deltaY && parentList.style.overflowY === "auto") return;
-        if (!cardView && !mobileView) return;
 
         momentum += 0.15 * (event.deltaY ? event.deltaY : event.deltaX);
 
         if (event.deltaY < 0 && momentum > 0 || event.deltaY > 0 && momentum < 0) momentum = 0;
 
-        if (debounceScroll) return;
         if (momentum > 10) {
             if (mobileView) {
                 mobileScroll(true);
@@ -330,11 +332,10 @@ function setupHome() {
     document.addEventListener('pointermove', (e) => {
         if (!cardView && !mobileView) return;
         if (!holding) return;
-        console.log(e.pointerType);
-        if (touchMode && supportsSnapChanging) return;
+        if (touchMode && supportsSnapChanging && mobileView) return;
 
         const deltaX =  startX - e.clientX;
-        momentum += (deltaX / 30);
+        momentum += (deltaX / 62);
 
         if (momentum < -10 && trainingCard.classList.contains("upcard")
             || momentum > 10 && extremeCard.classList.contains("upcard")) {
@@ -355,13 +356,14 @@ function setupHome() {
     });
 
     touchMode = mobileView;
-    document.onpointerdown = (e) => {touchMode = (e.pointerType !== "mouse"); };
+    document.onpointerdown = (e) => {touchMode = (e.pointerType !== "mouse"); carousel.onscroll = mobileSwipe; };
 
     document.addEventListener('pointerup', (e) => {
         if (!cardView && !mobileView) return;
+
         holding = false;
         swiping = false;
-        
+
         carousel.classList.remove("grabbing");
 
         if (isDragging) {
@@ -371,9 +373,26 @@ function setupHome() {
         }
     });
 
+    document.addEventListener('touchend', (e) => {
+
+        if (!cardView && !mobileView) return;
+
+        holding = false;
+        swiping = false;
+        carousel.onscroll = "";
+        
+        carousel.classList.remove("grabbing");
+        if (isDragging) {
+            setTimeout( () => {
+                isDragging = false;
+
+            }, 5);
+        }
+    });
+
     let debounceMobile = 0;
     function mobileScroll(right) {
-        if (debounceMobile) return;
+        if (debounceMobile || swiping) return;
         debounceMobile++;
         momentum = 0;
         carousel.addEventListener("scrollend", rebounceMobile);
@@ -406,7 +425,7 @@ function setupHome() {
     }
 
     function mobileScrollTo(card) {
-        if (debounceMobile) return;
+        if (debounceMobile || swiping) return;
         let destination = cardsArray.indexOf(card);
         if (destination === frontCard) return;
         debounceMobile++;
@@ -435,17 +454,13 @@ function setupHome() {
 
     if (supportsSnapChanging) {
         carousel.onscrollsnapchanging = event => {
-            if (!swiping) return;
             frontCard = cardsArray.indexOf(event.snapTargetInline);
             updateMobile();
             
         };
-        carousel.onscrollsnapend = event => {
+        carousel.onscrollend = event => {
             swiping = false;
-        };
-        carousel.onscrollend = () => {
-            carousel.style.scrollSnapType = "";
-            carousel.onscroll = mobileSwipe;
+            carousel.style.scrollSnapType = "";            
         };
     } else {
         carousel.style.touchAction = "none";
@@ -537,8 +552,10 @@ function setupHome() {
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") {
+            e.preventDefault();
             leftnav.click();
         } else if (e.key === "ArrowRight" || e.key === " ") {
+            e.preventDefault();
             rightnav.click();
         }
     })

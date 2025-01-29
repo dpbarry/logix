@@ -394,6 +394,8 @@ html {
   #wrap_cards {
     overflow-x: auto;
     gap: 0px;
+    width: 100vw;
+    mask-image: linear-gradient(to right, transparent 0px, black 40px, black calc(100% - 50px), transparent 100%);
   }
   .card:last-child {
     margin-right: calc(0.5 * (100% - 326px)) !important;

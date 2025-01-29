@@ -508,4 +508,5 @@ function setupHome() {
             verticalScroll(c.querySelector(".campaignlist"), 1);
         });
     }
+
 }

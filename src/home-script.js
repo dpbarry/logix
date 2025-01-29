@@ -231,7 +231,7 @@ function setupHome() {
     carousel.onscroll = mobileSwipe;
 
     function mobileSwipe() {
-        if (supportsSnapChanging && mobileView) {
+        if (supportsSnapChanging && mobileView && !debounceMobile) {
             swiping = true;
             carousel.style.scrollSnapType = "x mandatory";
             carousel.scrollBy(0,0)
@@ -253,7 +253,7 @@ function setupHome() {
         swiping = false;
         carousel.style.scrollSnapType = "";
 
-
+        console.log(momentum);
         let parentList = event.target.closest(".campaignlist, #wrap_stages");
         if (parentList && event.deltaY && parentList.style.overflowY === "auto") return;
 
@@ -335,7 +335,11 @@ function setupHome() {
         if (touchMode && supportsSnapChanging && mobileView) return;
 
         const deltaX =  startX - e.clientX;
+        if (deltaX < 0 && momentum > 0 || deltaX > 0 && momentum < 0) momentum = 0;
+
         momentum += (deltaX / 62);
+
+
 
         if (momentum < -10 && trainingCard.classList.contains("upcard")
             || momentum > 10 && extremeCard.classList.contains("upcard")) {

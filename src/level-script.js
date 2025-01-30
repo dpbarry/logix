@@ -466,8 +466,7 @@ function initLevel() {
         
     }
 
-    function fillCell () {
-
+    function fillCell (e) {
 
         crosshairs("not-a-cell");
         highlight("not-a-cell");
@@ -574,7 +573,6 @@ function initLevel() {
             fakeRipple = new PointerEvent("pointerdown");
             fakeRipple.simulated = true;
             level.querySelector("#" + cell).dispatchEvent(fakeRipple);
-            level.querySelector("#" + cell).focus();
         }, 0);
     }
 
@@ -588,14 +586,19 @@ function initLevel() {
         entry.addEventListener("pointerdown", jumpToCell);         
     });
 
-
+    function queueDeselect(e) {
+        setTimeout( () => {document.activeElement.onclick = (e) => {e.target.blur(); e.target.onclick="";};
+                          }, 5);
+        document.removeEventListener("pointerup", queueDeselect);
+    }
     function chamberInput (e) {
         let button = e.target;
         
         setTimeout(function () {
             domainActive = true;
             cellActive = false;
-            
+
+            document.addEventListener("pointerup", queueDeselect);
             cellList.forEach((cell) => {
                 cell.onfocus = function () {
                     if (tabbed) return;
@@ -628,6 +631,7 @@ function initLevel() {
     function releaseInput (e) {
         setTimeout(function () {
             domainActive = false;
+            e.target.onclick = "";
 
             if (STICKY_TOGGLE.checked
                 && document.activeElement.parentNode.id !== "domain"
@@ -754,6 +758,12 @@ function initLevel() {
 
     level.querySelectorAll('#domain button').forEach(element => {
         element.addEventListener("pointerdown", (event) => {
+            
+            if (event.target === document.activeElement) {
+                let leftoverRipple = event.target.querySelector(".ripple");
+                if (leftoverRipple) leftoverRipple.remove();
+                return;
+            }
 
             if (event.target.closest("#domain").classList.contains("correct")) {                
                 spawnRipple(event, event.target.closest("button"));
@@ -953,8 +963,16 @@ function initLevel() {
         }
 
         let button = (Array.from(domainList).find(x => x.firstChild.textContent.trim() === e.key));
-        if (button && document.activeElement !== button && !document.activeElement.matches("#grid span")) {
-            button.focus({preventScroll: true});
+        if (button  && !document.activeElement.matches("#grid span")) {
+            button.dispatchEvent(new PointerEvent("pointerdown"));
+
+            setTimeout( () => {
+                document.dispatchEvent(new PointerEvent("pointerup"));
+
+
+            }, 5);
+            button.click();
+
         }
     });
 

@@ -228,19 +228,17 @@
   padding-right: 2vw;
   display:flex;
 
-  max-height: calc(70vh - 20px);
+  max-height: calc(70vh - 50px);
   height: 100%;
   box-sizing: border-box;
   
   flex-wrap: wrap;
   gap: 10px;
   scrollbar-width: none;
-    
+  
   .mspace { margin-right: 0.18em !important; }
   .entrystyle + span {margin-left: -0.1em; }
-  &.overflowing {
-    padding-bottom: 20px;
-  }
+  
   p {
     margin: 0;
     font-weight: 350;
@@ -877,7 +875,7 @@
     height: 60px;
     position: relative;
     font-family: "computer modern serif";
-    font-size: clamp(1.5rem, 5.3vh, 3.25rem);
+    font-size: 2.6rem;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -1000,7 +998,7 @@
 
 
 /* Landscape layout */
-@media (orientation: landscape) and (width > 900px), (height < 400px) {
+@media (orientation: landscape) and (width > 900px), (height <= 400px) {
 
   #wrap_main {
     gap: 2.25vw;
@@ -1012,7 +1010,7 @@
   }
 
   @media (height < 700px) {
-    #domain button { font-size: calc(2.5rem - (700px - 100vh)/25);}
+    #domain button { font-size: calc(2.6rem - (700px - 100vh)/20);}
   }
 
   #prop_container {
@@ -1069,6 +1067,8 @@
     left: var(--axisFontSize);
     width: 100%;
     gap: 5px;
+    button {font-size: clamp(1.9rem, 5.9vh, 2.9rem);}
+
   }
 
 }
@@ -1108,15 +1108,49 @@
     }
   }
 
-  @media (width < 420px) {
-    /*
-       #wrap_toolbar_domain {
-       top: calc(10px + (420px - 100vw) / 1.5);
-       }
-       #wrap_axis_grid {
-       top: calc((420px - 100vw) / 5);
-       }
-     */
+  /* Monkey patching for strangely small screens. */
+  @media (height < 700px)  {
+    :root {
+      --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap) - var(--widthFactor) * (700px - 100vh) / 5);
+      --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap) - var(--heightFactor) * (700px - 100vh) / 5);
+    }
+    
+    #wrap_grid_domain {
+      position: relative;
+      bottom: calc((700px - 100vh) / 35);
+    }
+    
+    #prop_container {
+      position: relative;
+      height: calc(32.75vh - (700px - 100vh) / 8);
+    }
+    
+    #wrap_toolbar_domain {
+      top: calc(10px - (700px - 100vh) / 8);
+    }
+  }
+  @media (width < 400px) {
+    
+    #wrap_toolbar_domain {
+      top: calc(10px + (400px - 100vw) / 1.48);
+    }
+    #wrap_axis_grid {
+      top: calc((400px - 100vw) / 6);
+    }
+    
+  }
+  @media (width < 400px) and (height < 700px) {
+    #wrap_grid_domain {
+      position: relative;
+      bottom: calc((600px + min(100px,30vw) - 100vh) / 15);
+    }
+    #wrap_toolbar_domain {
+      top: calc(10px + (400px - 100vw) / 1.48 - (700px - 100vh) / 12);
+    }
+    #prop_container {
+      position: relative;
+      height: calc(32.75vh - (700px + 80vw - 100vh) / 15);
+    }
   }
 
   #domain {

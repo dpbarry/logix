@@ -415,6 +415,7 @@ function setupHome() {
     function mobileScroll(right) {
         if (debounceMobile || swiping) return;
         debounceMobile++;
+        carousel.style.touchAction = "none";
         momentum = 0;
         carousel.addEventListener("scrollend", rebounceMobile);
         carousel.onscroll = "";
@@ -440,12 +441,12 @@ function setupHome() {
     }
 
     function rebounceMobile() {
-        setTimeout( () => {
-            debounceMobile--;
+        debounceMobile--;
 
-            carousel.removeEventListener("scrollend", rebounceMobile);
-            
-        }, 10);
+        carousel.style.touchAction = "auto";
+
+        carousel.removeEventListener("scrollend", rebounceMobile);
+        
     }
 
     function mobileScrollTo(card) {
@@ -453,6 +454,7 @@ function setupHome() {
         let destination = cardsArray.indexOf(card);
         if (destination === frontCard) return;
         debounceMobile++;
+        carousel.style.touchAction = "none";
         momentum = 0;
         carousel.addEventListener("scrollend", rebounceMobile);
         carousel.onscroll = "";
@@ -483,12 +485,10 @@ function setupHome() {
             
         };
         carousel.onscrollend = event => {
-            if(!debounceMobile) {
-                swiping = false;
+            swiping = false;
 
-                carousel.style.scrollSnapType = "";
-                carousel.onscroll = "";
-            }
+            carousel.style.scrollSnapType = "";
+            carousel.onscroll = "";
         };
     } else {
         carousel.style.touchAction = "none";

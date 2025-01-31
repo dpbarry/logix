@@ -159,7 +159,7 @@
   top: clamp(0.5rem, 1.75vmin, 1rem); 
   left: clamp(0.5rem, 1.75vmin, 1rem); 
   width: min-content;
-  z-index: 2;
+  z-index: 3;
   height: 37px;
   cursor: pointer;
   margin-bottom: 2px;
@@ -689,6 +689,7 @@
     width: 100%;
     white-space: nowrap;
     padding: 0.1em;
+    box-sizing: border-box;
 
     &:has(+ li)::after {
       content: '';

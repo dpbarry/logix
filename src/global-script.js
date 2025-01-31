@@ -433,8 +433,8 @@ function horizontalVerticalScroll(el, moe) {
         const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
         const isScrolledToTop = el.scrollTop === 0;
 
-        let top = isScrolledToTop ? 0 : ( el.dataset.masksize || 40 );
-        let bottom = isScrolledToBottom ? 0 : ( el.dataset.masksize || 40 );
+        let top = isScrolledToTop ? 0 : ( el.dataset.masksize || 45 );
+        let bottom = isScrolledToBottom ? 0 : ( el.dataset.masksize || 45 );
 
         verticalMask = `linear-gradient(to bottom, transparent 0, black ${top}px, black calc(100% - ${bottom}px), transparent 100%)`;
     }

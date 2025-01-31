@@ -519,6 +519,10 @@ function initLevel() {
         } else {
             entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
         }
+        if (entries.length === 0) {
+            let target = event.target || event;
+            target.classList.add("deadgiven");
+        }
         entries.forEach( (entry) => {
             if (entry === null) return;
             

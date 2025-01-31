@@ -228,7 +228,7 @@
   padding-right: 2vw;
   display:flex;
 
-  max-height: calc(70vh - 50px);
+  max-height: calc(70vh - 57px);
   height: 100%;
   box-sizing: border-box;
   
@@ -548,6 +548,9 @@
     span.given.noticed {
       color: #777;
     }
+    span.given.deadgiven:hover {
+      color: var(--baseColor);
+    }
     
   }
   span.given {
@@ -664,7 +667,6 @@
   
   transition: translate 0.25s;
   
-  font-size: clamp(1.5rem, 4vh, 2rem);
 
   cursor: default;
 
@@ -875,7 +877,7 @@
     height: 60px;
     position: relative;
     font-family: "computer modern serif";
-    font-size: 2.6rem;
+    font-size: 2.5rem;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -1009,9 +1011,7 @@
     transform: translate(-50.1%, -50%);
   }
 
-  @media (height < 700px) {
-    #domain button { font-size: calc(2.6rem - (700px - 100vh)/20);}
-  }
+ 
 
   #prop_container {
     min-width: 20vw;
@@ -1029,6 +1029,7 @@
   #propositions {
     min-width: 100%;
     bottom: 0.5em;
+    font-size: clamp(1.5rem, calc(2.6vh + 1vw), 2.1rem);
   }
 
 
@@ -1067,7 +1068,7 @@
     left: var(--axisFontSize);
     width: 100%;
     gap: 5px;
-    button {font-size: clamp(1.9rem, 5.9vh, 2.9rem);}
+    button {font-size: clamp(1.7rem, 5.9vh, 2.9rem);}
 
   }
 
@@ -1078,28 +1079,30 @@
 @media (orientation: portrait) and (height > 400px), (width < 900px) and (height > 400px) {
 
   #wrap_main {
-    margin-top: -1px;
     flex-direction: column;
     align-content: center;
     align-items: center;
   }
 
   #prop_container {
-    height: 32.75vh; /* REDUCED WHEN <4 PROPOSITIONS */
+    height: 32.75vh; 
     width: 85vw;
     margin: 0;
-    margin-bottom: 1vh;
+    margin-top: 0.3vh;
+    margin-bottom: 0.5vh;
     align-self: center;
     text-align: center;
   }
   #propositions {
     min-width: 85vw;
+    font-size: clamp(1.5rem, 4.15vh, 2rem);
+
   }
 
   
   #wrap_toolbar_domain {
     position: relative;
-    top: 10px;
+    top: 9px;
     width: 100%;
   }
   @media (height > 700px) {

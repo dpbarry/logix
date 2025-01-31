@@ -440,8 +440,12 @@ function setupHome() {
     }
 
     function rebounceMobile() {
-        debounceMobile--;
-        carousel.removeEventListener("scrollend", rebounceMobile);
+        setTimeout( () => {
+            debounceMobile--;
+
+            carousel.removeEventListener("scrollend", rebounceMobile);
+            
+        }, 10);
     }
 
     function mobileScrollTo(card) {
@@ -479,10 +483,12 @@ function setupHome() {
             
         };
         carousel.onscrollend = event => {
-            swiping = false;
+            if(!debounceMobile) {
+                swiping = false;
 
-            carousel.style.scrollSnapType = "";
-            carousel.onscroll = "";
+                carousel.style.scrollSnapType = "";
+                carousel.onscroll = "";
+            }
         };
     } else {
         carousel.style.touchAction = "none";

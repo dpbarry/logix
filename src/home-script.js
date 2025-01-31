@@ -245,7 +245,10 @@ function setupHome() {
         if (!cardView && !mobileView) return;
 
         if (supportsSnapChanging && mobileView && event.deltaX) {
+            if (extremeCard.classList.contains("upcard") && event.deltaX >= 0) return;
+            if (trainingCard.classList.contains("upcard") && event.deltaX <= 0) return;
             swiping = true;
+
             carousel.style.scrollSnapType = "x mandatory";
             carousel.scrollBy(0,0)
             return;
@@ -322,7 +325,8 @@ function setupHome() {
         event.preventDefault();
 
         holding = true;
-        startX = e.clientX; 
+        startX = e.clientX;
+        startY = e.clientY;
         carousel.classList.add("grabbing");
     });
 
@@ -332,6 +336,14 @@ function setupHome() {
         if (!holding) return;
         if (touchMode && supportsSnapChanging && mobileView) return;
 
+
+        const deltaY = startY - e.clientY;
+        const cont = e.target.closest(".campaignlist, #wrap_stages");
+        if (cont?.style.overflowY && cont.style.overflowY !== "visible" && deltaY) {
+            cont.scrollBy(0, deltaY);
+            startY = e.clientY;
+            return;
+        }
         const deltaX =  startX - e.clientX;
         if (deltaX < 0 && momentum > 0 || deltaX > 0 && momentum < 0) momentum = 0;
 
@@ -364,6 +376,7 @@ function setupHome() {
             carousel.onscroll = mobileSwipe;
         } else {
             touchMode = false;
+            
         }
     };
 
@@ -467,6 +480,7 @@ function setupHome() {
         };
         carousel.onscrollend = event => {
             swiping = false;
+
             carousel.style.scrollSnapType = "";
             carousel.onscroll = "";
         };

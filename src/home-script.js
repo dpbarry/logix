@@ -244,7 +244,8 @@ function setupHome() {
         if (debounceScroll || debounceMobile || swiping) return;
         if (!cardView && !mobileView) return;
 
-        if (supportsSnapChanging && mobileView && event.deltaX) {
+        if (supportsSnapChanging && mobileView && event.deltaX && !carousel.classList.contains("noswipe")) {
+            console.log(carousel.classList);
             if (extremeCard.classList.contains("upcard") && event.deltaX >= 0) return;
             if (trainingCard.classList.contains("upcard") && event.deltaX <= 0) return;
             swiping = true;
@@ -327,7 +328,8 @@ function setupHome() {
         holding = true;
         startX = e.clientX;
         startY = e.clientY;
-        carousel.classList.add("grabbing");
+        if (!e.target.matches(".level-button, .trainstage")) { carousel.classList.add("grabbing");
+                                                             }
     });
 
 
@@ -335,7 +337,7 @@ function setupHome() {
         if (!cardView && !mobileView) return;
         if (!holding) return;
         if (touchMode && supportsSnapChanging && mobileView) return;
-
+        carousel.classList.add("grabbing");
 
         const deltaY = startY - e.clientY;
         const cont = e.target.closest(".campaignlist, #wrap_stages");
@@ -415,7 +417,7 @@ function setupHome() {
     function mobileScroll(right) {
         if (debounceMobile || swiping) return;
         debounceMobile++;
-        carousel.style.touchAction = "none";
+        carousel.classList.add("noswipe");
         momentum = 0;
         carousel.addEventListener("scrollend", rebounceMobile);
         carousel.onscroll = "";
@@ -443,7 +445,7 @@ function setupHome() {
     function rebounceMobile() {
         debounceMobile--;
 
-        carousel.style.touchAction = "auto";
+        carousel.classList.remove("noswipe");
 
         carousel.removeEventListener("scrollend", rebounceMobile);
         
@@ -453,8 +455,9 @@ function setupHome() {
         if (debounceMobile || swiping) return;
         let destination = cardsArray.indexOf(card);
         if (destination === frontCard) return;
+
         debounceMobile++;
-        carousel.style.touchAction = "none";
+        carousel.classList.add("noswipe");
         momentum = 0;
         carousel.addEventListener("scrollend", rebounceMobile);
         carousel.onscroll = "";
@@ -494,7 +497,6 @@ function setupHome() {
         carousel.style.touchAction = "none";
         carousel.style.overflow = "hidden";
     }
-
 
     
     const leftnav = document.getElementById("leftnav");

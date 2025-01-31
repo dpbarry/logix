@@ -176,6 +176,12 @@ html {
   scrollbar-width: none;
 }
 
+#wrap_cards.noswipe {
+  &, * {
+    touch-action: none;
+  }
+}
+
 
 #wrap_cards > :first-child {
   margin-left: auto;
@@ -339,7 +345,7 @@ html {
   
   #wrap_cards.grabbing {
     cursor: grabbing;
-    .card {
+    .card, .campaignlist, #wrap_stages {
       cursor: grabbing;
       .level-button, .trainstage {
         cursor: grabbing;
@@ -347,7 +353,10 @@ html {
     }
   }
 
-  .upcard {     cursor: grab;  }
+  .upcard {     cursor: grab;
+    .campaignlist, #wrap_stages {
+      cursor: default;
+  }}
   .card:not(.upcard) {
     cursor: pointer;
     

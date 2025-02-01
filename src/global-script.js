@@ -251,8 +251,8 @@ function updateTheme() {
         ROOT.style.setProperty('--darkerShade', 'hsl(200, 30%, 30%)');
         ROOT.style.setProperty('--darkestShade', 'hsl(200, 30%, 20%)');
 
-        ROOT.style.setProperty('--focusColor', 'hsl(200, 40%, 35%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 60%, 20%)');
+        ROOT.style.setProperty('--focusColor', 'hsl(200, 40%, 30%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 55%, 20%)');
         ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
 
         ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.9)');

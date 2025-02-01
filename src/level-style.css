@@ -526,7 +526,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: 0.075em solid var(--darkestShade);
+    border-bottom: max(0.0805em, 0.3rem) solid var(--darkestShade);
   }
 
 
@@ -878,7 +878,7 @@
     height: 60px;
     position: relative;
     font-family: "computer modern serif";
-    font-size: 2.5rem;
+    font-size: 2.7rem;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -1009,14 +1009,15 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50.1%, -50%);
+    transform: translate(calc(-50.1% - 10px), -50%); // balance the floating undo/redo
   }
 
- 
+  
 
   #prop_container {
     min-width: 20vw;
     width: 20vw;
+    max-width: 615px;
     min-height: 50vh;
     max-height: 80vh;
     margin: 0;
@@ -1025,7 +1026,7 @@
     flex-direction: column;
 
     align-items: center;
-    flex-grow: 0.5;
+    flex-grow: 1;
   }
   #propositions {
     min-width: 100%;
@@ -1069,8 +1070,7 @@
     left: var(--axisFontSize);
     width: 100%;
     gap: 5px;
-    button {font-size: clamp(1.7rem, 5.9vh, 2.9rem);}
-
+    button {font-size: clamp(1.7rem, 5.45vh, 2.8rem);}
   }
 
 }
@@ -1096,14 +1096,13 @@
   }
   #propositions {
     min-width: 85vw;
-    font-size: clamp(1.5rem, 4.15vh, 2rem);
-
+    font-size: clamp(1.5rem, 4.05vh, 2rem);
   }
 
   
   #wrap_toolbar_domain {
     position: relative;
-    top: 9px;
+    top: 13px;
     width: 100%;
   }
   @media (height > 700px) {
@@ -1130,13 +1129,13 @@
     }
     
     #wrap_toolbar_domain {
-      top: calc(10px - (700px - 100vh) / 8);
+      top: calc(13px - (700px - 100vh) / 8);
     }
   }
   @media (width < 400px) {
     
     #wrap_toolbar_domain {
-      top: calc(10px + (400px - 100vw) / 1.48);
+      top: calc(13px + (400px - 100vw) / 1.48);
     }
     #wrap_axis_grid {
       top: calc((400px - 100vw) / 6);
@@ -1149,7 +1148,7 @@
       bottom: calc((600px + min(100px,30vw) - 100vh) / 15);
     }
     #wrap_toolbar_domain {
-      top: calc(10px + (400px - 100vw) / 1.48 - (700px - 100vh) / 12);
+      top: calc(13px + (400px - 100vw) / 1.48 - (700px - 100vh) / 12);
     }
     #prop_container {
       position: relative;

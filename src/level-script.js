@@ -467,7 +467,6 @@ function initLevel() {
     }
 
     function fillCell (e) {
-
         crosshairs("not-a-cell");
         highlight("not-a-cell");
 
@@ -574,9 +573,10 @@ function initLevel() {
         event.preventDefault();
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         window.setTimeout(() => {
-            fakeRipple = new PointerEvent("pointerdown");
+            fakeRipple = new PointerEvent("click");
             fakeRipple.simulated = true;
             level.querySelector("#" + cell).dispatchEvent(fakeRipple);
+            level.querySelector("#" + cell).focus();
         }, 0);
     }
 
@@ -605,6 +605,7 @@ function initLevel() {
             document.addEventListener("pointerup", queueDeselect);
             cellList.forEach((cell) => {
                 cell.onfocus = function () {
+                    console.log("fjd");
                     if (tabbed) return;
                     let text = cell.querySelector("p");
                     let opts = cell.querySelector("ul");

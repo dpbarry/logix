@@ -1,24 +1,24 @@
 let cardWidth;
 let supportsSnapChanging = ("onscrollsnapchanging" in window);
 
-function setupHome() {
-    const stages = document.querySelectorAll(".trainstage");
-    const trainingCard = document.getElementById("training");
-    const extremeCard = document.getElementById("extreme");
-    const wrapStages = document.getElementById("wrap_stages");
-    const scrollContainers = document.querySelectorAll("#wrap_stages, .campaignlist");
-    let carousel = document.getElementById("wrap_cards");
+function setupHome(page) {
+    const stages = page.querySelectorAll(".trainstage");
+    const trainingCard = page.querySelector("#training");
+    const extremeCard = page.querySelector("#extreme");
+    const wrapStages = page.querySelector("#wrap_stages");
+    const scrollContainers = page.querySelectorAll("#wrap_stages, .campaignlist");
+    let carousel = page.querySelector("#wrap_cards");
 
     let cardView = false;
     let mobileView = false;
     let debounceScroll = 0;
 
-    let cards = document.querySelectorAll(".card");
+    let cards = page.querySelectorAll(".card");
     let cardsArray = [...cards];
-    let frontCard = cardsArray.indexOf(document.querySelector(".upcard"));
+    let frontCard = cardsArray.indexOf(page.querySelector(".upcard"));
 
     
-    document.querySelectorAll(".card li").forEach( (li) => {
+    page.querySelectorAll(".card li").forEach( (li) => {
         li.onfocus = (e) => {
             let thisCard = e.target.closest(".card");
 
@@ -34,7 +34,7 @@ function setupHome() {
         
         let target = e.target.closest(".trainstage");
 
-        document.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
+        page.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
             b.tabIndex = -1;
         });
 
@@ -49,7 +49,7 @@ function setupHome() {
             });
 
             target.classList.add("dropped");
-            document.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
+            page.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
                 b.tabIndex = 0;
             });
             target.tabIndex = -1;
@@ -72,9 +72,9 @@ function setupHome() {
         stage.tabIndex = 0;
     });
 
-    document.querySelector(".dropped").tabIndex = -1;
+    page.querySelector(".dropped").tabIndex = -1;
 
-    document.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
+    page.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
         b.tabIndex = -1;
         
         b.onclick = function (e) {
@@ -99,9 +99,9 @@ function setupHome() {
         };
     });
 
-    document.querySelectorAll(".dropped + ul > .level-button").forEach( b => b.tabIndex = 0 );
+    page.querySelectorAll(".dropped + ul > .level-button").forEach( b => b.tabIndex = 0 );
 
-    document.querySelectorAll(".level-button").forEach(b => {
+    page.querySelectorAll(".level-button").forEach(b => {
         b.addEventListener("pointerdown", (e) => {
             if (!e.target.closest(".card").classList.contains("upcard")) return;
             b.classList.add("nudged");
@@ -109,17 +109,17 @@ function setupHome() {
     });
 
 
-    document.getElementById("main-header").onclick = function () {
+    page.querySelector("#main-header").onclick = function () {
         Router("index.html");
         history.pushState({loc:"index.html"}, "");
     }
 
-    document.getElementById("shortcut").onclick = function () {
+    page.querySelector("#shortcut").onclick = function () {
         Router('T1-1');
         history.pushState({loc:'T1-1'}, "");
-        document.getElementById("about_dialog").classList.add("hide");
+        page.querySelector("#about_dialog").classList.add("hide");
         
-        document.getElementById("about_dialog").addEventListener("transitionend", closeDialog);
+        page.querySelector("#about_dialog").addEventListener("transitionend", closeDialog);
     }
 
     function updateCardStagger(upcard) {
@@ -167,39 +167,63 @@ function setupHome() {
 
     if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
         cardView = true;
-        updateCardStagger(document.querySelector(".upcard"));
+        updateCardStagger(page.querySelector(".upcard"));
     } else if (window.matchMedia("(width <= 600px)").matches) {
         mobileView = true;
+        cardView = false;
+
         updateMobile();
     }
 
     window.onresize = () => {
         scrollFadeCards();
-        if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
-            updateCardStagger(document.querySelector(".upcard"));
+
+        let upcard = page.querySelector(".upcard");
+
+        if (window.matchMedia("(width >= 1450px)").matches) {
+          
+            if (cardView) {
+
+                cardView = false;
+                cards.forEach( c => {
+                    c.style.transform = "scale(1)";
+                    c.style.filter = "brightness(1)"
+                    setTimeout( () => {
+                        c.style.transform = "";
+                        c.style.filter = "";
+                    }, 100);
+                });
+            }
+            mobileView = false;
+        } else if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
+            if (!upcard) {
+                trainingCard.classList.add("upcard");
+                upcard = trainingCard;
+            }
+            
+            updateCardStagger(upcard);
             cardView = true;
             mobileView = false;
-        } else if (cardView) {
-            cardView = false;
-            cards.forEach( c => {
-                c.style.transform = "scale(1)";
-                c.style.filter = "brightness(1)"
-                setTimeout( () => {
-                    c.style.transform = "";
-                    c.style.filter = "";
-                }, 100);
-            });
-        }
-
-        if (window.matchMedia("(width <= 600px)").matches) {
+        } else {
             mobileView = true;
-            mobileScrollTo(document.querySelector(".upcard"));
+            if (cardView) {
+                cardView = false;
+                cards.forEach( c => {
+                    c.style.transform = "scale(1)";
+                    c.style.filter = "brightness(1)"
+                    setTimeout( () => {
+                        c.style.transform = "";
+                        c.style.filter = "";
+                    }, 100);
+                });
+            }
+            mobileScrollTo(page.querySelector(".upcard") || trainingCard);
         }
-    }
+    };
 
 
     cards.forEach( (c) => {
-        c.onclick = () => {            
+        c.onclick = () => {
             if (isDragging) return;
             
             if (mobileView) {
@@ -245,7 +269,6 @@ function setupHome() {
         if (!cardView && !mobileView) return;
 
         if (supportsSnapChanging && mobileView && event.deltaX && !carousel.classList.contains("noswipe")) {
-            console.log(carousel.classList);
             if (extremeCard.classList.contains("upcard") && event.deltaX >= 0) return;
             if (trainingCard.classList.contains("upcard") && event.deltaX <= 0) return;
             swiping = true;
@@ -284,7 +307,7 @@ function setupHome() {
     function scrollCards (right) {
         if (!cardView || debounceScroll) return;
         momentum = 0;
-        let sibling = right ? document.querySelector(".upcard").nextElementSibling : document.querySelector(".upcard").previousElementSibling;
+        let sibling = right ? page.querySelector(".upcard").nextElementSibling : page.querySelector(".upcard").previousElementSibling;
         if (!sibling) return;
 
         debounceScroll++;
@@ -454,6 +477,7 @@ function setupHome() {
     function mobileScrollTo(card) {
         if (debounceMobile || swiping) return;
         let destination = cardsArray.indexOf(card);
+
         if (destination === frontCard) return;
 
         debounceMobile++;
@@ -499,8 +523,8 @@ function setupHome() {
     }
 
     
-    const leftnav = document.getElementById("leftnav");
-    const rightnav = document.getElementById("rightnav");
+    const leftnav = page.querySelector("#leftnav");
+    const rightnav = page.querySelector("#rightnav");
 
     leftnav.onpointerdown = (e) => {
         e.target.classList.add("nudged");
@@ -534,7 +558,7 @@ function setupHome() {
         }
     }
 
-    document.getElementById("nav1").onclick = () => {
+    page.querySelector("#nav1").onclick = () => {
         if (mobileView) {
             mobileScrollTo(trainingCard);
         } else if (cardView) {
@@ -542,7 +566,7 @@ function setupHome() {
         }
     };
 
-    document.getElementById("nav2").onclick = () => {
+    page.querySelector("#nav2").onclick = () => {
         if (mobileView) {
             mobileScrollTo(cardsArray[1]);
         } else if (cardView) {
@@ -550,7 +574,7 @@ function setupHome() {
         }
     };
 
-    document.getElementById("nav3").onclick = () => {
+    page.querySelector("#nav3").onclick = () => {
         if (mobileView) {
             mobileScrollTo(cardsArray[2]);
         } else if (cardView) {
@@ -558,7 +582,7 @@ function setupHome() {
         }
     };
 
-    document.getElementById("nav4").onclick = () => {
+    page.querySelector("#nav4").onclick = () => {
         if (mobileView) {
             mobileScrollTo(cardsArray[3]);
         } else if (cardView) {

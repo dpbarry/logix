@@ -75,7 +75,6 @@ function setupHome(page) {
     page.querySelector(".dropped").tabIndex = -1;
 
     page.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
-        b.tabIndex = -1;
         
         b.onclick = function (e) {
             // e.target.classList.add("activated");
@@ -99,14 +98,17 @@ function setupHome(page) {
         };
     });
 
-    page.querySelectorAll(".dropped + ul > .level-button").forEach( b => b.tabIndex = 0 );
 
     page.querySelectorAll(".level-button").forEach(b => {
+        b.tabIndex = -1;
+
         b.addEventListener("pointerdown", (e) => {
             if (!e.target.closest(".card").classList.contains("upcard")) return;
             b.classList.add("nudged");
         });
     });
+
+    page.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach( b => b.tabIndex = 0 );
 
 
     page.querySelector("#main-header").onclick = function () {
@@ -158,7 +160,7 @@ function setupHome(page) {
                         cur.style.transform = "none";
                 }, 100);
             }
-            cur.style.filter = `brightness(${brightFactor})`
+            cur.style.filter = `drop-shadow(5px 2px 8px light-dark(#0000, #000)) brightness(${brightFactor})`
         }
 
     }
@@ -181,7 +183,7 @@ function setupHome(page) {
         let upcard = page.querySelector(".upcard");
 
         if (window.matchMedia("(width >= 1450px)").matches) {
-          
+            
             if (cardView) {
 
                 cardView = false;

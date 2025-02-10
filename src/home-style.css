@@ -198,6 +198,9 @@ html {
   .card { height: max(100px, calc(453px - (640px - 100vh))); }
 }
 
+:root.dark .card {
+  filter: drop-shadow(0px 2px 7px #000);
+}
 .card {
   min-width: 295px;
   max-width: 295px;
@@ -469,7 +472,8 @@ html {
   font-size: 1.75rem;
   font-weight: 315;
   
-  border: 1px solid light-dark(#888, #333);
+  border: 1px solid light-dark(#888, #000);
+  color: var(--baseColor);
   border-radius: 3px;
   
   display: flex;
@@ -482,7 +486,7 @@ html {
 }
 
 .level-button:focus {
-  border: 1px solid #555;
+  border: 1px solid light-dark(#555, #000);
 }
 
 .level-button.locked.nudged {
@@ -497,10 +501,10 @@ html {
 #normal {
   li {
     box-shadow: 0 2px 3px hsl(55 8% 86% / 1), 0 0 2px hsl(55 8% 91% / 1);
-    background: hsl(55 20% 85%);
+    background: light-dark(hsl(55 20% 85%), hsl(55 20 33%));
     
     &:focus {
-      background: hsl(55 25% 80%);
+      background: light-dark(hsl(55 25% 80%), hsl(55 25% 25%));
       box-shadow: 0 2px 3px hsl(55 8% 85% / 1), 0 0 2px hsl(55 8% 90% / 1);
     }
   }
@@ -509,11 +513,11 @@ html {
 #difficult {
   li {
     box-shadow: 0 2px 3px hsl(0 8% 86% / 1), 0 0 2px hsl(0 8% 91% / 1);
-    background: hsl(0 20% 85%);
+    background: light-dark(hsl(0 20% 85%), hsl(0 20% 33%));
 
 
     &:focus {
-      background: hsl(0 25% 80%);
+      background: hsl(hsl(0 25% 80%), hsl(0 25% 25%));
       box-shadow: 0 2px 3px hsl(0 8% 85% / 1), 0 0 2px hsl(0 8% 90% / 1);
     }
   }
@@ -522,10 +526,10 @@ html {
 #extreme {
   li {
     box-shadow: 0 2px 3px hsl(300 8% 86% / 1), 0 0 2px hsl(300 8% 91% / 1);
-    background: hsl(300 20% 85%);
+    background: light-dark(hsl(300 20% 85%), hsl(300 20% 33%));
 
     &:focus {
-      background: hsl(300 25% 80%);
+      background: light-dark(hsl(300 25% 80%), hsl(300 25% 25%));
       box-shadow: 0 2px 3px hsl(300 8% 85% / 1), 0 0 2px hsl(300 8% 90% / 1);
     }
   }
@@ -543,18 +547,18 @@ html {
   
   .trainstage, .level-button {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
-    background: hsl(120 20% 85%);
+    background: light-dark(hsl(120 20% 85%), hsl(120 20% 33%));
   }
 
   .trainstage:focus, .level-button:focus {
-    background: hsl(120 25% 80%);
+    background: light-dark(hsl(120 25% 80%), hsl(120 20% 25%));
     box-shadow: 0 2px 3px hsl(120 8% 85% / 1), 0 0 2px hsl(120 8% 90% / 1);
   }
 
   .trainstage.dropped {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
-    background: hsl(120 20% 80%);
-    border: 1px solid #888;
+    background: light-dark(hsl(120 20% 80%), hsl(120 20% 25%));
+    border: 1px solid light-dark(#888, #000);
 
     & + * > .level-button.locked {
       opacity: 0.3;
@@ -576,8 +580,9 @@ html {
 
   font-size: 1.45rem;
   font-weight: 435;
+  color: var(--baseColor);
 
-  border: 1px solid light-dark(#AAA, #777);
+  border: 1px solid light-dark(#AAA, #000);
   border-radius: 2px;
   box-shadow: 0 2px 3px #DFDFDF, 0 0 2px #EEE;
 
@@ -589,36 +594,33 @@ html {
   &:last-of-type { margin-bottom: 0px; }
 }
 
-:root.dark .level-button, :root.dark .trainstage {
-  filter: saturate(3.6) brightness(0.7);
-}
 
 @media (hover: hover) and (pointer: fine) {
   .trainstage:hover {
-    border: 1px solid #888;
+    border: 1px solid light-dark(#888, #000);
   }
 
   .level-button:hover {
-    border: 1px solid #555;
+    border: 1px solid light-dark(#555, #000);
   }
 
   #training .trainstage:hover, #training .level-button:hover {
-    background: hsl(120 20% 80%);
+    background: light-dark(hsl(120 20% 80%), hsl(120 20% 25%));
     box-shadow: 0 2px 3px hsl(120 8% 85% / 1), 0 0 2px hsl(120 8% 90% / 1);
   }
 
   #normal .level-button:hover {
-    background: hsl(55 20% 80%);
+    background: light-dark(hsl(55 20% 80%), hsl(55 20% 25%));
     box-shadow: 0 2px 3px hsl(55 8% 85% / 1), 0 0 2px hsl(55 8% 90% / 1);
   }
 
   #difficult .level-button:hover {
-    background: hsl(0 20% 80%);
+    background: light-dark(hsl(0 20% 80%), hsl(0 20% 25%));
     box-shadow: 0 2px 3px hsl(0 8% 85% / 1), 0 0 2px hsl(0 8% 90% / 1);
   }
 
   #extreme .level-button:hover {
-    background: hsl(300 20% 80%);
+    background: light-dark(hsl(300 20% 80%), hsl(300 20% 25%));
     box-shadow: 0 2px 3px hsl(300 8% 85% / 1), 0 0 2px hsl(300 8% 90% / 1);
   }
 }
@@ -640,8 +642,8 @@ html {
   height: 12px;
   width: 12px;
 
-  border-bottom: 2px solid #000000;
-  border-right: 2px solid #000000;
+  border-bottom: 2px solid var(--baseColor);
+  border-right: 2px solid var(--baseColor);
   border-radius: 0px;
 
   rotate: 45deg;

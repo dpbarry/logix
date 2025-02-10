@@ -166,7 +166,7 @@
              centerPropositions(newPage.querySelector("#prop_container"));
 
              horizontalScroll(newPage.querySelector('#domain'), 7);
-           }, 100);
+           }, 31);
          }, 10);
 
          setTimeout(function() {
@@ -179,6 +179,11 @@
 
      
      const Router = (path) => {
+       let openDialog = document.querySelector("dialog[open]");
+       if (openDialog) {
+         openDialog.classList.add("hide");
+         openDialog.addEventListener("transitionend", closeDialog); 
+       }
        if (path === "index.html" || path === "logix") {
          goHome();
        } else {

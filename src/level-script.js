@@ -111,6 +111,11 @@ function initLevel() {
             
         }, 250);
     }
+       
+
+    if (NEXT_LEVEL.startsWith("T")) {
+        level.querySelector("#info").classList.add("readme");
+    }
 
     tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
     
@@ -334,13 +339,13 @@ function initLevel() {
         }
     }
 
+    console.log(SOLUTION);
     function checkGrid() {
         let flag = true;
 
         values.forEach((value, key) => {
             let row = parseInt(key.id.charAt(1));
             let col = parseInt(key.id.charAt(3));
-            
             if (value != SOLUTION[row - 1][col - 1]) {
                 flag = false;
             }

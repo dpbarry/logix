@@ -25,7 +25,7 @@ async function parseDataFile(text) {
     const rows = parseInt(lines['rows'], 10);
     const cols = parseInt(lines['cols'], 10);
     const given = lines['given'];
-    const solution = lines['solution'].map(x => parseInt(x) || null);
+    const solution = lines['solution'].map(x => isNaN(parseInt(x)) ? null : parseInt(x));
     const propositions = lines['propositions'];
     const info = lines['info'];
 

@@ -7,4 +7,4 @@ cols=3
 given=?,2,?,?,?,3,1,?,?
 propositions=\lang \begin{smallmatrix} 1 \\ 1 \end{smallmatrix} \rang > \lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang @ \lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 1 \\ 1 \end{smallmatrix} \rang - \lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang @ \lang \begin{smallmatrix} 2 \\ 2 \end{smallmatrix} \rang \neq \lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang \neq \lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang  @ \lang \begin{smallmatrix} 3 \\ 2 \end{smallmatrix} \rang + \lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 2 \\ 2 \end{smallmatrix} \rang @ \lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang > \lang \begin{smallmatrix} 3 \\ 3 \end{smallmatrix} \rang 
 solution=3,.,2,1,3,.,.,2,1
-info= 
+info=<p>One proposition in this level contains an inequality of the form \(x \neq y \neq z \), meaning all three terms are distinct. This shorthand works thanks to the transitivity of \(\neq\), and thus also applies to the relations \(=\), \(>\), \(<\), etc. Later on, this will be revisited formally.</p>

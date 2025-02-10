@@ -2,6 +2,10 @@ function showModal(id) {
     let modal = document.getElementById(id);
     modal.showModal();
     modal.dispatchEvent(new Event("open"));
+
+    if (id=="info_dialog") {
+        document.getElementById("info").classList.remove("readme");
+    }
 }
 
 

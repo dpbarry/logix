@@ -7,4 +7,4 @@ cols=2
 given=2,?,?,4,3,?
 propositions=\lang \begin{smallmatrix} 1 \\ 2 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 1 \\ 1 \end{smallmatrix} \rang + 1@\lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 2 \\ 2 \end{smallmatrix} \rang - 2@\lang \begin{smallmatrix} 3 \\ 2 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang + \lang \begin{smallmatrix} 1 \\ 2 \end{smallmatrix} \rang
 solution=.,3,2,.,.,5
-info= 
+info= <p> The propositions in the last level were much too straightforward! In the interest of confusion, entries can be defined in terms of other entries. This includes <b> given </b> entries, which cannot be modified but can still be referenced in propositions.</p>

@@ -218,10 +218,9 @@
 }
 #info_dialog {
   height: min-content;
-  min-height: 30vh;
   max-height: 70vh;
-  h1 {margin-bottom: 5px;}
-  padding-bottom: 20px;
+  h1 {margin-bottom: 10px;}
+  padding-bottom: 22px;
 }
 #level_info {
   padding-left: 2vw;
@@ -309,12 +308,13 @@
 
   #chevron {
     position: relative;
-    top: 4px;
+    top: 3px;
     margin-right: 14px;
 
     height: 39px;
 
     align-content: center;
+
   }
 
   #chevron::before {
@@ -368,7 +368,6 @@
 
   .dialog_button {
     height: 39px;
-    width: 100%;
     margin-right: 15px;
 
     position: relative;
@@ -379,11 +378,24 @@
   }
 
 
-  #info { content: url("../assets/INFO.svg"); }
-  #dictionary { content: url("../assets/DICTIONARY.svg"); }
-  #notes { content: url("../assets/NOTES.svg"); }
-  #settings { content: url("../assets/SETTINGS.svg"); }
+  #info {
+    background-image: url("../assets/INFO.svg"); width: 39px;
+    right: 0;
+    transition: right 0.3s;
+  }
+  #dictionary { background-image: url("../assets/DICTIONARY.svg"); width: 41px; }
+  #notes { background-image: url("../assets/NOTES.svg"); width: 33.5px; }
+  #settings { background-image: url("../assets/SETTINGS.svg"); width: 39px; }
+
+
+  #menu_checkbox:not(:checked) ~ #info.readme {
+    right: calc(clamp(0.5rem, 1.5vmin, 1rem) + 82px);
+  
+  }
+
+
 }
+
 
 
 
@@ -705,8 +717,13 @@
       padding-top: 4px;
       display: inline-block;
       position: relative;
+      z-index: 2;
       .mspace { margin-right: 0 !important; }
-      + span {margin-left: 0.18em; }
+      + span:has(+ .mspace) {margin-left: 0.2em; }
+    }
+
+    .mspace {
+      margin-right: 0.24em !important;
     }
     span.entry::before {
       content: "";
@@ -1089,7 +1106,7 @@
     height: 32.75vh; 
     width: 85vw;
     margin: 0;
-    margin-top: 0.3vh;
+    margin-top: 0.9vh;
     margin-bottom: 0.5vh;
     align-self: center;
     text-align: center;
@@ -1102,7 +1119,7 @@
   
   #wrap_toolbar_domain {
     position: relative;
-    top: 13px;
+    top: 9px;
     width: 100%;
   }
   @media (height > 700px) {
@@ -1129,7 +1146,7 @@
     }
     
     #wrap_toolbar_domain {
-      top: calc(13px - (700px - 100vh) / 8);
+      top: calc(9px - (700px - 100vh) / 8);
     }
   }
   @media (width < 400px) {
@@ -1148,7 +1165,7 @@
       bottom: calc((600px + min(100px,30vw) - 100vh) / 15);
     }
     #wrap_toolbar_domain {
-      top: calc(13px + (400px - 100vw) / 1.48 - (700px - 100vh) / 12);
+      top: calc(9px + (400px - 100vw) / 1.48 - (700px - 100vh) / 12);
     }
     #prop_container {
       position: relative;

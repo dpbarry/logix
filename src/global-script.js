@@ -4,7 +4,12 @@ function showModal(id) {
     modal.dispatchEvent(new Event("open"));
 
     if (id=="info_dialog") {
-        document.getElementById("info").classList.remove("readme");
+        let info = document.getElementById("info");
+        info.classList.remove("readme");
+        info.classList.add("banish");
+        setTimeout( () => {
+            info.classList.remove("banish");
+        }, 300);
     }
 }
 

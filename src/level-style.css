@@ -390,7 +390,11 @@
 
   #menu_checkbox:not(:checked) ~ #info.readme {
     right: calc(clamp(0.5rem, 1.5vmin, 1rem) + 82px);
-  
+  }
+  #menu_checkbox:not(:checked) ~ #info.banish {
+    transition: right 0.3s ease-in, opacity 0.3s ease-in;
+    right: 0;
+    opacity: 0;
   }
 
 
@@ -1119,7 +1123,7 @@
   
   #wrap_toolbar_domain {
     position: relative;
-    top: 9px;
+    top: 7.5px;
     width: 100%;
   }
   @media (height > 700px) {
@@ -1152,7 +1156,7 @@
   @media (width < 400px) {
     
     #wrap_toolbar_domain {
-      top: calc(13px + (400px - 100vw) / 1.48);
+      top: calc(9px + (400px - 100vw) / 1.48);
     }
     #wrap_axis_grid {
       top: calc((400px - 100vw) / 6);

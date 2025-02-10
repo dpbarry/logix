@@ -482,7 +482,7 @@ html {
   
   cursor: pointer;
 
-  transition: transform 0.12s, opacity 0.2s, background 0.1s, border 0.12s, font-weight 0.12s;
+  transition: transform 0.12s ease-out, opacity 0.2s, background 0.1s, border 0.12s, font-weight 0.12s;
 }
 
 .level-button:focus {
@@ -632,7 +632,7 @@ html {
   right: 15px;
   bottom: 3px;
   margin-left: auto;
-  transition: top 0.2s cubic-bezier(0.77,0.2,0.05,1.0);
+  transition: top 0.12s cubic-bezier(0.77,0.2,0.05,1.0);
 }
 
 .dropdown_chevron:before {
@@ -683,7 +683,7 @@ html {
 .droplist {
   margin-bottom: 0;
   max-height: 0;
-  transition: max-height 0.12s ease-out, margin-bottom 0.12s ease-out;
+  transition: max-height 0.12s ease-out, margin-bottom .12s ease-out;
 
   .level-button {
     transform: translateY(-20px);

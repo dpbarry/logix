@@ -1123,7 +1123,7 @@
   
   #wrap_toolbar_domain {
     position: relative;
-    top: 7px;
+    top: 5px;
     width: 100%;
   }
   @media (height > 700px) {

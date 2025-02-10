@@ -381,7 +381,7 @@
   #info {
     background-image: url("../assets/INFO.svg"); width: 39px;
     right: 0;
-    transition: right 0.3s;
+    transition: right 0.05s cubic-bezier(0.77,0.2,0.05,1.0);
   }
   #dictionary { background-image: url("../assets/DICTIONARY.svg"); width: 41px; }
   #notes { background-image: url("../assets/NOTES.svg"); width: 33.5px; }
@@ -1123,7 +1123,7 @@
   
   #wrap_toolbar_domain {
     position: relative;
-    top: 7.5px;
+    top: 7px;
     width: 100%;
   }
   @media (height > 700px) {
@@ -1150,13 +1150,13 @@
     }
     
     #wrap_toolbar_domain {
-      top: calc(9px - (700px - 100vh) / 8);
+      top: calc(7px - (700px - 100vh) / 8);
     }
   }
   @media (width < 400px) {
     
     #wrap_toolbar_domain {
-      top: calc(9px + (400px - 100vw) / 1.48);
+      top: calc(7px + (400px - 100vw) / 1.48);
     }
     #wrap_axis_grid {
       top: calc((400px - 100vw) / 6);
@@ -1169,7 +1169,7 @@
       bottom: calc((600px + min(100px,30vw) - 100vh) / 15);
     }
     #wrap_toolbar_domain {
-      top: calc(9px + (400px - 100vw) / 1.48 - (700px - 100vh) / 12);
+      top: calc(7px + (400px - 100vw) / 1.48 - (700px - 100vh) / 12);
     }
     #prop_container {
       position: relative;

@@ -339,7 +339,6 @@ function initLevel() {
         }
     }
 
-    console.log(SOLUTION);
     function checkGrid() {
         let flag = true;
 

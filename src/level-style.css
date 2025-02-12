@@ -381,7 +381,7 @@
   #info {
     background-image: url("../assets/INFO.svg"); width: 39px;
     right: 0;
-    transition: right 0.05s cubic-bezier(0.77,0.2,0.05,1.0);
+    transition: right 0.3s ease;
   }
   #dictionary { background-image: url("../assets/DICTIONARY.svg"); width: 41px; }
   #notes { background-image: url("../assets/NOTES.svg"); width: 33.5px; }

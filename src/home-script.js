@@ -34,7 +34,7 @@ function setupHome(page) {
         
         let target = e.target.closest(".trainstage");
 
-        page.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
+        page.querySelectorAll(".dropped + ul > .level-button").forEach((b) => {
             b.tabIndex = -1;
         });
 
@@ -79,7 +79,7 @@ function setupHome(page) {
         b.onclick = function (e) {
             // e.target.classList.add("activated");
 
-            if (!e.target.closest(".card").classList.contains("upcard")) return;
+            if (mobileView || cardView && !e.target.closest(".card").classList.contains("upcard")) return;
             
             setTimeout( () => {
                 Router(e.target.id);
@@ -103,7 +103,7 @@ function setupHome(page) {
         b.tabIndex = -1;
 
         b.addEventListener("pointerdown", (e) => {
-            if (!e.target.closest(".card").classList.contains("upcard")) return;
+            if (mobileView && cardView && !e.target.closest(".card").classList.contains("upcard")) return;
             b.classList.add("nudged");
         });
     });
@@ -123,6 +123,8 @@ function setupHome(page) {
         
         page.querySelector("#about_dialog").addEventListener("transitionend", closeDialog);
     }
+
+    page.querySelectorAll(".locked").forEach(l => l.onfocus = () => {l.blur();});
 
     function updateCardStagger(upcard) {
         
@@ -151,6 +153,9 @@ function setupHome(page) {
             let cur = cardsArray[x];
             let scaleFactor = (100 - (Math.abs(x - i) * 1.9)) / 100;
             let brightFactor = (100 - (Math.abs(x - i) * 1.35)) / 100;
+            let shadow = (x == i) ? "drop-shadow(0px 2px 10px light-dark(#0000, #000))" : (x < i)
+                ? "drop-shadow(-5px 2px 15px light-dark(#0000, #000))"
+                : "drop-shadow(5px 2px 15px light-dark(#0000, #000))"
 
             cur.style.transform = `scale(${scaleFactor})`;
 
@@ -160,7 +165,7 @@ function setupHome(page) {
                         cur.style.transform = "none";
                 }, 100);
             }
-            cur.style.filter = `drop-shadow(5px 2px 8px light-dark(#0000, #000)) brightness(${brightFactor})`
+            cur.style.filter = `${shadow} brightness(${brightFactor})`
         }
 
     }

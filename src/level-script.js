@@ -57,8 +57,14 @@ function initLevel() {
         ROOT.style.setProperty('--heightFactor', 1);
         ROOT.style.setProperty('--widthFactor', COLS / ROWS);
     } else if (COLS > ROWS) {
-        ROOT.style.setProperty('--heightFactor', ROWS / COLS);
-        ROOT.style.setProperty('--widthFactor', 1);
+        if (ROWS < 3) {
+            ROOT.style.setProperty('--heightFactor', 1.25 * (ROWS / COLS));
+            ROOT.style.setProperty('--widthFactor', 1.25);
+            
+        } else {
+            ROOT.style.setProperty('--heightFactor', (ROWS / COLS));
+            ROOT.style.setProperty('--widthFactor', 1);
+        }
     } else {
         ROOT.style.setProperty('--heightFactor', 1);
         ROOT.style.setProperty('--widthFactor', 1);
@@ -111,7 +117,7 @@ function initLevel() {
             
         }, 250);
     }
-       
+    
 
     if (NEXT_LEVEL.startsWith("T")) {
         level.querySelector("#info").classList.add("readme");
@@ -537,7 +543,7 @@ function initLevel() {
             }
             
         });
-    }
+    }
 
     function removeNoticeEntry (event) {
         let entries;

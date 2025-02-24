@@ -86,6 +86,7 @@ body, .page {
 
   opacity: 1;
   transition: opacity 0.05s, transform 0.1s;
+  background-repeat: no-repeat;
 
   filter: var(--hueShiftIcons);
 }

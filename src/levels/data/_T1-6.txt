@@ -1,0 +1,10 @@
+levelNumber=1.6
+difficulty=Training
+nextLevel=T1-7
+domain=1,2,3,4,5
+rows=2
+cols=4
+given=?,?,?,?,?,?,?,2
+propositions=\lang \begin{smallmatrix} 1 \\ 2 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang  + 1@\lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang  < \lang \begin{smallmatrix} 1 \\ 4 \end{smallmatrix} \rang - 1@\lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 2 \\ 3 \end{smallmatrix} \rang - \lang \begin{smallmatrix} 2 \\ 2 \end{smallmatrix} \rang@\lang \begin{smallmatrix} 2 \\ 3 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 1 \\ 2 \end{smallmatrix} \rang +  \lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang@\lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 1 \\ 4 \end{smallmatrix} \rang -  \lang \begin{smallmatrix} 2 \\ 2 \end{smallmatrix} \rang@\lang \begin{smallmatrix} 2 \\ 2 \end{smallmatrix} \rang = \lang \begin{smallmatrix} 1 \\ 3 \end{smallmatrix} \rang \times 2@\lang \begin{smallmatrix} 1 \\ 1 \end{smallmatrix} \rang \leq \lang \begin{smallmatrix} 2 \\ 1 \end{smallmatrix} \rang
+solution=1,3,2,5,1,4,5,.
+info=<p>Tip: Logix can be played on both mobile and PC! Let me know if it renders improperly on your device’s screen.</p>

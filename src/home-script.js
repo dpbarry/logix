@@ -79,7 +79,7 @@ function setupHome(page) {
         b.onclick = function (e) {
             // e.target.classList.add("activated");
 
-            if (mobileView || cardView && !e.target.closest(".card").classList.contains("upcard")) return;
+            if ((mobileView || cardView) && !(e.target.closest(".card").classList.contains("upcard"))) return;
             
             setTimeout( () => {
                 Router(e.target.id);

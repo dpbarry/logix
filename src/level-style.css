@@ -6,17 +6,17 @@
   --fontFactor: 1;
   --widthFactor: 1;
   --heightFactor: 1;
-  --widthSubtrahend: 0;
-  --heightSubtrahend: 0;
   
   --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
   --gridGap: 7px;
   --gridPadding: 20px;
   --gridBorderWidth: 4px;
   --gridOffset: 1.5vh;
-  --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  --maxGridWidth: calc(var(--widthFactor) * min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap));
   --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap));
+
+  --propsHeight: calc(32.75vh * max(1, (var(--widthFactor))));
   
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
@@ -188,6 +188,13 @@
 
 #wrap_home_level:has(~ #menu  #menu_checkbox:checked) #level, #wrap_home_level:has(~ #menu #menu_checkbox:checked) #difficulty {
   opacity: 1;
+  cursor: pointer;
+  pointer-events: unset;
+}
+
+#level, #difficulty {
+  cursor: default;
+  pointer-events: none;
 }
 
 #level {
@@ -382,6 +389,11 @@
     background-image: url("../assets/INFO.svg"); width: 39px;
     right: 0;
     transition: right 0.3s ease;
+
+    @starting-style {
+      animation: readme 0.5s forwards;
+      animation-delay: 0.05s;
+    }
   }
   #dictionary { background-image: url("../assets/DICTIONARY.svg"); width: 41px; }
   #notes { background-image: url("../assets/NOTES.svg"); width: 33.5px; }
@@ -400,13 +412,18 @@
 
 }
 
-
+@keyframes readme {
+  0% {rotate: 0;}
+  50% {rotate: 20deg;}
+  100% {rotate: 0;}
+}
 
 
 #wrap_main {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 }
 
 
@@ -542,7 +559,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: max(0.0805em, 0.3rem) solid var(--darkestShade);
+    border-bottom: max(0.0865em, 0.3rem) solid var(--darkestShade);
   }
 
 
@@ -1023,9 +1040,8 @@
 
 /* Landscape layout */
 @media (orientation: landscape) and (width > 900px), (height <= 400px) {
-
   #wrap_main {
-    gap: 2.25vw;
+    gap: calc(1.5 * var(--widthFactor) * 2.25vw);
     width: 90%;
     position: absolute;
     left: 50%;
@@ -1034,13 +1050,13 @@
   }
 
   
-
   #prop_container {
     min-width: 20vw;
     width: 20vw;
     max-width: 615px;
     min-height: 50vh;
-    max-height: 80vh;
+    max-height: 85vh;
+    height: 100%;
     margin: 0;
     position: relative;
     display: flex;
@@ -1048,10 +1064,11 @@
 
     align-items: center;
     flex-grow: 1;
+    bottom: 0.5em;
+
   }
   #propositions {
     min-width: 100%;
-    bottom: 0.5em;
     font-size: clamp(1.5rem, calc(2.6vh + 1vw), 2.1rem);
   }
 
@@ -1100,24 +1117,29 @@
 /* Portrait layout */
 @media (orientation: portrait) and (height > 400px), (width < 900px) and (height > 400px) {
 
+  :root {
+    --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  }
+
   #wrap_main {
     flex-direction: column;
     align-content: center;
-    align-items: center;
   }
 
   #prop_container {
-    height: 32.75vh; 
+    height: var(--propsHeight); 
     width: 85vw;
     margin: 0;
     margin-top: 0.9vh;
-    margin-bottom: 0.5vh;
+    margin-bottom: calc(0.5vh + (32.75vh - var(--propsHeight)));
     align-self: center;
     text-align: center;
+    align-content: flex-start;
   }
   #propositions {
     min-width: 85vw;
     font-size: clamp(1.5rem, 4.05vh, 2rem);
+    
   }
 
   
@@ -1125,6 +1147,9 @@
     position: relative;
     top: 5px;
     width: 100%;
+  }
+
+  #wrap_axis_grid {
   }
   @media (height > 700px) {
     #wrap_grid_domain {
@@ -1146,7 +1171,7 @@
     
     #prop_container {
       position: relative;
-      height: calc(32.75vh - (700px - 100vh) / 8);
+      height: calc(var(--propsHeight) - (700px - 100vh) / 8);
     }
     
     #wrap_toolbar_domain {
@@ -1173,7 +1198,7 @@
     }
     #prop_container {
       position: relative;
-      height: calc(32.75vh - (700px + 80vw - 100vh) / 15);
+      height: calc(var(--propsHeight) - (700px + 80vw - 100vh) / 15);
     }
   }
 

@@ -58,9 +58,8 @@ function initLevel() {
         ROOT.style.setProperty('--widthFactor', COLS / ROWS);
     } else if (COLS > ROWS) {
         if (ROWS < 3) {
-            ROOT.style.setProperty('--heightFactor', 1.25 * (ROWS / COLS));
-            ROOT.style.setProperty('--widthFactor', 1.25);
-            
+            ROOT.style.setProperty('--heightFactor', 1.05 * (ROWS / COLS));
+            ROOT.style.setProperty('--widthFactor', 1.05); 
         } else {
             ROOT.style.setProperty('--heightFactor', (ROWS / COLS));
             ROOT.style.setProperty('--widthFactor', 1);
@@ -69,6 +68,10 @@ function initLevel() {
         ROOT.style.setProperty('--heightFactor', 1);
         ROOT.style.setProperty('--widthFactor', 1);
     }
+
+
+    
+    
     
 
     MENU_TOGGLE.addEventListener("change", (e) => {

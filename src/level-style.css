@@ -12,18 +12,16 @@
   --gridPadding: 20px;
   --gridBorderWidth: 4px;
   --gridOffset: 1.5vh;
-  --maxGridWidth: calc(var(--widthFactor) * min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  --maxGridWidth: calc(max(1, var(--widthFactor)) * min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap));
   --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap));
 
-  --propsHeight: calc(32.75vh * max(1, (var(--widthFactor))));
+  --propsHeight: calc(32.75vh * max(1, (pow(var(--widthFactor), 9))));
   
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
   --cellFontSize: clamp(1rem, calc(9vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
-
-  --longestProposition: 400px;
   --domainButtonHeight: 56px;
 }
 
@@ -421,7 +419,6 @@
 
 #wrap_main {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
@@ -439,8 +436,7 @@
 
   width: 100%;
 
-  position: relative;
-  
+  position: relative; 
 }
 
 
@@ -802,7 +798,6 @@
 #wrap_toolbar_domain {
   display: flex;
   flex-direction: column;
-  gap: 2px;
   margin-top: -25px;
   align-items: center;
   width: var(--maxGridWidth);
@@ -898,7 +893,7 @@
 #domain {
   padding: 0;
   display: flex;
-  overflow-x: visible;
+  overflow: auto;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
   align-items: center;
@@ -907,7 +902,7 @@
   height: var(--domainButtonHeight);
 
 
-  padding-top: calc(0.15 * var(--domainButtonHeight)); /* account for button visuals being 85% */
+  padding-top: calc(0.175 * var(--domainButtonHeight)); /* account for button visuals being 85% */
 
 
   button {
@@ -1074,7 +1069,7 @@
 
 
   #wrap_toolbar_domain {
-    margin-top: calc(2.25vh - clamp(40px, 7.5vh, 58px));
+    margin-top: calc(2.25vh - clamp(50px, 7.5vh, 60px));
     gap: 0;
   }
   #toolbar {
@@ -1083,7 +1078,7 @@
     min-height: var(--domainButtonHeight);
     max-height: var(--domainButtonHeight);
     position: relative;
-    top: clamp(40px, 7.5vh, 58px);
+    top: clamp(43px, 7.7vh, 68px);
 
     #pencil {
       position: absolute;
@@ -1124,17 +1119,20 @@
   #wrap_main {
     flex-direction: column;
     align-content: center;
+    justify-content: flex-start;
+    height: 100%;
   }
 
   #prop_container {
-    height: var(--propsHeight); 
+    max-height: var(--propsHeight);
+    height: min-content;
     width: 85vw;
     margin: 0;
     margin-top: 0.9vh;
-    margin-bottom: calc(0.5vh + (32.75vh - var(--propsHeight)));
     align-self: center;
     text-align: center;
     align-content: flex-start;
+    margin-bottom: 0.5vh;
   }
   #propositions {
     min-width: 85vw;
@@ -1147,20 +1145,29 @@
     position: relative;
     top: 5px;
     width: 100%;
+    gap: 0;
   }
 
+  #domain {
+    margin-top: -5px;
+  }
+
+  #wrap_grid_domain {
+    flex: 1;
+  }
   #wrap_axis_grid {
+    flex: 1;
   }
   @media (height > 700px) {
     #wrap_grid_domain {
-      gap: calc((100vh - 700px) / 6);
+      margin-bottom: calc(var(--domainButtonHeight) - (100vh - 700px) / 6);
     }
   }
 
   /* Monkey patching for strangely small screens. */
   @media (height < 700px)  {
-    :root {
-      --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap) - var(--widthFactor) * (700px - 100vh) / 5);
+    :root {  
+      --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap)  - var(--widthFactor) * (700px - 100vh) / 5);
       --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap) - var(--heightFactor) * (700px - 100vh) / 5);
     }
     
@@ -1178,6 +1185,7 @@
       top: calc(7px - (700px - 100vh) / 8);
     }
   }
+
   @media (width < 400px) {
     
     #wrap_toolbar_domain {

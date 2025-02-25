@@ -39,9 +39,8 @@
 
 #domain.correct {
   justify-content: right;
-  justify-content: 
-    
-    transition: gap 0.6s, bottom 0.6s;
+  
+  transition: gap 0.6s, bottom 0.6s;
   gap: 0px;
   bottom: calc(0.15 * var(--domainButtonHeight));
 
@@ -1158,10 +1157,9 @@
   #wrap_axis_grid {
     flex: 1;
   }
-  @media (height > 700px) {
-    #wrap_grid_domain {
-      margin-bottom: calc(var(--domainButtonHeight) - (100vh - 700px) / 6);
-    }
+
+  #wrap_grid_domain {
+    margin-bottom: var(--domainButtonHeight);
   }
 
   /* Monkey patching for strangely small screens. */
@@ -1173,17 +1171,15 @@
     
     #wrap_grid_domain {
       position: relative;
-      bottom: calc((700px - 100vh) / 35);
+
     }
     
     #prop_container {
       position: relative;
-      height: calc(var(--propsHeight) - (700px - 100vh) / 8);
+      max-height: calc(var(--propsHeight) - (700px - 100vh) / 8);
     }
     
-    #wrap_toolbar_domain {
-      top: calc(7px - (700px - 100vh) / 8);
-    }
+
   }
 
   @media (width < 400px) {
@@ -1203,10 +1199,10 @@
     }
     #wrap_toolbar_domain {
       top: calc(7px + (400px - 100vw) / 1.48 - (700px - 100vh) / 12);
-    }
+    } 
     #prop_container {
       position: relative;
-      height: calc(var(--propsHeight) - (700px + 80vw - 100vh) / 15);
+      max-height: calc(var(--propsHeight) - (700px + 80vw - 100vh) / 15);
     }
   }
 

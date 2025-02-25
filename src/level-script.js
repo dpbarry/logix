@@ -56,17 +56,25 @@ function initLevel() {
     if (ROWS > COLS) {
         ROOT.style.setProperty('--heightFactor', 1);
         ROOT.style.setProperty('--widthFactor', COLS / ROWS);
+        ROOT.style.setProperty('--landscapeHeightFactor', 1);
+        ROOT.style.setProperty('--landscapeWidthFactor', COLS / ROWS);
     } else if (COLS > ROWS) {
         if (ROWS < 3) {
-            ROOT.style.setProperty('--heightFactor', 1.05 * (ROWS / COLS));
-            ROOT.style.setProperty('--widthFactor', 1.05); 
+            ROOT.style.setProperty('--heightFactor', 1.075 * (ROWS / COLS));
+            ROOT.style.setProperty('--widthFactor', 1.075);
+            ROOT.style.setProperty('--landscapeHeightFactor', 1.25 * (ROWS / COLS));
+            ROOT.style.setProperty('--landscapeWidthFactor', 1.25);
         } else {
             ROOT.style.setProperty('--heightFactor', (ROWS / COLS));
             ROOT.style.setProperty('--widthFactor', 1);
+            ROOT.style.setProperty('--landscapeHeightFactor', (ROWS / COLS));
+            ROOT.style.setProperty('--landscapeWidthFactor', 1);
         }
     } else {
         ROOT.style.setProperty('--heightFactor', 1);
         ROOT.style.setProperty('--widthFactor', 1);
+          ROOT.style.setProperty('--landscapeHeightFactor', 1);
+        ROOT.style.setProperty('--landscapeWidthFactor', 1);
     }
 
 
@@ -122,7 +130,7 @@ function initLevel() {
     }
     
 
-    if (NEXT_LEVEL.startsWith("T")) {
+    if (NEXT_LEVEL.startsWith("T") && NEXT_LEVEL !== "T1-2") {
         level.querySelector("#info").classList.add("readme");
     }
 

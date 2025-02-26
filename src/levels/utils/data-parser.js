@@ -53,11 +53,9 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
         let varCounter = 1;
 
         // identify entries to wrap in spans
-        const pattern = /\\lang\s*\\begin\{smallmatrix\}\s*([\s\S]*?)\s*\\end\{smallmatrix\}\s*\\rang/g;
+        const pattern = /\[\s*([^\[\],]+)\s*,\s*([^\[\],]+)\s*\]/g;
 
-        propositions[i] = propositions[i].replace(pattern, (match, content) => {
-            const [n, _, m] = content.split("\\").map(s => s.trim());
-
+        propositions[i] = propositions[i].replace(pattern, (match, n,m) => {
             let id;
             if (!isNaN(n) && !isNaN(m)) {
                 id = `e${n}e${m}`;

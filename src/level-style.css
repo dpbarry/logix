@@ -6,6 +6,7 @@
   --fontFactor: 1;
   --widthFactor: 1;
   --heightFactor: 1;
+  --landscapeFontFactor: 1;
   --landscapeWidthFactor: 1;
   --landscapeHeightFactor: 1;
   
@@ -240,9 +241,6 @@
   flex-wrap: wrap;
   gap: 10px;
   scrollbar-width: none;
-  
-  .mspace { margin-right: 0.18em !important; }
-  .entrystyle + span {margin-left: -0.1em; }
   
   p {
     margin: 0;
@@ -556,7 +554,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: max(0.0865em, 0.3rem) solid var(--darkestShade);
+    border-bottom: max(0.0865em, 0.35rem) solid var(--darkestShade);
   }
 
 
@@ -718,45 +716,37 @@
   li {
     width: 100%;
     white-space: nowrap;
-    padding: 0.1em;
-    
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+
     &:has(+ li)::after {
       content: '';
       display: block;
       width: 100%;
       border-bottom: 1px solid var(--baseColor);
       position: relative;
-      top: 0.1em;
+      top: 0.4rem;
     }
 
     span.entry {
       cursor: pointer;
-      padding-top: 4px;
       display: inline-block;
       position: relative;
+      bottom: 1.5px;
+      opacity: 1;
       z-index: 2;
+      transition: color 0.08s, opacity 0.08s;
+      
       .mspace { margin-right: 0 !important; }
-      + span:has(+ .mspace) {margin-left: 0.2em; }
+      + span:has(+ .mspace) {margin-left: 0.222em; }
+      
     }
 
     .mspace {
-      margin-right: 0.251em !important;
+      margin-right: 0.222em !important;
     }
-    span.entry::before {
-      content: "";
-      display: block;
-      transform: scale(0.94);
-      opacity: 0;
-      border-radius: 5px;
-      position: absolute;
-      left: 0; right: 0; top: 0; bottom: 0;
-      transition: opacity 0.12s ease-in-out;
-      background-color: var(--focusColor);
-      box-shadow: 0 2px 1px -1px var(--lighterShade);
-      border: 1px solid var(--darkShade);
-
-      z-index: -1;
-    }
+    
+    
     span.entry.correct {
       cursor: default;
     }
@@ -767,15 +757,18 @@
 
     @media (hover: hover) and (pointer: fine) {
 
-      span.entry:not(.correct, .highlight):hover::before,
-      span.entry:not(.correct, .highlight).noticed::before {
-        opacity: 0.5;
+      span.entry:not(.correct, .highlight):hover,
+      span.entry:not(.correct, .highlight).noticed {
+        opacity: 0.55;
+        color: var(--emphasisColor);
       }
 
     }
 
-    span.entry.highlight::before {
+    span.entry.highlight {
       opacity: 1;
+      color: var(--emphasisColor);
+
     }
   }
 }
@@ -1037,6 +1030,7 @@
   :root {
     --widthFactor: var(--landscapeWidthFactor) !important;
     --heightFactor: var(--landscapeHeightFactor) !important;
+    --fontFactor: var(--landscapeFontFactor) !important;
   }
   #wrap_main {
     gap: calc(1.5 * var(--widthFactor) * 2.25vw);
@@ -1049,9 +1043,9 @@
 
   
   #prop_container {
-    min-width: 20vw;
-    width: 20vw;
-    max-width: 615px;
+    min-width: 40vw;
+    width: min-content;
+    max-width: 80vw;
     min-height: 50vh;
     max-height: 85vh;
     height: 100%;
@@ -1061,7 +1055,6 @@
     flex-direction: column;
 
     align-items: center;
-    flex-grow: 1;
     bottom: 0.5em;
 
   }
@@ -1119,9 +1112,6 @@
 
   :root {
     --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-
-    
-
   }
 
   #wrap_main {

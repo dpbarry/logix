@@ -46,10 +46,13 @@ function initLevel() {
 
     if (max < 3) {
         ROOT.style.setProperty('--fontFactor', 1 + (3 - max) / 2);
+        ROOT.style.setProperty('--landscapeFontFactor', 1 + (3 - max) / 2);
     } else if (max > 3) {
         ROOT.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
+        ROOT.style.setProperty('--lanscapeFontFactor', 1 + (3.5 - max) / max);
     } else {
         ROOT.style.setProperty('--fontFactor', 1);
+        ROOT.style.setProperty('--landscapeFontFactor', 1);
     }
 
     
@@ -64,6 +67,7 @@ function initLevel() {
             ROOT.style.setProperty('--widthFactor', 1.075);
             ROOT.style.setProperty('--landscapeHeightFactor', 1.25 * (ROWS / COLS));
             ROOT.style.setProperty('--landscapeWidthFactor', 1.25);
+            ROOT.style.setProperty('--landscapeFontFactor', 1);
         } else {
             ROOT.style.setProperty('--heightFactor', (ROWS / COLS));
             ROOT.style.setProperty('--widthFactor', 1);
@@ -73,7 +77,7 @@ function initLevel() {
     } else {
         ROOT.style.setProperty('--heightFactor', 1);
         ROOT.style.setProperty('--widthFactor', 1);
-          ROOT.style.setProperty('--landscapeHeightFactor', 1);
+        ROOT.style.setProperty('--landscapeHeightFactor', 1);
         ROOT.style.setProperty('--landscapeWidthFactor', 1);
     }
 

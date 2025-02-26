@@ -63,7 +63,7 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
                 id = `v${varCounter++}`;
             }
 
-            return `\\htmlClass{entry}{\\htmlId{${id}}{${match}}}`;
+            return `[\\htmlClass{entry}{\\htmlId{${id}}{${n.trim()},${m.trim()}}}]`;
         });
 
         li = page.createElement("li");

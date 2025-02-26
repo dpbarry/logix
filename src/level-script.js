@@ -601,7 +601,7 @@ function initLevel() {
             fakeRipple = new PointerEvent("pointerdown");
             fakeRipple.simulated = true;
             level.querySelector("#" + cell).dispatchEvent(fakeRipple);
-            level.querySelector("#" + cell).focus();
+            level.querySelector("#" + cell).focus({preventScroll: true});
         }, 0);
     }
 

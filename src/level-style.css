@@ -732,45 +732,43 @@
       cursor: pointer;
       display: inline-block;
       position: relative;
-      bottom: 1.5px;
+      top: 1px;
       opacity: 1;
       z-index: 2;
-      transition: color 0.08s, opacity 0.08s;
-      
-      .mspace { margin-right: 0 !important; }
-      + span:has(+ .mspace) {margin-left: 0.222em; }
-      
+      transition: color 0.1s, filter 0.1s;
+
+      .mspace { margin-right: 0 !important; }      
     }
 
-    .mspace {
-      margin-right: 0.222em !important;
-    }
-    
+
     
     span.entry.correct {
       cursor: default;
     }
 
-    span.entry.given::before {
-      filter: saturate(0);
-    }
+
+    span.entry + .mclose {position: relative; bottom: 1px;}
+    .mopen:has(+ span.entry) {position: relative; bottom: 1px;}
+    
 
     @media (hover: hover) and (pointer: fine) {
 
-      span.entry:not(.correct, .highlight):hover,
-      span.entry:not(.correct, .highlight).noticed {
-        opacity: 0.55;
+      span.entry.noticed {
         color: var(--emphasisColor);
+        filter: saturate(0.35) brightness(1.4);
       }
 
     }
 
-    span.entry.highlight {
-      opacity: 1;
-      color: var(--emphasisColor);
 
+    span.entry.highlight {
+      color: var(--emphasisColor);
+      filter: saturate(1.15);
     }
   }
+  
+
+  
 }
 
 
@@ -903,7 +901,7 @@
     height: 60px;
     position: relative;
     font-family: "computer modern serif";
-    font-size: 2.7rem;
+    font-size: 2.85rem;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -1101,7 +1099,7 @@
     left: var(--axisFontSize);
     width: 100%;
     gap: 5px;
-    button {font-size: clamp(1.7rem, 5.45vh, 2.8rem);}
+    button {font-size: clamp(2.25rem, 9.45vh, 2.85rem);}
   }
 
 }
@@ -1134,8 +1132,12 @@
   }
   #propositions {
     min-width: 85vw;
-    font-size: clamp(1.5rem, 4.05vh, 2rem);
+    font-size: clamp(1rem, min(4.05vh, 6vw), 2rem);
     
+  }
+
+  #wrap_axis_grid {
+    bottom: 5px;
   }
 
   

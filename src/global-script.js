@@ -176,7 +176,7 @@ function updateTheme() {
         ROOT.style.setProperty('--bracketColor', '#000');
 
         ROOT.style.setProperty('--card', '#F5F5F5');
-        ROOT.style.setProperty('--alpha', '0.3');
+        ROOT.style.setProperty('--alpha', '0.15');
 
         ROOT.style.setProperty('--lightestShade', 'hsl(50, 20%, 94%)');
         ROOT.style.setProperty('--lighterShade', 'hsl(50, 25%, 91%)');
@@ -202,7 +202,7 @@ function updateTheme() {
         ROOT.style.setProperty('--bracketColor', '#000');
 
         ROOT.style.setProperty('--card', '#F5F5F5');
-        ROOT.style.setProperty('--alpha', '0.3');
+        ROOT.style.setProperty('--alpha', '0.15');
 
         ROOT.style.setProperty('--lightestShade', 'hsl(200, 20%, 94%)');
         ROOT.style.setProperty('--lighterShade', 'hsl(200, 25%, 91%)');

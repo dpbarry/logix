@@ -959,7 +959,7 @@ function initLevel() {
 
 
 
-    level.querySelectorAll("#pencil, #undo").forEach(li => {
+    level.querySelectorAll("#pencil, #undo, #redo").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
             event.target.classList.add("nudged");
 

@@ -61,7 +61,7 @@
                 <p>Clear a cell by inputting its current value</p>
             </div>
         </dialog>
-        <div class="page init"></div>
+        <div class="page"></div>
     </body>
     <script src="src/global-script.js"></script>
     
@@ -103,14 +103,14 @@
            newPage.style.display = "block";
            setTimeout( () => {
              newPage.querySelectorAll(".campaignlist, #wrap_stages").forEach( (c) => {
-               verticalScroll(c, 1);
+               verticalScroll(c, 100);
              });
 
              trainingCard = newPage.querySelector("#training");
              cardWidth = trainingCard.getBoundingClientRect().width;
 
              
-           }, 0); 
+           }, 1); 
          }, 10);
 
          setTimeout(function() {

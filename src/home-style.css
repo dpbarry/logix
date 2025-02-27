@@ -1,10 +1,10 @@
 #main-header {
-  width: min-content;
+  width: fit-content;
 
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 8.5px;
+  top: 9px;
 
   margin: 0;
   cursor: pointer;
@@ -15,6 +15,7 @@
   font-weight: bolder;
   font-size: 3.1rem;
 }
+
 
 .page.home {
   align-content: center;

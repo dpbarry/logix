@@ -558,7 +558,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: max(0.0865em, 0.35rem) solid var(--darkestShade);
+    border-bottom: max(0.0865em, 0.38rem) solid var(--darkestShade);
   }
 
 

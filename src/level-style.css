@@ -3,7 +3,7 @@
   --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
   --gridGap: 7px;
   --gridPadding: 20px;
-  --gridBorderWidth: 4px;
+  --gridBorderWidth: 4.5px;
   --gridOffset: 1.5vh;
 
 }
@@ -468,7 +468,7 @@
 
   position: relative;
   top: calc(var(--gridPadding) + 4px);
-  right: 3px;
+  right: 1.5px;
 
   width: min-content;
   height: calc(var(--fullGridHeight) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
@@ -481,7 +481,7 @@
   
   position: relative;
   left: calc(var(--axisFontSize) + var(--gridBorderWidth) + var(--gridPadding) - 4px);
-
+  bottom: 4.5px;
   gap: var(--gridGap);
 
   height: min-content;

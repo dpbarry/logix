@@ -50,8 +50,23 @@ body, .page {
   background-color: var(--bgColor);
 }
 
-.page.slideout {
+.page.level.slideout {
   opacity: 0;
+  translate: 0 100vh;
+}
+.page.home.slideout {
+  opacity: 0;
+  translate: 0 -100vh;
+}
+
+.page.level.slideout:has(~ .level) {
+  opacity: 0;
+  translate: -100vw 0;
+}
+
+.level:has(~ .page.level.slidein) {
+  opacity: 0;
+  translate: 100vw 0;
 }
 
 .page {
@@ -60,14 +75,38 @@ body, .page {
   position: absolute;
 
   opacity: 1;
-  transition: opacity 0.18s, translate 0.4s;
+  translate: 0px;
+  transition: opacity 0.6s, translate 0.6s;
 
-  will-change: opacity;
+  will-change: opacity, translate;
 
-  
-  @starting-style {
-    opacity: 0;
+  &:not(.init) ~ .level {
+    @starting-style {
+      opacity: 0;
+      translate: 0 100vh;
+    }
   }
+
+  &:not(.init) ~ .home {
+    @starting-style {
+      opacity: 0;
+      translate: 0 -100vh;
+    }
+  }
+
+  &.level ~ .level {
+    @starting-style {
+      opacity: 0;
+      translate: 100vw 0;
+    }
+  }
+  &.level ~ .level.slidein {
+    @starting-style {
+      opacity: 0;
+      translate: -100vw 0;
+    }
+  }
+  
 }
 
 .nudged, .nudged::after {

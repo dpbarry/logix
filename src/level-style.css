@@ -1,4 +1,14 @@
 :root {
+  --domainButtonHeight: 56px;
+  --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
+  --gridGap: 7px;
+  --gridPadding: 20px;
+  --gridBorderWidth: 4px;
+  --gridOffset: 1.5vh;
+
+}
+
+.page.level {
   --successPrompt: "Next level...";
   --rows: 2;
   --cols: 2;
@@ -11,11 +21,6 @@
   --landscapeHeightFactor: 1;
   
   
-  --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
-  --gridGap: 7px;
-  --gridPadding: 20px;
-  --gridBorderWidth: 4px;
-  --gridOffset: 1.5vh;
   --maxGridWidth: calc(max(1, var(--widthFactor)) * min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap));
   --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap));
@@ -26,7 +31,6 @@
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
   --cellFontSize: clamp(1rem, calc(9vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
-  --domainButtonHeight: 56px;
 }
 
 @property --lightBlue {
@@ -1025,7 +1029,7 @@
 
 /* Landscape layout */
 @media (orientation: landscape) and (width > 900px), (height <= 400px) {
-  :root {
+  .page.level {
     --widthFactor: var(--landscapeWidthFactor) !important;
     --heightFactor: var(--landscapeHeightFactor) !important;
     --fontFactor: var(--landscapeFontFactor) !important;
@@ -1108,7 +1112,7 @@
 /* Portrait layout */
 @media (orientation: portrait) and (height > 400px), (width < 900px) and (height > 400px) {
 
-  :root {
+  .page.level {
     --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   }
 
@@ -1164,7 +1168,7 @@
 
   /* Monkey patching for strangely small screens. */
   @media (height < 700px)  {
-    :root {  
+    .page.level {  
       --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap)  - var(--widthFactor) * (700px - 100vh) / 5);
       --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap) - var(--heightFactor) * (700px - 100vh) / 5);
     }

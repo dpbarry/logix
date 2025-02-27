@@ -9,10 +9,11 @@ let MENU_TOGGLE = null;
 
 
 function initLevel() {
-    ROOT.style.setProperty('--rows', ROWS);
-    ROOT.style.setProperty('--cols', COLS);
-
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
+
+    level.style.setProperty('--rows', ROWS);
+    level.style.setProperty('--cols', COLS);
+
 
     MENU_TOGGLE = level.querySelector("#menu_checkbox");
     const info = level.querySelector("#level_info");
@@ -45,40 +46,40 @@ function initLevel() {
     const max = Math.max(ROWS, COLS);
 
     if (max < 3) {
-        ROOT.style.setProperty('--fontFactor', 1 + (3 - max) / 2);
-        ROOT.style.setProperty('--landscapeFontFactor', 1 + (3 - max) / 2);
+        level.style.setProperty('--fontFactor', 1 + (3 - max) / 2);
+        level.style.setProperty('--landscapeFontFactor', 1 + (3 - max) / 2);
     } else if (max > 3) {
-        ROOT.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
-        ROOT.style.setProperty('--lanscapeFontFactor', 1 + (3.5 - max) / max);
+        level.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
+        level.style.setProperty('--lanscapeFontFactor', 1 + (3.5 - max) / max);
     } else {
-        ROOT.style.setProperty('--fontFactor', 1);
-        ROOT.style.setProperty('--landscapeFontFactor', 1);
+        level.style.setProperty('--fontFactor', 1);
+        level.style.setProperty('--landscapeFontFactor', 1);
     }
 
     
     if (ROWS > COLS) {
-        ROOT.style.setProperty('--heightFactor', 1);
-        ROOT.style.setProperty('--widthFactor', COLS / ROWS);
-        ROOT.style.setProperty('--landscapeHeightFactor', 1);
-        ROOT.style.setProperty('--landscapeWidthFactor', COLS / ROWS);
+        level.style.setProperty('--heightFactor', 1);
+        level.style.setProperty('--widthFactor', COLS / ROWS);
+        level.style.setProperty('--landscapeHeightFactor', 1);
+        level.style.setProperty('--landscapeWidthFactor', COLS / ROWS);
     } else if (COLS > ROWS) {
         if (ROWS < 3) {
-            ROOT.style.setProperty('--heightFactor', 1.075 * (ROWS / COLS));
-            ROOT.style.setProperty('--widthFactor', 1.075);
-            ROOT.style.setProperty('--landscapeHeightFactor', 1.25 * (ROWS / COLS));
-            ROOT.style.setProperty('--landscapeWidthFactor', 1.25);
-            ROOT.style.setProperty('--landscapeFontFactor', 1);
+            level.style.setProperty('--heightFactor', 1.075 * (ROWS / COLS));
+            level.style.setProperty('--widthFactor', 1.075);
+            level.style.setProperty('--landscapeHeightFactor', 1.25 * (ROWS / COLS));
+            level.style.setProperty('--landscapeWidthFactor', 1.25);
+            level.style.setProperty('--landscapeFontFactor', 1);
         } else {
-            ROOT.style.setProperty('--heightFactor', (ROWS / COLS));
-            ROOT.style.setProperty('--widthFactor', 1);
-            ROOT.style.setProperty('--landscapeHeightFactor', (ROWS / COLS));
-            ROOT.style.setProperty('--landscapeWidthFactor', 1);
+            level.style.setProperty('--heightFactor', (ROWS / COLS));
+            level.style.setProperty('--widthFactor', 1);
+            level.style.setProperty('--landscapeHeightFactor', (ROWS / COLS));
+            level.style.setProperty('--landscapeWidthFactor', 1);
         }
     } else {
-        ROOT.style.setProperty('--heightFactor', 1);
-        ROOT.style.setProperty('--widthFactor', 1);
-        ROOT.style.setProperty('--landscapeHeightFactor', 1);
-        ROOT.style.setProperty('--landscapeWidthFactor', 1);
+        level.style.setProperty('--heightFactor', 1);
+        level.style.setProperty('--widthFactor', 1);
+        level.style.setProperty('--landscapeHeightFactor', 1);
+        level.style.setProperty('--landscapeWidthFactor', 1);
     }
 
 
@@ -130,7 +131,7 @@ function initLevel() {
         setTimeout(()=> {
             level.querySelector("#info").click();
             
-        }, 250);
+        }, 500);
     }
     
 
@@ -395,7 +396,7 @@ function initLevel() {
                     history.pushState({loc:NEXT_LEVEL}, "");
                 };
             } else {
-                ROOT.style.setProperty('--successPrompt', "'Return home...'");
+                level.style.setProperty('--successPrompt', "'Return home...'");
                 
                 domain.classList.add("correct");
                 
@@ -958,7 +959,7 @@ function initLevel() {
 
 
 
-    level.querySelectorAll("#pencil, #undo, #redo").forEach(li => {
+    level.querySelectorAll("#pencil, #undo").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
             event.target.classList.add("nudged");
 
@@ -967,6 +968,14 @@ function initLevel() {
             })
         })
     });
+
+    level.querySelector("#wrap_home_level").addEventListener("pointerdown", (e) => {
+        e.target.closest("#wrap_home_level").classList.add("nudged");
+        e.target.closest("#wrap_home_level").addEventListener("pointerup", (e) => {
+            e.target.closest("#wrap_home_level").classList.remove("nudged");
+        });
+    });
+    
 
 
     document.addEventListener('keydown', (e) => {

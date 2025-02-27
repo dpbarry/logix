@@ -61,7 +61,7 @@
                 <p>Clear a cell by inputting its current value</p>
             </div>
         </dialog>
-        <div class="page"></div>
+        <div class="page init"></div>
     </body>
     <script src="src/global-script.js"></script>
     
@@ -90,7 +90,6 @@
        newPage.style.display = "none";
        
        document.body.append(newPage);
-       oldPage.classList.add("slideout");
 
        setTimeout(() => {
          setupHome(newPage);
@@ -116,7 +115,7 @@
 
          setTimeout(function() {
            oldPage.remove();
-         }, 175);
+         }, 600);
 
        });       
 
@@ -141,6 +140,10 @@
        newScript.text = await (await fetch(`src/levels/${path}.js`)).text();
 
        newPage.style.display = "none";
+
+       if (NEXT_LEVEL !== null && parseInt(path.slice(-1)) === parseInt(NEXT_LEVEL.slice(-1)) - 2) {
+         newPage.classList.add("slidein");
+       }
 
        document.head.appendChild(newScript).parentNode.removeChild(newScript);
        document.body.append(newPage);
@@ -170,7 +173,7 @@
 
          setTimeout(function() {
            oldPage.remove();
-         }, 175);
+         }, 600);
        });
        
        sessionStorage.setItem("loc", path);

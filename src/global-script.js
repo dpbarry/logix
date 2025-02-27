@@ -93,6 +93,14 @@ function initDialogs() {
 
     document.body.addEventListener("pointerup", (e) => {
         document.querySelectorAll(".nudged").forEach((elem) => {
+            let rect = elem.getBoundingClientRect();
+            let overOriginalSize = (e.clientX < rect.left - 4 || e.clientX > rect.right + 4 || 
+                                    e.clientY < rect.top - 4 || e.clientY > rect.bottom + 4) ? false :
+                (e.clientX < rect.left || e.clientX > rect.right || 
+                 e.clientY < rect.top || e.clientY > rect.bottom);
+            if (overOriginalSize) {
+                elem.click();
+            } 
             elem.classList.remove("nudged");
             
         });

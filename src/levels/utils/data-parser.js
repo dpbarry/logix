@@ -78,11 +78,13 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
     
     for (let i = 1; i <= rows; i++) {
         num = document.createElement("span");
+        num.id = `y${i}`;
         num.innerHTML = i;
         page.getElementById("y-axis").appendChild(num);
     }      
     for (let i = 1; i <= cols; i++) {
         num = document.createElement("span");
+        num.id = `x${i}`;
         num.innerHTML = i;
         page.getElementById("x-axis").appendChild(num);
     }

@@ -175,6 +175,7 @@ if (cacheTheme !== null) {
 
 
 function updateTheme() {
+    ROOT.classList.add("notransitions");
     let theme = Array.from(THEMES).find(t => t.checked);
 
     if (theme.id === "litlight") {
@@ -200,8 +201,6 @@ function updateTheme() {
 
         ROOT.style.colorScheme = "light";
         ROOT.classList.remove("dark");
-
-
 
     } else if (theme.id === "frostlight") {
 
@@ -278,6 +277,10 @@ function updateTheme() {
         ROOT.classList.add("dark");
 
     }
+
+    setTimeout( () => ROOT.classList.remove("notransitions"), 5);
+
+    
 }
 
 
@@ -317,12 +320,6 @@ document.addEventListener('keydown', (e) => {
     }
 
     if (e.key === "h") {
-        if (segment(location.pathname) === "index.html" || segment(location.pathname) === "logix") {
-            const url = new URL(window.location.href);
-            url.searchParams.set('reloadTime', Date.now().toString());
-            window.location.href = url.toString();
-            return;         
-        }
         Router("index.html");
         history.pushState({loc:"index.html"}, "");
     }
@@ -453,8 +450,8 @@ function horizontalVerticalScroll(el, moe) {
     } else {
         el.style.overflowY = "auto";
 
-        const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 1;
-        const isScrolledToTop = el.scrollTop === 0;
+        const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 5;
+        const isScrolledToTop = el.scrollTop < 5;
 
         let top = isScrolledToTop ? 0 : ( el.dataset.masksize || 45 );
         let bottom = isScrolledToBottom ? 0 : ( el.dataset.masksize || 45 );

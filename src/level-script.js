@@ -508,6 +508,17 @@ function initLevel() {
                 this.focus();
 
             } else {
+                let r = this.querySelector(".ripple");
+
+                if (r) {
+                    try { r.remove(); } catch {}
+
+                    let temp = this.style.transition;
+                    this.style.transition = "none";
+                    setTimeout( () => this.style.transition = temp, 10);
+                }
+                
+                this.querySelector(".ripple").remove();
                 domainList.forEach((domain) => {
                     domain.blur();
 
@@ -526,27 +537,54 @@ function initLevel() {
     });
 
     function highlight(id) {
-        entryList.forEach( (entry) => {
+        let pair = [];
 
+        entryList.forEach( (entry) => {
+            let yNum = level.querySelector("#y" + entry.id.charAt(1));
+            let xNum = level.querySelector("#x" + entry.id.charAt(3));
             if (entry.id ===
                 "e" + id.charAt(1) + "e" + id.charAt(3)) {
                 entry.parentNode.classList.add("highlight");
+                pair = [yNum, xNum];
             } else {
                 entry.parentNode.classList.remove("highlight");
+                yNum.classList.remove("highlight");
+                xNum.classList.remove("highlight");
             }
         });
+
+        pair.forEach(a => a.classList.add("highlight"));
+    }
+
+    function axisCue(y, x) {
+        let yNum = level.querySelector(y);
+        let xNum = level.querySelector(x);
+
+        yNum.classList.add("cue");
+        xNum.classList.add("cue");
+    }
+
+    function deAxisCue(y, x) {
+        let yNum = level.querySelector(y);
+        let xNum = level.querySelector(x);
+
+        yNum.classList.remove("cue");
+        xNum.classList.remove("cue");
     }
 
     function noticeEntry (event) {
         let entries;
         if (event.id) {
             entries = level.querySelectorAll("#e" + event.id.charAt(1) + "e" + event.id.charAt(3));
+            axisCue("#y" + event.id.charAt(1), "#x" + event.id.charAt(3));
         } else {
             entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
+            axisCue("#y" + this.id.charAt(1), "#x" + this.id.charAt(3));
         }
         if (entries.length === 0) {
             let target = event.target || event;
             target.classList.add("deadgiven");
+            return;
         }
         entries.forEach( (entry) => {
             if (entry === null) return;
@@ -559,14 +597,17 @@ function initLevel() {
             }
             
         });
-    }
+    }
 
     function removeNoticeEntry (event) {
         let entries;
         if (event.id) {
             entries = level.querySelectorAll("#e" + event.id.charAt(1) + "e" + event.id.charAt(3));
+            deAxisCue("#y" + event.id.charAt(1), "#x" + event.id.charAt(3));
+            
         } else {
             entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
+            deAxisCue("#y" + this.id.charAt(1), "#x" + this.id.charAt(3));
         }
         entries.forEach( (entry) => {
             if (entry === null) return;

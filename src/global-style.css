@@ -8,7 +8,7 @@
 }
 
 :root {
-  --bgColor:  #FFF;
+  --bgColor: light-dark(white, black) ;
   --baseColor: black;
   --bracketColor: black;
 
@@ -25,16 +25,22 @@
   --emphasisColor: hsl(50, 37%, 45%);
   --correctColor: hsl(130, 35%, 35%);
 
-  --hueShiftIcons: unset ;
+  --hueShiftIcons: unset;
 
   color-scheme: light;
   color: black;
+
 
   *::before, *::after {color: black;}
 
   &.dark *, &.dark *::before, &.dark *::after {
     box-shadow: none !important;
   }
+}
+
+.notransitions * {
+  transition: none !important;
+  animation-duration: 0 !important;
 }
 
 /*  Prevent mismatch between viewport and body dimensions */
@@ -45,30 +51,38 @@ html, body {
   height: 100%;
 }
 
+body {
+  perspective: 900px;
+}
 body, .page {
   overflow: hidden;
   background-color: var(--bgColor);
 }
 
+
 .page.level.slideout {
   opacity: 0;
-  bottom: -100vh;
+  translate: 0 100vh;
 }
-.page.home.slideout {
+.page.home.slideout:has(~ .level) {
   opacity: 0;
-  bottom: 100vh;
+  translate: 0 -100vh;
 }
+
+.page.home.slideout:has(~ .home) {
+  opacity: 0;
+  translate: 0;
+}
+
 
 .page.level.slideout:has(~ .level) {
   opacity: 0;
-  left: -100vw;
-  bottom: 0;
+  translate: -100vw 0;
 }
 
 .level:has(~ .page.level.slidein) {
   opacity: 0;
-  left: 100vw;
-  bottom: 0;
+  translate: 100vw 0;
 }
 
 .page {
@@ -77,58 +91,51 @@ body, .page {
   position: absolute;
 
   opacity: 1;
-  scale: 1;
-  bottom: 0;
-  left: 0;
-  transition: opacity 0.45s, bottom 0.45s, left 0.45s, scale 0.45s;
+  translate: 0px;
+  transition: opacity 0.4s, translate 0.4s;
 
-  will-change: opacity, bottom, left;
+  will-change: opacity, translate;
 
-  &:not(is(.home, .level)) { transition: unset;}
+  &:not(:is(.home, .level)) { transition: none; }
 
-  &:not(:has(~ .page)) {
+  &:not(:has(~ .page)), .home ~ .home {
     @starting-style {
       opacity: 0;
       left: 0;
       bottom: 0;
-      scale: 0.925;
     }
   }
+
+  
+
   &.home ~ .level {
     @starting-style {
       opacity: 0;
-      scale: 1;
-      bottom: -100vh;
+      translate: 0 100vh;
     }
   }
 
   &.level ~ .home {
     @starting-style {
       opacity: 0;
-      scale: 1;
-      bottom: 100vh;
+      translate: 0 -100vh;
     }
   }
 
-  &.level ~ .level {
+  &.level.slideout ~ .level {
     @starting-style {
       opacity: 0;
-      scale: 1;
-      left: 100vw;
-      bottom: 0;
+      translate: 100vw 0;
     }
   }
   &.level ~ .level.slidein {
     @starting-style {
       opacity: 0;
-      scale: 1;
-      left: -100vw;
-      bottom: 0;
+      translate: -100vw 0;
     }
   }
   
 }
-
 .nudged, .nudged::after {
   transform: scale(0.95);
 }

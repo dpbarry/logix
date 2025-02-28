@@ -445,7 +445,7 @@
 
 #y-axis, #x-axis {
   display: flex;
-  font-family: "Computer Modern Serif";
+  font-family: "Source Serif 4";
 
   span {
     font-size: var(--axisFontSize);
@@ -455,10 +455,19 @@
     height: 100%;
     cursor: default;
     z-index: 1;
-    font-style: italic;
+    font-weight: 290;
+    transition: font-weight 0.15s, color 0.15s;
 
     color: var(--baseColor);
     box-sizing: border-box;
+  }
+
+  
+  span.cue {
+    font-weight: 535;
+  }
+  span.highlight {
+    font-weight: 850;
   }
 }
 #y-axis {
@@ -467,27 +476,26 @@
   gap: var(--gridGap);
 
   position: relative;
-  top: calc(var(--gridPadding) + 4px);
-  right: 1.5px;
+  top: calc(var(--gridPadding) + 2px);
+  right: 0px;
 
   width: min-content;
   height: calc(var(--fullGridHeight) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
-
-
 }
 
 #x-axis {
   flex-direction: row;
   
   position: relative;
-  left: calc(var(--axisFontSize) + var(--gridBorderWidth) + var(--gridPadding) - 4px);
+  left: calc(var(--axisFontSize) + var(--gridBorderWidth) + var(--gridPadding));
   bottom: 4.5px;
   gap: var(--gridGap);
 
   height: min-content;
   width: calc(var(--fullGridWidth) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
-
 }
+
+
 
 
 #grid::before {
@@ -527,7 +535,7 @@
     font-family: "computer modern serif";
     text-align: center;
     outline: 2px solid transparent; /* For crosshairs */
-    transition: background-color .12s ease-in-out, border .12s ease-in-out, outline-color 0.2s ease, color 0.12s ease-in-out, transform 0.8s ease;
+    transition: background-color .11s ease-in-out, border .12s ease-in-out, outline-color 0.1s ease, color 0.12s ease-in-out, transform 0.8s ease;
     
     width: 100%;
     height: 100%;
@@ -549,7 +557,7 @@
     cursor: pointer;
 
     &:has(.ripple) {
-      transition: background-color .21s ease-in, outline-color 0.2s ease, transform 0.8s ease;
+      transition: background-color .22s ease-in-out, border .12s ease-in-out, outline-color 0.11s ease, color 0.12s ease-in-out, transform 0.8s ease;
     }
 
   }
@@ -569,7 +577,7 @@
       border-color: var(--emphasisColor);
     }
     span.given:hover {
-      color: #777;
+      color: #707070;
     }
     
     span:not(.given).noticed {
@@ -578,7 +586,7 @@
     }
 
     span.given.noticed {
-      color: #777;
+      color: #707070;
     }
     span.given.deadgiven:hover {
       color: var(--baseColor);
@@ -658,7 +666,7 @@
 
 #grid.correct {
   span {
-    transition: background-color .2s ease-in, border .2s, outline-color 0.2s ease;
+    transition: background-color .2s ease-in, border .2s, outline-color .1s ease;
     pointer-events: none;
     cursor: default;
     background-color: transparent;
@@ -759,7 +767,12 @@
 
       span.entry.noticed {
         color: var(--emphasisColor);
-        filter: saturate(0.35) brightness(1.4);
+        filter: saturate(0.41) brightness(1.4);
+      }
+
+      span.entry.given.noticed {
+        color: #707070;
+        filter: unset;
       }
 
     }
@@ -767,7 +780,7 @@
 
     span.entry.highlight {
       color: var(--emphasisColor);
-      filter: saturate(1.15);
+      filter: saturate(1.2);
     }
   }
   

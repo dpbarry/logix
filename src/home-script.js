@@ -112,12 +112,6 @@ function setupHome(page) {
 
 
     page.querySelector("#main-header").onclick = function () {
-        if (segment(location.pathname) === "index.html" || segment(location.pathname) === "logix") {
-            const url = new URL(window.location.href);
-            url.searchParams.set('reloadTime', Date.now().toString());
-            window.location.href = url.toString();
-            return;
-        }
         Router("index.html");
         history.pushState({loc:"index.html"}, "");
     }

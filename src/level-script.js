@@ -518,7 +518,6 @@ function initLevel() {
                     setTimeout( () => this.style.transition = temp, 10);
                 }
                 
-                this.querySelector(".ripple").remove();
                 domainList.forEach((domain) => {
                     domain.blur();
 

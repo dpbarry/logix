@@ -210,18 +210,21 @@ body, .page {
   left: 0;
   right: 0;
   bottom: 0;
+  height: 100%;
+
   z-index: 100;
+  pointer-events: none;
 
   background-color: rgba(0,0,0,var(--alpha));
   opacity: 0;
-  transition: opacity .3s;
+  transition: opacity .3s cubic-bezier(0.39, 0.58, 0.57, 1);
 }
 
 html:has(dialog[open]) #overlay {
-  height: 100%;
   opacity: 0.5;
 }
 html:has(dialog.hide) #overlay {
+  transition: opacity .175s cubic-bezier(0.39, 0.58, 0.57, 1);
   opacity: 0 !important;
 }
 

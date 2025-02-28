@@ -3,7 +3,7 @@ function showModal(id) {
     modal.showModal();
     modal.dispatchEvent(new Event("open"));
 
-    if (id=="info_dialog") {
+    if (id==="info_dialog") {
         let info = document.getElementById("info");
         info.classList.remove("readme");
         info.classList.add("banish");

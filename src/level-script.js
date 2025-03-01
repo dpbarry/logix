@@ -656,11 +656,14 @@ function initLevel() {
         entry.addEventListener("pointerdown", jumpToCell);         
     });
 
-    function queueDeselect(e) {
-        setTimeout( () => {document.activeElement.onclick = (e) => {e.target.blur(); e.target.onclick="";};
-                          }, 5);
-        document.removeEventListener("pointerup", queueDeselect);
-    }
+    /*
+      function queueDeselect(e) {
+      setTimeout( () => {document.activeElement.onclick = (e) => {e.target.blur(); e.target.onclick="";};
+      }, 5);
+      document.removeEventListener("pointerup", queueDeselect);
+      }
+
+    */
     function chamberInput (e) {
         let button = e.target;
         
@@ -668,7 +671,6 @@ function initLevel() {
             domainActive = true;
             cellActive = false;
 
-            document.addEventListener("pointerup", queueDeselect);
             cellList.forEach((cell) => {
                 cell.onfocus = function () {
                     if (tabbed) return;

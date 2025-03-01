@@ -169,7 +169,7 @@
   cursor: pointer;
   margin-bottom: 2px;
   color: var(--baseColor);
-  transition: opacity 0.05s;
+  transition: opacity 0.05s, transform 0.1s;
 }
 
 #home {
@@ -570,29 +570,28 @@
   }
 
 
-  @media (hover: hover) and (pointer: fine) {
 
-    span:not(.given):hover {
-      background-color: var(--lighterShade);
-      border-color: var(--emphasisColor);
-    }
-    span.given:hover {
-      color: #707070;
-    }
-    
-    span:not(.given).noticed {
-      background-color: var(--lighterShade);
-      border-color: var(--emphasisColor);
-    }
-
-    span.given.noticed {
-      color: #707070;
-    }
-    span.given.deadgiven:hover {
-      color: var(--baseColor);
-    }
-    
+  span:not(.given):hover {
+    background-color: var(--lighterShade);
+    border-color: var(--emphasisColor);
   }
+  span.given:hover {
+    color: #707070;
+  }
+  
+  span:not(.given).noticed {
+    background-color: var(--lighterShade);
+    border-color: var(--emphasisColor);
+  }
+
+  span.given.noticed {
+    color: #707070;
+  }
+  span.given.deadgiven:hover {
+    color: var(--baseColor);
+  }
+  
+  
   span.given {
     cursor: default;
 

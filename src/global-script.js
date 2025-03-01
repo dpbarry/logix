@@ -291,6 +291,7 @@ function killOpenDialog () {
         openDialog.addEventListener("transitionend", closeDialog);
     }
 }
+
 document.addEventListener('keydown', (e) => {
 
     if (e.key === "u") {
@@ -319,6 +320,7 @@ document.addEventListener('keydown', (e) => {
         } catch {}
     }
 
+    
     if (e.key === "h") {
         Router("index.html");
         history.pushState({loc:"index.html"}, "");

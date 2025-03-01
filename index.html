@@ -77,7 +77,8 @@
        document.body.removeEventListener("transitionend", fetchedBody);
      }
 
-     
+     let moving = false;
+    
 
      async function goHome() {
 
@@ -115,6 +116,7 @@
 
          setTimeout(function() {
            oldPage.remove();
+           moving = false;
          }, 500);
 
        });       
@@ -173,6 +175,7 @@
 
          setTimeout(function() {
            oldPage.remove();
+           moving = false;
          }, 500);
        });
        
@@ -181,14 +184,17 @@
 
      
      const Router = (path) => {
+       if (moving) return;
        let openDialog = document.querySelector("dialog[open]");
        if (openDialog) {
          openDialog.classList.add("hide");
          openDialog.addEventListener("transitionend", closeDialog); 
        }
        if (path === "index.html" || path === "logix") {
+         moving = true;
          goHome();
        } else {
+         moving = true;
          goLevel(path);
        }
 

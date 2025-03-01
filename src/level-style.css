@@ -587,9 +587,7 @@
   span.given.noticed {
     color: #707070;
   }
-  span.given.deadgiven:hover {
-    color: var(--baseColor);
-  }
+
   
   
   span.given {

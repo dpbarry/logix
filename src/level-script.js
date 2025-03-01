@@ -581,8 +581,6 @@ function initLevel() {
             axisCue("#y" + this.id.charAt(1), "#x" + this.id.charAt(3));
         }
         if (entries.length === 0) {
-            let target = event.target || event;
-            target.classList.add("deadgiven");
             return;
         }
         entries.forEach( (entry) => {

@@ -217,14 +217,14 @@ body, .page {
 
   background-color: rgba(0,0,0,var(--alpha));
   opacity: 0;
-  transition: opacity .3s cubic-bezier(0.39, 0.58, 0.57, 1);
+  transition: opacity .25s cubic-bezier(0.39, 0.58, 0.57, 1);
 }
 
 html:has(dialog[open]) #overlay {
   opacity: 0.5;
 }
 html:has(dialog.hide) #overlay {
-  transition: opacity .175s cubic-bezier(0.39, 0.58, 0.57, 1);
+  transition: opacity .15s cubic-bezier(0.39, 0.58, 0.57, 1);
   opacity: 0 !important;
 }
 

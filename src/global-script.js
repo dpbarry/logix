@@ -58,7 +58,7 @@ function initDialogs() {
             }
         });
 
-        dialog.ontoggle = () => {dialog.focus();}
+        dialog.ontoggle = () => {dialog.focus({preventScroll: true});}
     });
 
     document.querySelectorAll(".close").forEach( (closeButton) => {
@@ -70,7 +70,7 @@ function initDialogs() {
 
     document.querySelectorAll("dialog input").forEach((toggle) => {
         toggle.addEventListener("pointerup", (e) => {
-            e.target.focus();
+            e.target.focus({preventScroll: true});
             // i.e., the dialog
         });
     });
@@ -195,7 +195,14 @@ function updateTheme() {
 
         ROOT.style.setProperty('--focusColor', 'hsl(50, 45%, 80%)');
         ROOT.style.setProperty('--emphasisColor', 'hsl(50, 40%, 45%)');
-        ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
+
+        ROOT.style.setProperty('--softShade', 'hsl(50, 40%, 85%)');
+        ROOT.style.setProperty('--softerShade', 'hsl(50, 40%, 77.5%)');
+        ROOT.style.setProperty('--hardShade', 'hsl(50, 40%, 70%)');
+        ROOT.style.setProperty('--harderShade', 'hsl(50, 40%, 62.5%)');
+
+
+        ROOT.style.setProperty('--correctColor', 'hsl(50, 35%, 35%)');
 
         ROOT.style.setProperty('--hueShiftIcons', '');
 
@@ -219,7 +226,13 @@ function updateTheme() {
 
         ROOT.style.setProperty('--focusColor', 'hsl(200, 45%, 80%)');
         ROOT.style.setProperty('--emphasisColor', 'hsl(200, 40%, 45%)');
-        ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
+
+        
+        ROOT.style.setProperty('--softShade', 'hsl(200, 40%, 85%)');
+        ROOT.style.setProperty('--softerShade', 'hsl(200, 40%, 77.5%)');
+        ROOT.style.setProperty('--hardShade', 'hsl(200, 40%, 70%)');
+        ROOT.style.setProperty('--harderShade', 'hsl(200, 40%, 62.5%)');
+        ROOT.style.setProperty('--correctColor', 'hsl(200, 35%, 35%)');
 
         ROOT.style.setProperty('--hueShiftIcons', '');
 
@@ -244,7 +257,12 @@ function updateTheme() {
 
         ROOT.style.setProperty('--focusColor', 'hsl(50, 40%, 30%)');
         ROOT.style.setProperty('--emphasisColor', 'hsl(50, 60%, 20%)');
-        ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
+
+        ROOT.style.setProperty('--softShade', 'hsl(50, 28%, 45%)');
+        ROOT.style.setProperty('--softerShade', 'hsl(50, 28%, 37.5%)');
+        ROOT.style.setProperty('--hardShade', 'hsl(50, 28%, 35%)');
+        ROOT.style.setProperty('--harderShade', 'hsl(50, 28%, 27.5%)');
+        ROOT.style.setProperty('--correctColor', 'hsl(50, 35%, 35%)');
 
         ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.9)');
         
@@ -269,7 +287,13 @@ function updateTheme() {
 
         ROOT.style.setProperty('--focusColor', 'hsl(200, 40%, 30%)');
         ROOT.style.setProperty('--emphasisColor', 'hsl(200, 55%, 20%)');
-        ROOT.style.setProperty('--correctColor', 'hsl(130, 35%, 35%)');
+
+        
+        ROOT.style.setProperty('--softShade', 'hsl(200, 28%, 45%)');
+        ROOT.style.setProperty('--softerShade', 'hsl(200, 28%, 37.5%)');
+        ROOT.style.setProperty('--hardShade', 'hsl(200, 28%, 35%)');
+        ROOT.style.setProperty('--harderShade', 'hsl(200, 28%, 27.5%)');
+        ROOT.style.setProperty('--correctColor', 'hsl(200, 35%, 35%)');
 
         ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.9)');
 

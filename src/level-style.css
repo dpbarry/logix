@@ -9,7 +9,6 @@
 }
 
 .page.level {
-  --successPrompt: "Next level...";
   --rows: 2;
   --cols: 2;
   
@@ -30,42 +29,41 @@
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
-  --cellFontSize: clamp(1rem, calc(9vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+  --cellFontSize: clamp(0.5rem, calc(9.5vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
 }
 
-@property --lightBlue {
+
+@property --lightGo {
   syntax: '<color>';
-  initial-value: rgb(110,155,250,.28);
+  initial-value: var(--softShade);
   inherits: false;
 }
 
-@property --darkBlue {
+@property --darkGo {
   syntax: '<color>';
-  initial-value: rgb(110,155,250,.51);
+  initial-value: var(--hardShade);
   inherits: false;
 }
 
 #domain.correct {
   justify-content: right;
   
-  transition: gap 0.6s, bottom 0.6s;
+  transition: gap 0.6s;
   gap: 0px;
-  bottom: calc(0.15 * var(--domainButtonHeight));
 
   overflow: visible;
 
   button:not(:first-child) {
-    transition: width 0.8s ease, min-width 0.8s; bottom 0.35s ease;
+    transition: width 0.6s ease, min-width 0.6s ease;
 
-    will-change: width, min-width, bottom;
+    will-change: width, min-width;
 
     width: 0;
-    bottom: -8px;
     min-width: 0px;
 
-    &::before {transition: opacity 0.1s; opacity: 0;}
+    &::before {transition: opacity 0.13s; opacity: 0;}
     p {
-      transition: opacity 0.35s;
+      transition: opacity 0.45s;
       opacity: 0;
     }
 
@@ -73,76 +71,63 @@
   }
 
 
-  button:first-child {
-    --lightBlue: light-dark(rgb(110,155,250,.28), rgb(120,165,255,.5));
-    --darkBlue: light-dark(rgb(110,155,250,.51), rgb(120,165,255,.73));
-    height: var(--domainButtonHeight);
-    width: 100%;
-    border: 1px solid light-dark(#000, #444);
-    background: repeating-linear-gradient(45deg, var(--lightBlue),  var(--darkBlue) , var(--lightBlue) 600px);
-    background-size: calc(600px/sin(45deg)) 100%;
-    animation: glow 2.5s linear infinite reverse;
-    transition: --lightBlue 0.25s, --darkBlue 0.25s, box-shadow 0.25s;
+  button:first-child p {
+    --lightGo: var(--softShade);
+    --darkGo: var(--hardShade);
 
+    width: 100%;
+    transition:  --lightGo 0.25s, --darkGo .25s, bottom 0.125s, background 0.2s 0.2s, color 0.2s !important;
+    background-image: repeating-linear-gradient(45deg, var(--lightGo),  var(--darkGo) , var(--lightGo) 600px);
+    background-size: calc(600px/sin(45deg)) 100%;
+    animation: glow 2.5s linear infinite reverse, spring 0.6s ease-out forwards;
+    position: relative;
     overflow: hidden;
+    padding-bottom: 0.075em;
+
+    font-size: 2.5rem;
     
+    font-family: "Source Serif 4";
+    font-weight: 375;
+    font-style: italic;
+
     &>.ripple {
-      background:  light-dark(rgb(110,155,250), rgb(70,115,210));
-      transition: all .6s;
+      background: var(--emphasisColor);
+      transition: all 0.7s;
       &.run {
         opacity: 1 !important;
         transform: scale(400);
       }
     }
 
-    p {
-      transition: font-size 0.1s, opacity 0.1s;
-      font-size: 0;
-      opacity: 0;
-    }
+  }
+  button:first-child:not(.activated):focus p {
+    --lightGo: var(--softerShade);
+    --darkGo: var(--harderShade);
   }
 
-  button:first-child:focus {
-    --lightBlue: light-dark(rgb(110,155,250,.5), rgb(120,165,255,.75));
-    --darkBlue: light-dark(rgb(110,155,250,.73), rgb(120,165,255, .98));
-    
+  button:first-child.activated p {
+    color: white;
+    bottom: 6px !important;
+    zoom: 0.99 !important;
+    font-size: 2.25rem;
+    animation: stayDown 0s 0.2s forwards;
   }
+ 
+  
 
-  button:first-child.activated {
-    transition: --lightBlue 0.25s, --darkBlue 0.25s, box-shadow 0.25s, background 0.4s;
-    background-color: light-dark(rgb(110,155,250), rgb(70,115,210));
-    &::before {
-      color: white;
-    }
-  }
-  button:first-child::before {
-    content: var(--successPrompt);
-    background: transparent;
-    font-family: "Source Serif 4";
-    animation: spring 0.8s ease-out forwards;
-    font-weight: 375;
-    font-style: italic;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%; left: 50%;
-    line-height: 3.25rem;
-    transition: color 0.21s;
-
-    filter: unset !important;
-
-  }
 }
-
-
 
 @media (hover: hover) and (pointer: fine) {
-  #domain.correct button:first-child:hover {
-    --lightBlue: light-dark(rgb(110,155,250,.5), rgb(120,165,255,.75));
-    --darkBlue: light-dark(rgb(110,155,250,.73), rgb(120,165,255, .98));
+  #domain.correct button:first-child:hover p {
+    --lightGo: var(--softerShade);
+    --darkGo: var(--harderShade);
   }
 }
+
+@keyframes stayDown {
+  from, to {background: var(--emphasisColor) !important; }
+}
+
 
 @keyframes glow {
   0% {
@@ -390,7 +375,7 @@
   #info {
     background-image: url("../assets/INFO.svg"); width: 39px;
     right: 0;
-    transition: right 0.3s ease, scale 0.3s 0.3s cubic-bezier(0.375, 0.885, 0.72, 1.15)
+    transition: right 0.2s ease, scale 0.3s 0.3s cubic-bezier(0.375, 0.885, 0.72, 1.15)
     , rotate 0.3s 0.4s ease;
     
     scale: 1;
@@ -556,6 +541,7 @@
     
     cursor: pointer;
 
+
     &:has(.ripple) {
       transition: background-color .22s ease-in-out, border .12s ease-in-out, outline-color 0.11s ease, color 0.12s ease-in-out, transform 0.8s ease;
     }
@@ -566,7 +552,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: max(0.0865em, 0.38rem) solid var(--darkestShade);
+    border-bottom: max(0.095em, 0.25rem) solid var(--darkestShade);
   }
 
 
@@ -612,7 +598,6 @@
     pointer-events: none; /* Don't interfere with ripple */
 
     transition: background 0.4s;
-    will-change: bottom, opacity;
 
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -662,15 +647,16 @@
 }
 
 #grid.correct {
+  perspective: 300px;
   span {
-    transition: background-color .2s ease-in, border .2s, outline-color .1s ease;
+    transition: background-color .2s ease-in, border .2s, outline-color .1s ease, scale .2s;
     pointer-events: none;
     cursor: default;
     background-color: transparent;
     outline-color: transparent;
     border-color: transparent;
-    animation: correctFlash 0.75s forwards;
-    animation-delay: 400ms;
+    animation: correctFlash 1.15s forwards;
+    transform-style: preserve-3d;
   }
   
 }
@@ -681,9 +667,8 @@
 }
 
 @keyframes correctFlash {
-  0% { transform: scale(1); color: var(--baseColor); }
-  50% { transform: scale(1.65); color: var(--correctColor); }
-  100% { transform: scale(1.25); color: var(--correctColor); }
+  0% { transform: rotate3d(0,1,0,0deg); color: var(--baseColor); }
+  100% { transform: rotate3d(0,1,0,360deg); color: var(--correctColor); }
 }
 
 #prop_container {
@@ -816,7 +801,6 @@
     cursor: pointer;
     background-color: transparent;
     border: 0;
-    box-shadow: none;
     filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1)) var(--hueShiftIcons, );
     border-radius: 50px;
     padding: 0;
@@ -988,7 +972,7 @@
     transition: bottom 0.125s cubic-bezier(.3, .7, .4, 1.25), background 0.4s;
 
 
-    background: var(--focusColor);
+    background-color: var(--focusColor);
     bottom: 6px;
 
 
@@ -1080,34 +1064,29 @@
   }
 
   #wrap_toolbar_domain {
-    margin-top: calc(2.25vh - clamp(50px, 7.5vh, 60px));
+    margin-top: calc(-0.85 * var(--domainButtonHeight));
   }
   #toolbar {
     left: var(--axisFontSize);
     width: 100%;
-    min-height: var(--domainButtonHeight);
-    max-height: var(--domainButtonHeight);
+    min-height: calc(1.175 * var(--domainButtonHeight));
     position: relative;
-    top: clamp(43px, 7.7vh, 68px);
+    top: calc(1.175 * var(--domainButtonHeight));
+    align-items: center;
 
     #pencil {
       position: absolute;
-      bottom: max(min(9px, calc(9px - (750px - 100vh)/12)), -8px);
       left: -43px;
       margin: 0;
     }
-    #undo {
+    #wrapdo {
       position: absolute;
-
       right: -38px;
-      bottom: max(min(28px, calc(28px - (750px - 100vh)/12)), 12px);
+      bottom: 2px;
+      display: flex;
+      flex-direction: column;
     }
-    #redo {
-      position: absolute;
 
-      right: -38px;
-      bottom: max(min(-4px, calc(-4px - (750px - 100vh)/12)), -17px);
-    }
   }
   #domain {
     left: var(--axisFontSize);
@@ -1124,6 +1103,12 @@
 
   .page.level {
     --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+  }
+  
+  @media (max-height: 600px ) {
+    .page.level {
+      --cellFontSize: clamp(0.1rem, calc(9.5vh * var(--fontFactor) - (600px - 100vh)/18), calc(6rem * var(--fontFactor))) !important;
+    }
   }
 
   #wrap_main {

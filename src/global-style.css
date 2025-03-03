@@ -38,6 +38,10 @@
   }
 }
 
+#tab_catch, #backtab_catch {
+  position: fixed; top: 0; pointer-events: none;
+}
+
 .notransitions * {
   transition: none !important;
   animation-duration: 0 !important;

@@ -68,7 +68,7 @@ function initLevel() {
             level.style.setProperty('--widthFactor', 1.075);
             level.style.setProperty('--landscapeHeightFactor', 1.2 * (ROWS / COLS));
             level.style.setProperty('--landscapeWidthFactor', 1.2);
-            level.style.setProperty('--landscapeFontFactor', 0.93);
+            level.style.setProperty('--landscapeFontFactor', 1);
         } else {
             level.style.setProperty('--heightFactor', (ROWS / COLS));
             level.style.setProperty('--widthFactor', 1);
@@ -106,11 +106,11 @@ function initLevel() {
     level.querySelector("#tab_catch").addEventListener("focus", (e) => {
         if (MENU_TOGGLE.checked) {
             setTimeout( () => {
-                level.querySelector("#menu li").focus();
+                level.querySelector("#menu li").focus({preventScroll: true});
             }, 10);
         } else {
             setTimeout( () => {
-                Array.from(cellList).find( x => x.tabIndex === 0).focus();
+                Array.from(cellList).find( x => x.tabIndex === 0).focus({preventScroll: true});
             }, 10);
         }
     });
@@ -118,11 +118,11 @@ function initLevel() {
     level.querySelector("#backtab_catch").addEventListener("focus", (e) => {
         if (!e.relatedTarget) {
             setTimeout( () => {
-                Array.from(cellList).find( x => x.tabIndex === 0).focus();
+                Array.from(cellList).find( x => x.tabIndex === 0).focus({preventScroll: true});
             }, 10);
         } else {
             setTimeout( () => {
-                Array.from(cellList).reverse().find( x => x.tabIndex === 0).focus();
+                Array.from(cellList).reverse().find( x => x.tabIndex === 0).focus({preventScroll: true});
             }, 10);
         }
     });
@@ -373,13 +373,15 @@ function initLevel() {
         });
 
         if (flag) {
-            // Partly for suspense
+            // Suspense
             setTimeout(success, 200); 
         }
     }
 
-
-
+    let spanCount = 1;
+    level.querySelectorAll("#grid span").forEach(p => {
+        p.style.animationDelay = `${spanCount++ * 175}ms`;
+    })
 
     function success() {
         crosshairs("not-a-cell");
@@ -388,22 +390,29 @@ function initLevel() {
         level.querySelector("#grid").classList.add("correct");
 
         tabdCells[0][0].addEventListener("animationend", () => {
-            
+            domain.classList.add("correct");
+            cellActive = false;
+
             if (NEXT_LEVEL !== null) {
-                domain.classList.add("correct");
+                domainList[0].querySelector("p").innerText = "Onwards..."
                 domainList[0].onclick = () => {
-                    Router(NEXT_LEVEL);
-                    history.pushState({loc:NEXT_LEVEL}, "");
-                };
+                    setTimeout( () => {
+
+                        Router(NEXT_LEVEL);
+                        history.pushState({loc:NEXT_LEVEL}, "");
+                    }, 100);
+
+                };    
             } else {
-                level.style.setProperty('--successPrompt', "'Return home...'");
-                
-                domain.classList.add("correct");
-                
+                domainList[0].querySelector("p").innerText = "Return to level select...";                
                 
                 domainList[0].onclick = () => {
-                    Router("index.html");
-                    history.pushState({loc:"index.html"}, "");
+                    setTimeout( () => {
+
+                        Router("index.html");
+                        history.pushState({loc:"index.html"}, "");
+                    }, 100);
+
                 };
             }
             horizontalScroll(level.querySelector("#domain"), 7);
@@ -505,7 +514,7 @@ function initLevel() {
                 && !tabbed
                 || toolClicked) {
 
-                this.focus();
+                this.focus({preventScroll: true});
 
             } else {
                 let r = this.querySelector(".ripple");
@@ -833,11 +842,6 @@ function initLevel() {
                 let leftoverRipple = event.target.querySelector(".ripple");
                 if (leftoverRipple) leftoverRipple.remove();
                 return;
-            }
-
-            if (event.target.closest("#domain").classList.contains("correct")) {                
-                spawnRipple(event, event.target.closest("button"));
-                
             } else if (event.target.nodeName === "P" && !cellActive) {
                 element.focus({preventScroll: true});
                 spawnRipple(event, event.target);

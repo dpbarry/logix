@@ -44,6 +44,7 @@ function setupHome(page) {
             
         } else {
             stages.forEach((s) => {
+                s.blur();
                 s.classList.remove("dropped");
                 s.tabIndex = 0;
             });

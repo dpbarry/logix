@@ -55,7 +55,7 @@ function initLevel() {
         level.style.setProperty('--fontFactor', 1);
         level.style.setProperty('--landscapeFontFactor', 1);
     }
-
+    level.style.setProperty('--boostProps', 1);
     
     if (ROWS > COLS) {
         level.style.setProperty('--heightFactor', 1);
@@ -63,15 +63,15 @@ function initLevel() {
         level.style.setProperty('--landscapeHeightFactor', 1);
         level.style.setProperty('--landscapeWidthFactor', COLS / ROWS);
     } else if (COLS > ROWS) {
+        level.style.setProperty('--heightFactor', (ROWS / COLS));
+        level.style.setProperty('--widthFactor', 1);
         if (ROWS < 3) {
-            level.style.setProperty('--heightFactor', 1.075 * (ROWS / COLS));
-            level.style.setProperty('--widthFactor', 1.075);
+            level.style.setProperty('--boostProps', 1.075);
+
             level.style.setProperty('--landscapeHeightFactor', 1.2 * (ROWS / COLS));
             level.style.setProperty('--landscapeWidthFactor', 1.2);
             level.style.setProperty('--landscapeFontFactor', 1);
         } else {
-            level.style.setProperty('--heightFactor', (ROWS / COLS));
-            level.style.setProperty('--widthFactor', 1);
             level.style.setProperty('--landscapeHeightFactor', (ROWS / COLS));
             level.style.setProperty('--landscapeWidthFactor', 1);
         }

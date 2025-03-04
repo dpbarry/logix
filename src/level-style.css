@@ -15,6 +15,7 @@
   --fontFactor: 1;
   --widthFactor: 1;
   --heightFactor: 1;
+  --boostProps: 1;
   --landscapeFontFactor: 1;
   --landscapeWidthFactor: 1;
   --landscapeHeightFactor: 1;
@@ -24,7 +25,7 @@
   --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap));
   --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap));
 
-  --propsHeight: calc(32.75vh * max(1, (pow(var(--widthFactor), 5.8))));
+  --propsHeight: calc(32.75vh * max(1, (pow(var(--boostProps), 5.8))));
   
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
@@ -112,7 +113,7 @@
     font-size: 2.25rem;
     animation: stayDown 0s 0.2s forwards;
   }
- 
+  
   
 
 }
@@ -441,18 +442,19 @@
     cursor: default;
     z-index: 1;
     font-weight: 290;
-    transition: font-weight 0.15s, color 0.15s;
-
+    transition: font-weight 0.1s, color 0.1s;
+    overflow: visible;
     color: var(--baseColor);
     box-sizing: border-box;
   }
 
   
   span.cue {
-    font-weight: 535;
+    font-weight: 710;
   }
   span.highlight {
-    font-weight: 850;
+    font-weight: 710;
+    color: var(--emphasisColor);
   }
 }
 #y-axis {
@@ -464,8 +466,9 @@
   top: calc(var(--gridPadding) + 2px);
   right: 0px;
 
-  width: min-content;
+  width: var(--axisFontSize);
   height: calc(var(--fullGridHeight) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
+  span {    padding-right: 11px; }
 }
 
 #x-axis {
@@ -473,7 +476,7 @@
   
   position: relative;
   left: calc(var(--axisFontSize) + var(--gridBorderWidth) + var(--gridPadding));
-  bottom: 4.5px;
+  bottom: 8.5px;
   gap: var(--gridGap);
 
   height: min-content;
@@ -748,9 +751,10 @@
     @media (hover: hover) and (pointer: fine) {
 
       span.entry.noticed {
-        color: var(--emphasisColor);
-        filter: saturate(0.41) brightness(1.4);
+        color: var(--darkShade);
+        filter: brightness(1.25) saturate(0.65);
       }
+
 
       span.entry.given.noticed {
         color: #707070;
@@ -762,8 +766,10 @@
 
     span.entry.highlight {
       color: var(--emphasisColor);
-      filter: saturate(1.2);
+      filter: unset;
     }
+
+
   }
   
 

@@ -480,10 +480,41 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+  position: relative;
   cursor: pointer;
 
-  transition: transform 0.12s ease-out, opacity 0.2s, background 0.1s, border 0.12s, font-weight 0.12s;
+  transition: transform 0.12s ease-out, opacity 0.2s, background 0.1s, border 0.1s, font-weight 0.12s;
+}
+
+:root.dark {
+  #training .level-button {
+    border: 2px solid hsl(120 18% 25%);
+  }
+
+  #training .trainstage:not(.dropped) {
+    box-sizing: border-box;
+    width: 100%;
+    border: 2px solid hsl(120 18% 22%);
+  }
+  
+  #training .trainstage.dropped {
+    box-sizing: border-box;
+    width: 100%;
+    border: 2px solid hsl(120 18% 15%);
+  }
+
+  #normal .level-button {
+    border: 2px solid hsl(55 18% 25%);
+
+  }
+  #difficult .level-button {
+    border: 2px solid hsl(0 18% 28%);
+
+  }
+  #extreme .level-button {
+    border: 2px solid hsl(300 18% 28%);
+  }
+  
 }
 
 .level-button:focus {
@@ -502,10 +533,10 @@ html {
 #normal {
   li {
     box-shadow: 0 2px 3px hsl(55 8% 86% / 1), 0 0 2px hsl(55 8% 91% / 1);
-    background: light-dark(hsl(55 20% 85%), hsl(55 20 33%));
+    background: light-dark(hsl(55 20% 85%), hsl(55 20 15%));
     
     &:focus {
-      background: light-dark(hsl(55 25% 80%), hsl(55 25% 25%));
+      background: light-dark(hsl(55 25% 80%), hsl(55 20% 13%));
       box-shadow: 0 2px 3px hsl(55 8% 85% / 1), 0 0 2px hsl(55 8% 90% / 1);
     }
   }
@@ -514,11 +545,11 @@ html {
 #difficult {
   li {
     box-shadow: 0 2px 3px hsl(0 8% 86% / 1), 0 0 2px hsl(0 8% 91% / 1);
-    background: light-dark(hsl(0 20% 85%), hsl(0 20% 33%));
+    background: light-dark(hsl(0 20% 85%), hsl(0 20% 15%));
 
 
     &:focus {
-      background: hsl(hsl(0 25% 80%), hsl(0 25% 25%));
+      background: light-dark(hsl(0 25% 80%), hsl(0 20% 13%));
       box-shadow: 0 2px 3px hsl(0 8% 85% / 1), 0 0 2px hsl(0 8% 90% / 1);
     }
   }
@@ -527,17 +558,17 @@ html {
 #extreme {
   li {
     box-shadow: 0 2px 3px hsl(300 8% 86% / 1), 0 0 2px hsl(300 8% 91% / 1);
-    background: light-dark(hsl(300 20% 85%), hsl(300 20% 33%));
+    background: light-dark(hsl(300 20% 85%), hsl(300 20% 15%));
 
     &:focus {
-      background: light-dark(hsl(300 25% 80%), hsl(300 25% 25%));
+      background: light-dark(hsl(300 25% 80%), hsl(300 20% 13%));
       box-shadow: 0 2px 3px hsl(300 8% 85% / 1), 0 0 2px hsl(300 8% 90% / 1);
     }
   }
 }
 
 .card:not(#training) .level-button.locked {
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 #training {
@@ -548,17 +579,17 @@ html {
   
   .trainstage, .level-button {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
-    background: light-dark(hsl(120 20% 85%), hsl(120 20% 33%));
+    background: light-dark(hsl(120 20% 85%), hsl(120 20% 15%));
   }
 
   .trainstage:focus, .level-button:focus {
-    background: light-dark(hsl(120 25% 80%), hsl(120 20% 25%));
+    background: light-dark(hsl(120 20% 80%), hsl(120 20% 13%));
     box-shadow: 0 2px 3px hsl(120 8% 85% / 1), 0 0 2px hsl(120 8% 90% / 1);
   }
 
   .trainstage.dropped {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
-    background: light-dark(hsl(120 20% 80%), hsl(120 20% 25%));
+    background: light-dark(hsl(120 25% 80%), hsl(120 20% 10%));
     border: 1px solid light-dark(#888, #000);
 
     & + * > .level-button.locked {
@@ -590,7 +621,7 @@ html {
   list-style-type: none;
   cursor: pointer;
 
-  transition: background .15s ease, box-shadow .15s ease-out, top .3s ease-out, border .15s;
+  transition: background .1s, box-shadow .15s ease-out, top .3s ease-out, border .1s;
 
   &:last-of-type { margin-bottom: 0px; }
 }
@@ -605,26 +636,45 @@ html {
     border: 1px solid light-dark(#555, #000);
   }
 
-  #training .trainstage:hover, #training .level-button:hover {
-    background: light-dark(hsl(120 20% 80%), hsl(120 20% 25%));
+  #training .trainstage:not(.dropped):hover, #training .level-button:hover {
+    background: light-dark(hsl(120 20% 80%), hsl(120 20% 13%));
     box-shadow: 0 2px 3px hsl(120 8% 85% / 1), 0 0 2px hsl(120 8% 90% / 1);
   }
 
   #normal .level-button:hover {
-    background: light-dark(hsl(55 20% 80%), hsl(55 20% 25%));
+    background: light-dark(hsl(55 20% 80%), hsl(55 20% 13%));
     box-shadow: 0 2px 3px hsl(55 8% 85% / 1), 0 0 2px hsl(55 8% 90% / 1);
   }
 
   #difficult .level-button:hover {
-    background: light-dark(hsl(0 20% 80%), hsl(0 20% 25%));
+    background: light-dark(hsl(0 20% 80%), hsl(0 20% 13%));
     box-shadow: 0 2px 3px hsl(0 8% 85% / 1), 0 0 2px hsl(0 8% 90% / 1);
   }
 
   #extreme .level-button:hover {
-    background: light-dark(hsl(300 20% 80%), hsl(300 20% 25%));
+    background: light-dark(hsl(300 20% 80%), hsl(300 20% 13%));
     box-shadow: 0 2px 3px hsl(300 8% 85% / 1), 0 0 2px hsl(300 8% 90% / 1);
   }
+
+  :root.dark {
+    #training .trainstage:not(.dropped):hover {
+      border: 2px solid hsl(120 18% 19%);
+    }
+    #training .level-button:hover {
+      border: 2px solid hsl(120 18% 19%);
+    }
+    #normal .level-button:hover {
+      border: 2px solid hsl(55 18% 19%);
+    }
+    #difficult .level-button:hover {
+      border: 2px solid hsl(0 18% 19%);
+    }
+    #extreme .level-button:hover {
+      border: 2px solid hsl(300 18% 19%);
+    }
+  }
 }
+
 
 
 

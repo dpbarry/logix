@@ -5,6 +5,6 @@ domain=-2,-1,1,2
 rows=2
 cols=2
 given=?,?,?,?
-propositions=[1,1] \mathbin{/} [1,2] = [2,2] - 2@[1,1] + [1,2] + [2,1] + [2,2] = 0@[1,2] \cdot [2,1] = 2 - [2,2]
+propositions=[1,1] \mathbin{/} [1,2] = [2,2] - 2@[1,1] + [1,2] = [2,1] + [2,2]@[1,2] \cdot [2,1] = 2 - [2,2]
 solution=1,-1,-1,1
 info= <p> If these levels feel too much like plain linear algebra to you, hang on for a few more levels—each upcoming Training stage will introduce more interesting logical abstractions. </p>

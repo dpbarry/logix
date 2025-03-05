@@ -183,6 +183,9 @@ html {
   }
 }
 
+#training {
+  perspective: 200px;
+}
 
 #wrap_cards > :first-child {
   margin-left: auto;

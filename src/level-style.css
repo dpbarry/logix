@@ -555,7 +555,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: max(0.095em, 0.25rem) solid var(--darkestShade);
+    border-bottom: clamp(0.25rem, 0.095em, 0.5rem) solid var(--darkestShade);
   }
 
 
@@ -587,7 +587,7 @@
     }
   }
 
-  span:not(.given):focus {
+  span:not(.given):focus, span:not(.given).retain {
     background: var(--focusColor);
     border-color: var(--emphasisColor);
   }
@@ -712,7 +712,6 @@
   transition: width 0.1s;
   li {
     width: 100%;
-    white-space: nowrap;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
 
@@ -974,7 +973,7 @@
       background-color: var(--lighterShade);
     }
   }
-  button:not(.pushed):focus p {
+  button:not(.pushed):focus p, button.retain p {
     transition: bottom 0.125s cubic-bezier(.3, .7, .4, 1.25), background 0.4s;
 
 
@@ -1062,7 +1061,7 @@
   }
   #propositions {
     min-width: 100%;
-    font-size: clamp(1.5rem, calc(2.6vh + 1vw), 2.1rem);
+    font-size: clamp(1.5rem, calc(2.5vh + 1vw), 2.1rem);
   }
 
   #wrap_grid_domain {
@@ -1137,7 +1136,7 @@
   }
   #propositions {
     min-width: 85vw;
-    font-size: clamp(1rem, min(4.05vh, 6vw), 2rem);
+    font-size: clamp(1rem, min(4vh, 6vw), 2rem);
     
   }
 

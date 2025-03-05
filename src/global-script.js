@@ -1,8 +1,11 @@
+let openingModal = false;
 function showModal(id) {
+    openingModal = true;
     let modal = document.getElementById(id);
     modal.showModal();
     modal.dispatchEvent(new Event("open"));
 
+    setTimeout(()=> {openingModal = false;}, 100);
     if (id==="info_dialog") {
         let info = document.getElementById("info");
         info.classList.remove("readme");

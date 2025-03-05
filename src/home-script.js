@@ -109,7 +109,7 @@ function setupHome(page) {
         });
     });
 
-    page.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach( b => b.tabIndex = 0 );
+    page.querySelectorAll(".dropped + ul > .level-button:not(.locked), .campaignlist .level-button:not(.locked)").forEach( b => b.tabIndex = 0 );
 
 
     page.querySelector("#main-header").onclick = function () {

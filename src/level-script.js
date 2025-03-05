@@ -44,11 +44,7 @@ function initLevel() {
 
 
     const max = Math.max(ROWS, COLS);
-
-    if (max < 3) {
-        level.style.setProperty('--fontFactor', 1 + (3 - max) / 2);
-        level.style.setProperty('--landscapeFontFactor', 1 + (3 - max) / 2);
-    } else if (max > 3) {
+    if (max > 3) {
         level.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
         level.style.setProperty('--lanscapeFontFactor', 1 + (3.5 - max) / max);
     } else {
@@ -76,13 +72,19 @@ function initLevel() {
             level.style.setProperty('--landscapeWidthFactor', 1);
         }
     } else {
-        level.style.setProperty('--heightFactor', 1);
-        level.style.setProperty('--widthFactor', 1);
-        level.style.setProperty('--landscapeHeightFactor', 1);
-        level.style.setProperty('--landscapeWidthFactor', 1);
+        if (ROWS === 2) {
+            level.style.setProperty('--heightFactor', 0.75);
+            level.style.setProperty('--widthFactor', 0.75);
+            level.style.setProperty('--landscapeHeightFactor', 0.75);
+            level.style.setProperty('--landscapeWidthFactor', 0.75);
+        } else {
+            level.style.setProperty('--heightFactor', 1);
+            level.style.setProperty('--widthFactor', 1);
+            level.style.setProperty('--landscapeHeightFactor', 1);
+            level.style.setProperty('--landscapeWidthFactor', 1);
+        }
+
     }
-
-
     
     
     
@@ -463,6 +465,7 @@ function initLevel() {
     let debounced = 0;
 
     function lockCell () {
+        this.classList.remove("retain");
         crosshairs(this.id);
         highlight(this.id);
         
@@ -502,6 +505,7 @@ function initLevel() {
     }
 
     function fillCell (e) {
+        if (document.activeElement === this || openingModal) {this.classList.add("retain"); return;}
         crosshairs("not-a-cell");
         highlight("not-a-cell");
 
@@ -673,6 +677,7 @@ function initLevel() {
     */
     function chamberInput (e) {
         let button = e.target;
+        button.classList.remove("retain");
         
         setTimeout(function () {
             domainActive = true;
@@ -708,6 +713,7 @@ function initLevel() {
     }
 
     function releaseInput (e) {
+        if (document.activeElement === this || openingModal) {this.classList.add("retain"); return;}
         setTimeout(function () {
             domainActive = false;
             e.target.onclick = "";

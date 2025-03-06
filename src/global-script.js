@@ -259,7 +259,7 @@ function updateTheme() {
         ROOT.style.setProperty('--darkestShade', 'hsl(50, 30%, 20%)');
 
         ROOT.style.setProperty('--focusColor', 'hsl(50, 40%, 30%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(50, 60%, 20%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(50, 60%, 23%)');
 
         ROOT.style.setProperty('--softShade', 'hsl(50, 28%, 45%)');
         ROOT.style.setProperty('--softerShade', 'hsl(50, 28%, 37.5%)');
@@ -289,7 +289,7 @@ function updateTheme() {
         ROOT.style.setProperty('--darkestShade', 'hsl(200, 30%, 20%)');
 
         ROOT.style.setProperty('--focusColor', 'hsl(200, 40%, 30%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 55%, 20%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 60%, 23%)');
 
         
         ROOT.style.setProperty('--softShade', 'hsl(200, 28%, 45%)');

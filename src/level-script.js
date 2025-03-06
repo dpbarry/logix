@@ -47,6 +47,9 @@ function initLevel() {
     if (max > 3) {
         level.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
         level.style.setProperty('--lanscapeFontFactor', 1 + (3.5 - max) / max);
+    } else if (max < 3) {
+        level.style.setProperty('--fontFactor', 1.2);
+        level.style.setProperty('--landscapeFontFactor', 1.2);
     } else {
         level.style.setProperty('--fontFactor', 1);
         level.style.setProperty('--landscapeFontFactor', 1);

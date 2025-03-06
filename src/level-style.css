@@ -30,7 +30,7 @@
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
-  --cellFontSize: clamp(0.5rem, calc(8.5vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+  --cellFontSize: clamp(0.5rem, calc(10vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
 }
 
 
@@ -450,10 +450,10 @@
 
   
   span.cue {
-    font-weight: 710;
+    font-weight: 750;
   }
   span.highlight {
-    font-weight: 710;
+    font-weight: 750;
     color: var(--emphasisColor);
   }
 }
@@ -555,7 +555,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: clamp(0.25rem, 0.1em, 0.5rem) solid var(--darkestShade);
+    border-bottom: clamp(0.25rem, 0.098em, 0.5rem) solid var(--darkestShade);
   }
 
 
@@ -1108,11 +1108,12 @@
 
   .page.level {
     --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
+    --cellFontSize: clamp(0.5rem, calc(min(10vh, 15vw) * var(--fontFactor)), calc(6rem * var(--fontFactor)));
   }
   
   @media (max-height: 600px ) {
     .page.level {
-      --cellFontSize: clamp(0.1rem, calc(8.5vh * var(--fontFactor) - (600px - 100vh)/18), calc(6rem * var(--fontFactor))) !important;
+      --cellFontSize: clamp(0.1rem, calc(min(10vh, 15vw) * var(--fontFactor) - (600px - 100vh)/15), calc(6rem * var(--fontFactor))) !important;
     }
   }
 

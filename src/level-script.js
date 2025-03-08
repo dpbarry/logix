@@ -45,11 +45,11 @@ function initLevel() {
 
     const max = Math.max(ROWS, COLS);
     if (max > 3) {
-        level.style.setProperty('--fontFactor', 1 + (3.5 - max) / max);
-        level.style.setProperty('--lanscapeFontFactor', 1 + (3.5 - max) / max);
+        level.style.setProperty('--fontFactor', 1 + (3.25 - max) / max);
+        level.style.setProperty('--lanscapeFontFactor', 1 + (3.25 - max) / max);
     } else if (max < 3) {
-        level.style.setProperty('--fontFactor', 1.2);
-        level.style.setProperty('--landscapeFontFactor', 1.2);
+        level.style.setProperty('--fontFactor', 1);
+        level.style.setProperty('--landscapeFontFactor', 1);
     } else {
         level.style.setProperty('--fontFactor', 1);
         level.style.setProperty('--landscapeFontFactor', 1);
@@ -76,10 +76,10 @@ function initLevel() {
         }
     } else {
         if (ROWS === 2) {
-            level.style.setProperty('--heightFactor', 0.75);
-            level.style.setProperty('--widthFactor', 0.75);
-            level.style.setProperty('--landscapeHeightFactor', 0.75);
-            level.style.setProperty('--landscapeWidthFactor', 0.75);
+            level.style.setProperty('--heightFactor', 0.65);
+            level.style.setProperty('--widthFactor', 0.65);
+            level.style.setProperty('--landscapeHeightFactor', 0.65);
+            level.style.setProperty('--landscapeWidthFactor', 0.65);
         } else {
             level.style.setProperty('--heightFactor', 1);
             level.style.setProperty('--widthFactor', 1);
@@ -132,17 +132,23 @@ function initLevel() {
         }
     });
 
+
     if (NEXT_LEVEL === "T1-2") {
         setTimeout(()=> {
             level.querySelector("#info").click();
             
         }, 425);
+        level.style.setProperty('--noInfo', "0px");
+    } else if (info.children.length) {
+        level.querySelector("#info").classList.add("readme");
+        level.style.setProperty('--noInfo', "0px");
+
+    } else {
+        level.querySelector("#info").remove();
+        level.style.setProperty('--noInfo', "-54px");
     }
     
-
-    if (NEXT_LEVEL.startsWith("T") && NEXT_LEVEL !== "T1-2") {
-        level.querySelector("#info").classList.add("readme");
-    }
+    
 
     tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
     
@@ -760,7 +766,7 @@ function initLevel() {
 
     level.querySelector('#prop_container').addEventListener('scroll', (e) => {
         const el = e.currentTarget;
-        horizontalVerticalScroll(el, 7);
+        verticalScroll(el, 7);
     });
 
     level.querySelector('#domain').addEventListener('scroll', (e) => {
@@ -770,15 +776,13 @@ function initLevel() {
 
 
     window.onresize = function(event) {
-        horizontalVerticalScroll(propositions.parentNode, 7);
+        verticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
-        centerPropositions(propositions.parentNode);
         fadeInfo();
     }
 
     screen.orientation.addEventListener("change", (event) => {
-        horizontalVerticalScroll(propositions.parentNode, 7);
-        centerPropositions(propositions.parentNode);
+        verticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
         fadeInfo();
     });
@@ -1095,10 +1099,4 @@ function initLevel() {
     info.addEventListener("scroll", () => {
         fadeInfo();
     });
-}
-
-
-
-function centerPropositions(el) {
-    el.scrollLeft = (el.firstElementChild.offsetWidth - el.offsetWidth) / 2;
 }

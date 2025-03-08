@@ -7,4 +7,4 @@ cols=2
 given=?,?,?,?
 propositions=[1,1] \mathbin{/} [1,2] = [2,2] - 2@[1,1] + [1,2] = [2,1] + [2,2]@[1,2] \cdot [2,1] = 2 - [2,2]
 solution=1,-1,-1,1
-info= <p> If these levels feel too much like plain linear algebra to you, hang on for a few more levels—each upcoming Training stage will introduce more interesting logical abstractions. </p>
+info= <p> If on PC, Logix is keyboard playable. Use tab to cycle through the entries, the number keys to select numbers, and the following keys for the UI: </p><p><b>&lt;c&gt;</b> - Candidate Mode </p><p><b>&lt;u&gt;</b> - Undo </p><p><b>&lt;r&gt;</b> - Redo </p><p><b>&lt;h&gt;</b> - Home </p><p><b>&lt;m&gt;</b> - Menu Toggle </p><p><b>&lt;s&gt;</b> - Settings </p><p><b>&lt;i&gt;</b> - Info </p><p><b>&lt;d&gt;</b> - Dictionary </p><p><b>&lt;n&gt;</b> - Notes </p>

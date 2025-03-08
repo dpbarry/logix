@@ -25,12 +25,14 @@
   --gridWidth: calc(var(--widthFactor) * min(38vh, 68vw) - (1 - var(--widthFactor)) * var(--gridGap));
   --gridHeight: calc(var(--heightFactor) * min(38vh, 68vw) - (1 - var(--heightFactor)) * var(--gridGap));
 
-  --propsHeight: calc(32.75vh * max(1, (pow(var(--boostProps), 5.8))));
+  --propsHeight: calc(32.75vh * max(1, (pow(var(--boostProps), 6.15))));
   
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
-  --cellFontSize: clamp(0.5rem, calc(10vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+  --cellFontSize: clamp(0.5rem, calc(9.5vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+
+  --noInfo: 0;
 }
 
 
@@ -147,8 +149,8 @@
   flex-wrap: wrap;
   position: relative;
   gap: 3px;
-  top: clamp(0.5rem, 1.75vmin, 1rem); 
-  left: clamp(0.5rem, 1.75vmin, 1rem); 
+  top: clamp(0.5rem, 1.5vmin, 1rem); 
+  left: clamp(0.5rem, 1.5vmin, 1rem); 
   width: min-content;
   z-index: 3;
   height: 37px;
@@ -274,7 +276,7 @@
   width: max-content;
   z-index: 2;
   
-  top: clamp(0.5rem, 1.75vmin, 1rem); 
+  top: clamp(0.5rem, 1.5vmin, 1rem); 
   right: clamp(0.5rem, 1.5vmin, 1rem); 
   /* Align #chevron */
   text-align: center;
@@ -341,8 +343,7 @@
     display: flex;
     flex-direction: row;
     
-
-    transform: translateX(calc(clamp(0.5rem, 1.5vmin, 1rem) + 200px));
+    transform: translateX(calc(var(--noInfo) + clamp(0.5rem, 1.5vmin, 1rem) + 205px));
     will-change: transform;
     transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
   }
@@ -557,7 +558,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: clamp(0.25rem, 0.098em, 0.5rem) solid var(--darkestShade);
+    border-bottom: clamp(0.25rem, 0.105em, 0.5rem) solid var(--darkestShade);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -945,6 +946,7 @@
       z-index: 0;
 
 
+      padding-top: 1.5px;
       height: 85%;
       width: 100%;
       overflow: hidden;
@@ -1110,12 +1112,12 @@
 
   .page.level {
     --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-    --cellFontSize: clamp(0.5rem, calc(min(10vh, 15vw) * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+    --cellFontSize: clamp(1rem, calc(min(9.5vh, 14vw) * var(--fontFactor)), calc(6rem * var(--fontFactor)));
   }
   
   @media (max-height: 600px ) {
     .page.level {
-      --cellFontSize: clamp(0.1rem, calc(min(10vh, 15vw) * var(--fontFactor) - (600px - 100vh)/15), calc(6rem * var(--fontFactor))) !important;
+      --cellFontSize: clamp(1rem, calc(min(9.5vh, 14vw) * var(--fontFactor) - (600px - 100vh)/5), calc(6rem * var(--fontFactor))) !important;
     }
   }
 
@@ -1144,7 +1146,7 @@
   }
 
   #wrap_axis_grid {
-    bottom: 5px;
+    bottom: 0.2vh;
   }
 
   

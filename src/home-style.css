@@ -737,7 +737,7 @@ html {
 .droplist {
   margin-bottom: 0;
   max-height: 0;
-  transition: max-height 0.12s ease-out, margin-bottom .12s ease-out;
+  transition: max-height 0.1s linear, margin-bottom .11s linear;
 
   .level-button {
     transform: translateY(-20px);

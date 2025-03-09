@@ -52,7 +52,7 @@ function initDialogs() {
             }});
 
         dialog.addEventListener('keydown', (e) => {
-            if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+            if (e.key === "Escape" || (document.activeElement.nodeName !== "TEXTAREA" && (e.key === "Enter" || e.key === " "))) {
 
                 e.preventDefault();
                 dialog.classList.add("hide");
@@ -321,6 +321,7 @@ function killOpenDialog () {
 
 document.addEventListener('keydown', (e) => {
 
+    if (document.activeElement.nodeName === "TEXTAREA") return;
     if (e.key === "u") {
         try {
             undo();

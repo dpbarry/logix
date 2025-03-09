@@ -17,6 +17,7 @@ function initLevel() {
 
     MENU_TOGGLE = level.querySelector("#menu_checkbox");
     const info = level.querySelector("#level_info");
+    const notes = level.querySelector("#wrapnotes");
 
     const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
@@ -174,6 +175,24 @@ function initLevel() {
         cell.addEventListener("keydown", inp);
     });
 
+
+    let l = document.createElement("label");
+    let t = document.createElement("textarea");
+    t.id = `note`;
+    t.name = `note`;
+    t.placeholder = "Type here...";
+    t.oninput = () => {t.parentNode.setAttribute("data-val", t.value)};
+    l.appendChild(t);
+    
+    notes.appendChild(l);
+
+    level.querySelector("#notes_dialog").addEventListener("open", (e) => {
+        console.log(e.target)
+        setTimeout(()=>{
+            e.target.querySelector("label").focus();
+            
+        }, 10);
+    });
 
     function endInsert(e) {
         e.target.classList.remove("insert");

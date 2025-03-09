@@ -30,7 +30,7 @@
   --fullGridWidth: calc(var(--gridWidth) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
-  --cellFontSize: clamp(0.5rem, calc(9.5vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+  --cellFontSize: clamp(0.5rem, calc(9.75vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
 
   --noInfo: 0;
 }
@@ -558,7 +558,7 @@
   span:not(.given) {
     background-color: var(--lightestShade);
     
-    border-bottom: clamp(0.25rem, 0.105em, 0.5rem) solid var(--darkestShade);
+    border-bottom: clamp(0.25rem, 0.103em, 0.5rem) solid var(--darkestShade);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -1112,12 +1112,12 @@
 
   .page.level {
     --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-    --cellFontSize: clamp(1rem, calc(min(9.5vh, 14vw) * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+    --cellFontSize: clamp(1rem, calc(min(10vh, 14.5vw) * var(--fontFactor)), calc(6rem * var(--fontFactor)));
   }
   
-  @media (max-height: 600px ) {
+  @media (max-height: 650px ) {
     .page.level {
-      --cellFontSize: clamp(1rem, calc(min(9.5vh, 14vw) * var(--fontFactor) - (600px - 100vh)/5), calc(6rem * var(--fontFactor))) !important;
+      --cellFontSize: clamp(1rem, calc(min(10vh, 14.5vw) * var(--fontFactor) - (650px - 100vh)/5), calc(6rem * var(--fontFactor))) !important;
     }
   }
 

@@ -319,6 +319,16 @@ function killOpenDialog () {
     }
 }
 
+let scrolling = false;
+
+document.addEventListener("onscroll", () => {
+    scrolling = true;
+});
+
+document.addEventListener("onscrollend", () => {
+    scrolling = false;
+});
+
 document.addEventListener('keydown', (e) => {
 
     if (document.activeElement.nodeName === "TEXTAREA") return;

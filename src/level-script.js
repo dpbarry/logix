@@ -175,21 +175,10 @@ function initLevel() {
         cell.addEventListener("keydown", inp);
     });
 
-
-    let l = document.createElement("label");
-    let t = document.createElement("textarea");
-    t.id = `note`;
-    t.name = `note`;
-    t.placeholder = "Type here...";
-    t.oninput = () => {t.parentNode.setAttribute("data-val", t.value)};
-    l.appendChild(t);
-    
-    notes.appendChild(l);
-
     level.querySelector("#notes_dialog").addEventListener("open", (e) => {
         console.log(e.target)
         setTimeout(()=>{
-            e.target.querySelector("label").focus();
+            e.target.querySelector("textarea").focus();
             
         }, 10);
     });
@@ -675,6 +664,7 @@ function initLevel() {
     }
 
     function jumpToCell (event) {
+        if (scrolling) return;
         event.preventDefault();
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         window.setTimeout(() => {
@@ -806,6 +796,12 @@ function initLevel() {
         fadeInfo();
     });
 
+    propositions.querySelectorAll("li").forEach(li => {
+        
+        li.onclick = (e) => {if (e.target.closest(".entry")) return; li.classList.toggle("marked")};
+    });
+    
+
     // given the id of a cell, emphasize borders of cells in that row and column
     function crosshairs(id) {
         if (!CROSSHAIRS_TOGGLE.checked) return;
@@ -887,7 +883,7 @@ function initLevel() {
     })
 
 
-    
+
     function undo(e) {
         if (undoStack.length === 0) return;
         let prevState = undoStack.pop();
@@ -1051,7 +1047,7 @@ function initLevel() {
             e.target.closest("#wrap_home_level").classList.remove("nudged");
         });
     });
-    
+
 
 
     document.addEventListener('keydown', (e) => {
@@ -1109,7 +1105,7 @@ function initLevel() {
             info.classList.remove("overflowing");
         }
     }
-    
+
 
     info.parentNode.addEventListener("open", () => {
         info.scroll(0,0);

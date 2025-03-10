@@ -5,7 +5,6 @@
   --gridPadding: 20px;
   --gridBorderWidth: 4.5px;
   --gridOffset: 1.5vh;
-
 }
 
 .page.level {
@@ -31,6 +30,7 @@
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
 
   --cellFontSize: clamp(0.5rem, calc(9.75vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+  --propFontSize: clamp(1.5rem, calc(2.5vh + 1vw), 2.1rem);
 
   --noInfo: 0;
 }
@@ -280,22 +280,23 @@
   gap: 6px;
 
   width: 100%;
-  label {
-    display
-  }
+
   textarea {
     resize: none;
-    field-sizing: content;
-    min-height: 30vh;
+    min-height: 50vh;
     max-height: 50vh;
     height: max-content;
     width: 100%;
     border: none;
     box-sizing: border-box;
-    font-size: calc(var(--cellFontSize) / 3);
+    font-size: clamp(0.5rem, calc(0.75 * var(--propFontSize)), 3rem);
     font-family: "Source Serif 4";
     font-weight: 375;
   }
+}
+
+@supports (field-sizing: content) {
+  #wrapnotes textarea {field-sizing: content; min-height: 30vh;}
 }
 #menu {
   position: absolute;
@@ -730,7 +731,7 @@
   display: inline-block;
   flex-direction: column;
   justify-content: flex-start;
-
+  font-size: var(--propFontSize);
   margin: auto;
   padding: 0;
 
@@ -746,6 +747,9 @@
     width: 100%;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
+    background: transparent;
+    transition: background 0.05s;
+    border-radius: 2px;
 
     &:has(+ li)::after {
       content: '';
@@ -754,6 +758,10 @@
       border-bottom: 1px solid var(--baseColor);
       position: relative;
       top: 0.4rem;
+    }
+
+    &.marked {
+      background: var(--lighterShade);
     }
 
     span.entry {
@@ -781,6 +789,9 @@
 
     @media (hover: hover) and (pointer: fine) {
 
+      &:not(.marked, .done):hover {
+        background: light-dark(#F4F4F4, #333);
+      }
       span.entry.noticed {
         color: var(--darkShade);
         filter: brightness(1.25) saturate(0.65);
@@ -1094,7 +1105,6 @@
   }
   #propositions {
     min-width: 100%;
-    font-size: clamp(1.5rem, calc(2.5vh + 1vw), 2.1rem);
   }
 
   #wrap_grid_domain {
@@ -1142,6 +1152,7 @@
   .page.level {
     --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
     --cellFontSize: clamp(1rem, calc(min(10vh, 14.5vw) * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+    --propFontSize: clamp(1rem, min(4vh, 6vw), 2rem);
   }
   
   @media (max-height: 650px ) {
@@ -1169,9 +1180,7 @@
     margin-bottom: 0.5vh;
   }
   #propositions {
-    min-width: 85vw;
-    font-size: clamp(1rem, min(4vh, 6vw), 2rem);
-    
+    min-width: 85vw;    
   }
 
   #wrap_axis_grid {

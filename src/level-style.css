@@ -785,7 +785,7 @@
 
     @media (hover: hover) and (pointer: fine) {
 
-      &:not(.marked, .done):hover {
+      &:hover {
         background: light-dark(#F4F4F4, color-mix(in hsl, var(--bgColor) 93%, grey 7%));
       }
       span.entry.noticed {

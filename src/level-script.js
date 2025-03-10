@@ -796,12 +796,6 @@ function initLevel() {
         fadeInfo();
     });
 
-    propositions.querySelectorAll("li").forEach(li => {
-        
-        li.onclick = (e) => {if (e.target.closest(".entry")) return; li.classList.toggle("marked")};
-    });
-    
-
     // given the id of a cell, emphasize borders of cells in that row and column
     function crosshairs(id) {
         if (!CROSSHAIRS_TOGGLE.checked) return;

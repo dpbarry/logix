@@ -1151,13 +1151,13 @@
 
   .page.level {
     --maxGridWidth: calc(min(38vh, 68vw) + 2 * var(--gridPadding) + 2 * var(--gridBorderWidth));
-    --cellFontSize: clamp(1rem, calc(min(10vh, 14.5vw) * var(--fontFactor)), calc(6rem * var(--fontFactor)));
+    --cellFontSize: clamp(1rem, calc(min(10vh, 16vw) * var(--fontFactor)), calc(6rem * var(--fontFactor)));
     --propFontSize: clamp(1rem, min(4vh, 6vw), 2rem);
   }
   
   @media (max-height: 650px ) {
     .page.level {
-      --cellFontSize: clamp(1rem, calc(min(10vh, 14.5vw) * var(--fontFactor) - (650px - 100vh)/5), calc(6rem * var(--fontFactor))) !important;
+      --cellFontSize: clamp(1rem, calc(min(10vh, 16vw) * var(--fontFactor) - (650px - 100vh)/10), calc(6rem * var(--fontFactor))) !important;
     }
   }
 

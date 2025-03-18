@@ -183,6 +183,7 @@
      
      const Router = (path) => {
        if (moving) return;
+       history.pushState({loc:path}, "");
        let openDialog = document.querySelector("dialog[open]");
        if (openDialog) {
          openDialog.classList.add("hide");

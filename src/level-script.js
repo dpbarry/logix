@@ -416,9 +416,7 @@ function initLevel() {
                 domainList[0].querySelector("p").innerText = "Onwards..."
                 domainList[0].onclick = () => {
                     setTimeout( () => {
-
                         Router(NEXT_LEVEL);
-                        history.pushState({loc:NEXT_LEVEL}, "");
                     }, 100);
 
                 };    
@@ -427,11 +425,8 @@ function initLevel() {
                 
                 domainList[0].onclick = () => {
                     setTimeout( () => {
-
                         Router("index.html");
-                        history.pushState({loc:"index.html"}, "");
                     }, 100);
-
                 };
             }
             horizontalScroll(level.querySelector("#domain"), 7);
@@ -1088,7 +1083,6 @@ function initLevel() {
             window.open("index.html", '_blank').focus();
         } else {
             Router("index.html");
-            history.pushState({loc:"index.html"}, "");
         }
     }
     function fadeInfo() {

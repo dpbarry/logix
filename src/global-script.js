@@ -361,7 +361,6 @@ document.addEventListener('keydown', (e) => {
     
     if (e.key === "h") {
         Router("index.html");
-        history.pushState({loc:"index.html"}, "");
     }
 
     if (e.key === "Tab") {

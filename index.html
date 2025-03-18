@@ -78,7 +78,7 @@
      }
 
      let moving = false;
-    
+     
 
      async function goHome() {
 
@@ -181,9 +181,11 @@
      }
 
      
-     const Router = (path) => {
+     const Router = (path, pop=false) => {
        if (moving) return;
-       history.pushState({loc:path}, "");
+       if (!pop) {
+         history.pushState({loc:path}, "");
+       }
        let openDialog = document.querySelector("dialog[open]");
        if (openDialog) {
          openDialog.classList.add("hide");
@@ -202,7 +204,7 @@
      
      window.addEventListener("load", () => {
        window.addEventListener("popstate", (e) => {
-         Router(e.state.loc);
+         Router(e.state.loc, true);
        });
      });
 

@@ -117,6 +117,7 @@
          setTimeout(function() {
            oldPage.remove();
            moving = false;
+           window.dispatchEvent(new Event("donemoving"));
          }, 500);
 
        });       
@@ -174,6 +175,7 @@
          setTimeout(function() {
            oldPage.remove();
            moving = false;
+           window.dispatchEvent(new Event("donemoving"));
          }, 500);
        });
        
@@ -183,6 +185,7 @@
      
      const Router = (path, pop=false) => {
        if (moving) return;
+       console.log(path);
        if (!pop) {
          history.pushState({loc:path}, "");
        }
@@ -201,9 +204,23 @@
 
        window.focus();
      };
+
+     function delayedPageChange() {
+       Router(storedState, true);
+       console.log(storedState);
+       storedState = null;
+       window.removeEventListener("donemoving", delayedPageChange);
+     }
+
+     let storedState;
      
      window.addEventListener("load", () => {
        window.addEventListener("popstate", (e) => {
+         if (moving) {
+           storedState = e.state.loc;
+           window.addEventListener("donemoving", delayedPageChange);
+           return;
+         }
          Router(e.state.loc, true);
        });
      });

@@ -84,7 +84,6 @@ function setupHome(page) {
             
             setTimeout( () => {
                 Router(e.target.id);
-                history.pushState({loc:e.target.id}, "");
             }, 15);
         };
         
@@ -94,7 +93,6 @@ function setupHome(page) {
             
             setTimeout(function () {
                 Router(e.target.id);
-                history.pushState({loc:e.target.id}, "");
             }, 15);
         };
     });
@@ -114,12 +112,10 @@ function setupHome(page) {
 
     page.querySelector("#main-header").onclick = function () {
         Router("index.html");
-        history.pushState({loc:"index.html"}, "");
     }
 
     page.querySelector("#shortcut").onclick = function () {
         Router('T1-1');
-        history.pushState({loc:'T1-1'}, "");
         page.querySelector("#about_dialog").classList.add("hide");
         
         page.querySelector("#about_dialog").addEventListener("transitionend", closeDialog);

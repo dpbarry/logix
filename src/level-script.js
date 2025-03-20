@@ -133,6 +133,7 @@ function initLevel() {
         }
     });
 
+    
 
     if (NEXT_LEVEL === "T1-2") {
         setTimeout(()=> {
@@ -416,9 +417,7 @@ function initLevel() {
                 domainList[0].querySelector("p").innerText = "Onwards..."
                 domainList[0].onclick = () => {
                     setTimeout( () => {
-
                         Router(NEXT_LEVEL);
-                        history.pushState({loc:NEXT_LEVEL}, "");
                     }, 100);
 
                 };    
@@ -427,11 +426,8 @@ function initLevel() {
                 
                 domainList[0].onclick = () => {
                     setTimeout( () => {
-
                         Router("index.html");
-                        history.pushState({loc:"index.html"}, "");
                     }, 100);
-
                 };
             }
             horizontalScroll(level.querySelector("#domain"), 7);
@@ -797,8 +793,8 @@ function initLevel() {
     });
 
     // given the id of a cell, emphasize borders of cells in that row and column
-    function crosshairs(id) {
-        if (!CROSSHAIRS_TOGGLE.checked) return;
+    function crosshairs(id, flush=false) {
+        if (!CROSSHAIRS_TOGGLE.checked && !flush) return;
         for (let i = 0; i < cellList.length; i++) {
             // check that the cell matches in row or column
             if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
@@ -1088,7 +1084,6 @@ function initLevel() {
             window.open("index.html", '_blank').focus();
         } else {
             Router("index.html");
-            history.pushState({loc:"index.html"}, "");
         }
     }
     function fadeInfo() {
@@ -1108,4 +1103,6 @@ function initLevel() {
     info.addEventListener("scroll", () => {
         fadeInfo();
     });
+
+    level.querySelector("#grid").addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));
 }

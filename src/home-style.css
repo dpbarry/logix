@@ -210,7 +210,7 @@ html {
   max-width: 295px;
   padding: 15px;
 
-  /* Also modified for mobile view */
+  /* Also modified for mobile view below!! */
   transition: rotate 0.15s ease-out, transform .1s ease-out, filter .1s ease-out, opacity .1s ease-out;
 
   &:is(#training) {
@@ -448,11 +448,11 @@ html {
 
   .card {
     scroll-snap-align: center;
-    transition: rotate 0.15s ease-out, transform .1s ease-out, filter .1s ease-out, box-shadow 0.1s, opacity .1s ease-out;
+    transition: rotate 0.15s ease-out, transform .1s ease-out, filter .1s ease-out, box-shadow 0.2s, opacity .2s ease-out;
 
     &:is(#training) {
       /* Add max-height */
-      transition: rotate 0.15s ease-out, transform .1s ease-out, filter .1s ease-out, box-shadow 0.1s, opacity .1s ease-out, max-height 0.15s;
+      transition: rotate 0.15s ease-out, transform .1s ease-out, filter .1s ease-out, box-shadow 0.2s, opacity .2s ease-out, max-height 0.15s;
     }
   }
 

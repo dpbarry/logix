@@ -266,11 +266,28 @@ function setupHome(page) {
         if (supportsSnapChanging && mobileView && !debounceMobile) {
             swiping = true;
             carousel.style.scrollSnapType = "x mandatory";
-            carousel.scrollBy(0,0)
+            carousel.scrollBy(0,0);
             return;
         }
     }
 
+    function getUpcard() {
+        const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+
+        let closestCard = null;
+        let closestDistance = Infinity;
+
+        cardsArray.forEach(card => {
+            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+            const distance = Math.abs(carouselCenter - cardCenter);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestCard = card;
+            }
+        });
+        return closestCard;
+    }
     
     carousel.addEventListener('wheel', function (event) {
         if (debounceScroll || debounceMobile || swiping) return;
@@ -482,8 +499,8 @@ function setupHome(page) {
         
     }
 
-    function mobileScrollTo(card) {
-        if (debounceMobile || swiping) return;
+    function mobileScrollTo(card, priorityAccess=false) {
+        if (!priorityAccess && (debounceMobile || swiping)) return;
         let destination = cardsArray.indexOf(card);
 
         if (destination === frontCard) return;
@@ -517,13 +534,17 @@ function setupHome(page) {
         carousel.onscrollsnapchanging = event => {
             frontCard = cardsArray.indexOf(event.snapTargetInline);
             updateMobile();
-            
         };
         carousel.onscrollend = event => {
             swiping = false;
 
             carousel.style.scrollSnapType = "";
             carousel.onscroll = "";
+            if (frontCard !== cardsArray.indexOf(getUpcard())) {
+                mobileScrollTo(getUpcard(), true);
+            }
+            
+
         };
     } else {
         carousel.style.touchAction = "none";

@@ -118,6 +118,13 @@ const THEMES = document.querySelectorAll(".theme");
 
 const ROOT = document.documentElement;
 
+CROSSHAIRS_TOGGLE.addEventListener("change", () => {
+    if (!CROSSHAIRS_TOGGLE.checked) {
+        let grid = document.querySelector("#grid");
+        if (!grid) return;
+        grid.dispatchEvent(new Event("clearcrosshairs"));
+    }
+})
 THEMES.forEach( t => {
     t.addEventListener("change", () => {
         updateTheme();

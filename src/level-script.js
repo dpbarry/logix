@@ -133,6 +133,7 @@ function initLevel() {
         }
     });
 
+    
 
     if (NEXT_LEVEL === "T1-2") {
         setTimeout(()=> {
@@ -792,8 +793,8 @@ function initLevel() {
     });
 
     // given the id of a cell, emphasize borders of cells in that row and column
-    function crosshairs(id) {
-        if (!CROSSHAIRS_TOGGLE.checked) return;
+    function crosshairs(id, flush=false) {
+        if (!CROSSHAIRS_TOGGLE.checked && !flush) return;
         for (let i = 0; i < cellList.length; i++) {
             // check that the cell matches in row or column
             if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
@@ -1102,4 +1103,6 @@ function initLevel() {
     info.addEventListener("scroll", () => {
         fadeInfo();
     });
+
+    level.querySelector("#grid").addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));
 }

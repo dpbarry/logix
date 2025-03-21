@@ -185,7 +185,6 @@
      
      const Router = (path, pop=false) => {
        if (moving) return;
-       console.log(path);
        if (!pop) {
          history.pushState({loc:path}, "");
        }
@@ -207,7 +206,6 @@
 
      function delayedPageChange() {
        Router(storedState, true);
-       console.log(storedState);
        storedState = null;
        window.removeEventListener("donemoving", delayedPageChange);
      }

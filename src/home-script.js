@@ -259,11 +259,14 @@ function setupHome(page) {
     carousel.onscroll = mobileSwipe;
 
     function mobileSwipe() {
-        if (supportsSnapChanging && mobileView && !debounceMobile) {
+        if ((supportsSnapChanging && mobileView && !debounceMobile) || swiping) {
+            clearTimeout(bufferSwipe);
             swiping = true;
             carousel.style.scrollSnapType = "x mandatory";
             carousel.scrollBy(0,0);
             return;
+        } else {
+            carousel.style.scrollSnapType = "none";
         }
     }
 
@@ -295,10 +298,9 @@ function setupHome(page) {
             swiping = true;
 
             carousel.style.scrollSnapType = "x mandatory";
-            carousel.scrollBy(0,0)
+            carousel.scrollBy(0,0);
             return;
         }
-        carousel.onscroll = "";
 
         let parentList = event.target.closest(".campaignlist, #wrap_stages");
         if (parentList && event.deltaY && parentList.style.overflowY === "auto") return;
@@ -432,7 +434,6 @@ function setupHome(page) {
         holding = false;
 
         carousel.classList.remove("grabbing");
-        carousel.onscroll = "";
         
         if (isDragging) {
             setTimeout( () => {
@@ -444,15 +445,12 @@ function setupHome(page) {
     document.addEventListener('touchend', (e) => {
 
         if (!cardView && !mobileView) return;
-
         holding = false;
-        carousel.onscroll = "";
         
         carousel.classList.remove("grabbing");
         if (isDragging) {
             setTimeout( () => {
                 isDragging = false;
-
             }, 5);
         }
     });
@@ -464,7 +462,6 @@ function setupHome(page) {
         carousel.classList.add("noswipe");
         momentum = 0;
         carousel.addEventListener("scrollend", rebounceMobile);
-        carousel.onscroll = "";
 
         let amt = right ? cardWidth + 20 : -cardWidth - 20;
         let capture = carousel.scrollLeft;
@@ -482,12 +479,10 @@ function setupHome(page) {
                 updateMobile();
             } else {carousel.dispatchEvent(new Event("scrollend")); }
         }, 100);
-
-        
     }
 
     function rebounceMobile() {
-        debounceMobile--;
+        setTimeout(()=>debounceMobile--, 100);
 
         carousel.classList.remove("noswipe");
 
@@ -497,6 +492,7 @@ function setupHome(page) {
 
     function mobileScrollTo(card, priorityAccess=false) {
         if (!priorityAccess && (debounceMobile || swiping)) return;
+
         let destination = cardsArray.indexOf(card);
 
         if (destination === frontCard) return;
@@ -505,7 +501,6 @@ function setupHome(page) {
         carousel.classList.add("noswipe");
         momentum = 0;
         carousel.addEventListener("scrollend", rebounceMobile);
-        carousel.onscroll = "";
 
 
         let amt = (destination - frontCard) * (cardWidth + 20);
@@ -532,21 +527,18 @@ function setupHome(page) {
             updateMobile();
         };
         carousel.onscrollend = event => {
-            swiping = false;
-
-            carousel.style.scrollSnapType = "";
-            carousel.onscroll = "";
-            if (frontCard !== cardsArray.indexOf(getUpcard())) {
-                mobileScrollTo(getUpcard(), true);
-            }
-            
-
+            bufferSwipe = setTimeout(() => {
+                swiping = false;
+                frontCard = cardsArray.indexOf(getUpcard());
+                updateMobile();
+            }, 100);
         };
     } else {
         carousel.style.touchAction = "none";
         carousel.style.overflow = "hidden";
     }
 
+    let bufferSwipe;
     
     const leftnav = page.querySelector("#leftnav");
     const rightnav = page.querySelector("#rightnav");

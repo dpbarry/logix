@@ -470,12 +470,11 @@ function setupHome(page) {
             left: amt,
             behavior: "smooth",
         });
-
+        
         setTimeout( () => {
             if (capture !== carousel.scrollLeft) {
                 frontCard = right ? (frontCard === 3 ? 3 : ++frontCard)
                     : (frontCard === 0 ? 0 : --frontCard);
-                
                 updateMobile();
             } else {carousel.dispatchEvent(new Event("scrollend")); }
         }, 100);
@@ -523,6 +522,7 @@ function setupHome(page) {
 
     if (supportsSnapChanging) {
         carousel.onscrollsnapchanging = event => {
+            if (!swiping) return;
             frontCard = cardsArray.indexOf(event.snapTargetInline);
             updateMobile();
         };
@@ -530,7 +530,9 @@ function setupHome(page) {
             bufferSwipe = setTimeout(() => {
                 swiping = false;
                 frontCard = cardsArray.indexOf(getUpcard());
+
                 updateMobile();
+                
             }, 100);
         };
     } else {

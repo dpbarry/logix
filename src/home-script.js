@@ -264,6 +264,8 @@ function setupHome(page) {
             swiping = true;
             carousel.style.scrollSnapType = "x mandatory";
             carousel.scrollBy(0,0);
+            frontCard = cardsArray.indexOf(getUpcard());
+            updateMobile();
             return;
         } else {
             carousel.style.scrollSnapType = "none";
@@ -521,20 +523,17 @@ function setupHome(page) {
     }
 
     if (supportsSnapChanging) {
-        carousel.onscrollsnapchanging = event => {
-            if (!swiping) return;
-            frontCard = cardsArray.indexOf(event.snapTargetInline);
-            updateMobile();
-        };
+
         carousel.onscrollend = event => {
-            bufferSwipe = setTimeout(() => {
+            setTimeout(()=> {
                 swiping = false;
                 frontCard = cardsArray.indexOf(getUpcard());
 
                 updateMobile();
                 
-            }, 100);
+            }, 50);
         };
+        
     } else {
         carousel.style.touchAction = "none";
         carousel.style.overflow = "hidden";

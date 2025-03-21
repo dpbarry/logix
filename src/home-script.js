@@ -1,5 +1,4 @@
 let cardWidth;
-let supportsSnapChanging = ("onscrollsnapchanging" in window);
 
 function setupHome(page) {
     const stages = page.querySelectorAll(".trainstage");
@@ -9,13 +8,9 @@ function setupHome(page) {
     const scrollContainers = page.querySelectorAll("#wrap_stages, .campaignlist");
     let carousel = page.querySelector("#wrap_cards");
 
-    let cardView = false;
-    let mobileView = false;
-    let debounceScroll = 0;
-
     let cards = page.querySelectorAll(".card");
     let cardsArray = [...cards];
-    let frontCard = cardsArray.indexOf(page.querySelector(".upcard"));
+    let upcard = page.querySelector(".upcard");
 
     
     page.querySelectorAll(".card li").forEach( (li) => {
@@ -59,12 +54,13 @@ function setupHome(page) {
         
     }
 
-    let block = false;
+    // update Training scroll after height change from (un)dropping stage
+    let throttleStageListener = false;
     wrapStages.addEventListener("animationend", (e) => {
-        if (block) return;
-        block = true;
+        if (throttleStageListener) return;
+        throttleStageListener = true;
         verticalScroll(wrapStages, vh(70) >= 450 ? 100 : 1);
-        setTimeout( () => {block = false}, 10);
+        setTimeout( () => {throttleStageListener = false}, 10);
     });
 
     stages.forEach( (stage) => {
@@ -78,8 +74,6 @@ function setupHome(page) {
     page.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
         
         b.onclick = function (e) {
-            // e.target.classList.add("activated");
-
             if ((mobileView || cardView) && !(e.target.closest(".card").classList.contains("upcard"))) return;
             
             setTimeout( () => {
@@ -123,8 +117,69 @@ function setupHome(page) {
 
     page.querySelectorAll(".locked").forEach(l => l.onfocus = () => {l.blur();});
 
-    function updateCardStagger(upcard) {
-        
+
+
+    
+    // smaller laptop screens, stacked effect
+    let cardView = false;
+    // carousel effect
+    let mobileView = false;
+
+    // (default for desktop: all cards visible)
+    
+
+    let debounceScroll = 0;
+    let debounceMobile = 0;
+
+    if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
+        cardView = true;
+        updateCardStagger();
+    } else if (window.matchMedia("(width <= 600px)").matches) {
+        mobileView = true;
+    }
+
+    window.onresize = () => {
+        scrollFadeCards();
+
+        if (window.matchMedia("(width >= 1450px)").matches) {
+            mobileView = false;
+            if (cardView) {
+                cardView = false;
+                // revert overwritten styles
+                cards.forEach( c => {
+                    c.style.transform = "scale(1)";
+                    c.style.filter = "brightness(1)"
+                    setTimeout( () => {
+                        c.style.transform = "";
+                        c.style.filter = "";
+                    }, 100);
+                });
+            }
+        } else if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
+            cardView = true;
+            mobileView = false;
+            updateCardStagger(); 
+        } else {
+            mobileView = true;
+            if (cardView) {
+                // revert overwritten styles
+                cardView = false;
+                cards.forEach( c => {
+                    c.style.transform = "scale(1)";
+                    c.style.filter = "brightness(1)"
+                    setTimeout( () => {
+                        c.style.transform = "";
+                        c.style.filter = "";
+                    }, 100);
+                });
+            }
+            mobileScrollTo(upcard);
+        }
+    };
+
+
+    // card view - style cards according to focused one
+    function updateCardStagger() {
         let i = 0;
         let j = 4;
         let hitTop = false;
@@ -164,80 +219,20 @@ function setupHome(page) {
             }
             cur.style.filter = `${shadow} brightness(${brightFactor})`
         }
-
     }
 
 
 
-    if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
-        cardView = true;
-        updateCardStagger(page.querySelector(".upcard"));
-    } else if (window.matchMedia("(width <= 600px)").matches) {
-        mobileView = true;
-        cardView = false;
 
-        updateMobile();
-    }
-
-    window.onresize = () => {
-        scrollFadeCards();
-
-        let upcard = page.querySelector(".upcard");
-
-        if (window.matchMedia("(width >= 1450px)").matches) {
-            
-            if (cardView) {
-
-                cardView = false;
-                cards.forEach( c => {
-                    c.style.transform = "scale(1)";
-                    c.style.filter = "brightness(1)"
-                    setTimeout( () => {
-                        c.style.transform = "";
-                        c.style.filter = "";
-                    }, 100);
-                });
-            }
-            mobileView = false;
-        } else if (window.matchMedia("(width < 1450px) and (width > 600px)").matches) {
-            if (!upcard) {
-                trainingCard.classList.add("upcard");
-                upcard = trainingCard;
-            }
-            
-            updateCardStagger(upcard);
-            cardView = true;
-            mobileView = false;
-        } else {
-            mobileView = true;
-            if (cardView) {
-                cardView = false;
-                cards.forEach( c => {
-                    c.style.transform = "scale(1)";
-                    c.style.filter = "brightness(1)"
-                    setTimeout( () => {
-                        c.style.transform = "";
-                        c.style.filter = "";
-                    }, 100);
-                });
-            }
-            mobileScrollTo(page.querySelector(".upcard") || trainingCard);
-        }
-    };
+    
 
 
     cards.forEach( (c) => {
         c.onclick = () => {
-            if (isDragging) return;
-            
-            if (mobileView) {
+            if (mobileView) 
                 mobileScrollTo(c);
-            }
-            if (!cardView) return;
-            
-            isDragging = false;
-
-            scrollCardsTo(c);
+            else if (cardView)
+                scrollCardsTo(c);
         };
         
         c.addEventListener("mouseover", (e) => {
@@ -259,20 +254,17 @@ function setupHome(page) {
     carousel.onscroll = mobileSwipe;
 
     function mobileSwipe() {
-        if ((supportsSnapChanging && mobileView && !debounceMobile) || swiping) {
-            clearTimeout(bufferSwipe);
+        if (mobileView && !debounceMobile) {
             swiping = true;
             carousel.style.scrollSnapType = "x mandatory";
-            carousel.scrollBy(0,0);
-            frontCard = cardsArray.indexOf(getUpcard());
-            updateMobile();
-            return;
         } else {
+            swiping = false;
             carousel.style.scrollSnapType = "none";
         }
+        updateMobile();             
     }
 
-    function getUpcard() {
+    function getCenteredCard() {
         const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
 
         let closestCard = null;
@@ -289,21 +281,19 @@ function setupHome(page) {
         });
         return closestCard;
     }
+
     
     carousel.addEventListener('wheel', function (event) {
         if (debounceScroll || debounceMobile || swiping) return;
         if (!cardView && !mobileView) return;
 
-        if (supportsSnapChanging && mobileView && event.deltaX && !carousel.classList.contains("noswipe")) {
+        if (mobileView && event.deltaX && !carousel.classList.contains("noswipe")) {
             if (extremeCard.classList.contains("upcard") && event.deltaX >= 0) return;
             if (trainingCard.classList.contains("upcard") && event.deltaX <= 0) return;
             swiping = true;
-
             carousel.style.scrollSnapType = "x mandatory";
-            carousel.scrollBy(0,0);
             return;
         }
-
         let parentList = event.target.closest(".campaignlist, #wrap_stages");
         if (parentList && event.deltaY && parentList.style.overflowY === "auto") return;
 
@@ -332,7 +322,7 @@ function setupHome(page) {
     function scrollCards (right) {
         if (!cardView || debounceScroll) return;
         momentum = 0;
-        let sibling = right ? page.querySelector(".upcard").nextElementSibling : page.querySelector(".upcard").previousElementSibling;
+        let sibling = right ? upcard.nextElementSibling : upcard.previousElementSibling;
         if (!sibling) return;
 
         debounceScroll++;
@@ -345,12 +335,13 @@ function setupHome(page) {
         });
         
         sibling.classList.add("upcard");
-        updateCardStagger(sibling);
+        upcard = sibling;
+        updateCardStagger();
         debounceScroll--;
     }
 
     function scrollCardsTo (c) {
-        if (!cardView) return;
+        if (!cardView || debounceScroll) return;
         if (c.classList.contains("upcard")) return;
         cards.forEach( (x) => {
             if (x.classList.contains("upcard")) {
@@ -360,104 +351,28 @@ function setupHome(page) {
         });
         
         c.classList.add("upcard");
-        updateCardStagger(c);
+        upcard = c;
+        updateCardStagger();
 
     }
-
-    let isDragging = false;
-    let startX = 0;
-    let initialLeft = 0;
-
-    let holding = false;
-    carousel.parentNode.addEventListener('pointerdown', (e) => {
-        if (!cardView && !mobileView || e.target.closest("#navbar")) return;
-        event.preventDefault();
-
-        holding = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        if (!e.target.matches(".level-button, .trainstage")) { carousel.classList.add("grabbing");
-                                                             }
-    });
-
-
-    document.addEventListener('pointermove', (e) => {
-        if (!cardView && !mobileView) return;
-        if (!holding) return;
-        if (touchMode && supportsSnapChanging && mobileView) return;
-        carousel.classList.add("grabbing");
-
-        const deltaY = startY - e.clientY;
-        const cont = e.target.closest(".campaignlist, #wrap_stages");
-        if (cont?.style.overflowY && cont.style.overflowY !== "visible" && deltaY) {
-            cont.scrollBy(0, deltaY);
-            startY = e.clientY;
-            return;
-        }
-        const deltaX =  startX - e.clientX;
-        if (deltaX < 0 && momentum > 0 || deltaX > 0 && momentum < 0) momentum = 0;
-
-        momentum += (deltaX / 62);
-
-
-
-        if (momentum < -10 && trainingCard.classList.contains("upcard")
-            || momentum > 10 && extremeCard.classList.contains("upcard")) {
-            momentum = 0;
-            startX = e.clientX;
-        } else if (momentum > 10) {
-            isDragging = true;
-            if (mobileView) mobileScroll(true);
-            else scrollCards(true);
-            startX = e.clientX;
-        } else if (momentum < -10) {
-            isDragging = true;
-
-            if (mobileView) mobileScroll(false);
-            else scrollCards(false);
-            startX = e.clientX;
-        }
-    });
 
     touchMode = mobileView;
     document.onpointerdown = (e) => {
         if (e.pointerType !== "mouse" && !e.target.closest("#navbar")) {
             touchMode = true;
-            carousel.onscroll = mobileSwipe;
         } else {
             touchMode = false;
             
         }
     };
 
-    document.addEventListener('pointerup', (e) => {
-        if (!cardView && !mobileView) return;
 
-        holding = false;
+    function updateMobile() {
+        upcard = getCenteredCard();
+        cardsArray.forEach( c => { if (c !== upcard) c.classList.remove("upcard")});
+        upcard.classList.add("upcard");
+    }
 
-        carousel.classList.remove("grabbing");
-        
-        if (isDragging) {
-            setTimeout( () => {
-                isDragging = false;
-            }, 5);
-        }
-    });
-
-    document.addEventListener('touchend', (e) => {
-
-        if (!cardView && !mobileView) return;
-        holding = false;
-        
-        carousel.classList.remove("grabbing");
-        if (isDragging) {
-            setTimeout( () => {
-                isDragging = false;
-            }, 5);
-        }
-    });
-
-    let debounceMobile = 0;
     function mobileScroll(right) {
         if (debounceMobile || swiping) return;
         debounceMobile++;
@@ -472,31 +387,21 @@ function setupHome(page) {
             left: amt,
             behavior: "smooth",
         });
+
         
-        setTimeout( () => {
-            if (capture !== carousel.scrollLeft) {
-                frontCard = right ? (frontCard === 3 ? 3 : ++frontCard)
-                    : (frontCard === 0 ? 0 : --frontCard);
-                updateMobile();
-            } else {carousel.dispatchEvent(new Event("scrollend")); }
-        }, 100);
     }
 
     function rebounceMobile() {
-        setTimeout(()=>debounceMobile--, 100);
-
+        debounceMobile--;
+        
         carousel.classList.remove("noswipe");
 
         carousel.removeEventListener("scrollend", rebounceMobile);
-        
     }
 
-    function mobileScrollTo(card, priorityAccess=false) {
-        if (!priorityAccess && (debounceMobile || swiping)) return;
-
-        let destination = cardsArray.indexOf(card);
-
-        if (destination === frontCard) return;
+    function mobileScrollTo(destination) {
+        if (debounceMobile || swiping) return;
+        if (destination === getCenteredCard()) return;
 
         debounceMobile++;
         carousel.classList.add("noswipe");
@@ -504,42 +409,26 @@ function setupHome(page) {
         carousel.addEventListener("scrollend", rebounceMobile);
 
 
-        let amt = (destination - frontCard) * (cardWidth + 20);
+        let diff = cardsArray.indexOf(destination) - cardsArray.indexOf(getCenteredCard());
+        let amt = diff * (cardWidth + 20);
         carousel.scrollBy({
             top: 0,
             left: amt,
             behavior: "smooth",
         });
-        frontCard = destination;
         updateMobile();
     }
 
-    function updateMobile() {
-        cardsArray.map( (c) => {
-            if (c===cardsArray[frontCard])
-                c.classList.add("upcard");
-            else
-                c.classList.remove("upcard")});
-    }
-
-    if (supportsSnapChanging) {
-
-        carousel.onscrollend = event => {
+    carousel.onscrollend = event => {
+        if (swiping) {
+            swiping = false;
             setTimeout(()=> {
                 swiping = false;
-                frontCard = cardsArray.indexOf(getUpcard());
-
-                updateMobile();
-                
-            }, 50);
-        };
-        
-    } else {
-        carousel.style.touchAction = "none";
-        carousel.style.overflow = "hidden";
-    }
-
-    let bufferSwipe;
+                updateMobile();             
+            }, 500);
+        }
+    };
+    
     
     const leftnav = page.querySelector("#leftnav");
     const rightnav = page.querySelector("#rightnav");

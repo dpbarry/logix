@@ -26,7 +26,7 @@
        let i = 0;
        for (const file of files) {
          i+=2;
-         if (i === 10) {await pause(1000); console.log(123); i = 0;}
+         if (i === 10) {await pause(1000); i = 0;}
          let fileContent = await file.text();
          parseDataFile(fileContent);
        }

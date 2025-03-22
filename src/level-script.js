@@ -22,7 +22,7 @@ function initLevel() {
     const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
     // fetch all inputs and cells
-    const cellList = level.querySelectorAll('#grid span:not(.x_axis, .y_axis)');
+    const cellList = level.querySelectorAll('#g1 span:not(.x_axis, .y_axis)');
     const domainList = domain.querySelectorAll('button');
     const entryList = Array.from(level.querySelectorAll('.entry')).map(x => x.firstChild);
 
@@ -398,8 +398,10 @@ function initLevel() {
         }
     }
 
+    
+    
     let spanCount = 1;
-    level.querySelectorAll("#grid span").forEach(p => {
+    level.querySelectorAll("#g1 span").forEach(p => {
         p.style.animationDelay = `${spanCount++ * 175}ms`;
     })
 
@@ -407,7 +409,7 @@ function initLevel() {
         crosshairs("not-a-cell");
         highlight("not-a-cell");
 
-        level.querySelector("#grid").classList.add("correct");
+        level.querySelector("#g1").classList.add("correct");
 
         tabdCells[0][0].addEventListener("animationend", () => {
             domain.classList.add("correct");
@@ -526,7 +528,7 @@ function initLevel() {
             cellActive = false;
 
             if (STICKY_TOGGLE.checked
-                && !(document.activeElement.matches("#grid span"))
+                && !(document.activeElement.matches(".grid span"))
                 && document.activeElement !== document.body
                 && !tabbed
                 || toolClicked) {
@@ -844,7 +846,7 @@ function initLevel() {
     }
 
 
-    level.querySelectorAll('#grid span:not(.x_axis, .y_axis)').forEach(element => {
+    level.querySelectorAll('#g1 span:not(.x_axis, .y_axis)').forEach(element => {
         element.addEventListener("pointerdown",  (event) => {
             if (!domainActive) {
                 spawnRipple(event, element);
@@ -1063,7 +1065,7 @@ function initLevel() {
         }
 
         let button = (Array.from(domainList).find(x => x.firstChild.textContent.trim() === e.key));
-        if (button  && !document.activeElement.matches("#grid span")) {
+        if (button  && !document.activeElement.matches(".grid span")) {
             button.dispatchEvent(new PointerEvent("pointerdown"));
 
             setTimeout( () => {
@@ -1104,5 +1106,5 @@ function initLevel() {
         fadeInfo();
     });
 
-    level.querySelector("#grid").addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));
+    level.querySelector("#g1").addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));
 }

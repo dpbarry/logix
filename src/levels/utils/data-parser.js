@@ -89,7 +89,9 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
         page.getElementById("x-axis").appendChild(num);
     }
 
-    
+    let initialGrid = document.createElement("div");
+    initialGrid.classList.add("grid");
+    initialGrid.id = "g1";
     given.forEach( (cell) => {
         let newCell = document.createElement("span");
         let p = document.createElement("p");
@@ -98,9 +100,9 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
             newCell.classList.add("given");
         }
         newCell.appendChild(p);
-        page.getElementById("grid").appendChild(newCell);
+        initialGrid.appendChild(newCell);
     });
-
+    page.getElementById("grid_carousel").appendChild(initialGrid);
 
     domain.forEach( (n) => {
         let button = document.createElement("button");

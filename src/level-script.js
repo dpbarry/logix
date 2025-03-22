@@ -13,7 +13,8 @@ function initLevel() {
 
     level.style.setProperty('--rows', ROWS);
     level.style.setProperty('--cols', COLS);
-
+    
+    alignGrid();
 
     MENU_TOGGLE = level.querySelector("#menu_checkbox");
     const info = level.querySelector("#level_info");
@@ -21,78 +22,188 @@ function initLevel() {
 
     const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
-    // fetch all inputs and cells
-    const cellList = level.querySelectorAll('#g1 span:not(.x_axis, .y_axis)');
+    let currentGrid = 1;
+
     const domainList = domain.querySelectorAll('button');
     const entryList = Array.from(level.querySelectorAll('.entry')).map(x => x.firstChild);
+    const MAXLENGTH = Math.max(...DOMAIN.map(num => num.toString().length));    
 
-    const MAXLENGTH = Math.max(...DOMAIN.map(num => num.toString().length));
-    let undoStack = [];
-    let redoStack = [];
+    let cellActive = false;
+    let domainActive = false;
+    let candidateMode = false;
 
     const undoButton = level.querySelector("#undo");
     const redoButton = level.querySelector("#redo");
     const pencilButton = level.querySelector("#pencil");
+    const addGridButton = level.querySelector("#nextgrid");
+    const gridCarousel = level.querySelector("#grid_carousel");
+    const cellList = () => gridStorage.get(currentGrid).get("cells");
+    const values = () => gridStorage.get(currentGrid).get("values");
+    const undoStack = () => gridStorage.get(currentGrid).get("undo");
+    const redoStack = () => gridStorage.get(currentGrid).get("redo");
+    
+    const gridStorage = new Map();
+    addGrid(1);
 
-    let values = new Map();
+    function addGrid(gridNum, dupe=false) {
+        let newGrid = new Map();
+        gridStorage.set(gridNum, newGrid);
+        newGrid.set("cells", level.querySelectorAll(`#g${gridNum} span`));
+        newGrid.set("values", new Map());
+        newGrid.set("undo", []);
+        newGrid.set("redo", []);
 
+        initCells(newGrid, dupe ? gridStorage.get(currentGrid - 1).get("values") : null);             
+    }
+
+    function initCells(grid, dupeValues) {        
+        // id cells with their coordinates
+        cells = grid.get("cells");
+        vals = grid.get("values");
+        for (let i = 0; i < ROWS; i++) {
+            for (let j = 0; j < COLS; j++) {
+                const index = i * COLS + j;
+                cells[index].id = `c${i+1}-${j+1}`;
+            }
+        }
+
+        let spanCount = 1;
+        cells.forEach((cell) => {
+            vals.set(cell, null);
+            cell.style.animationDelay = `${spanCount++ * 175}ms`;
+
+            if (cell.classList.contains("given")) return;
+
+            // Allow kid-gloved typing
+
+            cell.tabIndex = 0;        
+            cell.addEventListener("keydown", inp);
+
+            cell.addEventListener("mouseover", noticeEntry);
+            cell.addEventListener("mouseleave", removeNoticeEntry);
+
+            cell.onfocus = lockCell;
+            cell.onblur = fillCell;
+
+            cell.addEventListener("pointerdown",  (event) => {
+                if (!domainActive) {
+                    spawnRipple(event, cell);
+                    cell.focus({preventScroll: true});
+                }
+            });
+        });
+    }
+
+    entryList.forEach( (entry) => {
+        entry.addEventListener("mouseover", noticeCell);
+        entry.addEventListener("mouseleave", removeNoticeCell);
+        entry.addEventListener("pointerdown", jumpToCell);         
+    });
+
+    addGridButton.onclick = () => createNewGrid(false);
+
+
+    let holdTimer;
+    addGridButton.addEventListener("pointerdown", startPress);
+    addGridButton.addEventListener("pointerup", endPress);
+
+    function startPress() {
+        holdTimer = setTimeout(() => {
+            createNewGrid(true);
+            addGridButton.onclick = "";
+            function ignoreUp() {
+                setTimeout( () => {
+                    addGridButton.onclick = () => createNewGrid(false);
+                    document.removeEventListener("pointerup", ignoreUp);
+                    
+                }, 50);
+            }
+            document.addEventListener("pointerup", ignoreUp);
+        }, 600);
+    }
+    function endPress() {
+        clearTimeout(holdTimer);
+    }
+    function createNewGrid(dupe=false) {
+        let newGrid = document.createElement("div");
+        let gridNum = currentGrid;
+        
+        newGrid.classList.add("grid");
+        gridStorage.get(gridNum).get("cells").forEach( cell => {
+            let newSpan = document.createElement("span");
+            let newP = document.createElement("p");
+
+            if (cell.classList.contains("given")) {
+                newP.innerText = cell.firstChild.innerText.trim();
+                newSpan.classList.add("given");
+            } else if (dupe) {
+                newP.innerText = cell.firstChild.innerText.trim();
+            }
+
+            newSpan.appendChild(newP);
+            newGrid.appendChild(newSpan);
+        });
+        newGrid.id = "g" + ++gridNum;
+        if (level.querySelector("#"+newGrid.id)) {
+            for (let i = gridCarousel.children.length; i >= gridNum; i--) {
+                level.querySelector("#g"+i).id = "g"+(i+1);
+                gridStorage.set(i+1, gridStorage.get(i));
+            }
+        }
+        gridCarousel.insertBefore(newGrid, level.querySelector("#g" + (gridNum+1)));
+
+        addGrid(gridNum);
+
+        gridCarousel.scrollBy(
+            {
+                top: 0,
+                left: newGrid.clientWidth,
+                behavior: "smooth"
+            }
+        );
+
+        
+
+        setTimeout( () => noGridUpdate = false, 1000);
+        newGrid.addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));
+        
+    };
+
+    let noGridUpdate = false;
+
+    gridCarousel.onscroll = () => {
+        let curGrid = getCenteredElement(gridCarousel);
+        [...gridCarousel.children].forEach(g => {
+            if (g === curGrid) {
+                [...curGrid.children].forEach(span => {
+                    if (span.classList.contains("given")) return;
+                    span.tabIndex = 0;
+                });
+            } else {
+                [...curGrid.children].forEach(span => {
+                    span.tabIndex = -1;
+                });
+            }
+        });
+        if (!noGridUpdate) {
+            currentGrid = parseInt(curGrid.id.substring(1));
+        }
+
+        if (undoStack().length) {
+            undoButton.classList.add("usable");
+        } else {
+            undoButton.classList.remove("usable");
+        }
+        if (redoStack().length) {
+            redoButton.classList.add("usable");
+        } else {
+            redoButton.classList.remove("usable");
+        }
+    };
+    
+    
     tabMenu();
     
-    let cellActive = false;
-    let domainActive = false;
-    
-    let candidateMode = false;
-
-
-    const max = Math.max(ROWS, COLS);
-    if (max > 3) {
-        level.style.setProperty('--fontFactor', 1 + (3.25 - max) / max);
-        level.style.setProperty('--lanscapeFontFactor', 1 + (3.25 - max) / max);
-    } else if (max < 3) {
-        level.style.setProperty('--fontFactor', 1);
-        level.style.setProperty('--landscapeFontFactor', 1);
-    } else {
-        level.style.setProperty('--fontFactor', 1);
-        level.style.setProperty('--landscapeFontFactor', 1);
-    }
-    level.style.setProperty('--boostProps', 1);
-    
-    if (ROWS > COLS) {
-        level.style.setProperty('--heightFactor', 1);
-        level.style.setProperty('--widthFactor', COLS / ROWS);
-        level.style.setProperty('--landscapeHeightFactor', 1);
-        level.style.setProperty('--landscapeWidthFactor', COLS / ROWS);
-    } else if (COLS > ROWS) {
-        level.style.setProperty('--heightFactor', (ROWS / COLS));
-        level.style.setProperty('--widthFactor', 1);
-        if (ROWS < 3) {
-            level.style.setProperty('--boostProps', 1.075);
-
-            level.style.setProperty('--landscapeHeightFactor', 1.2 * (ROWS / COLS));
-            level.style.setProperty('--landscapeWidthFactor', 1.2);
-            level.style.setProperty('--landscapeFontFactor', 1);
-        } else {
-            level.style.setProperty('--landscapeHeightFactor', (ROWS / COLS));
-            level.style.setProperty('--landscapeWidthFactor', 1);
-        }
-    } else {
-        if (ROWS === 2) {
-            level.style.setProperty('--heightFactor', 0.65);
-            level.style.setProperty('--widthFactor', 0.65);
-            level.style.setProperty('--landscapeHeightFactor', 0.65);
-            level.style.setProperty('--landscapeWidthFactor', 0.65);
-        } else {
-            level.style.setProperty('--heightFactor', 1);
-            level.style.setProperty('--widthFactor', 1);
-            level.style.setProperty('--landscapeHeightFactor', 1);
-            level.style.setProperty('--landscapeWidthFactor', 1);
-        }
-
-    }
-    
-    
-    
-
     MENU_TOGGLE.addEventListener("change", (e) => {
         tabMenu();
     });
@@ -116,7 +227,7 @@ function initLevel() {
             }, 10);
         } else {
             setTimeout( () => {
-                Array.from(cellList).find( x => x.tabIndex === 0).focus({preventScroll: true});
+                [...cellList()].find( x => x.tabIndex === 0).focus({preventScroll: true});
             }, 10);
         }
     });
@@ -124,11 +235,11 @@ function initLevel() {
     level.querySelector("#backtab_catch").addEventListener("focus", (e) => {
         if (!e.relatedTarget) {
             setTimeout( () => {
-                Array.from(cellList).find( x => x.tabIndex === 0).focus({preventScroll: true});
+                [...cellList()].find( x => x.tabIndex === 0).focus({preventScroll: true});
             }, 10);
         } else {
             setTimeout( () => {
-                Array.from(cellList).reverse().find( x => x.tabIndex === 0).focus({preventScroll: true});
+                [...cellList()].reverse().find( x => x.tabIndex === 0).focus({preventScroll: true});
             }, 10);
         }
     });
@@ -151,30 +262,6 @@ function initLevel() {
     }
     
     
-
-    tabdCells = [...Array(ROWS)].map(e => Array(COLS).fill(null));
-    
-    // id cells with their coordinates
-    for (let i = 0; i < ROWS; i++) {
-        for (let j = 0; j < COLS; j++) {
-            const index = i * COLS + j; 
-            cellList[index].id = `c${i+1}-${j+1}`;
-            tabdCells[i][j] = cellList[index]; 
-        }
-    }
-
-
-    cellList.forEach((cell) => {
-        // Set up values map
-        values.set(cell, null);
-
-        if (cell.classList.contains("given")) return;
-
-        // Allow kid-gloved typing
-
-        cell.tabIndex = 0;        
-        cell.addEventListener("keydown", inp);
-    });
 
     level.querySelector("#notes_dialog").addEventListener("open", (e) => {
         console.log(e.target)
@@ -199,7 +286,7 @@ function initLevel() {
         text.classList.remove("dismiss");
         text.innerText = text.innerText.substring(0, text.innerText.length-1);
         text.removeEventListener("animationend", endDismiss);
-        values.set(e.target.parentNode, text.innerText);
+        values().set(e.target.parentNode, text.innerText);
     }
 
     function endDismissWipe(e) {
@@ -211,7 +298,7 @@ function initLevel() {
         text.classList.remove("dismiss");
         text.innerText = "";
         text.removeEventListener("animationend", endDismissWipe);
-        values.set(e.target.parentNode, "");
+        values().set(e.target.parentNode, "");
     }
     
 
@@ -278,7 +365,7 @@ function initLevel() {
             text.addEventListener("animationend", endInsert);
         }, 1); // ensure dismiss handler has been removed
 
-        values.set(cell, value);
+        values().set(cell, value);
         checkGrid();
     }
 
@@ -292,18 +379,18 @@ function initLevel() {
 
         if (event.key === "Backspace") {
             if (opts) {
-                if (undoStack.length == 0) {
+                if (undoStack().length == 0) {
                     undoButton.classList.add("usable");
                 }
                 
                 opts.children[opts.children.length - 1].classList.add("dismiss");
                 opts.children[opts.children.length - 1].addEventListener("transitionend", endDismiss);
 
-                if (undoStack.length == 0) {
+                if (undoStack().length == 0) {
                     undoButton.classList.add("usable");
                 }
-                undoStack.push([event.target, optsCopy]);
-                redoStack = [];
+                undoStack().push([event.target, optsCopy]);
+                redoStack().length = 0;
                 redoButton.classList.remove("usable");
                 
                 
@@ -311,11 +398,11 @@ function initLevel() {
             } else if (!text) {
                 return;
             }
-            if (undoStack.length == 0) {
+            if (undoStack().length == 0) {
                 undoButton.classList.add("usable");
             }
-            undoStack.push([event.target, text]);
-            redoStack = [];
+            undoStack().push([event.target, text]);
+            redoStack().length = 0;
             redoButton.classList.remove("usable");
             
             flushInsert = new AnimationEvent("animationend");
@@ -345,17 +432,17 @@ function initLevel() {
         }
 
 
-        if (undoStack.length === 0) {
+        if (undoStack().length === 0) {
             undoButton.classList.add("usable");
         }
 
         if (opts) {
-            undoStack.push([event.target, optsCopy]);
+            undoStack().push([event.target, optsCopy]);
         } else {
-            undoStack.push([event.target, text]);
+            undoStack().push([event.target, text]);
         }
         
-        redoStack = [];
+        redoStack().length = 0;
         redoButton.classList.remove("usable");
 
 
@@ -384,7 +471,7 @@ function initLevel() {
     function checkGrid() {
         let flag = true;
 
-        values.forEach((value, key) => {
+        values().forEach((value, key) => {
             let row = parseInt(key.id.charAt(1));
             let col = parseInt(key.id.charAt(3));
             if (value != SOLUTION[row - 1][col - 1]) {
@@ -400,18 +487,15 @@ function initLevel() {
 
     
     
-    let spanCount = 1;
-    level.querySelectorAll("#g1 span").forEach(p => {
-        p.style.animationDelay = `${spanCount++ * 175}ms`;
-    })
+    
 
     function success() {
         crosshairs("not-a-cell");
         highlight("not-a-cell");
 
-        level.querySelector("#g1").classList.add("correct");
+        level.querySelector("#g" + currentGrid).classList.add("correct");
 
-        tabdCells[0][0].addEventListener("animationend", () => {
+        cellList()[0].addEventListener("animationend", () => {
             domain.classList.add("correct");
             cellActive = false;
 
@@ -453,7 +537,7 @@ function initLevel() {
         })
 
         
-        cellList.forEach((cell) => {
+        cellList().forEach((cell) => {
             cell.tabIndex = -1;
             cell.onfocus = function () {this.blur();};
             cell.onblur = "";
@@ -496,17 +580,17 @@ function initLevel() {
                     let opts = this.querySelector("ul");
 
                     
-                    if (undoStack.length === 0) {
+                    if (undoStack().length === 0) {
                         undoButton.classList.add("usable");
                     }
                     
                     if (opts) {
-                        undoStack.push([this, opts.cloneNode(true)]);
+                        undoStack().push([this, opts.cloneNode(true)]);
                     } else {
-                        undoStack.push([this, this.firstChild.innerText.trim()]);
+                        undoStack().push([this, this.firstChild.innerText.trim()]);
                     }
 
-                    redoStack = [];
+                    redoStack().length = 0;
                     redoButton.classList.remove("usable");
                     
                     insert(this, domain.textContent.trim());
@@ -558,10 +642,7 @@ function initLevel() {
         }.bind(this), 1);
     }
 
-    cellList.forEach( (cell) => {
-        cell.onfocus = lockCell;
-        cell.onblur = fillCell;
-    });
+    
 
     function highlight(id) {
         let pair = [];
@@ -673,15 +754,7 @@ function initLevel() {
         }, 0);
     }
 
-    cellList.forEach( (cell) => {
-        cell.addEventListener("mouseover", noticeEntry);
-        cell.addEventListener("mouseleave", removeNoticeEntry);
-    });
-    entryList.forEach( (entry) => {
-        entry.addEventListener("mouseover", noticeCell);
-        entry.addEventListener("mouseleave", removeNoticeCell);
-        entry.addEventListener("pointerdown", jumpToCell);         
-    });
+
 
     /*
       function queueDeselect(e) {
@@ -699,23 +772,23 @@ function initLevel() {
             domainActive = true;
             cellActive = false;
 
-            cellList.forEach((cell) => {
+            cellList().forEach((cell) => {
                 cell.onfocus = function () {
                     if (tabbed) return;
                     let text = cell.querySelector("p");
                     let opts = cell.querySelector("ul");
                     
-                    if (undoStack.length == 0) {
+                    if (undoStack().length == 0) {
                         undoButton.classList.add("usable");
                     }
                     if (opts) {
-                        undoStack.push([cell, opts.cloneNode(true)]);
+                        undoStack().push([cell, opts.cloneNode(true)]);
                     } else {
-                        undoStack.push([cell, text.innerText.trim()]);
+                        undoStack().push([cell, text.innerText.trim()]);
                     }
 
 
-                    redoStack = [];
+                    redoStack().length = 0;
                     redoButton.classList.remove("usable");
 
                     insert(cell, button.textContent.trim());
@@ -724,7 +797,7 @@ function initLevel() {
 
                 cell.onblur = function () {};
             }
-                            );
+                              );
         }, 5);
     }
 
@@ -743,7 +816,7 @@ function initLevel() {
                 e.target.focus({preventScroll: true});
 
             } else {
-                cellList.forEach((cell) => {
+                cellList().forEach((cell) => {
                     cell.blur();
                     cell.onfocus = lockCell;
                     cell.onblur = fillCell;
@@ -797,15 +870,15 @@ function initLevel() {
     // given the id of a cell, emphasize borders of cells in that row and column
     function crosshairs(id, flush=false) {
         if (!CROSSHAIRS_TOGGLE.checked && !flush) return;
-        for (let i = 0; i < cellList.length; i++) {
+        for (let i = 0; i < cellList().length; i++) {
             // check that the cell matches in row or column
-            if (cellList[i].id.slice(1,2) == id.slice(1,2) || cellList[i].id.slice(3) == id.slice(3)) {
-                cellList[i].style.outlineColor = "var(--baseColor)";
+            if (cellList()[i].id.slice(1,2) == id.slice(1,2) || cellList()[i].id.slice(3) == id.slice(3)) {
+                cellList()[i].style.outlineColor = "var(--baseColor)";
 
             }
             // reset the styles of other cells without messing up the axis labels
-            else if (! cellList[i].classList.contains("y_axis") && ! cellList[i].classList.contains("x_axis")) {
-                cellList[i].style.outlineColor = "transparent";
+            else if (! cellList()[i].classList.contains("y_axis") && ! cellList()[i].classList.contains("x_axis")) {
+                cellList()[i].style.outlineColor = "transparent";
 
             }
         }
@@ -846,15 +919,6 @@ function initLevel() {
     }
 
 
-    level.querySelectorAll('#g1 span:not(.x_axis, .y_axis)').forEach(element => {
-        element.addEventListener("pointerdown",  (event) => {
-            if (!domainActive) {
-                spawnRipple(event, element);
-                element.focus({preventScroll: true});
-            }
-        });
-    });
-
     level.querySelectorAll('#domain button').forEach(element => {
         element.addEventListener("pointerdown", (event) => {
             
@@ -877,10 +941,10 @@ function initLevel() {
 
 
     function undo(e) {
-        if (undoStack.length === 0) return;
-        let prevState = undoStack.pop();
+        if (undoStack().length === 0) return;
+        let prevState = undoStack().pop();
 
-        if (undoStack.length === 0) {
+        if (undoStack().length === 0) {
             undoButton.classList.remove("usable");
         }
 
@@ -928,19 +992,19 @@ function initLevel() {
             candidateMode = temp;
         }
 
-        if (redoStack.length === 0) {
+        if (redoStack().length === 0) {
             redoButton.classList.add("usable");
         }
-        redoStack.push([cell, doneCopy]);
+        redoStack().push([cell, doneCopy]);
 
     }
 
 
     function redo(e) {
-        if (redoStack.length === 0) return;
-        let prevState = redoStack.pop();
+        if (redoStack().length === 0) return;
+        let prevState = redoStack().pop();
 
-        if (redoStack.length === 0) {
+        if (redoStack().length === 0) {
             redoButton.classList.remove("usable");
         }
 
@@ -987,12 +1051,12 @@ function initLevel() {
             candidateMode = temp;
         }
 
-        if (undoStack.length === 0) {
+        if (undoStack().length === 0) {
             undoButton.classList.add("usable");
         }
         
 
-        undoStack.push([cell, doneCopy]);
+        undoStack().push([cell, doneCopy]);
     }
 
 
@@ -1106,5 +1170,52 @@ function initLevel() {
         fadeInfo();
     });
 
-    level.querySelector("#g1").addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));
+
+    function alignGrid() {
+        const max = Math.max(ROWS, COLS);
+        if (max > 3) {
+            level.style.setProperty('--fontFactor', 1 + (3.25 - max) / max);
+            level.style.setProperty('--lanscapeFontFactor', 1 + (3.25 - max) / max);
+        } else if (max < 3) {
+            level.style.setProperty('--fontFactor', 1);
+            level.style.setProperty('--landscapeFontFactor', 1);
+        } else {
+            level.style.setProperty('--fontFactor', 1);
+            level.style.setProperty('--landscapeFontFactor', 1);
+        }
+        level.style.setProperty('--boostProps', 1);
+        
+        if (ROWS > COLS) {
+            level.style.setProperty('--heightFactor', 1);
+            level.style.setProperty('--widthFactor', COLS / ROWS);
+            level.style.setProperty('--landscapeHeightFactor', 1);
+            level.style.setProperty('--landscapeWidthFactor', COLS / ROWS);
+        } else if (COLS > ROWS) {
+            level.style.setProperty('--heightFactor', (ROWS / COLS));
+            level.style.setProperty('--widthFactor', 1);
+            if (ROWS < 3) {
+                level.style.setProperty('--boostProps', 1.075);
+
+                level.style.setProperty('--landscapeHeightFactor', 1.2 * (ROWS / COLS));
+                level.style.setProperty('--landscapeWidthFactor', 1.2);
+                level.style.setProperty('--landscapeFontFactor', 1);
+            } else {
+                level.style.setProperty('--landscapeHeightFactor', (ROWS / COLS));
+                level.style.setProperty('--landscapeWidthFactor', 1);
+            }
+        } else {
+            if (ROWS === 2) {
+                level.style.setProperty('--heightFactor', 0.65);
+                level.style.setProperty('--widthFactor', 0.65);
+                level.style.setProperty('--landscapeHeightFactor', 0.65);
+                level.style.setProperty('--landscapeWidthFactor', 0.65);
+            } else {
+                level.style.setProperty('--heightFactor', 1);
+                level.style.setProperty('--widthFactor', 1);
+                level.style.setProperty('--landscapeHeightFactor', 1);
+                level.style.setProperty('--landscapeWidthFactor', 1);
+            }
+
+        }
+    }
 }

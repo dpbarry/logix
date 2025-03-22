@@ -13,10 +13,10 @@
         <ul>
             <input id="menu_checkbox" type="checkbox" tabindex="-1">
             <span id="chevron"></span>
-            <li id="info" class="dialog_button" onclick="setTimeout( () =&gt; { showModal('info_dialog') }, 2);"></li>
-            <li id="dictionary" class="dialog_button" onclick="setTimeout( () =&gt; { showModal('dictionary_dialog') }, 2);"></li>
-            <li id="notes" class="dialog_button" onclick="setTimeout( () =&gt; { showModal('notes_dialog') }, 2);" "=""></li>
-            <li id="settings" class="dialog_button" onclick="setTimeout( () =&gt; { showModal('settings_dialog') }, 2);"></li>
+            <li id="info" class="dialog_button" onclick="setTimeout( () => { showModal('info_dialog') }, 2);"></li>
+            <li id="dictionary" class="dialog_button" onclick="setTimeout( () => { showModal('dictionary_dialog') }, 2);"></li>
+            <li id="notes" class="dialog_button" onclick="setTimeout( () => { showModal('notes_dialog') }, 2);" "=""></li>
+            <li id="settings" class="dialog_button" onclick="setTimeout( () => { showModal('settings_dialog') }, 2);"></li>
         </ul>
         <dialog id="info_dialog">
             <a class="close"></a>
@@ -54,7 +54,7 @@
                 <div id="wrap_grids">
                     <div id="grid_carousel">
                     <div class="grid" id="g1"><span class="given"><p>0</p></span><span><p></p></span><span><p></p></span><span><p></p></span><span><p></p></span><span class="given"><p>1</p></span></div></div>
-                    <button id="nextgrid"></button>                    
+                    <button id="nextgrid" tabindex="-1"></button>                    
                 </div>
                 <div id="x-axis">
                     

@@ -481,3 +481,24 @@ function vw(percent) {
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     return (percent * w) / 100;
 }
+
+function getCenteredElement(carousel) {
+    const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+
+    let closesElement = null;
+    let closestDistance = Infinity;
+
+    
+
+    [...carousel.children].forEach(el => {
+        const elCenter = el.offsetLeft + el.offsetWidth / 2;
+        const distance = Math.abs(carouselCenter - elCenter);
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestElement = el;
+        }
+    });
+    return closestElement;
+}
+

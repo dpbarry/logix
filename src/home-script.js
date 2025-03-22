@@ -264,24 +264,6 @@ function setupHome(page) {
         updateMobile();             
     }
 
-    function getCenteredCard() {
-        const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
-
-        let closestCard = null;
-        let closestDistance = Infinity;
-
-        cardsArray.forEach(card => {
-            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-            const distance = Math.abs(carouselCenter - cardCenter);
-
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestCard = card;
-            }
-        });
-        return closestCard;
-    }
-
     
     carousel.addEventListener('wheel', function (event) {
         if (debounceScroll || debounceMobile || swiping) return;
@@ -368,7 +350,7 @@ function setupHome(page) {
 
 
     function updateMobile() {
-        upcard = getCenteredCard();
+        upcard = getCenteredElement(carousel);
         cardsArray.forEach( c => { if (c !== upcard) c.classList.remove("upcard")});
         upcard.classList.add("upcard");
     }
@@ -401,7 +383,7 @@ function setupHome(page) {
 
     function mobileScrollTo(destination) {
         if (debounceMobile || swiping) return;
-        if (destination === getCenteredCard()) return;
+        if (destination === getCenteredElement(carousel)) return;
 
         debounceMobile++;
         carousel.classList.add("noswipe");
@@ -409,7 +391,7 @@ function setupHome(page) {
         carousel.addEventListener("scrollend", rebounceMobile);
 
 
-        let diff = cardsArray.indexOf(destination) - cardsArray.indexOf(getCenteredCard());
+        let diff = cardsArray.indexOf(destination) - cardsArray.indexOf(getCenteredElement(carousel));
         let amt = diff * (cardWidth + 20);
         carousel.scrollBy({
             top: 0,

@@ -3,7 +3,7 @@
   --axisFontSize: clamp(0.85rem, 3.5vh, 2rem);
   --gridGap: 7px;
   --gridPadding: 20px;
-  --gridBorderWidth: 5px;
+  --gridBorderWidth: 4.5px;
   --gridOffset: 1.5vh;
 }
 
@@ -568,9 +568,10 @@
   display: flex;
   align-items: center;
   scrollbar-width: none;
-  scrollbar-color: transparent transparent;  overflow-x: auto;     /* Allow horizontal scroll */
-  overflow-y: hidden;   /* Hide vertical scroll, if unnecessary */
-  scroll-snap-type: x mandatory; /* Optional: snap grids into view */
+  scrollbar-color: transparent transparent;
+  overflow-x: auto;   
+  overflow-y: hidden;  
+  scroll-snap-type: x mandatory; 
   z-index: 1;
   gap: 25px;
   max-width: calc(var(--fullGridWidth) - 2 * var(--gridBorderWidth));

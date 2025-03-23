@@ -71,6 +71,8 @@ function initLevel() {
         cells.forEach((cell) => {
             vals.set(cell, null);
             cell.style.animationDelay = `${spanCount++ * 175}ms`;
+            cell.addEventListener("mouseover", noticeEntry);
+            cell.addEventListener("mouseleave", removeNoticeEntry);
 
             if (cell.classList.contains("given")) return;
 
@@ -79,9 +81,7 @@ function initLevel() {
             cell.tabIndex = 0;        
             cell.addEventListener("keydown", inp);
 
-            cell.addEventListener("mouseover", noticeEntry);
-            cell.addEventListener("mouseleave", removeNoticeEntry);
-
+            
             cell.onfocus = lockCell;
             cell.onblur = fillCell;
 
@@ -760,7 +760,6 @@ function initLevel() {
             
             let enclose = entry.parentNode;
             enclose.classList.add("noticed");
-
             if (level.querySelector("#c" + entry.id.charAt(1) + "-" + entry.id.charAt(3)).classList.contains("given")) {
                 enclose.classList.add("given");
             }
@@ -826,7 +825,6 @@ function initLevel() {
     }
 
     function chamberInput (e) {
-        document.addEventListener("pointerup", queueDeselect);
 
         let button = e.target;
         button.classList.remove("retain");
@@ -984,7 +982,8 @@ function initLevel() {
 
     level.querySelectorAll('#domain button').forEach(element => {
         element.addEventListener("pointerdown", (event) => {
-            
+            document.addEventListener("pointerup", queueDeselect);
+
             if (event.target === document.activeElement) {
                 let leftoverRipple = event.target.querySelector(".ripple");
                 if (leftoverRipple) leftoverRipple.remove();

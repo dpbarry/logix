@@ -498,16 +498,19 @@
     color: var(--baseColor);
     box-sizing: border-box;
   }
+}
 
+@media (hover: hover) and (pointer: fine) {
+  #x-axis span.cue, #y-axis span.cue {
+    font-weight: 750;
+  }
+  #x-axis span.highlight, #y-axis span.highlight {
+    font-weight: 750;
+    color: var(--emphasisColor);
+  }
 
-  @media (hover: hover) and (pointer: fine) {
-    span.cue {
-      font-weight: 750;
-    }
-    span.highlight {
-      font-weight: 750;
-      color: var(--emphasisColor);
-    }
+  :root.dark #x-axis span.highlight, :root.dark #y-axis span.highlight {
+    color: var(--focusColor);
   }
 }
 #y-axis {
@@ -548,6 +551,7 @@
   background-size: 100%;
   height: 20px;
   width: 20px;
+  filter: var(--hueShiftIcons);
 }
 
 #gridbar {
@@ -620,7 +624,7 @@
   overflow-y: hidden;  
   scroll-snap-type: x mandatory; 
   z-index: 1;
-  gap: 25px;
+  gap: 30px;
   
   max-width: var(--gridWidth);
 }
@@ -928,8 +932,10 @@
 
   }
   
+}
 
-  
+:root.dark #propositions span.entry.highlight {
+  color: var(--focusColor);
 }
 
 

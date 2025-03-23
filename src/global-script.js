@@ -253,7 +253,7 @@ function updateTheme() {
     } else if (theme.id === "litdark") {
 
         ROOT.style.setProperty('--bgColor', 'hsl(50, 18%, 6%)');
-        ROOT.style.setProperty('--baseColor', 'hsl(50, 0%, 88%)');
+        ROOT.style.setProperty('--baseColor', 'hsl(50, 0%, 87%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(50, 20%, 45%)');
 
         ROOT.style.setProperty('--card', 'hsl(50, 90%, 2%)');
@@ -266,7 +266,7 @@ function updateTheme() {
         ROOT.style.setProperty('--darkestShade', 'hsl(50, 30%, 20%)');
 
         ROOT.style.setProperty('--focusColor', 'hsl(50, 40%, 30%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(50, 60%, 23%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(50, 60%, 18%)');
 
         ROOT.style.setProperty('--softShade', 'hsl(50, 28%, 45%)');
         ROOT.style.setProperty('--softerShade', 'hsl(50, 28%, 37.5%)');
@@ -274,7 +274,7 @@ function updateTheme() {
         ROOT.style.setProperty('--harderShade', 'hsl(50, 28%, 27.5%)');
         ROOT.style.setProperty('--correctColor', 'hsl(50, 35%, 35%)');
 
-        ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.9)');
+        ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.87)');
         
         ROOT.style.colorScheme = "dark";
         ROOT.classList.add("dark");
@@ -283,7 +283,7 @@ function updateTheme() {
     } else if (theme.id === "frostdark") {
 
         ROOT.style.setProperty('--bgColor', 'hsl(200, 18%, 6%)');
-        ROOT.style.setProperty('--baseColor', 'hsl(200, 0%, 88%)');
+        ROOT.style.setProperty('--baseColor', 'hsl(200, 0%, 87%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(200, 20%, 45%)');
 
         ROOT.style.setProperty('--card', 'hsl(200, 60%, 3%)');
@@ -296,7 +296,7 @@ function updateTheme() {
         ROOT.style.setProperty('--darkestShade', 'hsl(200, 30%, 20%)');
 
         ROOT.style.setProperty('--focusColor', 'hsl(200, 40%, 30%)');
-        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 60%, 23%)');
+        ROOT.style.setProperty('--emphasisColor', 'hsl(200, 60%, 18%)');
 
         
         ROOT.style.setProperty('--softShade', 'hsl(200, 28%, 45%)');
@@ -305,7 +305,7 @@ function updateTheme() {
         ROOT.style.setProperty('--harderShade', 'hsl(200, 28%, 27.5%)');
         ROOT.style.setProperty('--correctColor', 'hsl(200, 35%, 35%)');
 
-        ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.9)');
+        ROOT.style.setProperty('--hueShiftIcons', 'brightness(0) invert(0.87)');
 
         ROOT.style.colorScheme = "dark";
         ROOT.classList.add("dark");

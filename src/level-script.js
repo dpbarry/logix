@@ -213,7 +213,7 @@ function initLevel() {
             }
         }
         gridbar.insertBefore(node, gridbar.querySelector("#n" + ++num));
-       
+        
     }
     
 
@@ -826,14 +826,14 @@ function initLevel() {
     }
 
     function chamberInput (e) {
+        document.addEventListener("pointerup", queueDeselect);
+
         let button = e.target;
         button.classList.remove("retain");
-        
+
         setTimeout(function () {
             domainActive = true;
             cellActive = false;
-
-            document.addEventListener("pointerup", queueDeselect);
 
             cellList().forEach((cell) => {
                 cell.onfocus = function () {

@@ -41,7 +41,7 @@ function initLevel() {
     const values = () => gridStorage.get(currentGrid).get("values");
     const undoStack = () => gridStorage.get(currentGrid).get("undo");
     const redoStack = () => gridStorage.get(currentGrid).get("redo");
-    
+
     const gridStorage = new Map();
     addGrid(1);
 
@@ -171,8 +171,7 @@ function initLevel() {
     };
 
     let gridBar = level.querySelector("#gridbar");
-    function updateGridbar(num) {
-        
+    function updateGridbar(num) {        
         function roman(n) {
             const romanNumerals = [
                 [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
@@ -196,6 +195,7 @@ function initLevel() {
             first.id = "n1";
             first.innerText = "I";
             first.onclick = jumpToGrid;
+
             gridbar.appendChild(first);
         }
 
@@ -205,6 +205,7 @@ function initLevel() {
         node.innerText = roman(num);
         node.onclick = jumpToGrid;
 
+        
         if (gridbar.children.length >= num) {
             for (i = gridbar.children.length; i >= num; i--) {
                 gridbar.querySelector("#n" + i).id = "n" + (i + 1);
@@ -212,8 +213,8 @@ function initLevel() {
             }
         }
         gridbar.insertBefore(node, gridbar.querySelector("#n" + ++num));
+       
     }
-
     
 
     function jumpToGrid(event) {
@@ -327,7 +328,6 @@ function initLevel() {
 
 
     level.querySelector("#notes_dialog").addEventListener("open", (e) => {
-        console.log(e.target)
         setTimeout(()=>{
             e.target.querySelector("textarea").focus();
             
@@ -1169,7 +1169,7 @@ function initLevel() {
 
 
 
-    document.addEventListener('keydown', (e) => {
+    document.onkeydown = (e) => {
 
         if (e.key === "u") {
             undo();
@@ -1255,8 +1255,7 @@ function initLevel() {
             button.click();
 
         }
-    });
-
+    };
 
     level.querySelector("#wrap_home_level").onclick = function () {
         if (window.event.ctrlKey || window.event.shiftKey) {

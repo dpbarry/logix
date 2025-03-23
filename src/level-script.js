@@ -119,7 +119,7 @@ function initLevel() {
                 }, 50);
             }
             document.addEventListener("pointerup", ignoreUp);
-        }, 600);
+        }, 500);
     }
     function endPress() {
         clearTimeout(holdTimer);
@@ -162,14 +162,74 @@ function initLevel() {
             }
         );
 
+        updateGridbar(gridNum);
+
         
 
         setTimeout( () => noGridUpdate = false, 1000);
-        newGrid.addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));
-        
+        newGrid.addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));  
     };
 
-    let noGridUpdate = false;
+    let gridBar = level.querySelector("#gridbar");
+    function updateGridbar(num) {
+        
+        function roman(n) {
+            const romanNumerals = [
+                [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
+                [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
+                [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
+            ];
+            
+            let result = '';
+            for (let [value, symbol] of romanNumerals) {
+                while (n >= value) {
+                    result += symbol;
+                    n -= value;
+                }
+            }
+            return result;
+        }
+
+        if (gridbar.children.length === 0) {
+            let first = document.createElement("span");
+            first.classList.add("node");
+            first.id = "n1";
+            first.innerText = "I";
+            first.onclick = jumpToGrid;
+            gridbar.appendChild(first);
+        }
+
+        let node = document.createElement("span");
+        node.classList.add("node");
+        node.id = "n" + num;
+        node.innerText = roman(num);
+        node.onclick = jumpToGrid;
+
+        if (gridbar.children.length >= num) {
+            for (i = gridbar.children.length; i >= num; i--) {
+                gridbar.querySelector("#n" + i).id = "n" + (i + 1);
+                gridbar.querySelector("#n" + (i + 1)).innerText =  roman(i + 1);
+            }
+        }
+        gridbar.insertBefore(node, gridbar.querySelector("#n" + ++num));
+    }
+
+    
+
+    function jumpToGrid(event) {
+        let num = parseInt(event.target.id.substring(1));
+        let diff = num - currentGrid;
+        
+        gridCarousel.scrollBy(
+            {
+                top: 0,
+                left: diff * gridCarousel.querySelector(".grid").clientWidth,
+                behavior: "smooth"
+            }
+        );
+        
+    }
+
 
     gridCarousel.onscroll = () => {
         let curGrid = getCenteredElement(gridCarousel);
@@ -180,14 +240,17 @@ function initLevel() {
                     span.tabIndex = 0;
                 });
             } else {
-                [...curGrid.children].forEach(span => {
+                [...g.children].forEach(span => {
                     span.tabIndex = -1;
                 });
             }
         });
-        if (!noGridUpdate) {
-            currentGrid = parseInt(curGrid.id.substring(1));
-        }
+        currentGrid = parseInt(curGrid.id.substring(1));
+        let node = "#n" + currentGrid;
+        level.querySelector(node).classList.add("chosen");
+        level.querySelectorAll(`#gridbar span:not(${node})`).forEach(s => {s.classList.remove("chosen");});
+
+        
 
         if (undoStack().length) {
             undoButton.classList.add("usable");
@@ -200,10 +263,10 @@ function initLevel() {
             redoButton.classList.remove("usable");
         }
     };
-    
-    
+
+
     tabMenu();
-    
+
     MENU_TOGGLE.addEventListener("change", (e) => {
         tabMenu();
     });
@@ -244,7 +307,7 @@ function initLevel() {
         }
     });
 
-    
+
 
     if (NEXT_LEVEL === "T1-2") {
         setTimeout(()=> {
@@ -260,8 +323,8 @@ function initLevel() {
         level.querySelector("#info").remove();
         level.style.setProperty('--noInfo', "-54px");
     }
-    
-    
+
+
 
     level.querySelector("#notes_dialog").addEventListener("open", (e) => {
         console.log(e.target)
@@ -300,7 +363,7 @@ function initLevel() {
         text.removeEventListener("animationend", endDismissWipe);
         values().set(e.target.parentNode, "");
     }
-    
+
 
     function insert(cell, value) {
         let text = cell.querySelector("p");
@@ -485,9 +548,9 @@ function initLevel() {
         }
     }
 
-    
-    
-    
+
+
+
 
     function success() {
         crosshairs("not-a-cell");
@@ -749,21 +812,19 @@ function initLevel() {
         window.setTimeout(() => {
             fakeRipple = new PointerEvent("pointerdown");
             fakeRipple.simulated = true;
-            level.querySelector("#" + cell).dispatchEvent(fakeRipple);
-            level.querySelector("#" + cell).focus({preventScroll: true});
+            level.querySelector("#g" + currentGrid + " #" + cell).dispatchEvent(fakeRipple);
+            level.querySelector("#g" + currentGrid + " #" + cell).focus({preventScroll: true});
         }, 0);
     }
 
 
 
-    /*
-      function queueDeselect(e) {
-      setTimeout( () => {document.activeElement.onclick = (e) => {e.target.blur(); e.target.onclick="";};
-      }, 5);
-      document.removeEventListener("pointerup", queueDeselect);
-      }
+    function queueDeselect(e) {
+        setTimeout( () => {document.activeElement.onclick = (e) => {e.target.blur(); e.target.onclick="";};
+                          }, 5);
+        document.removeEventListener("pointerup", queueDeselect);
+    }
 
-    */
     function chamberInput (e) {
         let button = e.target;
         button.classList.remove("retain");
@@ -771,6 +832,8 @@ function initLevel() {
         setTimeout(function () {
             domainActive = true;
             cellActive = false;
+
+            document.addEventListener("pointerup", queueDeselect);
 
             cellList().forEach((cell) => {
                 cell.onfocus = function () {
@@ -1123,10 +1186,62 @@ function initLevel() {
             return;
         }
 
+        if (e.key === "p") {
+            createNewGrid(false);
+            return;
+        }
+
+        if (e.key === "P") {
+            createNewGrid(true);
+            return;
+        }
+
         if (e.key === "Escape") {
             document.activeElement.blur();
             return;
         }
+
+        if (e.key === "ArrowRight") {
+            gridCarousel.scrollBy(
+                {
+                    top: 0,
+                    left: level.querySelector(".grid").clientWidth,
+                    behavior: "smooth"
+                }
+            );
+        }
+
+        if (e.key === "ArrowLeft") {
+            gridCarousel.scrollBy(
+                {
+                    top: 0,
+                    left: -1 * level.querySelector(".grid").clientWidth,
+                    behavior: "smooth"
+                }
+            );
+        }
+
+        if (e.key === "ArrowDown") {
+            propositions.parentNode.scrollBy(
+                {
+                    top: level.querySelector("#propositions li").clientHeight,
+                    left: 0,
+                    behavior: "smooth"
+                }
+            );
+        }
+
+        if (e.key === "ArrowUp") {
+            propositions.parentNode.scrollBy(
+                {
+                    top: -1 * level.querySelector("#propositions li").clientHeight,
+                    left: 0,
+                    behavior: "smooth"
+                }
+            );
+        }
+
+        
 
         let button = (Array.from(domainList).find(x => x.firstChild.textContent.trim() === e.key));
         if (button  && !document.activeElement.matches(".grid span")) {

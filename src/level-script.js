@@ -231,21 +231,16 @@ function initLevel() {
         
     }
 
-
+    let scrolling = false;
     gridCarousel.onscroll = () => {
         let curGrid = getCenteredElement(gridCarousel);
-        [...gridCarousel.children].forEach(g => {
-            if (g === curGrid) {
-                [...curGrid.children].forEach(span => {
-                    if (span.classList.contains("given")) return;
-                    span.tabIndex = 0;
-                });
-            } else {
+        if (!scrolling) {
+            [...gridCarousel.children].forEach(g => {
                 [...g.children].forEach(span => {
                     span.tabIndex = -1;
-                });
-            }
-        });
+                })});
+        }
+        scrolling = true;
         currentGrid = parseInt(curGrid.id.substring(1));
         let node = "#n" + currentGrid;
         level.querySelector(node).classList.add("chosen");
@@ -263,6 +258,18 @@ function initLevel() {
         } else {
             redoButton.classList.remove("usable");
         }
+    };
+
+    gridCarousel.onscrollend = () => {
+        scrolling = false;
+        let curGrid = getCenteredElement(gridCarousel);
+        [...gridCarousel.children].forEach(g => {
+            if (g === curGrid) {
+            [...g.children].forEach(span => {
+                if (span.classList.contains("given")) return;
+                span.tabIndex = 0;
+            });
+            }});
     };
 
 
@@ -285,6 +292,7 @@ function initLevel() {
     }
 
     level.querySelector("#tab_catch").addEventListener("focus", (e) => {
+        if (scrolling) return;
         if (MENU_TOGGLE.checked) {
             setTimeout( () => {
                 level.querySelector("#menu li").focus({preventScroll: true});
@@ -297,6 +305,7 @@ function initLevel() {
     });
 
     level.querySelector("#backtab_catch").addEventListener("focus", (e) => {
+        if (scrolling) return;
         if (!e.relatedTarget) {
             setTimeout( () => {
                 [...cellList()].find( x => x.tabIndex === 0).focus({preventScroll: true});
@@ -816,14 +825,6 @@ function initLevel() {
         }, 0);
     }
 
-
-
-    function queueDeselect(e) {
-        setTimeout( () => {document.activeElement.onclick = (e) => {e.target.blur(); e.target.onclick="";};
-                          }, 5);
-        document.removeEventListener("pointerup", queueDeselect);
-    }
-
     function chamberInput (e) {
 
         let button = e.target;
@@ -888,13 +889,19 @@ function initLevel() {
         
     }
 
+    let deselectReady = false;
+
     domainList.forEach( (button) => {
         button.onfocus = chamberInput;
 
         button.onblur = releaseInput;
 
         button.querySelector("p").addEventListener("transitionend", (e) => {
-            if (e.target === null || e.target.classList.contains("ripple") || !(e.target.closest("button").classList.contains("pushed")) || e.elapsedTime < 0.08) return;
+            if (e.target.classList.contains("ripple")) {
+                deselectReady = button;
+                return;
+            }
+            if (e.target === null || !(e.target.closest("button").classList.contains("pushed")) || e.elapsedTime < 0.08) return;
             e.target.closest("button").classList.remove("pushed");
 
             setTimeout( () => {debounced--;}, 85);
@@ -982,11 +989,8 @@ function initLevel() {
 
     level.querySelectorAll('#domain button').forEach(element => {
         element.addEventListener("pointerdown", (event) => {
-            document.addEventListener("pointerup", queueDeselect);
-
             if (event.target === document.activeElement) {
-                let leftoverRipple = event.target.querySelector(".ripple");
-                if (leftoverRipple) leftoverRipple.remove();
+                
                 return;
             } else if (event.target.nodeName === "P" && !cellActive) {
                 element.focus({preventScroll: true});
@@ -995,12 +999,21 @@ function initLevel() {
                 element.focus({preventScroll: true});
                 spawnRipple(event, event.target.querySelector("p"));
             }
+        });
 
-
+        element.addEventListener("click", (event) => {
+            console.log(deselectReady, event.target);
+            if (deselectReady && event.target === deselectReady) {
+                deselectReady.blur();
+                deselectReady = false;
+            }
         })
     })
 
 
+    document.addEventListener("pointerup", (e) => {
+        setTimeout( () => deselectReady = false, 1);
+    });
 
     function undo(e) {
         if (undoStack().length === 0) return;

@@ -42,6 +42,8 @@ function initLevel() {
     const undoStack = () => gridStorage.get(currentGrid).get("undo");
     const redoStack = () => gridStorage.get(currentGrid).get("redo");
 
+    let throttleGrid = false;
+    
     const gridStorage = new Map();
     let firstGrid = new Map();
     gridStorage.set(1, firstGrid);
@@ -121,9 +123,13 @@ function initLevel() {
     function endPress() {
         clearTimeout(holdTimer);
     }
+
     function createNewGrid(dupe=false) {
+        if (throttleGrid) return;
+        throttleGrid = true;
         let gridNum = currentGrid; // just to avoid a change midway
 
+        setTimeout( () => {throttleGrid = false;}, 550);
         let newGrid = document.createElement("div");
         let gridData = new Map();
         gridStorage.set(gridNum+1, gridData);
@@ -295,15 +301,15 @@ function initLevel() {
     level.querySelector("#backtab_catch").addEventListener("focus", (e) => {
         if (scrolling) return;
         try {
-        if (!e.relatedTarget) {
-            setTimeout( () => {
-                [...cellList()].find( x => x.tabIndex === 0).focus({preventScroll: true});
-            }, 10);
-        } else {
-            setTimeout( () => {
-                [...cellList()].reverse().find( x => x.tabIndex === 0).focus({preventScroll: true});
-            }, 10);
-        }
+            if (!e.relatedTarget) {
+                setTimeout( () => {
+                    [...cellList()].find( x => x.tabIndex === 0).focus({preventScroll: true});
+                }, 10);
+            } else {
+                setTimeout( () => {
+                    [...cellList()].reverse().find( x => x.tabIndex === 0).focus({preventScroll: true});
+                }, 10);
+            }
         } catch { return; }
     });
 
@@ -1203,6 +1209,7 @@ function initLevel() {
         }
 
         if (e.key === "ArrowRight") {
+            e.preventDefault();
             gridCarousel.scrollBy(
                 {
                     top: 0,
@@ -1213,6 +1220,7 @@ function initLevel() {
         }
 
         if (e.key === "ArrowLeft") {
+            e.preventDefault();
             gridCarousel.scrollBy(
                 {
                     top: 0,
@@ -1223,6 +1231,7 @@ function initLevel() {
         }
 
         if (e.key === "ArrowDown") {
+            e.preventDefault();
             propositions.parentNode.scrollBy(
                 {
                     top: level.querySelector("#propositions li").clientHeight,
@@ -1233,6 +1242,7 @@ function initLevel() {
         }
 
         if (e.key === "ArrowUp") {
+            e.preventDefault();
             propositions.parentNode.scrollBy(
                 {
                     top: -1 * level.querySelector("#propositions li").clientHeight,

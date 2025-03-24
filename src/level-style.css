@@ -505,12 +505,13 @@
     font-weight: 750;
   }
   #x-axis span.highlight, #y-axis span.highlight {
-    font-weight: 750;
+    font-weight: 1000;
     color: var(--emphasisColor);
   }
 
   :root.dark #x-axis span.highlight, :root.dark #y-axis span.highlight {
     color: var(--focusColor);
+    font-weight: 1000;
   }
 }
 #y-axis {

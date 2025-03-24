@@ -43,23 +43,21 @@ function initLevel() {
     const redoStack = () => gridStorage.get(currentGrid).get("redo");
 
     const gridStorage = new Map();
-    addGrid(1);
+    let firstGrid = new Map();
+    gridStorage.set(1, firstGrid);
+    firstGrid.set("undo", []);
+    firstGrid.set("redo", []);
 
-    function addGrid(gridNum, dupe=false) {
-        let newGrid = new Map();
-        gridStorage.set(gridNum, newGrid);
+    initCells(1);
+    firstGrid.set("values", new Map([...cellList()].map(k => [k, null])));
+
+    function initCells(gridNum) {
+        let newGrid = gridStorage.get(gridNum);
+        
         newGrid.set("cells", level.querySelectorAll(`#g${gridNum} span`));
-        newGrid.set("values", new Map());
-        newGrid.set("undo", []);
-        newGrid.set("redo", []);
 
-        initCells(newGrid, dupe ? gridStorage.get(currentGrid - 1).get("values") : null);             
-    }
-
-    function initCells(grid, dupeValues) {        
         // id cells with their coordinates
-        cells = grid.get("cells");
-        vals = grid.get("values");
+        cells = newGrid.get("cells");
         for (let i = 0; i < ROWS; i++) {
             for (let j = 0; j < COLS; j++) {
                 const index = i * COLS + j;
@@ -69,7 +67,6 @@ function initLevel() {
 
         let spanCount = 1;
         cells.forEach((cell) => {
-            vals.set(cell, null);
             cell.style.animationDelay = `${spanCount++ * 175}ms`;
             cell.addEventListener("mouseover", noticeEntry);
             cell.addEventListener("mouseleave", removeNoticeEntry);
@@ -125,8 +122,16 @@ function initLevel() {
         clearTimeout(holdTimer);
     }
     function createNewGrid(dupe=false) {
+        let gridNum = currentGrid; // just to avoid a change midway
+
         let newGrid = document.createElement("div");
-        let gridNum = currentGrid;
+        let gridData = new Map();
+        gridStorage.set(gridNum+1, gridData);
+        gridData.set("values", dupe ? gridStorage.get(gridNum).get("values") : new Map([...cellList()].map( k => [k, null])));
+        
+        gridData.set("undo", dupe ? gridStorage.get(gridNum).get("undo") : []);
+        gridData.set("redo", dupe ? gridStorage.get(gridNum).get("redo") : []);
+        
         
         newGrid.classList.add("grid");
         gridStorage.get(gridNum).get("cells").forEach( cell => {
@@ -137,7 +142,11 @@ function initLevel() {
                 newP.innerText = cell.firstChild.innerText.trim();
                 newSpan.classList.add("given");
             } else if (dupe) {
-                newP.innerText = cell.firstChild.innerText.trim();
+                if (cell.querySelector("ul")) {
+                    newSpan.appendChild(cell.querySelector("ul").cloneNode(true));
+                } else {
+                    newP.innerText = cell.firstChild.innerText.trim();
+                }            
             }
 
             newSpan.appendChild(newP);
@@ -152,7 +161,7 @@ function initLevel() {
         }
         gridCarousel.insertBefore(newGrid, level.querySelector("#g" + (gridNum+1)));
 
-        addGrid(gridNum);
+        initCells(gridNum);
 
         gridCarousel.scrollBy(
             {
@@ -238,6 +247,7 @@ function initLevel() {
             [...gridCarousel.children].forEach(g => {
                 [...g.children].forEach(span => {
                     span.tabIndex = -1;
+                    span.blur();
                 })});
         }
         scrolling = true;
@@ -260,52 +270,31 @@ function initLevel() {
         }
     };
 
-    gridCarousel.onscrollend = () => {
+    gridCarousel.onscrollend = (e) => {
         scrolling = false;
         let curGrid = getCenteredElement(gridCarousel);
-        [...gridCarousel.children].forEach(g => {
-            if (g === curGrid) {
-            [...g.children].forEach(span => {
-                if (span.classList.contains("given")) return;
-                span.tabIndex = 0;
-            });
-            }});
-    };
+        
+        [...curGrid.children].forEach(span => {
+            if (span.classList.contains("given")) return;
+            span.tabIndex = 0;
+        });
 
-
-    tabMenu();
-
-    MENU_TOGGLE.addEventListener("change", (e) => {
-        tabMenu();
-    });
-
-    function tabMenu() {
-        if (MENU_TOGGLE.checked) {
-            level.querySelectorAll("#menu li").forEach( (li) => {
-                li.tabIndex = 0;
-            });
-        } else {
-            level.querySelectorAll("#menu li").forEach( (li) => {
-                li.tabIndex = -1;
-            });
-        }
+        gridCarousel.focus();
     }
+
 
     level.querySelector("#tab_catch").addEventListener("focus", (e) => {
         if (scrolling) return;
-        if (MENU_TOGGLE.checked) {
-            setTimeout( () => {
-                level.querySelector("#menu li").focus({preventScroll: true});
-            }, 10);
-        } else {
-            setTimeout( () => {
-                [...cellList()].find( x => x.tabIndex === 0).focus({preventScroll: true});
-            }, 10);
-        }
+        setTimeout( () => {
+            try { [...cellList()].find( x => x.tabIndex === 0).focus({preventScroll: true});
+                }
+            catch {return; }
+        }, 10);
     });
 
     level.querySelector("#backtab_catch").addEventListener("focus", (e) => {
         if (scrolling) return;
+        try {
         if (!e.relatedTarget) {
             setTimeout( () => {
                 [...cellList()].find( x => x.tabIndex === 0).focus({preventScroll: true});
@@ -315,6 +304,7 @@ function initLevel() {
                 [...cellList()].reverse().find( x => x.tabIndex === 0).focus({preventScroll: true});
             }, 10);
         }
+        } catch { return; }
     });
 
 
@@ -461,7 +451,7 @@ function initLevel() {
                 if (undoStack().length == 0) {
                     undoButton.classList.add("usable");
                 }
-                undoStack().push([event.target, optsCopy]);
+                undoStack().push([event.target.id, optsCopy]);
                 redoStack().length = 0;
                 redoButton.classList.remove("usable");
                 
@@ -473,7 +463,7 @@ function initLevel() {
             if (undoStack().length == 0) {
                 undoButton.classList.add("usable");
             }
-            undoStack().push([event.target, text]);
+            undoStack().push([event.target.id, text]);
             redoStack().length = 0;
             redoButton.classList.remove("usable");
             
@@ -509,9 +499,9 @@ function initLevel() {
         }
 
         if (opts) {
-            undoStack().push([event.target, optsCopy]);
+            undoStack().push([event.target.id, optsCopy]);
         } else {
-            undoStack().push([event.target, text]);
+            undoStack().push([event.target.id, text]);
         }
         
         redoStack().length = 0;
@@ -542,7 +532,7 @@ function initLevel() {
 
     function checkGrid() {
         let flag = true;
-
+        
         values().forEach((value, key) => {
             let row = parseInt(key.id.charAt(1));
             let col = parseInt(key.id.charAt(3));
@@ -657,9 +647,9 @@ function initLevel() {
                     }
                     
                     if (opts) {
-                        undoStack().push([this, opts.cloneNode(true)]);
+                        undoStack().push([this.id, opts.cloneNode(true)]);
                     } else {
-                        undoStack().push([this, this.firstChild.innerText.trim()]);
+                        undoStack().push([this.id, this.firstChild.innerText.trim()]);
                     }
 
                     redoStack().length = 0;
@@ -844,9 +834,9 @@ function initLevel() {
                         undoButton.classList.add("usable");
                     }
                     if (opts) {
-                        undoStack().push([cell, opts.cloneNode(true)]);
+                        undoStack().push([cell.id, opts.cloneNode(true)]);
                     } else {
-                        undoStack().push([cell, text.innerText.trim()]);
+                        undoStack().push([cell.id, text.innerText.trim()]);
                     }
 
 
@@ -1002,8 +992,7 @@ function initLevel() {
         });
 
         element.addEventListener("click", (event) => {
-            console.log(deselectReady, event.target);
-            if (deselectReady && event.target === deselectReady) {
+            if (event.target === deselectReady) {
                 deselectReady.blur();
                 deselectReady = false;
             }
@@ -1023,7 +1012,7 @@ function initLevel() {
             undoButton.classList.remove("usable");
         }
 
-        let cell = prevState[0];
+        let cell = level.querySelector("#g" + currentGrid + " #"+prevState[0]);
         let undone = prevState[1];
         let done = cell.querySelector("ul") ? cell.querySelector("ul") : cell.firstChild.innerText.trim();
         let doneCopy = done.nodeName === "UL" ? done.cloneNode(true) : done;
@@ -1070,7 +1059,7 @@ function initLevel() {
         if (redoStack().length === 0) {
             redoButton.classList.add("usable");
         }
-        redoStack().push([cell, doneCopy]);
+        redoStack().push([cell.id, doneCopy]);
 
     }
 
@@ -1083,7 +1072,7 @@ function initLevel() {
             redoButton.classList.remove("usable");
         }
 
-        let cell = prevState[0];
+        let cell = level.querySelector("#g" + currentGrid + " #"+prevState[0]);
         let redone = prevState[1];
         let done = cell.querySelector("ul") ? cell.querySelector("ul") : cell.firstChild.innerText.trim();
         let doneCopy = done.nodeName === "UL" ? done.cloneNode(true) : done;
@@ -1131,7 +1120,7 @@ function initLevel() {
         }
         
 
-        undoStack().push([cell, doneCopy]);
+        undoStack().push([cell.id, doneCopy]);
     }
 
 
@@ -1162,7 +1151,7 @@ function initLevel() {
 
 
 
-    level.querySelectorAll("#pencil, #undo, #redo").forEach(li => {
+    level.querySelectorAll("#pencil, #undo, #redo, #nextgrid").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
             event.target.classList.add("nudged");
 

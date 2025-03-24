@@ -504,16 +504,18 @@
   #x-axis span.cue, #y-axis span.cue {
     font-weight: 750;
   }
-  #x-axis span.highlight, #y-axis span.highlight {
-    font-weight: 1000;
-    color: var(--emphasisColor);
-  }
-
-  :root.dark #x-axis span.highlight, :root.dark #y-axis span.highlight {
-    color: var(--focusColor);
-    font-weight: 1000;
-  }
 }
+
+#x-axis span.highlight, #y-axis span.highlight {
+  font-weight: 1000;
+  color: var(--emphasisColor);
+}
+
+:root.dark #x-axis span.highlight, :root.dark #y-axis span.highlight {
+  color: var(--focusColor);
+  font-weight: 1000;
+}
+
 #y-axis {
   flex-direction: column;
 
@@ -908,9 +910,9 @@
     @media (hover: hover) and (pointer: fine) {
 
       /* &:hover {
-         background: light-dark(#F5F5F5, color-mix(in hsl, var(--bgColor) 93%, grey 7%));
-         }
-       */
+        background: light-dark(#F5F5F5, color-mix(in hsl, var(--bgColor) 93%, grey 7%));
+      }
+      */
       span.entry.noticed {
         color: var(--darkShade);
         filter: brightness(1.25) saturate(0.65);

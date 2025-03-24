@@ -895,6 +895,7 @@ function initLevel() {
         button.querySelector("p").addEventListener("transitionend", (e) => {
             if (e.target.classList.contains("ripple")) {
                 deselectReady = button;
+                button.addEventListener("blur", clearDeselect);
                 return;
             }
             if (e.target === null || !(e.target.closest("button").classList.contains("pushed")) || e.elapsedTime < 0.08) return;
@@ -905,6 +906,12 @@ function initLevel() {
         
     });
 
+    function clearDeselect(e) {
+        if (!e.relatedTarget) {
+            deselectReady = false;
+            e.target.removeEventListener("blur", clearDeselect);
+        }
+    }
 
 
 
@@ -1003,12 +1010,8 @@ function initLevel() {
                 deselectReady = false;
             }
         })
-    })
-
-
-    document.addEventListener("pointerup", (e) => {
-        setTimeout( () => deselectReady = false, 1);
     });
+
 
     function undo(e) {
         if (undoStack().length === 0) return;

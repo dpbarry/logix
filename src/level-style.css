@@ -553,59 +553,74 @@
   background-repeat: no-repeat;
   background-size: 100%;
   height: 20px;
-  width: 20px;
+  width: 20px; 
   filter: var(--hueShiftIcons);
+  transition: opacity 0.1s, scale 0.1s;
+  &.fade {scale: 0; transition: scale 0.45s}
+  
 }
 
 #gridbar {
   position: absolute;
-  top: -11.5px;
-  width: 100%;
-  max-width: calc(var(--gridWidth) - var(--gridPadding) - 30px);
+  top: -9.5px;
+  width: calc(var(--gridWidth) * 0.57);
+  height: 20px;
+  z-index: 1;
+  
   display: flex;
   gap: 15px; 
   overflow-x: scroll;
   
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
+
+  span {visibility: hidden; }
+  
+
+}
+
+.visible-items-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+  z-index: 1;
+  pointer-events: none;
   span {
+    display: block;
     position: relative;
     color: var(--baseColor);
-    animation: riseIn 0.3s ease-out forwards;
     font-family: "Source Serif 4";
     font-weight: 325;
     cursor: pointer;
     opacity: 0.45;
-    @starting-style {opacity: 0;}
+    pointer-events: all;
     transition: opacity 0.1s, font-weight 0.1s;
     z-index: 2;
-    padding: 3px;
+    padding: 5px;
     text-align: center;
 
+    &.new {
+      animation: riseIn 0.4s ease forwards;
+      @starting-style {opacity: 0;}
+    }
+    &.chosen {
+      opacity: 1;
+      font-weight: 450;
+    }
   }
-
-  :first-child {margin-left: auto;}
-  :last-child {margin-right: auto;}
-
-  #n1 {animation:none;}
-
-  span.chosen {
-    opacity: 1;
-    font-weight: 450;
-  }
-  
 }
-
 @keyframes riseIn {
-  from {scale: 0;}
-  to {scale: 1;}
+  from {scale: 0; rotate: 100deg;}
+  to {scale: 1; rotate: 0;}
 }
 
 @media (hover: hover) and (pointer: fine) {
   #nextgrid:hover{
     opacity: 1;
   }
-  #gridbar span:hover {
+  .visible-items-overlay span:hover {
     opacity: 1;
   }
 }
@@ -912,9 +927,9 @@
     @media (hover: hover) and (pointer: fine) {
 
       /* &:hover {
-        background: light-dark(#F5F5F5, color-mix(in hsl, var(--bgColor) 93%, grey 7%));
-      }
-      */
+         background: light-dark(#F5F5F5, color-mix(in hsl, var(--bgColor) 93%, grey 7%));
+         }
+       */
       span.entry.noticed {
         color: var(--darkShade);
         filter: brightness(1.25) saturate(0.65);

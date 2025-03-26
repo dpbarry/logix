@@ -129,7 +129,7 @@ function initLevel() {
         throttleGrid = true;
         let gridNum = currentGrid; // just to avoid a change midway
 
-        setTimeout( () => {throttleGrid = false;}, 400);
+        setTimeout( () => {throttleGrid = false;}, 100);
         let newGrid = document.createElement("div");
         let gridData = new Map();
         gridStorage.set(gridNum+1, gridData);
@@ -209,8 +209,6 @@ function initLevel() {
             first.classList.add("node");
             first.id = "n1";
             first.innerText = "I";
-            first.onclick = jumpToGrid;
-
             gridbar.appendChild(first);
         }
 
@@ -218,22 +216,32 @@ function initLevel() {
         node.classList.add("node");
         node.id = "n" + num;
         node.innerText = roman(num);
-        node.onclick = jumpToGrid;
 
         
         if (gridbar.children.length >= num) {
             for (i = gridbar.children.length; i >= num; i--) {
                 gridbar.querySelector("#n" + i).id = "n" + (i + 1);
                 gridbar.querySelector("#n" + (i + 1)).innerText =  roman(i + 1);
+
+                render = overlayMapping.get("n" + i);
+                overlayMapping.set("n" + (i + 1), render);
+                animatedMap.set("n" + (i + 1), true);
+                animatedMap.set("n" + i, false);
+                overlayMapping.delete("n" + i);
+
+                render.innerText = roman(i+1);
+                render.onclick = () => jumpToGrid(i+1);
             }
         }
         gridbar.insertBefore(node, gridbar.querySelector("#n" + ++num));
-
+        
 
         let scroller = setInterval(() => {
             gridbar.scrollBy({
                 top: 0,
-                left: 5            });
+                left: 5
+            });
+            updateVisibleItems();
         }, 10);
 
         setTimeout( () => {
@@ -242,12 +250,9 @@ function initLevel() {
         }, 350);
     }
 
-    function jumpToGrid(event) {
-        let num = parseInt(event.target.id.substring(1));
-        let diff = num - currentGrid;
-        jumping = true;
+    function jumpToGrid(num) {
 
-        console.log(diff);
+        let diff = num - currentGrid;
         
         gridCarousel.scrollBy(
             {
@@ -256,12 +261,12 @@ function initLevel() {
                 behavior: "smooth"
             }
         );
-        
     }
-
     let scrolling = false;
     gridCarousel.onscroll = () => {
         let curGrid = getCenteredElement(gridCarousel);
+        alignGridBar(curGrid);
+
         if (!scrolling) {
             [...gridCarousel.children].forEach(g => {
                 [...g.children].forEach(span => {
@@ -270,27 +275,7 @@ function initLevel() {
                 })});
         }
         scrolling = true;
-        currentGrid = parseInt(curGrid.id.substring(1));
-        let newNode = level.querySelector("#n" + currentGrid);
-        let oldNode = level.querySelector(".chosen") || newNode;
-        newNode.classList.add("chosen");
-        level.querySelectorAll(`#gridbar span:not(#n${currentGrid})`).forEach(s => {s.classList.remove("chosen");});
 
-        const containerScrollLeft = gridBar.scrollLeft;
-        const containerVisibleRight = containerScrollLeft + gridBar.clientWidth;
-
-        const newNodeLeft = newNode.offsetLeft;
-        const newNodeRight = newNodeLeft + newNode.offsetWidth;
-
-        // Check if newNode is fully visible
-        const isNewNodeVisible = newNodeLeft >= containerScrollLeft && newNodeRight <= containerVisibleRight;
-
-        if (!isNewNodeVisible) {
-            gridBar.scrollTo({
-                left: newNodeLeft - gridBar.clientWidth / 2 + newNode.offsetWidth / 2, // Center new node if possible
-                behavior: "smooth"
-            });
-        }
 
         if (undoStack().length) {
             undoButton.classList.add("usable");
@@ -306,6 +291,32 @@ function initLevel() {
         
     };
 
+    function alignGridBar(curGrid) {
+        currentGrid = parseInt(curGrid.id.substring(1));
+        let newNode = level.querySelector("#n" + currentGrid);
+        let oldNode = level.querySelector(".chosen") || newNode;
+        newNode.classList.add("chosen");
+        level.querySelectorAll(`#gridbar span:not(#n${currentGrid})`).forEach(s => {s.classList.remove("chosen");});
+
+        const containerScrollLeft = gridBar.scrollLeft;
+        const containerVisibleRight = containerScrollLeft + gridBar.clientWidth;
+
+        const newNodeLeft = newNode.offsetLeft;
+        const newNodeRight = newNodeLeft + newNode.offsetWidth;
+
+        const isNewNodeVisible = newNodeLeft >= containerScrollLeft && newNodeRight <= containerVisibleRight;
+
+
+        if (!isNewNodeVisible) {
+            gridBar.scrollTo({
+                left: newNodeLeft - gridBar.clientWidth / 2 + newNode.offsetWidth / 2, 
+                behavior: "smooth"
+            });
+        }
+
+        updateVisibleItems();
+    }
+
     gridCarousel.onscrollend = (e) => {
         scrolling = false;
         let curGrid = getCenteredElement(gridCarousel);
@@ -315,8 +326,11 @@ function initLevel() {
             span.tabIndex = 0;
         });
 
+        alignGridBar(curGrid);
         gridCarousel.focus();
+
     }
+
 
 
     level.querySelector("#tab_catch").addEventListener("focus", (e) => {
@@ -566,6 +580,79 @@ function initLevel() {
         }
     }
 
+    let overlay = document.createElement("div");
+    gridBar.appendChild(overlay);
+    const overlayMapping = new Map();
+    const animatedMap = new Map();
+    overlay.className = "visible-items-overlay";
+
+    level.appendChild(overlay);
+    
+    function updateVisibleItems() {
+        if (!gridBar.children.length) return;
+        const gridRect = gridBar.getBoundingClientRect();
+        
+        // Position the overlay exactly over gridBar's visible area
+        overlay.style.left = gridRect.left + "px";
+        overlay.style.top = gridRect.top + "px";
+        overlay.style.width = gridRect.width + "px";
+        overlay.style.height = gridRect.height + "px";
+        // Determine visible items (horizontal check)
+        const visibleItems = [...gridBar.children].filter(item => {
+            const itemRect = item.getBoundingClientRect();
+            return (itemRect.right > gridRect.left && itemRect.left < gridRect.right);
+        });
+        
+        // Remove spans for items that are no longer visible
+        overlayMapping.forEach((span, item) => {
+            if (!visibleItems.includes(level.querySelector("#"+item))) {
+                span.remove();
+                overlayMapping.delete(item);
+            }
+        });
+        
+        visibleItems.forEach(item => {
+            if (!overlayMapping.has(item.id)) {
+                const span = document.createElement("span");
+                span.onclick = () => jumpToGrid(parseInt(item.id.substring(1)));
+                span.textContent = item.textContent;
+                // Check if this item has already animated before
+                if (!animatedMap.get(item.id)) {
+                    if (item.id === "n1") {
+                        animatedMap.set(item.id, true);
+                    } else {
+                        span.classList.add("new");
+                        span.addEventListener("animationend", () => {
+                            span.style.animation = "";
+                            span.classList.remove("new");
+                            animatedMap.set(item.id, true);
+                        });
+                    }
+                }
+                overlayMapping.set(item.id, span);
+                overlay.appendChild(span);
+            }
+        });
+        // Reorder the overlay spans to match the order of visibleItems
+        visibleItems.forEach((item, index) => {
+            const span = overlayMapping.get(item.id);
+            if (item.classList.contains("chosen"))
+                span.classList.add("chosen")
+            else
+                span.classList.remove("chosen");
+            // Only reinsert if the current position is not correct
+            if (overlay.children[index] !== span) {
+                overlay.insertBefore(span, overlay.children[index] || null);
+            }
+        });
+    }
+    
+    gridBar.addEventListener("scroll", updateVisibleItems);
+    window.addEventListener("resize", updateVisibleItems);
+    
+    updateVisibleItems();
+
+
     function checkGrid() {
         let flag = true;
         
@@ -579,6 +666,7 @@ function initLevel() {
 
         if (flag) {
             // Suspense
+            throttleGrid = true;
             setTimeout(success, 200); 
         }
     }
@@ -592,6 +680,7 @@ function initLevel() {
         highlight("not-a-cell");
 
         level.querySelector("#g" + currentGrid).classList.add("correct");
+        addGridButton.classList.add("fade");
 
         cellList()[0].addEventListener("animationend", () => {
             domain.classList.add("correct");
@@ -614,11 +703,16 @@ function initLevel() {
                     }, 100);
                 };
             }
+            setTimeout( () => {
+                addGridButton.classList.remove("fade");
+                throttleGrid = false;
+            }, 3500);
             horizontalScroll(level.querySelector("#domain"), 7);
 
 
         });
 
+        document.activeElement.blur();
         
 
         domainList.forEach((button) => {
@@ -650,10 +744,9 @@ function initLevel() {
 
         entryList.forEach((entry) => {
             entry.parentNode.style.pointerEvents = "none";
-        })
+        });
+
         
-        // Only blur what might be a domain button after handler is removed
-        document.activeElement.blur();
 
     }
 

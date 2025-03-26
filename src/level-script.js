@@ -129,7 +129,7 @@ function initLevel() {
         throttleGrid = true;
         let gridNum = currentGrid; // just to avoid a change midway
 
-        setTimeout( () => {throttleGrid = false;}, 550);
+        setTimeout( () => {throttleGrid = false;}, 400);
         let newGrid = document.createElement("div");
         let gridData = new Map();
         gridStorage.set(gridNum+1, gridData);
@@ -228,18 +228,31 @@ function initLevel() {
             }
         }
         gridbar.insertBefore(node, gridbar.querySelector("#n" + ++num));
-        
+
+
+        let scroller = setInterval(() => {
+            gridbar.scrollBy({
+                top: 0,
+                left: 5            });
+        }, 10);
+
+        setTimeout( () => {
+            clearTimeout(scroller);
+            
+        }, 350);
     }
-    
 
     function jumpToGrid(event) {
         let num = parseInt(event.target.id.substring(1));
         let diff = num - currentGrid;
+        jumping = true;
+
+        console.log(diff);
         
         gridCarousel.scrollBy(
             {
                 top: 0,
-                left: diff * gridCarousel.querySelector(".grid").clientWidth,
+                left: diff * (30 + gridCarousel.querySelector(".grid").clientWidth),
                 behavior: "smooth"
             }
         );
@@ -258,11 +271,26 @@ function initLevel() {
         }
         scrolling = true;
         currentGrid = parseInt(curGrid.id.substring(1));
-        let node = "#n" + currentGrid;
-        level.querySelector(node).classList.add("chosen");
-        level.querySelectorAll(`#gridbar span:not(${node})`).forEach(s => {s.classList.remove("chosen");});
+        let newNode = level.querySelector("#n" + currentGrid);
+        let oldNode = level.querySelector(".chosen") || newNode;
+        newNode.classList.add("chosen");
+        level.querySelectorAll(`#gridbar span:not(#n${currentGrid})`).forEach(s => {s.classList.remove("chosen");});
 
-        
+        const containerScrollLeft = gridBar.scrollLeft;
+        const containerVisibleRight = containerScrollLeft + gridBar.clientWidth;
+
+        const newNodeLeft = newNode.offsetLeft;
+        const newNodeRight = newNodeLeft + newNode.offsetWidth;
+
+        // Check if newNode is fully visible
+        const isNewNodeVisible = newNodeLeft >= containerScrollLeft && newNodeRight <= containerVisibleRight;
+
+        if (!isNewNodeVisible) {
+            gridBar.scrollTo({
+                left: newNodeLeft - gridBar.clientWidth / 2 + newNode.offsetWidth / 2, // Center new node if possible
+                behavior: "smooth"
+            });
+        }
 
         if (undoStack().length) {
             undoButton.classList.add("usable");
@@ -274,6 +302,8 @@ function initLevel() {
         } else {
             redoButton.classList.remove("usable");
         }
+
+        
     };
 
     gridCarousel.onscrollend = (e) => {
@@ -710,7 +740,7 @@ function initLevel() {
         }.bind(this), 1);
     }
 
-    
+
 
     function highlight(id) {
         let pair = [];

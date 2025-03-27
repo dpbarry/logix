@@ -312,6 +312,8 @@
     font-family: "Source Serif 4";
     font-weight: 375;
     background: var(--bgColor);
+
+    &::selection {background: var(--focusColor)}
   }
 }
 

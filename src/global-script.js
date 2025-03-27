@@ -32,7 +32,7 @@ function initDialogs() {
     const dialogList = document.querySelectorAll('dialog');
 
     dialogList.forEach((dialog) => {
-        dialog.addEventListener('click', (e) => {
+        dialog.addEventListener('pointerdown', (e) => {
             if (e.target.tagName !== 'DIALOG')
                 return;
 
@@ -325,16 +325,6 @@ function killOpenDialog () {
         openDialog.addEventListener("transitionend", closeDialog);
     }
 }
-
-let scrolling = false;
-
-document.addEventListener("onscroll", () => {
-    scrolling = true;
-});
-
-document.addEventListener("onscrollend", () => {
-    scrolling = false;
-});
 
 document.addEventListener('keydown', (e) => {
 

@@ -252,6 +252,7 @@ function initLevel() {
         );
 
     }
+
     let scrolling = false;
     gridCarousel.onscroll = () => {
         if (!scrolling) {
@@ -381,6 +382,10 @@ function initLevel() {
         alignGridBar();
         
         gridCarousel.focus();
+
+        if (!("onscrollsnapchange" in window)) {
+            setTimeout( () => {scrolling = false}, 450);
+        }
 
     }
 

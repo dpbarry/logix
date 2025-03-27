@@ -53,7 +53,7 @@ function initLevel() {
     firstGrid.set("redo", []);
 
     initCells(1);
-    firstGrid.set("values", new Map([...cellList()].map(k => [k, null])));
+    firstGrid.set("values", new Map([...cellList()].map(k => [k.id, null])));
 
     function initCells(gridNum) {
         let newGrid = gridStorage.get(gridNum);
@@ -135,7 +135,7 @@ function initLevel() {
         let newGrid = document.createElement("div");
         let gridData = new Map();
         gridStorage.set(gridNum+1, gridData);
-        gridData.set("values", dupe ? gridStorage.get(gridNum).get("values") : new Map([...cellList()].map( k => [k, null])));
+        gridData.set("values", dupe ? gridStorage.get(gridNum).get("values") : new Map([...cellList()].map( k => [k.id, null])));
         
         gridData.set("undo", dupe ? gridStorage.get(gridNum).get("undo") : []);
         gridData.set("redo", dupe ? gridStorage.get(gridNum).get("redo") : []);
@@ -240,7 +240,7 @@ function initLevel() {
     }
 
     function jumpToGrid(e, store=null) {
-        let num = parseInt(e.target.id.substring(2));
+        let num = store || parseInt(e.target.id.substring(2));
         let diff = num - currentGrid;
         
         gridCarousel.scrollBy(
@@ -254,9 +254,6 @@ function initLevel() {
     }
     let scrolling = false;
     gridCarousel.onscroll = () => {
-        currentGrid = parseInt(getCenteredElement(gridCarousel).id.substring(1));
-        alignGridBar();
-
         if (!scrolling) {
             [...gridCarousel.children].forEach(g => {
                 [...g.children].forEach(span => {
@@ -265,6 +262,10 @@ function initLevel() {
                 })});
         }
         scrolling = true;
+        currentGrid = parseInt(getCenteredElement(gridCarousel).id.substring(1));
+        alignGridBar();
+
+        
 
         if (currentGrid === 1) {
             deleteGridButton.classList.remove("usable");
@@ -291,12 +292,14 @@ function initLevel() {
         if (scrolling || throttleGrid) return;
         let grid = level.querySelector("#g" + num);
         grid.classList.add("deleting");
+        jumpToGrid(null, (num === gridbar.children.length) ? num - 1 : num + 1);
         setTimeout (() => {
             grid.remove();
             gridCarousel.dispatchEvent(new Event("scroll"));
+            
             setTimeout( () => {
                 gridCarousel.dispatchEvent(new Event("scrollend"));
-                
+
             }, 150);
         }, 400);
         
@@ -307,16 +310,23 @@ function initLevel() {
         animatedMap.delete("n" + num);
         overlayMapping.delete("n" + num);
 
+        if (gridbar.children.length === 1) {
+            level.querySelector("#n" + 1).remove();
+            overlayMapping.get("n" + 1).remove();
+            animatedMap.delete("n" + 1);
+            overlayMapping.delete("n" + 1);
+        }
+
         
         for (i = num + 1; i <= gridBar.children.length + 1; i++) {
             level.querySelector("#g" + i).id = "g"+(-1 + parseInt(level.querySelector("#g" + i).id.substring(1)));
             gridbar.querySelector("#n" + i).id = "n" + (i - 1);
             gridbar.querySelector("#n" + (i - 1)).innerText =  roman(i - 1);
+            animatedMap.set("n" + (i - 1), true);
 
             render = overlayMapping.get("n" + i);
             if (!render) continue;
             overlayMapping.set("n" + (i - 1), render);
-            animatedMap.set("n" + (i - 1), true);
             
             animatedMap.delete("n" + i);
             overlayMapping.delete("n" + i);
@@ -326,7 +336,7 @@ function initLevel() {
             render.innerText = roman(i-1);
         }
 
-        
+
         
     }
 
@@ -337,6 +347,8 @@ function initLevel() {
         newNode.classList.add("chosen");
         level.querySelectorAll(`#gridbar span:not(#n${currentGrid})`).forEach(s => {s.classList.remove("chosen");});
 
+        
+        
         const containerScrollLeft = gridBar.scrollLeft;
         const containerVisibleRight = containerScrollLeft + gridBar.clientWidth;
 
@@ -439,7 +451,7 @@ function initLevel() {
         text.classList.remove("dismiss");
         text.innerText = text.innerText.substring(0, text.innerText.length-1);
         text.removeEventListener("animationend", endDismiss);
-        values().set(e.target.parentNode, text.innerText);
+        values().set(e.target.parentNode.id, text.innerText);
     }
 
     function endDismissWipe(e) {
@@ -451,7 +463,7 @@ function initLevel() {
         text.classList.remove("dismiss");
         text.innerText = "";
         text.removeEventListener("animationend", endDismissWipe);
-        values().set(e.target.parentNode, "");
+        values().set(e.target.parentNode.id, "");
     }
 
 
@@ -518,7 +530,7 @@ function initLevel() {
             text.addEventListener("animationend", endInsert);
         }, 1); // ensure dismiss handler has been removed
 
-        values().set(cell, value);
+        values().set(cell.id, value);
         checkGrid();
     }
 
@@ -622,7 +634,6 @@ function initLevel() {
     }
 
     let overlay = document.createElement("div");
-    gridBar.appendChild(overlay);
     const overlayMapping = new Map();
     const animatedMap = new Map();
     overlay.className = "visible-items-overlay";
@@ -679,14 +690,12 @@ function initLevel() {
                 overlay.appendChild(span);
             }
         });
-        // Reorder the overlay spans to match the order of visibleItems
         visibleItems.forEach((item, index) => {
             const span = overlayMapping.get(item.id);
             if (item.classList.contains("chosen"))
                 span.classList.add("chosen")
             else
                 span.classList.remove("chosen");
-            // Only reinsert if the current position is not correct
             if (overlay.children[index] !== span) {
                 overlay.insertBefore(span, overlay.children[index] || null);
             }
@@ -701,10 +710,10 @@ function initLevel() {
 
     function checkGrid() {
         let flag = true;
-        
+
         values().forEach((value, key) => {
-            let row = parseInt(key.id.charAt(1));
-            let col = parseInt(key.id.charAt(3));
+            let row = parseInt(key.charAt(1));
+            let col = parseInt(key.charAt(3));
             if (value != SOLUTION[row - 1][col - 1]) {
                 flag = false;
             }
@@ -727,6 +736,7 @@ function initLevel() {
 
         level.querySelector("#g" + currentGrid).classList.add("correct");
         addGridButton.classList.add("fade");
+        deleteGridButton.classList.add("fade");
 
         cellList()[0].addEventListener("animationend", () => {
             domain.classList.add("correct");
@@ -751,8 +761,9 @@ function initLevel() {
             }
             setTimeout( () => {
                 addGridButton.classList.remove("fade");
+                deleteGridButton.classList.remove("fade");
                 throttleGrid = false;
-            }, 3500);
+            }, 3000);
             horizontalScroll(level.querySelector("#domain"), 7);
 
 
@@ -1372,6 +1383,10 @@ function initLevel() {
 
         if (e.key === "P") {
             createNewGrid(true);
+            return;
+        }
+        if (e.key === "x") {
+            deleteGrid(currentGrid);
             return;
         }
 

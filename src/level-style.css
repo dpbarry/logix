@@ -565,6 +565,7 @@
 #delgrid {
   position: absolute;
   opacity: 0;
+  scale: 1;
   cursor: pointer;
   border: none;
   pointer-events: none;
@@ -579,20 +580,21 @@
   transition: opacity 0.1s, scale 0.1s, margin 0.15s;
   &.fade {scale: 0; transition: scale 0.45s}
 
-  &.usable {transition: opacity 0.15s, margin 0.15s; opacity: 0.45; pointer-events: all; margin-top: 55px;}
+  &.usable {transition: opacity 0.15s, margin 0.15s, scale 0.1s; opacity: 0.45; pointer-events: all; margin-top: 55px;}
+  &.fade {scale: 0; transition: scale 0.45s}
+
 }
 
 #gridbar {
   position: absolute;
   top: -9.5px;
   width: calc(var(--gridWidth) * 0.55);
-  height: 20px;
-  z-index: 1;
-  
+  height: 20px;  
   display: flex;
   gap: 15px; 
   overflow-x: scroll;
-  
+
+  z-index: -1;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
 
@@ -700,8 +702,7 @@
 
 
 .grid.deleting {
-  opacity: 0;
-  filter: blur(20px);
+  scale: 0;
 }
 
 .grid {
@@ -713,6 +714,7 @@
   flex: 0 0 auto;       /* Prevent shrinking and maintain fixed width */
   scroll-snap-align: center; 
 
+  opacity: 1;
   display: grid;
   align-items: center;
   align-content: center;
@@ -725,7 +727,7 @@
   width:  var(--gridWidth);
   height: var(--gridHeight);
 
-  transition: opacity 0.4s, filter 0.4s;
+  transition: scale 0.44s;
   
   span {
     font-family: "computer modern serif";

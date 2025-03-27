@@ -542,7 +542,6 @@
   width: calc(var(--fullGridWidth) - 2 * var(--gridPadding) - 2 * var(--gridBorderWidth));
 }
 
-
 #nextgrid {
   position: absolute;
   opacity: 0.45;
@@ -555,15 +554,38 @@
   height: 20px;
   width: 20px; 
   filter: var(--hueShiftIcons);
-  transition: opacity 0.1s, scale 0.1s;
+  transition: opacity 0.1s, scale 0.1s, margin 0.15s;
   &.fade {scale: 0; transition: scale 0.45s}
   
+}
+
+#nextgrid:has(+ #delgrid.usable) {
+  margin-bottom: 55px;
+}
+#delgrid {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  border: none;
+  pointer-events: none;
+  
+  right: -32px;
+  background: url("../assets/MINUS.svg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  height: 22px;
+  width: 20px;
+  filter: var(--hueShiftIcons);
+  transition: opacity 0.1s, scale 0.1s, margin 0.15s;
+  &.fade {scale: 0; transition: scale 0.45s}
+
+  &.usable {transition: opacity 0.15s, margin 0.15s; opacity: 0.45; pointer-events: all; margin-top: 55px;}
 }
 
 #gridbar {
   position: absolute;
   top: -9.5px;
-  width: calc(var(--gridWidth) * 0.57);
+  width: calc(var(--gridWidth) * 0.55);
   height: 20px;
   z-index: 1;
   
@@ -584,6 +606,7 @@
   display: flex;
   justify-content: center;
   gap: 15px;
+  overflow: visible;
   align-items: center;
   z-index: 1;
   pointer-events: none;
@@ -601,23 +624,28 @@
     padding: 5px;
     text-align: center;
 
-    &.new {
-      animation: riseIn 0.4s ease forwards;
+    &.new, &.first {
       @starting-style {opacity: 0;}
     }
-    &.chosen {
+    &.new {
+      animation: riseIn 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.1)  forwards;
+    }
+    &.chosen:not(.first) {
       opacity: 1;
       font-weight: 450;
     }
   }
 }
 @keyframes riseIn {
-  from {scale: 0; rotate: 100deg;}
-  to {scale: 1; rotate: 0;}
+  from {top: 33px;}
+  to {top: 0;}
 }
 
 @media (hover: hover) and (pointer: fine) {
   #nextgrid:hover{
+    opacity: 1;
+  }
+  #delgrid:hover{
     opacity: 1;
   }
   .visible-items-overlay span:hover {
@@ -671,6 +699,10 @@
 }
 
 
+.grid.deleting {
+  opacity: 0;
+  filter: blur(20px);
+}
 
 .grid {
   align-self: center;
@@ -693,6 +725,7 @@
   width:  var(--gridWidth);
   height: var(--gridHeight);
 
+  transition: opacity 0.4s, filter 0.4s;
   
   span {
     font-family: "computer modern serif";

@@ -36,6 +36,8 @@ function initLevel() {
     const redoButton = level.querySelector("#redo");
     const pencilButton = level.querySelector("#pencil");
     const addGridButton = level.querySelector("#nextgrid");
+    const deleteGridButton = level.querySelector("#delgrid");
+
     const gridCarousel = level.querySelector("#grid_carousel");
     const cellList = () => gridStorage.get(currentGrid).get("cells");
     const values = () => gridStorage.get(currentGrid).get("values");
@@ -125,11 +127,11 @@ function initLevel() {
     }
 
     function createNewGrid(dupe=false) {
-        if (throttleGrid) return;
+        if (scrolling || throttleGrid) return;
         throttleGrid = true;
         let gridNum = currentGrid; // just to avoid a change midway
 
-        setTimeout( () => {throttleGrid = false;}, 100);
+        setTimeout( () => {throttleGrid = false;}, 400);
         let newGrid = document.createElement("div");
         let gridData = new Map();
         gridStorage.set(gridNum+1, gridData);
@@ -187,22 +189,6 @@ function initLevel() {
 
     let gridBar = level.querySelector("#gridbar");
     function updateGridbar(num) {        
-        function roman(n) {
-            const romanNumerals = [
-                [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
-                [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
-                [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
-            ];
-            
-            let result = '';
-            for (let [value, symbol] of romanNumerals) {
-                while (n >= value) {
-                    result += symbol;
-                    n -= value;
-                }
-            }
-            return result;
-        }
 
         if (gridbar.children.length === 0) {
             let first = document.createElement("span");
@@ -224,48 +210,52 @@ function initLevel() {
                 gridbar.querySelector("#n" + (i + 1)).innerText =  roman(i + 1);
 
                 render = overlayMapping.get("n" + i);
+                if (!render) continue;
                 overlayMapping.set("n" + (i + 1), render);
                 animatedMap.set("n" + (i + 1), true);
                 animatedMap.set("n" + i, false);
                 overlayMapping.delete("n" + i);
 
+                render.id = "rn" + (1 + parseInt(render.id.substring(2)));
                 render.innerText = roman(i+1);
-                render.onclick = () => jumpToGrid(i+1);
             }
         }
         gridbar.insertBefore(node, gridbar.querySelector("#n" + ++num));
         
 
         let scroller = setInterval(() => {
+            updateVisibleItems();
+
+            if (overlayMapping.get("n" + num)) clearTimeout(scroller);
+
             gridbar.scrollBy({
                 top: 0,
                 left: 5
             });
-            updateVisibleItems();
         }, 10);
-
         setTimeout( () => {
             clearTimeout(scroller);
             
         }, 350);
     }
 
-    function jumpToGrid(num) {
-
+    function jumpToGrid(e, store=null) {
+        let num = parseInt(e.target.id.substring(2));
         let diff = num - currentGrid;
         
         gridCarousel.scrollBy(
             {
                 top: 0,
-                left: diff * (30 + gridCarousel.querySelector(".grid").clientWidth),
+                left: diff * (30 + level.querySelector("#g1").clientWidth),
                 behavior: "smooth"
             }
         );
+
     }
     let scrolling = false;
     gridCarousel.onscroll = () => {
-        let curGrid = getCenteredElement(gridCarousel);
-        alignGridBar(curGrid);
+        currentGrid = parseInt(getCenteredElement(gridCarousel).id.substring(1));
+        alignGridBar();
 
         if (!scrolling) {
             [...gridCarousel.children].forEach(g => {
@@ -276,6 +266,11 @@ function initLevel() {
         }
         scrolling = true;
 
+        if (currentGrid === 1) {
+            deleteGridButton.classList.remove("usable");
+        } else {
+            deleteGridButton.classList.add("usable");
+        }
 
         if (undoStack().length) {
             undoButton.classList.add("usable");
@@ -291,9 +286,53 @@ function initLevel() {
         
     };
 
-    function alignGridBar(curGrid) {
-        currentGrid = parseInt(curGrid.id.substring(1));
+    deleteGridButton.onclick = () => deleteGrid(currentGrid);
+    function deleteGrid(num) {
+        if (scrolling || throttleGrid) return;
+        let grid = level.querySelector("#g" + num);
+        grid.classList.add("deleting");
+        setTimeout (() => {
+            grid.remove();
+            gridCarousel.dispatchEvent(new Event("scroll"));
+            setTimeout( () => {
+                gridCarousel.dispatchEvent(new Event("scrollend"));
+                
+            }, 150);
+        }, 400);
+        
+        
+
+        level.querySelector("#n" + num).remove();
+        overlayMapping.get("n" + num).remove();
+        animatedMap.delete("n" + num);
+        overlayMapping.delete("n" + num);
+
+        
+        for (i = num + 1; i <= gridBar.children.length + 1; i++) {
+            level.querySelector("#g" + i).id = "g"+(-1 + parseInt(level.querySelector("#g" + i).id.substring(1)));
+            gridbar.querySelector("#n" + i).id = "n" + (i - 1);
+            gridbar.querySelector("#n" + (i - 1)).innerText =  roman(i - 1);
+
+            render = overlayMapping.get("n" + i);
+            if (!render) continue;
+            overlayMapping.set("n" + (i - 1), render);
+            animatedMap.set("n" + (i - 1), true);
+            
+            animatedMap.delete("n" + i);
+            overlayMapping.delete("n" + i);
+
+            render.id = "rn" + (-1 + parseInt(render.id.substring(2)));
+
+            render.innerText = roman(i-1);
+        }
+
+        
+        
+    }
+
+    function alignGridBar() {
         let newNode = level.querySelector("#n" + currentGrid);
+        if (!newNode) return;
         let oldNode = level.querySelector(".chosen") || newNode;
         newNode.classList.add("chosen");
         level.querySelectorAll(`#gridbar span:not(#n${currentGrid})`).forEach(s => {s.classList.remove("chosen");});
@@ -325,8 +364,10 @@ function initLevel() {
             if (span.classList.contains("given")) return;
             span.tabIndex = 0;
         });
+        currentGrid = parseInt(curGrid.id.substring(1));
 
-        alignGridBar(curGrid);
+        alignGridBar();
+        
         gridCarousel.focus();
 
     }
@@ -614,16 +655,21 @@ function initLevel() {
         visibleItems.forEach(item => {
             if (!overlayMapping.has(item.id)) {
                 const span = document.createElement("span");
-                span.onclick = () => jumpToGrid(parseInt(item.id.substring(1)));
+                span.id = "r"+item.id;
+                span.onclick = jumpToGrid;
                 span.textContent = item.textContent;
                 // Check if this item has already animated before
                 if (!animatedMap.get(item.id)) {
                     if (item.id === "n1") {
                         animatedMap.set(item.id, true);
-                    } else {
+                        span.classList.add("first");
+                        span.addEventListener("transitionend", () => {
+                            setTimeout( () => span.classList.remove("first"), 100);
+                        });
+                    }
+                    else {
                         span.classList.add("new");
                         span.addEventListener("animationend", () => {
-                            span.style.animation = "";
                             span.classList.remove("new");
                             animatedMap.set(item.id, true);
                         });
@@ -1283,7 +1329,7 @@ function initLevel() {
 
 
 
-    level.querySelectorAll("#pencil, #undo, #redo, #nextgrid").forEach(li => {
+    level.querySelectorAll("#pencil, #undo, #redo, #nextgrid, #delgrid").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
             event.target.classList.add("nudged");
 
@@ -1456,10 +1502,10 @@ function initLevel() {
             }
         } else {
             if (ROWS === 2) {
-                level.style.setProperty('--heightFactor', 0.65);
+                level.style.setProperty('--heightFactor',0.65);
                 level.style.setProperty('--widthFactor', 0.65);
-                level.style.setProperty('--landscapeHeightFactor', 0.65);
-                level.style.setProperty('--landscapeWidthFactor', 0.65);
+                level.style.setProperty('--landscapeHeightFactor', 0.7);
+                level.style.setProperty('--landscapeWidthFactor', 0.7);
             } else {
                 level.style.setProperty('--heightFactor', 1);
                 level.style.setProperty('--widthFactor', 1);
@@ -1469,4 +1515,20 @@ function initLevel() {
 
         }
     }
+}
+function roman(n) {
+    const romanNumerals = [
+        [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
+        [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
+        [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
+    ];
+    
+    let result = '';
+    for (let [value, symbol] of romanNumerals) {
+        while (n >= value) {
+            result += symbol;
+            n -= value;
+        }
+    }
+    return result;
 }

@@ -807,12 +807,7 @@ function initLevel() {
         entryList.forEach((entry) => {
             entry.parentNode.style.pointerEvents = "none";
         });
-
-        
-
     }
-
-
 
     let debounced = 0;
 
@@ -868,10 +863,10 @@ function initLevel() {
                 && !(document.activeElement.matches(".grid span"))
                 && document.activeElement !== document.body
                 && !tabbed
-                || toolClicked) {
-
+                || toolClicked
+               ) {
+                
                 this.focus({preventScroll: true});
-
             } else {
                 let r = this.querySelector(".ripple");
 
@@ -889,7 +884,6 @@ function initLevel() {
                     domain.onfocus = chamberInput;
                     domain.onblur = releaseInput;
                 });
-
             }
             
         }.bind(this), 1);

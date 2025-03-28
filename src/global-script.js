@@ -25,7 +25,9 @@ function closeDialog (event) {
         d.blur();
     });
     
-    event.target.closest("dialog").removeEventListener("transitionend", closeDialog);    
+    event.target.closest("dialog").removeEventListener("transitionend", closeDialog);
+
+    document.querySelector(".retain").focus();
 }
 
 function initDialogs() {
@@ -35,6 +37,8 @@ function initDialogs() {
         dialog.addEventListener('pointerdown', (e) => {
             if (e.target.tagName !== 'DIALOG')
                 return;
+
+            dialogActive = true;
 
             const rect = e.target.getBoundingClientRect();
 
@@ -80,6 +84,7 @@ function initDialogs() {
 
     document.querySelectorAll(".dialog_button").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
+            openingModal = true;
             event.target.classList.add("nudged");
             event.target.addEventListener("pointerup", (event) => {
                 event.target.classList.remove("nudged");
@@ -95,6 +100,7 @@ function initDialogs() {
     });
 
     document.body.addEventListener("pointerup", (e) => {
+        openingModal = false;
         document.querySelectorAll(".nudged").forEach((elem) => {
             let rect = elem.getBoundingClientRect();
             let overOriginalSize = (e.clientX < rect.left - 4 || e.clientX > rect.right + 4 || 

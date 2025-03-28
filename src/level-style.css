@@ -753,6 +753,7 @@
 
     justify-content: center;
     align-items: center;
+    overflow: visible;
     
     cursor: pointer;
 
@@ -895,6 +896,7 @@
   display: block;
   align-content: center;
   z-index: 1;
+  pointer-events: none;
 }
 
 
@@ -939,6 +941,7 @@
     }
 
     span.entry {
+      pointer-events: all;
       cursor: pointer;
       display: inline-block;
       position: relative;

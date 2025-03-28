@@ -270,21 +270,48 @@
     zoom: 0.83;
   }
 
-  
+}
 
-  span.key {
-    display: inline-block;
-    border: 1px solid light-dark(#ccc, #3a3a3a);
-    filter: drop-shadow(0 1.5px 1px light-dark(transparent, #010101));
-    box-shadow: 0 2px 2px #eee;
-    border-radius: 2px;
-    padding: 3px;
-    line-height: 1.15;
-    font-weight: 225;
-    min-width: 1.2rem;
-    text-align: center;
-    background: light-dark(#fafafa, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
+#dictionary_dialog {
+  height: min-content;
+  max-height: 75vh;
+  h1 {margin-bottom: 10px;}
+  padding-bottom: 20px;
+  font-weight: 350;
+  font-size: 1.15rem;
+  #keysbox {
+    max-height: 44vh;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;    
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    
+    p {
+      margin: 0;
+      font-weight: 350;
+      font-size: 1.15rem;
+      flex-basis:100%;
+      text-align: justify;
+      margin-bottom: 5px;
+    }
   }
+}
+
+span.key {
+  display: inline-block;
+  border: 1px solid light-dark(#ccc, #3a3a3a);
+  filter: drop-shadow(0 1.5px 1px light-dark(transparent, #010101));
+  box-shadow: 0 2px 2px #eee;
+  border-radius: 2px;
+  padding: 3px;
+  line-height: 1.15;
+  font-weight: 225;
+  min-width: 1.2rem;
+  text-align: center;
+  background: light-dark(#fafafa, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
 }
 #notes_dialog {
   height: min-content;

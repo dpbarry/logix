@@ -14,8 +14,18 @@ function showModal(id) {
             info.classList.remove("banish");
         }, 300);
     }
+
+    if (id==="settings_dialog") {
+        setTimeout( ()=> {
+            document.querySelector("#litlight").parentNode.focus();
+            
+        }, 100);
+    }
 }
 
+document.getElementById("configs").addEventListener("scroll", (e) => verticalScroll(e.target, 7));
+window.addEventListener("resize", () => verticalScroll(document.getElementById("configs"), 7));
+screen.orientation.addEventListener("change", (event) => {verticalScroll(document.getElementById("configs"), 7)});
 
 function closeDialog (event) {
     event.target.closest("dialog").close();
@@ -27,8 +37,8 @@ function closeDialog (event) {
     
     event.target.closest("dialog").removeEventListener("transitionend", closeDialog);
 
-    document.querySelector(".retain").focus();
-}
+    try {document.querySelector(".retain").focus(); } catch {}
+} 
 
 function initDialogs() {
     const dialogList = document.querySelectorAll('dialog');
@@ -56,7 +66,7 @@ function initDialogs() {
             }});
 
         dialog.addEventListener('keydown', (e) => {
-            if (e.key === "Escape" || (document.activeElement.nodeName !== "TEXTAREA" && (e.key === "Enter" || e.key === " "))) {
+            if (e.key === "Escape" || (document.activeElement.nodeName === "DIALOG" && e.key === " ")) {
 
                 e.preventDefault();
                 dialog.classList.add("hide");
@@ -80,7 +90,10 @@ function initDialogs() {
             e.target.focus({preventScroll: true});
             // i.e., the dialog
         });
-    });
+        toggle.addEventListener("keydown", (e) => {
+            console.log(e.target);
+            
+        });});
 
     document.querySelectorAll(".dialog_button").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
@@ -132,13 +145,19 @@ CROSSHAIRS_TOGGLE.addEventListener("change", () => {
     }
 })
 THEMES.forEach( t => {
-    t.addEventListener("change", () => {
+    t.previousElementSibling.addEventListener("change", () => {
         updateTheme();
-        if (t.checked) {
+        if (t.previousElementSibling.checked) {
             localStorage.setItem("theme", t.id);
 
         }
     });
+
+    t.parentNode.addEventListener("keydown", (e) => {
+        if (e.key === " " || e.key === "enter") {
+            e.target.click();
+        }
+    })
 });
 
 [CROSSHAIRS_TOGGLE, STICKY_TOGGLE, CANCELOUT_TOGGLE].forEach(t => {
@@ -192,7 +211,7 @@ if (cacheTheme !== null) {
 
 function updateTheme() {
     ROOT.classList.add("notransitions");
-    let theme = Array.from(THEMES).find(t => t.checked);
+    let theme = Array.from(THEMES).find(t => t.previousElementSibling.checked);
 
     if (theme.id === "litlight") {
 
@@ -404,7 +423,7 @@ document.addEventListener('keydown', (e) => {
 
 function verticalScroll(el, moe) {
     el.style.overflow = "auto";
-    const isScrollable = (el.scrollHeight - moe > el.clientHeight);
+    const isScrollable = (el.scrollHeight > el.clientHeight);
     if (!isScrollable) {
         el.style.maskImage = "";
         el.style.overflow = "visible";
@@ -415,8 +434,8 @@ function verticalScroll(el, moe) {
 
     
     // One pixel is added to the height to account for non-integer heights.
-    const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + 5;
-    const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop === 0;
+    const isScrolledToBottom = el.scrollHeight < el.clientHeight + el.scrollTop + moe;
+    const isScrolledToTop = isScrolledToBottom ? false : el.scrollTop < moe;
 
     let top = 0;
     let bottom=0;
@@ -436,7 +455,7 @@ function verticalScroll(el, moe) {
 
 
 function horizontalScroll(el, moe) {
-    const isScrollable = (el.scrollWidth - moe > el.clientWidth);
+    const isScrollable = (el.scrollWidth > el.clientWidth);
 
     if (!isScrollable) {
         el.style.maskImage = "";
@@ -449,8 +468,8 @@ function horizontalScroll(el, moe) {
 
     
     // One pixel is added to the height to account for non-integer heights.
-    const isScrolledToRight = el.scrollWidth  < el.clientWidth + el.scrollLeft + 1;
-    const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft === 0;
+    const isScrolledToRight = el.scrollWidth  < el.clientWidth + el.scrollLeft + moe;
+    const isScrolledToLeft = isScrolledToRight ? false : el.scrollLeft < moe;
 
 
     let left = 0;

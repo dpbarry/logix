@@ -184,7 +184,6 @@ function initLevel() {
         
 
         setTimeout( () => noGridUpdate = false, 1000);
-        newGrid.addEventListener("clearcrosshairs", () => crosshairs("not-a-cell", true));  
     };
 
     let gridBar = level.querySelector("#gridbar");
@@ -736,7 +735,6 @@ function initLevel() {
 
 
     function success() {
-        crosshairs("not-a-cell");
         highlight("not-a-cell");
 
         level.querySelector("#g" + currentGrid).classList.add("correct");
@@ -813,7 +811,6 @@ function initLevel() {
 
     function lockCell () {
         this.classList.remove("retain");
-        crosshairs(this.id);
         highlight(this.id);
         
         setTimeout(function () {
@@ -853,7 +850,6 @@ function initLevel() {
 
     function fillCell (e) {
         if (document.activeElement === this || openingModal) {this.classList.add("retain"); return;}
-        crosshairs("not-a-cell");
         highlight("not-a-cell");
 
         setTimeout(function () {
@@ -908,10 +904,12 @@ function initLevel() {
             }
         });
 
-        pair.forEach(a => a.classList.add("highlight"));
+        if (CROSSHAIRS_TOGGLE.checked)
+            pair.forEach(a => a.classList.add("highlight"));
     }
 
     function axisCue(y, x) {
+        if (!CROSSHAIRS_TOGGLE.checked) return;
         let yNum = level.querySelector(y);
         let xNum = level.querySelector(x);
 
@@ -1108,31 +1106,16 @@ function initLevel() {
     window.onresize = function(event) {
         verticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
-        fadeInfo();
+        verticalScroll(level.querySelector("#keysbox"), 7);
+        verticalScroll(info, 7);
     }
 
     screen.orientation.addEventListener("change", (event) => {
         verticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
-        fadeInfo();
+        verticalScroll(level.querySelector("#keysbox"), 7);
+        verticalScroll(info, 7);
     });
-
-    // given the id of a cell, emphasize borders of cells in that row and column
-    function crosshairs(id, flush=false) {
-        if (!CROSSHAIRS_TOGGLE.checked && !flush) return;
-        for (let i = 0; i < cellList().length; i++) {
-            // check that the cell matches in row or column
-            if (cellList()[i].id.slice(1,2) == id.slice(1,2) || cellList()[i].id.slice(3) == id.slice(3)) {
-                cellList()[i].style.outlineColor = "var(--baseColor)";
-
-            }
-            // reset the styles of other cells without messing up the axis labels
-            else if (! cellList()[i].classList.contains("y_axis") && ! cellList()[i].classList.contains("x_axis")) {
-                cellList()[i].style.outlineColor = "transparent";
-
-            }
-        }
-    }
 
     rippleStack = [];
     function spawnRipple(mouseEvent, element) {
@@ -1463,24 +1446,19 @@ function initLevel() {
             Router("index.html");
         }
     }
-    function fadeInfo() {
-        verticalScroll(info, 7);     
-        if (info.style.overflow !== "visible") {
-            info.classList.add("overflowing");
-        } else {
-            info.classList.remove("overflowing");
-        }
-    }
+
 
 
     info.parentNode.addEventListener("open", () => {
         info.scroll(0,0);
-        fadeInfo();        
+        verticalScroll(info, 7);        
     });
     info.addEventListener("scroll", () => {
-        fadeInfo();
+        verticalScroll(info, 7);
     });
-
+    level.querySelector("#keysbox").addEventListener("scroll", (e) => {
+        verticalScroll(e.target, 7);
+    } );
 
     function alignGrid() {
         const max = Math.max(ROWS, COLS);

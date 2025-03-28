@@ -244,10 +244,8 @@ dialog {
   font-family: "source serif 4";
   width: min(80vw, 500px);
   height: min-content;
-  max-height: 52vh;
   visibility: hidden;
   opacity: 0;
-  padding-bottom: 35px;
   overflow: clip;
 
   color: var(--baseColor);
@@ -302,12 +300,15 @@ dialog {
 
 
 #settings_dialog {
-  max-width: 400px
+  max-width: 400px;
+  height: min-content;
+  max-height: 80vh;
+  padding-bottom: 10px;
 }
 
 #configs {
-  margin-left: 2vw;
-  margin-right: 2vw;
+  margin-left: 1rem;
+  margin-right: 1rem;
   font-size: 1.4rem;
   font-weight: 400;
   display:flex;
@@ -315,15 +316,22 @@ dialog {
   justify-content: left;
   flex-wrap: wrap;
   gap: 10px;
-
-  
+  max-height: 60vh;
+  overflow-y: scroll;
+  padding-bottom: 10px;
+  box-sizing: border-box;
 
   #wrap_theme {
     width: 100%;
     display: flex;
-    label {margin-right: 10px;}
+    label:first-child {margin-right: 10px;}
+
+    input {
+     position: absolute; opacity: 0;
+    }
   }
   .theme {
+    display:block;
     margin: 0;
     margin-bottom: 2px;
     appearance: none;
@@ -335,6 +343,7 @@ dialog {
     cursor: pointer;
     transition: filter 0.1s ease;
     margin-right: 4px;
+    box-sizing: border-box;
     
     &::after {
       content: "";
@@ -346,9 +355,10 @@ dialog {
       border-radius: 19px;
 
     }
+
   }
 
-  .theme:checked {
+  input:checked + .theme {
     border: 3px solid var(--emphasisColor) !important;
   }
 
@@ -396,10 +406,13 @@ dialog {
     border-radius: 18px;
     transition: all 0.2s ease;
   }
-  input:hover {
-    filter: brightness(90%);
+
+  @media (hover: hover) and (pointer: fine) {
+    input:hover, .theme:hover {
+      filter: brightness(90%);
+    }
   }
-  input:focus {
+  input:focus, label:focus .theme {
     outline: 0;
     filter: brightness(90%);
   }
@@ -415,6 +428,7 @@ dialog {
 
   p {
     margin: 0;
+    margin-top: -5px;
     font-style: italic;
     font-weight: 350;
     font-size: 1rem;

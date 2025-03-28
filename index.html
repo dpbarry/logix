@@ -21,15 +21,15 @@
 
         <!-------- KATEX -------->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
 
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
-            onload="renderMathInElement(document.body, {
-                       trust: (context) => true,
-                       strict: false, });"></script>
-    
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+                onload="renderMathInElement(document.body, {
+                           trust: (context) => true,
+                           strict: false, });"></script>
+        
         <!------- STYLESHEETS ------->
         <link rel="stylesheet" href="src/global-style.css">
         <link rel="stylesheet" href="src/home-style.css">
@@ -40,28 +40,49 @@
     
     <body>
         <dialog id="settings_dialog">
-            <a class="close"></a>
+            <a class="close" tabindex="-1"></a>
             <h1>Settings</h1>
             
             <div id="configs">
                 <div id="wrap_theme">
                     <label> Theme </label>
-                    <input type="radio" id="litlight" class="theme" name="theme" type="checkbox" checked>
-                    <input type="radio" id="frostlight" class="theme" name="theme" type="checkbox">
-                    <input type="radio" id="litdark" class="theme" name="theme" type="checkbox">
-                    <input type="radio" id="frostdark" class="theme" name="theme" type="checkbox">
+
+                    <label tabindex="0">
+                        <input type="radio" tabindex="-1" name="theme" type="checkbox" checked>
+                        <span  id="litlight" class="theme"></span>
+                    </label>
+                    <label tabindex="0">
+                        <input type="radio" tabindex="-1" name="theme" type="checkbox">
+                        <span id="frostlight" class="theme"></span>
+                    </label>
+                    <label tabindex="0">
+                        <input type="radio" tabindex="-1" name="theme" type="checkbox">
+                        <span id="litdark" class="theme"></span>
+                    </label>
+                    <label tabindex="0">
+                        <input type="radio" tabindex="-1" name="theme" type="checkbox">
+                        <span id="frostdark" class="theme"></span>
+                    </label>
                 </div>              
                 <label for="sticky_toggle"> Sticky Input </label>
-                <input id="sticky_toggle" type="checkbox" class="toggle" checked>
+                <input id="sticky_toggle" tabindex="0" type="checkbox" class="toggle" checked>
                 <p>Input selection persists after filling a cell</p>
-                
-                <label for="crosshairs_toggle"> Crosshairs </label>
-                <input id="crosshairs_toggle" type="checkbox" class="toggle">
-                <p>Emphasize row and column of selected cell</p>
 
+                <label for="crosshairs_toggle"> Crosshairs </label>
+                <input id="crosshairs_toggle" tabindex="0" type="checkbox" class="toggle">
+                <p>Emphasize row and column of selected cell</p>
+                
+                <label for="dynamic_toggle"> Dynamic Entries </label>
+                <input id="dynamic_toggle" tabindex="0" type="checkbox" class="toggle" checked>
+                <p>Treat entry literals in propositions the same as cells</p>
+                
                 <label for="cancelout_toggle"> Cancel Out </label>
-                <input id="cancelout_toggle" type="checkbox" class="toggle" checked>
+                <input id="cancelout_toggle" tabindex="0" type="checkbox" class="toggle" checked>
                 <p>Clear a cell by inputting its current value</p>
+
+                <label for="tools_toggle"> Matrix Tools </label>
+                <input id="tools_toggle" tabindex="0" type="checkbox" class="toggle" checked>
+                <p>Allow new matrices to be added</p>
             </div>
         </dialog>
         <div class="page"></div>
@@ -128,6 +149,8 @@
        sessionStorage.setItem("loc", "index.html");
      }
 
+     verticalScroll(document.getElementById("configs"), 7);
+
      async function goLevel(path) {
        let flag = path.charAt(0);
 
@@ -172,6 +195,7 @@
            setTimeout(function() {
              verticalScroll(newPage.querySelector("#prop_container"), 7);
              horizontalScroll(newPage.querySelector('#domain'), 7);
+             verticalScroll(newPage.querySelector("#keysbox"), 7);
            }, 31);
          }, 10);
 

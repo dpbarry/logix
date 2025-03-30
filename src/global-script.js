@@ -49,7 +49,24 @@ function closeDialog (event) {
     event.target.closest("dialog").removeEventListener("transitionend", closeDialog);
 
     try {document.querySelector(".retain").focus(); } catch {}
-} 
+}
+
+document.querySelectorAll("dialog .tristate").forEach((toggle) => {
+    toggle.addEventListener("input", (e) => {
+        if (!toggle.checked && toggle.classList.contains("top")) {
+            toggle.classList.remove("top");
+        } else if (!toggle.checked && !toggle.classList.contains("top")) {
+            toggle.checked = true;
+            toggle.classList.add("top");
+        }
+        updateConfigCaptions();
+    });
+});
+document.querySelectorAll("dialog .toggle").forEach((toggle) => {
+    toggle.addEventListener("pointerup", (e) => {
+        e.target.blur();
+    });
+});
 
 function initDialogs() {
     const dialogList = document.querySelectorAll('dialog');
@@ -95,24 +112,6 @@ function initDialogs() {
         });
     });
 
-    document.querySelectorAll("dialog .toggle").forEach((toggle) => {
-        toggle.addEventListener("pointerup", (e) => {
-            e.target.blur();
-        });
-    });
-
-    
-    document.querySelectorAll("dialog .tristate").forEach((toggle) => {
-        toggle.addEventListener("input", (e) => {
-            if (!toggle.checked && toggle.classList.contains("top")) {
-                toggle.classList.remove("top");
-            } else if (!toggle.checked && !toggle.classList.contains("top")) {
-                toggle.checked = true;
-                toggle.classList.add("top");
-            }
-            updateConfigCaptions();
-        });
-    });
 
     document.querySelectorAll(".dialog_button").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
@@ -130,23 +129,25 @@ function initDialogs() {
         });
 
     });
-
-    document.body.addEventListener("pointerup", (e) => {
-        openingModal = false;
-        document.querySelectorAll(".nudged").forEach((elem) => {
-            let rect = elem.getBoundingClientRect();
-            let overOriginalSize = (e.clientX < rect.left - 4 || e.clientX > rect.right + 4 || 
-                                    e.clientY < rect.top - 4 || e.clientY > rect.bottom + 4) ? false :
-                (e.clientX < rect.left || e.clientX > rect.right || 
-                 e.clientY < rect.top || e.clientY > rect.bottom);
-            if (overOriginalSize) {
-                elem.click();
-            } 
-            elem.classList.remove("nudged");
-            
-        });
-    });
 }
+
+document.body.addEventListener("pointerup", (e) => {
+    openingModal = false;
+    document.querySelectorAll(".nudged").forEach((elem) => {
+        let rect = elem.getBoundingClientRect();
+        let overOriginalSize = (e.clientX < rect.left - 4 || e.clientX > rect.right + 4 || 
+                                e.clientY < rect.top - 4 || e.clientY > rect.bottom + 4) ? false :
+            (e.clientX < rect.left || e.clientX > rect.right || 
+             e.clientY < rect.top || e.clientY > rect.bottom);
+        if (overOriginalSize) {
+            elem.click();
+        } 
+        elem.classList.remove("nudged");
+        
+    });
+});
+
+
 function updateConfigCaptions() {
     document.querySelectorAll("dialog .tristate").forEach(toggle => {
         if (toggle === DYNAMIC_TOGGLE) {

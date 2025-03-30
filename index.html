@@ -2,41 +2,31 @@
 
 <html lang="en">
     <head>
-        
         <title>Logix</title>
         <link rel="icon" type="image/png" href="assets/MATHCAL_L.png">
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1, interactive-widget=resizes-content">
 
-
-
-        <!-- COMPUTER MODERN SERIF -->
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/bitmaks/cm-web-fonts@latest/fonts.css">
-
-        <!-- SOURCE SERIF 4 -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
 
+        <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/bitmaks/cm-web-fonts@latest/fonts.css" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+        
         <!-------- KATEX -------->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
 
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
-
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
-                onload="renderMathInElement(document.body, {
-                           trust: (context) => true,
-                           strict: false, });"></script>
+                onload="renderMathInElement(document.body, { trust: (context) => true, strict: false });"></script>
         
         <!------- STYLESHEETS ------->
         <link rel="stylesheet" href="src/global-style.css">
         <link rel="stylesheet" href="src/home-style.css">
         <link rel="stylesheet" href="src/level-style.css">
-
-        
     </head>
+
     
     <body>
         <dialog id="settings_dialog">

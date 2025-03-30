@@ -69,11 +69,11 @@
                 <p>Input selection persists after filling a cell</p>
 
                 <label for="crosshairs_toggle"> Crosshairs </label>
-                <input id="crosshairs_toggle" tabindex="0" type="checkbox" class="toggle">
+                <input id="crosshairs_toggle" tabindex="0" type="checkbox" class="toggle" checked>
                 <p>Emphasize row and column of selected cell</p>
                 
                 <label for="dynamic_toggle"> Dynamic Entries </label>
-                <input id="dynamic_toggle" tabindex="0" type="checkbox" class="toggle" checked>
+                <input id="dynamic_toggle" tabindex="0" type="checkbox" class="toggle tristate" checked>
                 <p>Treat entry literals in propositions the same as cells</p>
                 
                 <label for="cancelout_toggle"> Cancel Out </label>
@@ -81,7 +81,7 @@
                 <p>Clear a cell by inputting its current value</p>
 
                 <label for="tools_toggle"> Matrix Tools </label>
-                <input id="tools_toggle" tabindex="0" type="checkbox" class="toggle" checked>
+                <input id="tools_toggle" tabindex="0" type="checkbox" class="toggle tristate top" checked>
                 <p>Allow new matrices to be added</p>
             </div>
         </dialog>
@@ -128,14 +128,12 @@
            newPage.style.display = "block";
            setTimeout( () => {
              newPage.querySelectorAll(".campaignlist, #wrap_stages").forEach( (c) => {
-               verticalScroll(c, 100);
+               verticalScroll(c, 5);
              });
 
              trainingCard = newPage.querySelector("#training");
              cardWidth = trainingCard.getBoundingClientRect().width;
-
-             
-           }, 1); 
+           }, 10); 
          }, 10);
 
          setTimeout(function() {

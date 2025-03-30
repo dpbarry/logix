@@ -1,4 +1,15 @@
 let openingModal = false;
+
+const ROOT = document.documentElement;
+
+const STICKY_TOGGLE = document.querySelector("#sticky_toggle");
+const CROSSHAIRS_TOGGLE = document.querySelector("#crosshairs_toggle");
+const DYNAMIC_TOGGLE = document.querySelector("#dynamic_toggle");
+const CANCELOUT_TOGGLE = document.querySelector("#cancelout_toggle");
+const THEMES = document.querySelectorAll(".theme");
+const TOOLS_TOGGLE = document.querySelector("#tools_toggle");
+
+
 function showModal(id) {
     openingModal = true;
     let modal = document.getElementById(id);
@@ -67,7 +78,6 @@ function initDialogs() {
 
         dialog.addEventListener('keydown', (e) => {
             if (e.key === "Escape" || (document.activeElement.nodeName === "DIALOG" && e.key === " ")) {
-
                 e.preventDefault();
                 dialog.classList.add("hide");
 
@@ -85,15 +95,24 @@ function initDialogs() {
         });
     });
 
-    document.querySelectorAll("dialog input").forEach((toggle) => {
+    document.querySelectorAll("dialog .toggle").forEach((toggle) => {
         toggle.addEventListener("pointerup", (e) => {
-            e.target.focus({preventScroll: true});
-            // i.e., the dialog
+            e.target.blur();
         });
-        toggle.addEventListener("keydown", (e) => {
-            console.log(e.target);
-            
-        });});
+    });
+
+    
+    document.querySelectorAll("dialog .tristate").forEach((toggle) => {
+        toggle.addEventListener("input", (e) => {
+            if (!toggle.checked && toggle.classList.contains("top")) {
+                toggle.classList.remove("top");
+            } else if (!toggle.checked && !toggle.classList.contains("top")) {
+                toggle.checked = true;
+                toggle.classList.add("top");
+            }
+            updateConfigCaptions();
+        });
+    });
 
     document.querySelectorAll(".dialog_button").forEach(li => {
         li.addEventListener("pointerdown", (event) => {
@@ -128,14 +147,26 @@ function initDialogs() {
         });
     });
 }
+function updateConfigCaptions() {
+    document.querySelectorAll("dialog .tristate").forEach(toggle => {
+        if (toggle === DYNAMIC_TOGGLE) {
+            if (toggle.classList.contains("top")) {
+                document.querySelector("#" + toggle.id + " + p").innerText = "Treat entry literals the same as cells";
+            } else {
+                document.querySelector("#" + toggle.id + " + p").innerText = "Highlight entry literals corresponding to the active cell";
+            }
+        } else if (toggle == TOOLS_TOGGLE) {
+            if (toggle.classList.contains("top")) {
+                document.querySelector("#" + toggle.id + " + p").innerText = "Allow new matrices to be added and removed";
+            } else {
+                document.querySelector("#" + toggle.id + " + p").innerText = "Allow new matrices to be added";
+            }
+        }
+    });
 
+    ROOT.style.setProperty("--entryCursor", DYNAMIC_TOGGLE.classList.contains("top") ? "pointer" : "default");
+}
 
-const CROSSHAIRS_TOGGLE = document.querySelector("#crosshairs_toggle");
-const STICKY_TOGGLE = document.querySelector("#sticky_toggle");
-const CANCELOUT_TOGGLE = document.querySelector("#cancelout_toggle");
-const THEMES = document.querySelectorAll(".theme");
-
-const ROOT = document.documentElement;
 
 CROSSHAIRS_TOGGLE.addEventListener("change", () => {
     if (!CROSSHAIRS_TOGGLE.checked) {
@@ -149,7 +180,6 @@ THEMES.forEach( t => {
         updateTheme();
         if (t.previousElementSibling.checked) {
             localStorage.setItem("theme", t.id);
-
         }
     });
 
@@ -160,18 +190,29 @@ THEMES.forEach( t => {
     })
 });
 
-[CROSSHAIRS_TOGGLE, STICKY_TOGGLE, CANCELOUT_TOGGLE].forEach(t => {
+[STICKY_TOGGLE, CROSSHAIRS_TOGGLE, DYNAMIC_TOGGLE, CANCELOUT_TOGGLE, TOOLS_TOGGLE].forEach(t => {
     t.addEventListener("change", () => {
-        localStorage.setItem(t.id.split("_")[0], t.checked);
+        if (t.classList.contains("tristate"))
+            localStorage.setItem(t.id.split("_")[0], [t.checked, t.classList.contains("top")]);
+        else
+            localStorage.setItem(t.id.split("_")[0], t.checked);
     });
 });
 
-updateTheme();
-
-let cacheCrosshairs = localStorage.getItem("crosshairs");
 let cacheSticky = localStorage.getItem("sticky");
+let cacheCrosshairs = localStorage.getItem("crosshairs");
+let cacheDynamic = localStorage.getItem("dynamic");
 let cacheCancelout = localStorage.getItem("cancelout");
 let cacheTheme = localStorage.getItem("theme");
+let cacheTools = localStorage.getItem("tools");
+
+if (cacheSticky !== null) {
+    if (cacheSticky === "true") {
+        STICKY_TOGGLE.checked = true;
+    } else {
+        STICKY_TOGGLE.removeAttribute("checked");
+    }
+}
 
 if (cacheCrosshairs !== null) {
     if (cacheCrosshairs === "true") {
@@ -181,13 +222,25 @@ if (cacheCrosshairs !== null) {
     }
 }
 
-if (cacheSticky !== null) {
-    if (cacheSticky === "true") {
-        STICKY_TOGGLE.checked = true;
-    } else {
-        STICKY_TOGGLE.removeAttribute("checked");
+if (cacheDynamic !== null) {
+    switch (cacheDynamic) {
+    case "true,true":
+        ROOT.style.setProperty("--entryCursor", "pointer");
+        DYNAMIC_TOGGLE.checked = true;
+        DYNAMIC_TOGGLE.classList.add("top");
+        break;
+    case "true,false":
+        ROOT.style.setProperty("--entryCursor", "default");
+        DYNAMIC_TOGGLE.checked = true;
+        DYNAMIC_TOGGLE.classList.remove("top");
+        break;
+    default:
+        ROOT.style.setProperty("--entryCursor", "default");
+        DYNAMIC_TOGGLE.checked = false;
+        DYNAMIC_TOGGLE.classList.remove("top");
     }
 }
+
 
 if (cacheCancelout !== null) {
     if (cacheCancelout === "true") {
@@ -200,14 +253,31 @@ if (cacheCancelout !== null) {
 if (cacheTheme !== null) {
     THEMES.forEach( t => {
         if (t.id === cacheTheme) {
-            t.checked = true;
-            updateTheme();
+            t.previousElementSibling.checked = true;
         } else {
             t.removeAttribute("checked");
         }
     });
 }
 
+if (cacheTools !== null) {
+    switch (cacheTools) {
+    case "true,true":
+        TOOLS_TOGGLE.checked = true;
+        TOOLS_TOGGLE.classList.add("top");
+        break;
+    case "true,false":
+        TOOLS_TOGGLE.checked = true;
+        TOOLS_TOGGLE.classList.remove("top");
+        break;
+    default:
+        TOOLS_TOGGLE.checked = false;
+        TOOLS_TOGGLE.classList.remove("top");
+    }
+}
+
+updateTheme();
+updateConfigCaptions();
 
 function updateTheme() {
     ROOT.classList.add("notransitions");
@@ -422,12 +492,11 @@ document.addEventListener('keydown', (e) => {
 
 
 function verticalScroll(el, moe) {
-    el.style.overflow = "auto";
+    el.style.overflowY = "auto";
     const isScrollable = (el.scrollHeight > el.clientHeight);
     if (!isScrollable) {
         el.style.maskImage = "";
         el.style.overflow = "visible";
-
         return;
     }
     el.style.overflowY = "auto";

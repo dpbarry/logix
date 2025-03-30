@@ -390,7 +390,7 @@ dialog {
     position: relative;
     border-radius: 15px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.15s, filter 0.15s;
   }
 
   .toggle::before {
@@ -404,7 +404,18 @@ dialog {
     left: 16px;
     background-color: #3f3f3f;
     border-radius: 18px;
-    transition: all 0.2s ease;
+    transition: background 0.15s ease, left 0.15s;
+    
+  }
+
+  .tristate {
+    width: 70px;
+   
+  }
+  .tristate::before {
+    font-family: "Source Serif 4";
+    color: #EEE;
+    text-align: center;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -414,16 +425,34 @@ dialog {
   }
   input:focus, label:focus .theme {
     outline: 0;
-    filter: brightness(90%);
+    filter: brightness(85%);
   }
 
   .toggle:checked {
-    background-color: #A4C1A0;
+    background-color: hsl(113, 21%, 69%);
   }
 
   .toggle:checked::before {
-    background-color: #3e4d3c;
+    background-color: hsl(113, 21%, 30%);
     left: calc(100% - 16px);
+  }
+
+  .toggle.tristate:not(.top):checked {
+    background-color: hsl(80, 25%, 69%);
+  }
+  .toggle.tristate:not(.top):checked::before {
+    background-color: hsl(80, 25%, 30%);
+    content: "I";
+    left: calc(50%);
+  }
+  .toggle.tristate:checked::before {
+    background-color: hsl(113, 21%, 30%);
+    content: "II";
+    left: calc(100% - 16px);
+  }
+
+  .toggle:not(:checked) + p {
+    opacity: 0.5;
   }
 
   p {

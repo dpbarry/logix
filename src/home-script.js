@@ -36,13 +36,22 @@ function setupHome(page) {
         if (target.classList.contains("dropped")) {
             target.classList.remove("dropped");
             target.tabIndex = 0;
+            verticalScroll(wrapStages, 10);
             
         } else {
+            let diff;
             stages.forEach((s) => {
                 s.blur();
                 s.classList.remove("dropped");
                 s.tabIndex = 0;
             });
+
+            let captureHeight = wrapStages.scrollTop;
+            let targetPos = (parseInt(target.id.substring(1)) - 1) * 23.5;
+            let sign = (wrapStages.scrollTop - targetPos) < 0 ? 1 : -1;
+            let x = setInterval( () => {   
+                verticalScroll(wrapStages, 5);
+            }, 5);
 
             target.classList.add("dropped");
             page.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
@@ -53,15 +62,6 @@ function setupHome(page) {
         target.blur();
         
     }
-
-    // update Training scroll after height change from (un)dropping stage
-    let throttleStageListener = false;
-    wrapStages.addEventListener("animationend", (e) => {
-        if (throttleStageListener) return;
-        throttleStageListener = true;
-        verticalScroll(wrapStages, vh(70) >= 450 ? 100 : 1);
-        setTimeout( () => {throttleStageListener = false}, 10);
-    });
 
     stages.forEach( (stage) => {
         stage.onclick = toggleDropped;
@@ -487,17 +487,17 @@ function setupHome(page) {
     });
 
     function scrollFadeCards() {
-        verticalScroll(wrapStages, vh(70) >= 450 ? 100 : 1);
+        verticalScroll(wrapStages, 5);
         cardsArray.slice(1).forEach( c => {
             verticalScroll(c.querySelector(".campaignlist"), 1);
         });
     }
 
     document.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowLeft") {
+        if (e.key === "ArrowLeft" && !document.querySelector("dialog[open]")) {
             e.preventDefault();
             leftnav.click();
-        } else if (e.key === "ArrowRight" || e.key === " ") {
+        } else if (e.key === "ArrowRight" && !document.querySelector("dialog[open]")) {
             e.preventDefault();
             rightnav.click();
         }

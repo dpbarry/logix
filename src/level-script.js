@@ -73,7 +73,9 @@ function initLevel() {
         cells.forEach((cell) => {
             cell.style.animationDelay = `${spanCount++ * 175}ms`;
             cell.addEventListener("mouseover", noticeEntry);
+            cell.addEventListener("mouseover", () => axisCue("#y" + cell.id.charAt(1), "#x" + cell.id.charAt(3)));
             cell.addEventListener("mouseleave", removeNoticeEntry);
+            cell.addEventListener("mouseover", () => deAxisCue("#y" + cell.id.charAt(1), "#x" + cell.id.charAt(3)))
 
             if (cell.classList.contains("given")) return;
 
@@ -97,6 +99,8 @@ function initLevel() {
 
     entryList.forEach( (entry) => {
         entry.addEventListener("mouseover", noticeCell);
+        entry.addEventListener("mouseleave", () => deAxisCue("#y" + entry.id.charAt(1), "#x" + entry.id.charAt(3)));
+        entry.addEventListener("mouseover", () => {if (DYNAMIC_TOGGLE.checked) axisCue("#y" + entry.id.charAt(1), "#x" + entry.id.charAt(3))});
         entry.addEventListener("mouseleave", removeNoticeCell);
         entry.addEventListener("pointerdown", jumpToCell);         
     });
@@ -733,7 +737,6 @@ function initLevel() {
 
 
 
-
     function success() {
         highlight("not-a-cell");
 
@@ -885,6 +888,19 @@ function initLevel() {
         }.bind(this), 1);
     }
 
+    DYNAMIC_TOGGLE.onchange = () => {
+        if (!DYNAMIC_TOGGLE.checked) {
+            entryList.forEach(  e => e.parentNode.classList.remove("highlight"));
+        }
+    };
+    CROSSHAIRS_TOGGLE.onchange = () => {
+        if (!CROSSHAIRS_TOGGLE.checked) {
+            level.querySelectorAll("#x-axis span, #y-axis span").forEach( l => {
+                l.classList.remove("cue");
+                l.classList.remove("highlight");
+            });
+        }
+    };
 
 
     function highlight(id) {
@@ -893,9 +909,8 @@ function initLevel() {
         entryList.forEach( (entry) => {
             let yNum = level.querySelector("#y" + entry.id.charAt(1));
             let xNum = level.querySelector("#x" + entry.id.charAt(3));
-            if (entry.id ===
-                "e" + id.charAt(1) + "e" + id.charAt(3)) {
-                entry.parentNode.classList.add("highlight");
+            if (entry.id === "e" + id.charAt(1) + "e" + id.charAt(3)) {
+                if (DYNAMIC_TOGGLE.checked) entry.parentNode.classList.add("highlight");
                 pair = [yNum, xNum];
             } else {
                 entry.parentNode.classList.remove("highlight");
@@ -926,13 +941,12 @@ function initLevel() {
     }
 
     function noticeEntry (event) {
+        if (!DYNAMIC_TOGGLE.checked) return;
         let entries;
         if (event.id) {
             entries = level.querySelectorAll("#e" + event.id.charAt(1) + "e" + event.id.charAt(3));
-            axisCue("#y" + event.id.charAt(1), "#x" + event.id.charAt(3));
         } else {
             entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
-            axisCue("#y" + this.id.charAt(1), "#x" + this.id.charAt(3));
         }
         if (entries.length === 0) {
             return;
@@ -952,12 +966,9 @@ function initLevel() {
     function removeNoticeEntry (event) {
         let entries;
         if (event.id) {
-            entries = level.querySelectorAll("#e" + event.id.charAt(1) + "e" + event.id.charAt(3));
-            deAxisCue("#y" + event.id.charAt(1), "#x" + event.id.charAt(3));
-            
+            entries = level.querySelectorAll("#e" + event.id.charAt(1) + "e" + event.id.charAt(3));            
         } else {
             entries = level.querySelectorAll("#e" + this.id.charAt(1) + "e" + this.id.charAt(3));
-            deAxisCue("#y" + this.id.charAt(1), "#x" + this.id.charAt(3));
         }
         entries.forEach( (entry) => {
             if (entry === null) return;
@@ -970,6 +981,7 @@ function initLevel() {
 
 
     function noticeCell (event) {
+        if (!DYNAMIC_TOGGLE.checked) return;
         noticeEntry(this);
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         let td = level.querySelector("#" + cell)
@@ -987,7 +999,7 @@ function initLevel() {
     }
 
     function jumpToCell (event) {
-        if (scrolling) return;
+        if (scrolling || !DYNAMIC_TOGGLE.classList.contains("top")) return;
         event.preventDefault();
         let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
         window.setTimeout(() => {

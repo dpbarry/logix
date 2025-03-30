@@ -1,3 +1,4 @@
+
 #main-header {
   width: fit-content;
 
@@ -44,7 +45,8 @@ html {
 :root.dark #mcgill { filter: invert(0.9); }
 
 #about_dialog {
-  
+  padding-bottom: 41px;
+
   #github {
     background: url("../assets/INVERTOCAT.svg");
     background-size: 100%;
@@ -181,10 +183,6 @@ html {
   &, * {
     touch-action: none;
   }
-}
-
-#training {
-  perspective: 200px;
 }
 
 #wrap_cards > :first-child {
@@ -486,7 +484,7 @@ html {
   position: relative;
   cursor: pointer;
 
-  transition: transform 0.12s ease-out, opacity 0.2s, background 0.1s, border 0.1s, font-weight 0.12s;
+  transition: transform 0.1s ease-out, opacity 0.1s, background 0.1s, border 0.1s, font-weight 0.12s;
 }
 
 :root.dark {
@@ -576,6 +574,7 @@ html {
 
 #training {
   max-height: 453px;
+  overflow: visible;
   &:not(:has(.dropped)) {
     max-height: 326px;
   }
@@ -729,18 +728,18 @@ html {
 }
 
 #wrap_stages {
-  margin-top: auto;
-  margin-bottom: auto;
+  max-height: min-content;
   width: 100%;
+  padding: 0;
 }
 
 .droplist {
   margin-bottom: 0;
   max-height: 0;
-  transition: max-height 0.1s linear, margin-bottom .11s linear;
-
+  transition: max-height 0.1s linear, margin-bottom .1s linear;
+  position: relative;
   .level-button {
-    transform: translateY(-20px);
+    transform: translateY(-15px);
     opacity: 0;
   }
 }
@@ -753,29 +752,16 @@ html {
   max-height: 200px;
   margin-bottom: 11px;
 
-  li {
-    animation: buffer 0.13s forwards;
-  }
   .level-button {
+    position: relative;
     transform: translateY(0);
+    visibility: visible;
     opacity: 1;
   }
 }
 
-@keyframes buffer {
-  0%, 100% {visibility: visible}
-}
-
 .trainstage:not(.dropped) + .droplist .level-button {
-  @starting-style {
-    display: none;
-    pointer-events: none;
-  }
-  animation: displayOut 0s forwards;
-  animation-delay: 130ms; 
+  position: fixed;
+  visibility: hidden;
+  pointer-events: none;
 }
-
-@keyframes displayOut {
-  0%, 100% {display: none; pointer-events: none;}
-}
-

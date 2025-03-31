@@ -10,7 +10,8 @@ let MENU_TOGGLE = null;
 
 function initLevel() {
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
-
+    const thisLevel = level.querySelector("#level").innerText;
+    const thisDifficulty = level.querySelector("#difficulty").innerText;
     level.style.setProperty('--rows', ROWS);
     level.style.setProperty('--cols', COLS);
     
@@ -420,7 +421,7 @@ function initLevel() {
 
 
 
-    if (NEXT_LEVEL === "T1-2") {
+    if (thisLevel === "1.1" && thisDifficulty === "Training") {
         setTimeout(()=> {
             level.querySelector("#info").click();
             
@@ -740,6 +741,11 @@ function initLevel() {
     function success() {
         highlight("not-a-cell");
 
+        let cacheHighestLevel = localStorage.getItem("highest" + thisDifficulty) || 0;
+        if (parseFloat(cacheHighestLevel) < parseFloat(thisLevel)) {
+            localStorage.setItem("highest" + thisDifficulty, thisLevel);
+        }
+        
         level.querySelector("#g" + currentGrid).classList.add("correct");
         addGridButton.classList.add("fade");
         deleteGridButton.classList.add("fade");
@@ -749,7 +755,7 @@ function initLevel() {
             cellActive = false;
 
             if (NEXT_LEVEL !== null) {
-                domainList[0].querySelector("p").innerText = "Onwards..."
+                domainList[0].querySelector("p").innerText = "Onwards...";
                 domainList[0].onclick = () => {
                     setTimeout( () => {
                         Router(NEXT_LEVEL);

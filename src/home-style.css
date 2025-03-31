@@ -487,6 +487,33 @@ html {
   transition: transform 0.1s ease-out, opacity 0.1s, background 0.1s, border 0.1s, font-weight 0.12s;
 }
 
+
+.level-button.solved {
+  filter: saturate(2.3) brightness(0.92);
+  &::after {
+    content: "🎖";
+    position: absolute;
+    top: -1px;
+    right: -5px;
+    color: var(--baseColor);
+    opacity: 0.33;
+    font-size: 0.8em;
+    line-height: 1;
+    font-weight: bold;
+    pointer-events: none;
+  }
+}
+
+
+:root.dark .level-button.solved {
+  filter: saturate(2.7);
+  &::after {
+    top: -0.5px;
+    right: -4px;
+    font-size: 0.68em;
+  }
+}
+
 :root.dark {
   #training .level-button {
     border: 2px solid hsl(120 18% 25%);
@@ -540,6 +567,7 @@ html {
       background: light-dark(hsl(55 25% 80%), hsl(55 20% 13%));
       box-shadow: 0 2px 3px hsl(55 8% 85% / 1), 0 0 2px hsl(55 8% 90% / 1);
     }
+    
   }
 }
 

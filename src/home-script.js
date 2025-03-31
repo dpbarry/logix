@@ -24,6 +24,23 @@ function setupHome(page) {
         };
     });
 
+    page.querySelectorAll(".card").forEach( c => {
+        let category = "highest" + c.id[0].toUpperCase() + c.id.substring(1);
+        if (localStorage.getItem(category)) {
+            c.querySelectorAll(".level-button").forEach( (b) => {
+                if (c.id === "training") {
+                    if (parseFloat(b.id[1] + "." +  b.id.substring(3)) <= parseFloat(localStorage.getItem(category))) {
+                        b.classList.add("solved");
+                        b.classList.remove("locked");
+                    } else if ((parseFloat(b.id[1] + "." +  b.id.substring(3)) - 0.1).toFixed(4) == parseFloat(localStorage.getItem(category)))
+                        b.classList.remove("locked");
+                } else if (parseFloat(b.id.substring(1)) <= parseFloat(localStorage.getItem(category))) {
+                    b.classList.remove("locked");
+                    b.classList.add("solved");
+                } else if (parseFloat(b.id.substring(1)) - 1 <= parseFloat(localStorage.getItem(category)))
+                    b.classList.remove("locked");
+            });}});
+
     function toggleDropped(e) {
         if (e.type === "keydown" && e.key !== " " && e.key !== "Enter") return;
         
@@ -119,14 +136,14 @@ function setupHome(page) {
 
 
 
-    
+
     // smaller laptop screens, stacked effect
     let cardView = false;
     // carousel effect
     let mobileView = false;
 
     // (default for desktop: all cards visible)
-    
+
 
     let debounceScroll = 0;
     let debounceMobile = 0;
@@ -224,7 +241,7 @@ function setupHome(page) {
 
 
 
-    
+
 
 
     cards.forEach( (c) => {
@@ -264,7 +281,7 @@ function setupHome(page) {
         updateMobile();             
     }
 
-    
+
     carousel.addEventListener('wheel', function (event) {
         if (debounceScroll || debounceMobile || swiping) return;
         if (!cardView && !mobileView) return;

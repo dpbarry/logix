@@ -7,4 +7,4 @@ cols=2
 given=2,?,?,4,3,?
 propositions=[1,2] = [1,1] + 1@[2,1] = [2,2] - 2@[3,2] = [2,1] + [1,2]
 solution=.,3,2,.,.,5
-info= <p> The propositions in the last level were much too straightforward! In the interest of confusion, entries can be defined in terms of other entries. This includes <b> given </b> entries, which cannot be modified but can still be referenced in propositions.</p>
+info= <p> The propositions in the last level were much too straightforward! In the interest of confusion, entries can be defined in terms of other entries. This includes <b> given </b> entries, which cannot be modified but can still be referenced in propositions. They will become more relevant later on.</p>

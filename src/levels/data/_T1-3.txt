@@ -7,4 +7,4 @@ cols=4
 given=?,?,?,?
 propositions=[1,1] < [1,4]@[1,4] < [1,2]@[1,2] > [1,3]@[1,3] > [1,4]
 solution=5,8,7,6
-info=<p>Equivalence isn’t the only arithmetic predicate at our disposal. Entries can also be described in the ways that they differ from one another. To avoid getting lost in the the weeds, consider entering <b> candidate mode </b> via the pencil icon. Keeping track of the options for each entry will become critical for more difficult puzzles. </p>
+info=<p>Equivalence isn’t the only arithmetic predicate at our disposal. Entries can also be described in the ways that they differ from one another. </p> <p> To avoid getting lost in the the weeds, consider entering <b> candidate mode </b> via the pencil icon. Keeping track of the options for each entry will become critical for more difficult puzzles. </p>

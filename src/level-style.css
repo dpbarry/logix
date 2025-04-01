@@ -572,11 +572,25 @@ span.key {
 }
 
 
-html:has(#hideMatrixTools:checked) {
+html:has(#hideMatrixTools:checked, #tools_toggle:not(:checked)) {
   #nextgrid, #delgrid {
     display: none;
   }
+  { margin-bottom: 0;}
 }
+
+html:has(#tools_toggle:checked:not(.top)) {
+  #delgrid {
+    display: none;
+  }
+  #nextgrid:has(+ #delgrid.usable) {
+    margin-bottom: 0;
+  }
+}
+
+#nextgrid.hide {display: none;}
+#delgrid.hide {display: none;}
+
 #nextgrid {
   position: absolute;
   opacity: 0.45;

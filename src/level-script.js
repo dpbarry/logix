@@ -1376,16 +1376,16 @@ function initLevel() {
             return;
         }
 
-        if (e.key === "p" && !document.getElementById("hideMatrixTools").checked) {
+        if (e.key === "p" && !document.getElementById("hideMatrixTools").checked && TOOLS_TOGGLE.checked) {
             createNewGrid(false);
             return;
         }
 
-        if (e.key === "P" && !document.getElementById("hideMatrixTools").checked) {
+        if (e.key === "P" && !document.getElementById("hideMatrixTools").checked && TOOLS_TOGGLE.checked) {
             createNewGrid(true);
             return;
         }
-        if (e.key === "x" && !document.getElementById("hideMatrixTools").checked) {
+        if (e.key === "x" && !document.getElementById("hideMatrixTools").checked && TOOLS_TOGGLE.classList.contains("top") && currentGrid !== 1) {
             deleteGrid(currentGrid);
             return;
         }

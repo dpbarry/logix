@@ -59,7 +59,7 @@ document.querySelectorAll("dialog .tristate").forEach((toggle) => {
             toggle.checked = true;
             toggle.classList.add("top");
         }
-        updateConfigCaptions();
+        updateComplexConfigs();
     });
 });
 document.querySelectorAll("dialog .toggle").forEach((toggle) => {
@@ -130,7 +130,7 @@ function initDialogs() {
 
     });
 
-    if (localStorage.getItem("highestTraining") && (localStorage.getItem("highestTraining").charAt(0) !== "1" || localStorage.getItem("highestTraining") === "1.7")) {
+    if (localStorage.getItem("highestTraining") !== "null" && (localStorage.getItem("highestTraining").charAt(0) !== "1" || localStorage.getItem("highestTraining") === "1.7")) {
         document.getElementById("hideMatrixTools").removeAttribute("checked");
     } else {
         document.getElementById("hideMatrixTools").checked = true;
@@ -154,13 +154,13 @@ document.body.addEventListener("pointerup", (e) => {
 });
 
 
-function updateConfigCaptions() {
+function updateComplexConfigs() {
     document.querySelectorAll("dialog .tristate").forEach(toggle => {
         if (toggle === DYNAMIC_TOGGLE) {
             if (toggle.classList.contains("top")) {
-                document.querySelector("#" + toggle.id + " + p").innerText = "Treat entry literals the same as cells";
+                document.querySelector("#" + toggle.id + " + p").innerText = "Treat literal entries the same as cells";
             } else {
-                document.querySelector("#" + toggle.id + " + p").innerText = "Highlight entry literals corresponding to the active cell";
+                document.querySelector("#" + toggle.id + " + p").innerText = "Highlight literal entries corresponding to the active cell";
             }
         } else if (toggle == TOOLS_TOGGLE) {
             if (toggle.classList.contains("top")) {
@@ -171,7 +171,10 @@ function updateConfigCaptions() {
         }
     });
 
+    
     ROOT.style.setProperty("--entryCursor", DYNAMIC_TOGGLE.classList.contains("top") ? "pointer" : "default");
+
+    
 }
 
 
@@ -284,7 +287,7 @@ if (cacheTools !== null) {
 }
 
 updateTheme();
-updateConfigCaptions();
+updateComplexConfigs();
 
 function updateTheme() {
     ROOT.classList.add("notransitions");

@@ -500,7 +500,7 @@ document.addEventListener('keydown', (e) => {
 
 function verticalScroll(el, moe) {
     el.style.overflowY = "auto";
-    const isScrollable = (el.scrollHeight > el.clientHeight);
+    const isScrollable = (el.scrollHeight > el.clientHeight + 1);
     if (!isScrollable) {
         el.style.maskImage = "";
         el.style.overflow = "visible";
@@ -531,7 +531,7 @@ function verticalScroll(el, moe) {
 
 
 function horizontalScroll(el, moe) {
-    const isScrollable = (el.scrollWidth > el.clientWidth);
+    const isScrollable = (el.scrollWidth > el.clientWidth + 1);
 
     if (!isScrollable) {
         el.style.maskImage = "";

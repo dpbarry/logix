@@ -21,7 +21,7 @@
 .page.home {
   align-content: center;
 }
-html {
+html:has(#wrap_cards:hover) {
   overscroll-behavior-x: none;
 }
 .dialog_button.home {

@@ -489,7 +489,7 @@ html {
 
 
 .level-button.solved {
-  filter: saturate(1.75) brightness(0.925);
+  filter: saturate(1.75) brightness(0.935);
   &::after {
     content: "🎖";
     position: absolute;

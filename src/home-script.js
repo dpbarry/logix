@@ -521,3 +521,21 @@ function setupHome(page) {
     })
 
 }
+
+//// HAXXXXX ////
+let typed = "";
+document.addEventListener("keydown", (event) => {
+    typed += event.key.toLowerCase();
+    if (typed.includes("dean")) {
+        typed = "";
+        let difficulty = prompt("Which difficulty?");
+        difficulty = difficulty ? difficulty.toLowerCase().trim() : "training";
+        
+        const level = prompt("Up to which level?");
+
+        localStorage.setItem("highest" + difficulty[0].toUpperCase() + difficulty.substring(1), level);
+        window.location.reload(true);
+    }
+    if (typed.length > 100) 
+        typed = typed.slice(-96);
+});

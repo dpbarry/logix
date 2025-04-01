@@ -129,6 +129,12 @@ function initDialogs() {
         });
 
     });
+
+    if (localStorage.getItem("highestTraining") && (localStorage.getItem("highestTraining").charAt(0) !== "1" || localStorage.getItem("highestTraining") === "1.7")) {
+        document.getElementById("hideMatrixTools").removeAttribute("checked");
+    } else {
+        document.getElementById("hideMatrixTools").checked = true;
+    }
 }
 
 document.body.addEventListener("pointerup", (e) => {

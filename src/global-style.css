@@ -466,4 +466,11 @@ dialog {
     text-align: left;
   }
 
+  #hideMatrixTools {
+    display: none;
+    &:checked ~ * {
+      display: none;
+    }
+  }
+
 }

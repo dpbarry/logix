@@ -1376,16 +1376,16 @@ function initLevel() {
             return;
         }
 
-        if (e.key === "p") {
+        if (e.key === "p" && !document.getElementById("hideMatrixTools").checked) {
             createNewGrid(false);
             return;
         }
 
-        if (e.key === "P") {
+        if (e.key === "P" && !document.getElementById("hideMatrixTools").checked) {
             createNewGrid(true);
             return;
         }
-        if (e.key === "x") {
+        if (e.key === "x" && !document.getElementById("hideMatrixTools").checked) {
             deleteGrid(currentGrid);
             return;
         }

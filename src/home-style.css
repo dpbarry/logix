@@ -651,7 +651,7 @@ html:has(#wrap_cards:hover) {
   list-style-type: none;
   cursor: pointer;
 
-  transition: background .1s, box-shadow .15s ease-out, top .3s ease-out, border .1s;
+  transition: background .1s, box-shadow .15s ease-out, top .3s ease-out, margin-bottom 0.1s, border .1s;
 
   &:last-of-type { margin-bottom: 0px; }
 }
@@ -759,6 +759,7 @@ html:has(#wrap_cards:hover) {
   max-height: min-content;
   width: 100%;
   padding: 0;
+  overscroll-behavior-x: none;
 }
 
 .droplist {
@@ -773,12 +774,16 @@ html:has(#wrap_cards:hover) {
 }
 
 .trainstage:last-of-type.dropped {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+
+  + .droplist {
+    margin-bottom: 0px;
+  }
 }
 
 .trainstage.dropped + .droplist {
   max-height: 200px;
-  margin-bottom: 11px;
+  margin-bottom: 10px;
 
   .level-button {
     position: relative;
@@ -792,4 +797,7 @@ html:has(#wrap_cards:hover) {
   position: fixed;
   visibility: hidden;
   pointer-events: none;
+}
+
+#training:has(#s5.dropped) {
 }

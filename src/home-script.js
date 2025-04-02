@@ -28,18 +28,24 @@ function setupHome(page) {
         let category = "highest" + c.id[0].toUpperCase() + c.id.substring(1);
         if (localStorage.getItem(category)) {
             c.querySelectorAll(".level-button").forEach( (b) => {
+                highest = parseFloat(localStorage.getItem(category));
                 if (c.id === "training") {
-                    if (parseFloat(b.id[1] + "." +  b.id.substring(3)) <= parseFloat(localStorage.getItem(category))) {
+                    if (parseFloat(b.id[1] + "." +  b.id.substring(3)) <= highest) {
                         b.classList.add("solved");
                         b.classList.remove("locked");
-                    } else if ((parseFloat(b.id[1] + "." +  b.id.substring(3)) - 0.1).toFixed(4) == parseFloat(localStorage.getItem(category)))
+                    } else if ((parseFloat(b.id[1] + "." +  b.id.substring(3)) - 0.1).toFixed(4) == highest) {
                         b.classList.remove("locked");
-                } else if (parseFloat(b.id.substring(1)) <= parseFloat(localStorage.getItem(category))) {
+                    } else if (!page.querySelector("#t" + highest[0] + "-" + (1 + parseInt((""+highest).substring(2))))) {
+                        if (parseInt(b.id[1]) === parseInt((""+highest)[0]) + 1 && b.id.substring(3) == 1) {
+                            b.classList.remove("locked");
+                        }
+                    }
+                } else if (parseFloat(b.id.substring(1)) <= highest) {
                     b.classList.remove("locked");
                     b.classList.add("solved");
-                } else if (parseFloat(b.id.substring(1)) - 1 <= parseFloat(localStorage.getItem(category)))
+                } else if (parseFloat(b.id.substring(1)) - 1 == highest) {
                     b.classList.remove("locked");
-            });}});
+                }    })}});
 
     function toggleDropped(e) {
         if (e.type === "keydown" && e.key !== " " && e.key !== "Enter") return;
@@ -67,8 +73,10 @@ function setupHome(page) {
             let targetPos = (parseInt(target.id.substring(1)) - 1) * 23.5;
             let sign = (wrapStages.scrollTop - targetPos) < 0 ? 1 : -1;
             let x = setInterval( () => {   
-                verticalScroll(wrapStages, 5);
+                verticalScroll(wrapStages, 3);
             }, 5);
+
+            setTimeout( () => clearInterval(x), 400);
 
             target.classList.add("dropped");
             page.querySelectorAll(".dropped + ul > .level-button:not(.locked)").forEach((b) => {
@@ -427,8 +435,8 @@ function setupHome(page) {
             }, 500);
         }
     };
-    
-    
+
+
     const leftnav = page.querySelector("#leftnav");
     const rightnav = page.querySelector("#rightnav");
 
@@ -440,7 +448,7 @@ function setupHome(page) {
         e.target.classList.add("nudged");
     }
 
-    
+
     leftnav.onclick = () => {
         if (mobileView && trainingCard.classList.contains("upcard")) {
             mobileScrollTo(extremeCard);

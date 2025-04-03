@@ -29,13 +29,14 @@ function setupHome(page) {
         if (localStorage.getItem(category)) {
             c.querySelectorAll(".level-button").forEach( (b) => {
                 highest = parseFloat(localStorage.getItem(category));
+                strHighest = localStorage.getItem(category);
                 if (c.id === "training") {
                     if (parseFloat(b.id[1] + "." +  b.id.substring(3)) <= highest) {
                         b.classList.add("solved");
                         b.classList.remove("locked");
                     } else if ((parseFloat(b.id[1] + "." +  b.id.substring(3)) - 0.1).toFixed(4) == highest) {
                         b.classList.remove("locked");
-                    } else if (!page.querySelector("#t" + highest[0] + "-" + (1 + parseInt((""+highest).substring(2))))) {
+                    } else if (!page.querySelector("#T" + strHighest[0] + "-" + (1 + parseInt(strHighest.substring(2))))) {
                         if (parseInt(b.id[1]) === parseInt((""+highest)[0]) + 1 && b.id.substring(3) == 1) {
                             b.classList.remove("locked");
                         }

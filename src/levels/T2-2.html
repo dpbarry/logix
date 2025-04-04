@@ -1,0 +1,102 @@
+<body><div class="page level">
+    <span id="backtab_catch" tabindex="0"></span>
+
+    <div id="wrap_home_level">
+        <button id="home" tabindex="-1"></button>
+
+        <h1 id="level" onclick="">2.2</h1>
+
+        <p id="difficulty">Training</p>
+    </div>
+    <div id="overlay"></div>
+    <div id="menu">
+        <ul>
+            <input id="menu_checkbox" type="checkbox" tabindex="-1">
+            <span id="chevron"></span>
+            <li id="info" class="dialog_button" onclick="setTimeout( () => { showModal('info_dialog') }, 2);"></li>
+            <li id="dictionary" class="dialog_button" onclick="setTimeout( () => { showModal('dictionary_dialog') }, 2);"></li>
+            <li id="notes" class="dialog_button" onclick="setTimeout( () => { showModal('notes_dialog') }, 2);" "=""></li>
+            <li id="settings" class="dialog_button" onclick="setTimeout( () => { showModal('settings_dialog') }, 2);"></li>
+        </ul>
+        <dialog id="info_dialog">
+            <a class="close"></a>
+            <h1>Info</h1>
+            <div id="level_info" data-masksize="80"><p> The next connective is disjunction: \(\lor\). It demands that at least one of its two disjuncts be true. E.g., \(p \lor q\) will only be false in a context where both \(p\) and \(q\) are false. Note that while this is similar to spoken “or,” it differs in that the latter sometimes carries an implication of exclusivity (one or the other, but not both). However, \(\lor\) is inclusive: one or the other, or both. </p></div>
+        </dialog>
+        <dialog id="dictionary_dialog">
+            <a class="close"></a>
+            <h1>Dictionary (WIP)</h1>
+            <p> This feature is far from getting started. For now, here are the keyboard controls. Use <span class="key" style="padding-top: 0; padding-bottom: 0;">tab</span> to cycle through the entries, the number keys to select numbers, and the following keys for the UI: </p> 
+            <div id="keysbox">
+             
+                <p><span class="key" style="margin-right: 0.1rem;">c</span> Candidate Mode </p> 
+                <p><span class="key" style="margin-right: 0.1rem;">u</span> Undo </p> 
+                <p><span class="key" style="margin-right: 0.1rem;">r</span> Redo </p> 
+                <p><span class="key" style="margin-right: 0.1rem;">h</span> Home </p> 
+                <p><span class="key" style="margin-right: 0.1rem;">m</span> Menu Toggle </p> 
+                <p><span class="key" style="margin-right: 0.1rem;">s</span> Settings </p> 
+                <p><span class="key" style="margin-right: 0.1rem;">i</span> Info </p> 
+                <p><span class="key" style="margin-right: 0.1rem;">d</span> Dictionary </p> 
+                <p><span class="key" style="margin-right: 0.1rem;">n</span> Notes </p>
+                <p><span class="key" style="margin-right: 0.1rem;">p</span> Plus Grid </p>
+                <p><span class="key" style="margin-right: 0.1rem;">x</span> Delete Grid </p>
+
+            </div>
+        </dialog>
+        <dialog id="notes_dialog">
+            <a class="close"></a>
+            <h1>Notes</h1>
+            <div id="wrapnotes"><textarea placeholder="Type here..." spellcheck="false"></textarea></div>
+        </dialog>
+    </div>
+
+    <div id="wrap_main">
+
+        <div id="prop_container" tabindex="-1">
+            <ul id="propositions">
+
+                
+            <li>\([\htmlClass{entry}{\htmlId{e1e2}{1,2}}] = 2 \lor [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] = 4\)</li><li>\([\htmlClass{entry}{\htmlId{e2e2}{2,2}}] = 1 \lor [\htmlClass{entry}{\htmlId{e2e2}{2,2}}] = 3\)</li><li>\([\htmlClass{entry}{\htmlId{e1e2}{1,2}}] = [\htmlClass{entry}{\htmlId{e2e2}{2,2}}] \lor [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] &lt; [\htmlClass{entry}{\htmlId{e2e2}{2,2}}]\)</li></ul>
+        </div>
+
+        
+        <div id="wrap_grid_domain">
+
+            <div id="wrap_axis_grid">
+                <div id="y-axis">
+                    
+                <span id="y1">1</span><span id="y2">2</span></div>
+
+                <div id="wrap_grids">
+                    <div id="gridbar"></div>
+                    <div id="grid_carousel" tabindex="-1">
+                    <div class="grid" id="g1"><span class="given"><p>1</p></span><span><p></p></span><span class="given"><p>3</p></span><span class="given"><p>2</p></span><span><p></p></span><span class="given"><p>4</p></span></div></div>
+                    <button id="nextgrid" tabindex="-1"></button>
+                    <button id="delgrid" tabindex="-1"></button>
+                </div>
+                <div id="x-axis">
+                    
+                <span id="x1">1</span><span id="x2">2</span><span id="x3">3</span></div>
+            </div>
+
+            
+            <div id="wrap_toolbar_domain">
+                <div id="toolbar">
+                    <button id="pencil" class="usable" tabindex="-1"> </button>
+
+                    <div id="wrapdo">
+
+                        <button id="undo" tabindex="-1"></button>
+                        <button id="redo" tabindex="-1"></button>
+                    </div>
+                </div>
+                <div id="domain">
+                    
+                <button tabindex="-1"><p>1</p></button><button tabindex="-1"><p>2</p></button><button tabindex="-1"><p>3</p></button><button tabindex="-1"><p>4</p></button></div>
+            </div>
+        </div>
+    </div>
+
+    <span id="tab_catch" tabindex="0"></span>
+</div>
+</body>

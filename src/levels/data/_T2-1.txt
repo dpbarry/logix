@@ -1,0 +1,10 @@
+levelNumber=2.1
+difficulty=Training
+nextLevel=T2-2
+domain=1,2,3
+rows=3
+cols=2
+given=2,?,?,3,1,?
+propositions=[1,2] = 3 \land [2,1] = 2@[1,2] \neq [3,2] \land [2,1] \neq [3,2]
+solution=.,3,2,.,.,1
+info= <p>So far, the propositions you have seen have all been atomic, meaning they can’t be analyzed as a combination of smaller propositions. However, this will change in this chapter with the introduction of <b> logical connectives</b>. These are symbols which operate on propositions to create more complex ones.<p> <p> The most straightforward of this class is conjunction: \(\land\). Similarly to its natural language counterpart “and,” it asserts that the two propositions it conjoins are both true. That is, the statement \(p \land q\) will only hold true in a context where both \(p\) and \(q\) are true. </p>

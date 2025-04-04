@@ -24,6 +24,9 @@ function setupHome(page) {
         };
     });
 
+    let highestTraining = localStorage.getItem("highestTraining") || "1";
+    page.querySelector("#s" + highestTraining.charAt(0)).classList.add("dropped");
+
     page.querySelectorAll(".card").forEach( c => {
         let category = "highest" + c.id[0].toUpperCase() + c.id.substring(1);
         if (localStorage.getItem(category)) {

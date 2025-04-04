@@ -1500,7 +1500,7 @@ function initLevel() {
         } else if (COLS > ROWS) {
             level.style.setProperty('--heightFactor', (ROWS / COLS));
             level.style.setProperty('--widthFactor', 1);
-            if (ROWS < 3) {
+            if (ROWS < 3 && COLS > 3) {
                 level.style.setProperty('--boostProps', 1.075);
 
                 level.style.setProperty('--landscapeHeightFactor', 1.2 * (ROWS / COLS));

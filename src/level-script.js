@@ -421,21 +421,32 @@ function initLevel() {
 
 
 
-    if (thisLevel === "1.1" && thisDifficulty === "Training") {
+    if (localStorage.getItem("menuPreference")) {
+        if (localStorage.getItem("menuPreference") === "true") 
+            MENU_TOGGLE.click();
+        else {
+            MENU_TOGGLE.checked = false;
+            if (info.children.length) {
+                level.querySelector("#info").classList.add("readme");
+            }
+        }
+    } else if (thisDifficulty === "Training" && thisLevel === "1.1") {
+        MENU_TOGGLE.checked = true;
         setTimeout(()=> {
             level.querySelector("#info").click();
             
         }, 425);
         level.style.setProperty('--noInfo', "0px");
-    } else if (info.children.length) {
-        level.querySelector("#info").classList.add("readme");
-        level.style.setProperty('--noInfo', "0px");
-
-    } else {
+    }
+    
+    if (!info.children.length) {
         level.querySelector("#info").remove();
         level.style.setProperty('--noInfo', "-54px");
+    } else {
+        level.style.setProperty('--noInfo', "0px");
     }
 
+    
 
 
     level.querySelector("#notes_dialog").addEventListener("open", (e) => {
@@ -870,6 +881,7 @@ function initLevel() {
                 && !tabbed
                 || toolClicked
                ) {
+                console.log(document.activeElement);
                 
                 this.focus({preventScroll: true});
             } else {
@@ -906,6 +918,10 @@ function initLevel() {
                 l.classList.remove("highlight");
             });
         }
+    };
+
+    MENU_TOGGLE.onchange = () => {
+        localStorage.setItem("menuPreference", MENU_TOGGLE.checked);
     };
 
 

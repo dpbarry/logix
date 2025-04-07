@@ -455,8 +455,6 @@ document.addEventListener('keydown', (e) => {
     if (e.key === "m") {
         try {
             MENU_TOGGLE.checked = !MENU_TOGGLE.checked;
-            changed = new AnimationEvent("change");
-            MENU_TOGGLE.dispatchEvent(changed);
         } catch {}
     }
 

@@ -4,7 +4,7 @@
     <div id="wrap_home_level">
         <button id="home" tabindex="-1"></button>
 
-        <h1 id="level" onclick="">1.4</h1>
+        <h1 id="level" onclick="">2.3</h1>
 
         <p id="difficulty">Training</p>
     </div>
@@ -21,7 +21,7 @@
         <dialog id="info_dialog">
             <a class="close"></a>
             <h1>Info</h1>
-            <div id="level_info" data-masksize="80"><p>If you want to keep track of your deductions and don't have paper, you can jot down notes via the notepad icon in the menu. Also, check out the dictionary for keyboard shortcuts.</p></div>
+            <div id="level_info" data-masksize="80"><p> This level introduces the negation connective \(\neg\). It is unary, meaning it only takes one argument. The proposition \(\neg p \) is true when \(p\) is not true. It is therefore similar to the word “not.”</p><p> Connectives can coexist, creating even more complicated propositions. A consequence is the possibility of representing the same proposition with different logical expressions. Two important examples are shown below (De Morgan’s laws), with \(\equiv\) denoting logical equivalence:</p><p>\(\neg (p \land q) \equiv \neg p \lor \neg q \)</p><p>\(\neg (p \lor q) \equiv \neg p \land \neg q \)</p></div>
         </dialog>
         <dialog id="dictionary_dialog">
             <a class="close"></a>
@@ -56,7 +56,7 @@
             <ul id="propositions">
 
                 
-            <li>\([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] \mathbin{/} [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] = [\htmlClass{entry}{\htmlId{e2e2}{2,2}}] - 2\)</li><li>\([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] + [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] = [\htmlClass{entry}{\htmlId{e2e1}{2,1}}] + [\htmlClass{entry}{\htmlId{e2e2}{2,2}}]\)</li><li>\([\htmlClass{entry}{\htmlId{e1e2}{1,2}}] \cdot [\htmlClass{entry}{\htmlId{e2e1}{2,1}}] = 2 - [\htmlClass{entry}{\htmlId{e2e2}{2,2}}]\)</li></ul>
+            <li>\([\htmlClass{entry}{\htmlId{e2e2}{2,2}}] \neq [\htmlClass{entry}{\htmlId{e3e3}{3,3}}] - 2\)</li><li>\(\neg ([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] &lt; [\htmlClass{entry}{\htmlId{e2e2}{2,2}}])\)</li><li>\([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] &gt; [\htmlClass{entry}{\htmlId{e2e2}{2,2}}] + 2 \lor [\htmlClass{entry}{\htmlId{e1e1}{1,1}}] = [\htmlClass{entry}{\htmlId{e3e3}{3,3}}]\)</li><li>\(\neg ([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] &gt; [\htmlClass{entry}{\htmlId{e3e3}{3,3}}] \lor [\htmlClass{entry}{\htmlId{e2e2}{2,2}}] \geq [\htmlClass{entry}{\htmlId{e3e3}{3,3}}])\)</li></ul>
         </div>
 
         
@@ -65,18 +65,18 @@
             <div id="wrap_axis_grid">
                 <div id="y-axis">
                     
-                <span id="y1">1</span><span id="y2">2</span></div>
+                <span id="y1">1</span><span id="y2">2</span><span id="y3">3</span></div>
 
                 <div id="wrap_grids">
                     <div id="gridbar"></div>
                     <div id="grid_carousel" tabindex="-1">
-                    <div class="grid" id="g1"><span><p></p></span><span><p></p></span><span><p></p></span><span><p></p></span></div></div>
+                    <div class="grid" id="g1"><span><p></p></span><span class="given"><p>6</p></span><span class="given"><p>7</p></span><span class="given"><p>5</p></span><span><p></p></span><span class="given"><p>5</p></span><span class="given"><p>7</p></span><span class="given"><p>8</p></span><span><p></p></span></div></div>
                     <button id="nextgrid" tabindex="-1"></button>
                     <button id="delgrid" tabindex="-1"></button>
                 </div>
                 <div id="x-axis">
                     
-                <span id="x1">1</span><span id="x2">2</span></div>
+                <span id="x1">1</span><span id="x2">2</span><span id="x3">3</span></div>
             </div>
 
             
@@ -92,7 +92,7 @@
                 </div>
                 <div id="domain">
                     
-                <button tabindex="-1"><p>-2</p></button><button tabindex="-1"><p>-1</p></button><button tabindex="-1"><p>1</p></button><button tabindex="-1"><p>2</p></button></div>
+                <button tabindex="-1"><p>4</p></button><button tabindex="-1"><p>6</p></button><button tabindex="-1"><p>8</p></button></div>
             </div>
         </div>
     </div>

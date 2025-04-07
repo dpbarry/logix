@@ -1,0 +1,10 @@
+levelNumber=2.3
+difficulty=Training
+nextLevel=T2-4
+domain=4,6,8
+rows=3
+cols=3
+given=?,6,7,5,?,5,7,8,?
+propositions=[2,2] \neq [3,3] - 2@\neg ([1,1] < [2,2])@[1,1] > [2,2] + 2 \lor [1,1] = [3,3]@\neg ([1,1] > [3,3] \lor [2,2] \geq [3,3])
+solution=8,.,.,.,4,.,.,.,8
+info= <p> This level introduces the negation connective \(\neg\). It is unary, meaning it only takes one argument. The proposition \(\neg p \) is true when \(p\) is not true. It is therefore similar to the word “not.”</p><p> Connectives can coexist, creating even more complicated propositions. A consequence is the possibility of representing the same proposition with different logical expressions. Two important examples are shown below (De Morgan’s laws), with \(\equiv\) denoting logical equivalence:</p><p>\(\neg (p \land q) \equiv \neg p \lor \neg q \)</p><p>\(\neg (p \lor q) \equiv \neg p \land \neg q \)</p>

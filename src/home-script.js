@@ -24,7 +24,7 @@ function setupHome(page) {
         };
     });
 
-    let highestTraining = localStorage.getItem("highestTraining") || "1";
+    let highestTraining = localStorage.getItem("highestTraining") || "1-1";
     if (highestTraining[0] !== "5" && !page.querySelector("#T" + highestTraining[0] + "-" + (1 + parseInt(highestTraining.substring(2)))))
         highestTraining = ""+((parseInt(highestTraining[0])) + 1) + "-1";
     page.querySelector("#s" + highestTraining.charAt(0)).classList.add("dropped");

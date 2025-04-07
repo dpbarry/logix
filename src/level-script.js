@@ -423,7 +423,7 @@ function initLevel() {
 
     if (localStorage.getItem("menuPreference")) {
         if (localStorage.getItem("menuPreference") === "true") 
-            MENU_TOGGLE.click();
+            MENU_TOGGLE.checked = true;
         else {
             MENU_TOGGLE.checked = false;
             if (info.children.length) {

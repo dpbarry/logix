@@ -20,7 +20,7 @@ function initLevel() {
     MENU_TOGGLE = level.querySelector("#menu_checkbox");
     const info = level.querySelector("#level_info");
     const notes = level.querySelector("#wrapnotes");
-
+    const dict = level.querySelector("#dict_box");
     const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
     let currentGrid = 1;
@@ -1140,14 +1140,14 @@ function initLevel() {
     window.onresize = function(event) {
         verticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
-        verticalScroll(level.querySelector("#keysbox"), 7);
+        verticalScroll(dict, 7);
         verticalScroll(info, 7);
     }
 
     screen.orientation.addEventListener("change", (event) => {
         verticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
-        verticalScroll(level.querySelector("#keysbox"), 7);
+        verticalScroll(dict, 7);
         verticalScroll(info, 7);
     });
 
@@ -1490,8 +1490,15 @@ function initLevel() {
     info.addEventListener("scroll", () => {
         verticalScroll(info, 7);
     });
-    level.querySelector("#keysbox").addEventListener("scroll", (e) => {
-        verticalScroll(e.target, 7);
+    dict.closest("dialog").addEventListener("open", () => {
+        verticalScroll(dict, 7);
+    });
+
+    [...level.querySelector("#dict_headings").children].forEach(h => {
+        h.onclick = () =>  verticalScroll(dict, 7);
+    });
+    level.querySelector("#dict_box").addEventListener("scroll", (e) => {
+        verticalScroll(dict, 7);
     } );
 
     function alignGrid() {

@@ -146,6 +146,8 @@ function setupHome(page) {
         page.querySelector("#about_dialog").addEventListener("transitionend", closeDialog);
     }
 
+    
+
     page.querySelectorAll(".locked").forEach(l => l.onfocus = () => {l.blur();});
 
 
@@ -533,23 +535,52 @@ function setupHome(page) {
             rightnav.click();
         }
     })
-
+    page.querySelector("#about_dialog h1").onclick = () => {
+        aboutClickCount++;
+        console.log(aboutClickCount);
+        if (aboutClickCount >= 5) {
+            hackLevel();
+        }
+        clearAboutClickCount = setTimeout( () => aboutClickCount = 0, 5000);
+    };
+    
+    document.addEventListener("keydown", async (event) => {
+        typed += event.key.toLowerCase();
+        if (typed.includes("dean")) {
+            typed = "";
+            hackLevel();
+        }
+        if (typed.length > 100) 
+            typed = typed.slice(-96);
+    });
 }
 
 //// HAXXXXX ////
-let typed = "";
-document.addEventListener("keydown", (event) => {
-    typed += event.key.toLowerCase();
-    if (typed.includes("dean")) {
-        typed = "";
-        let difficulty = prompt("Which difficulty?");
-        difficulty = difficulty ? difficulty.toLowerCase().trim() : "training";
-        
-        const level = prompt("Up to which level?");
 
-        localStorage.setItem("highest" + difficulty[0].toUpperCase() + difficulty.substring(1), level);
-        window.location.reload(true);
+let aboutClickCount = 0;
+let clearAboutClickCount;
+let typed = "";
+
+async function hackLevel() {
+    clearTimeout(clearAboutClickCount);
+    aboutClickCount = 0;
+    let difficulty = prompt("Which difficulty?");
+    difficulty = difficulty ? difficulty.toLowerCase().trim() : "training";
+
+    if (!["training", "normal", "difficult", "extreme"].includes(difficulty)) {
+        alert("Not a valid difficulty.")
+        return;
     }
-    if (typed.length > 100) 
-        typed = typed.slice(-96);
-});
+    
+    const level = prompt(`What is the last ${difficulty[0].toUpperCase() + difficulty.substring(1)} level you completed?`);
+    if (!level) return;
+
+    var response = await fetch(`src/levels/${difficulty[0] + level.replace(".", "-")}.html`);
+    if (!response.ok) {
+        alert("That level does not (yet) exist.")
+        return;
+    }
+
+    localStorage.setItem("highest" + difficulty[0].toUpperCase() + difficulty.substring(1), level);
+    window.location.reload(true);
+}

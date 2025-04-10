@@ -1,4 +1,4 @@
- <div class="page level">
+<div class="page level">
     <span id="backtab_catch" tabindex="0"></span>
 
     <div id="wrap_home_level">
@@ -42,33 +42,39 @@
                 </label>
             </div>
 
-            <div id="dict_symbols">
-                <li class="t1-1"> <span class="symbol"> \( = \) </span> <p class="caption"> Equality: asserts two objects are identical.</p> <p class="formal"> \( x = y \iff \forall \phi : \phi(x) \leftrightarrow \phi(y) \) </li>
-                    <li class="t1-3"> <span class="symbol"> \( < \) </span> <p class="caption"> Less than inequality: asserts that a number is strictly lesser than another.</p> <p class="formal"> \( x < y \iff \exist \epsilon > 0 : x + \epsilon = y \) </li>
+            <div id="dict_box">
+                <div id="dict_symbols">
+                    <li class="t1-1"> <span class="symbol"> \( = \) </span> <p class="caption"> Asserts that two objects are equal.</p> <p class="formal"> \( x = y \iff \forall \phi : \phi(x) \leftrightarrow \phi(y) \) </li>
 
-                        <li class="t1-3"> <span class="symbol"> \( > \)</span> <p class="caption"> Greater than inequality: asserts that a number is strictly greater than another.</p> <p class="formal"> \( x > y \iff \exist \epsilon > 0 : x - \epsilon = y \) </li>
+                        <li class="t1-3"> <span class="symbol"> \( < \) </span> <p class="caption"> Asserts that a number is strictly lesser than another.</p> <p class="formal"> \( x < y \iff \exist \epsilon > 0 : x + \epsilon = y \) </li>
 
-            </div>
+                            <li class="t1-3"> <span class="symbol"> \( > \)</span> <p class="caption"> Asserts that a number is strictly greater than another.</p> <p class="formal"> \( x > y \iff \exist \epsilon > 0 : x - \epsilon = y \) </li>
+                                <li class="t1-6"> <span class="symbol"> \( \leq \)</span> <p class="caption"> Asserts that a number is strictly greater than another.</p> <p class="formal"> \( x > y \iff \exist \epsilon > 0 : x - \epsilon = y \) </li>
 
-            <div id="dict_terms">
-                <li class="t1-1"> <span class="term"> Matrix </span> <p class="caption"> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </li>
+                </div>
 
-            </div>
+                <div id="dict_terms">
+                    <li class="t1-1"> <span class="term"> Matrix </span> <p class="caption"> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </li>
 
-            <div id="dict_general">
-                <p id="keycontrols"> <strong>Key controls:</strong> use <span class="key" style="padding-top: 0; padding-bottom: 0;">tab</span> to cycle through the entries, the number keys to select numbers, and the following keys for the UI: </p> 
-                <div id="keysbox">
-                    <p><span class="key" style="margin-right: 0.1rem;">c</span> Candidate Mode </p> 
-                    <p><span class="key" style="margin-right: 0.1rem;">u</span> Undo </p> 
-                    <p><span class="key" style="margin-right: 0.1rem;">r</span> Redo </p> 
-                    <p><span class="key" style="margin-right: 0.1rem;">h</span> Home </p> 
-                    <p><span class="key" style="margin-right: 0.1rem;">m</span> Menu Toggle </p> 
-                    <p><span class="key" style="margin-right: 0.1rem;">s</span> Settings </p> 
-                    <p><span class="key" style="margin-right: 0.1rem;">i</span> Info </p> 
-                    <p><span class="key" style="margin-right: 0.1rem;">d</span> Dictionary </p> 
-                    <p><span class="key" style="margin-right: 0.1rem;">n</span> Notes </p>
-                    <p><span class="key" style="margin-right: 0.1rem;">p</span> Plus Grid </p>
-                    <p><span class="key" style="margin-right: 0.1rem;">x</span> Delete Grid </p>
+                </div>
+
+                <div id="dict_general">
+                    <p id="keycontrols"> <strong>Key controls:</strong> use <span class="key" style="padding-top: 0; padding-bottom: 0;">tab</span> to cycle through the entries, the number keys to select numbers, and the following keys for the UI: </p> 
+                    <div id="keysbox">
+                        <p><span class="key" style="margin-right: 0.1rem;">c</span> Candidate Mode </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">u</span> Undo </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">r</span> Redo </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">h</span> Home </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">m</span> Menu Toggle </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">s</span> Settings </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">i</span> Info </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">d</span> Dictionary </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">n</span> Notes </p>
+                        <p><span class="key" style="margin-right: 0.1rem;">p</span> Plus Grid </p>
+                        <p><span class="key" style="margin-right: 0.1rem;">x</span> Delete Grid </p>
+                    </div>
+                    <p id="cloudnote"> <strong>Saving progress:</strong> Logix saves your work for the most recently unlocked level in each difficulty. Note that this is stored on your browser, so resetting your cache will lose your progress. In that case, or to synchronize multiple devices, go to the homepage, click the info button, and then click on the “About” heading five times to open a window that lets you skip to the level you left off on. </p> 
+
                 </div>
             </div>
         </dialog>

@@ -575,9 +575,10 @@ async function hackLevel() {
     const level = prompt(`What is the last ${difficulty[0].toUpperCase() + difficulty.substring(1)} level you completed?`);
     if (!level) return;
 
-    var response = await fetch(`src/levels/${difficulty[0] + level.replace(".", "-")}.html`);
+    var response = await fetch(`src/levels/${difficulty[0].toUpperCase() + level.replace(".", "-")}.html`);
     if (!response.ok) {
-        alert("That level does not (yet) exist.")
+        alert("That level does not (yet) exist.");
+        window.location.reload(true);
         return;
     }
 

@@ -437,6 +437,8 @@ function initLevel() {
             
         }, 425);
         level.style.setProperty('--noInfo', "0px");
+    } else if (info.children.length) {
+        level.querySelector("#info").classList.add("readme");
     }
     
     if (!info.children.length) {

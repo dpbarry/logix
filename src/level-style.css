@@ -273,29 +273,122 @@
 }
 
 #dictionary_dialog {
+  min-height: 40vh;
   height: min-content;
   max-height: 75vh;
   h1 {margin-bottom: 10px;}
   padding-bottom: 20px;
   font-weight: 350;
   font-size: 1.15rem;
-  #keysbox {
-    max-height: 44vh;
-    box-sizing: border-box;
-    width: 100%;
-    display: flex;    
-    flex-wrap: wrap;
-    gap: 10px;
+
+  #dict_symbols, #dict_terms, #dict_general {
+    display: none;
     overflow-y: scroll;
-    scrollbar-width: none;
+  }
+
+  #dict_headings:has(#symbols input:checked) ~ #dict_symbols { display: flex; }
+  #dict_headings:has(#terms input:checked) ~ #dict_terms { display: flex; }
+  #dict_headings:has(#general input:checked) ~ #dict_general { display: flex; }
+
+
+  #dict_headings {
+    display: flex;
+    gap: 20%;
+    justify-content: center;
+    margin-bottom: 15px;
     
-    p {
-      margin: 0;
-      font-weight: 350;
-      font-size: 1.15rem;
-      flex-basis:100%;
-      text-align: justify;
-      margin-bottom: 5px;
+    input { display: none; }
+    label {
+      cursor: pointer;
+      transition: font-weight 0.1s;
+      font-size: 1.3rem;
+      font-weight: 250;
+    }
+    label:has(input:checked) {
+      font-weight: 575;
+    }
+    @media (pointer: fine) and (hover: hover) {
+      label:hover {
+        font-weight: 400;
+      }
+    }
+
+  }
+
+  p {
+    margin: 0;
+    text-align: left;
+  }
+  
+  #dict_symbols, #dict_terms {
+    li {
+      list-style-type: none;
+      display: grid;
+      grid-template-columns: min-content 1fr;
+      grid-template-rows: min-content min-content;
+      align-items: center;  
+      justify-content: center;
+      align-items: center;
+      
+      
+      .caption {
+        font-style: italic;
+        grid-column: 2;
+      }
+
+      .symbol, .term {
+        width: min-content;
+        display: flex;
+        align-items: center;
+        grid-column: 1;
+        grid-row: 1 / -1;
+        height: 100%;
+        border-right: 1px solid black;
+        padding-right: 10px;
+        margin-right: 10px;
+      }
+      .formal {
+        grid-column: 2;
+      }
+    }
+  }
+
+  #dict_symbols {
+
+    .symbol {
+      font-size: 1.5rem;
+    }
+  }
+
+  #dict_terms {
+    .term {
+      font-size: 1.25rem;
+    }
+  }
+
+  #dict_general {
+    flex-direction: column;
+    #keycontrols {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    #keysbox {
+      max-height: 44vh;
+      box-sizing: border-box;
+      width: 100%;
+      display: flex;    
+      flex-wrap: wrap;
+      gap: 10px;
+      scrollbar-width: none;
+      
+      p {
+        margin: 0;
+        font-weight: 350;
+        font-size: 1.15rem;
+        width: fit-content;
+        text-align: justify;
+        margin-bottom: 5px;
+      }
     }
   }
 }

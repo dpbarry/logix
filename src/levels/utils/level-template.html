@@ -25,23 +25,52 @@
         </dialog>
         <dialog id="dictionary_dialog">
             <a class="close"></a>
-            <h1>Dictionary (WIP)</h1>
-            <p> This feature is far from getting started. For now, here are the keyboard controls. Use <span class="key" style="padding-top: 0; padding-bottom: 0;">tab</span> to cycle through the entries, the number keys to select numbers, and the following keys for the UI: </p> 
-            <div id="keysbox">
-             
-                <p><span class="key" style="margin-right: 0.1rem;">c</span> Candidate Mode </p> 
-                <p><span class="key" style="margin-right: 0.1rem;">u</span> Undo </p> 
-                <p><span class="key" style="margin-right: 0.1rem;">r</span> Redo </p> 
-                <p><span class="key" style="margin-right: 0.1rem;">h</span> Home </p> 
-                <p><span class="key" style="margin-right: 0.1rem;">m</span> Menu Toggle </p> 
-                <p><span class="key" style="margin-right: 0.1rem;">s</span> Settings </p> 
-                <p><span class="key" style="margin-right: 0.1rem;">i</span> Info </p> 
-                <p><span class="key" style="margin-right: 0.1rem;">d</span> Dictionary </p> 
-                <p><span class="key" style="margin-right: 0.1rem;">n</span> Notes </p>
-                <p><span class="key" style="margin-right: 0.1rem;">p</span> Plus Grid </p>
-                <p><span class="key" style="margin-right: 0.1rem;">x</span> Delete Grid </p>
+            <h1>Dictionary</h1>
+
+            <div id="dict_headings">
+                <label id="symbols">
+                    Symbols
+                    <input type="radio" name="dict_header" checked>
+                </label>
+                <label id="terms">
+                    Terms
+                    <input type="radio" name="dict_header">
+                </label>
+                <label id="general">
+                    General
+                    <input type="radio" name="dict_header">
+                </label>
+            </div>
+
+            <div id="dict_symbols">
+                <li class="t1-1"> <span class="symbol"> = </span> <p class="caption"> Equivalence: declares two arguments equal.</p> <p class="formal"> \( x = y \iff \forall P : P(x) \leftrightarrow P(y) \) </li>
+            </div>
+
+            <div id="dict_terms">
+                <li class="t1-1"> <span class="term"> Matrix </span> <p class="caption"> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </li>
 
             </div>
+
+            <div id="dict_general">
+                <p id="keycontrols"> <strong>Key controls:</strong> use <span class="key" style="padding-top: 0; padding-bottom: 0;">tab</span> to cycle through the entries, the number keys to select numbers, and the following keys for the UI: </p> 
+                <div id="keysbox">
+                    <p><span class="key" style="margin-right: 0.1rem;">c</span> Candidate Mode </p> 
+                    <p><span class="key" style="margin-right: 0.1rem;">u</span> Undo </p> 
+                    <p><span class="key" style="margin-right: 0.1rem;">r</span> Redo </p> 
+                    <p><span class="key" style="margin-right: 0.1rem;">h</span> Home </p> 
+                    <p><span class="key" style="margin-right: 0.1rem;">m</span> Menu Toggle </p> 
+                    <p><span class="key" style="margin-right: 0.1rem;">s</span> Settings </p> 
+                    <p><span class="key" style="margin-right: 0.1rem;">i</span> Info </p> 
+                    <p><span class="key" style="margin-right: 0.1rem;">d</span> Dictionary </p> 
+                    <p><span class="key" style="margin-right: 0.1rem;">n</span> Notes </p>
+                    <p><span class="key" style="margin-right: 0.1rem;">p</span> Plus Grid </p>
+                    <p><span class="key" style="margin-right: 0.1rem;">x</span> Delete Grid </p>
+
+                </div>
+            </div>
+        </dialog>
+        
+        
         </dialog>
         <dialog id="notes_dialog">
             <a class="close"></a>

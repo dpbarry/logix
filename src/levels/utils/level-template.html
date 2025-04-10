@@ -1,4 +1,4 @@
-<div class="page level">
+ <div class="page level">
     <span id="backtab_catch" tabindex="0"></span>
 
     <div id="wrap_home_level">
@@ -43,7 +43,11 @@
             </div>
 
             <div id="dict_symbols">
-                <li class="t1-1"> <span class="symbol"> = </span> <p class="caption"> Equivalence: declares two arguments equal.</p> <p class="formal"> \( x = y \iff \forall P : P(x) \leftrightarrow P(y) \) </li>
+                <li class="t1-1"> <span class="symbol"> \( = \) </span> <p class="caption"> Equality: asserts two objects are identical.</p> <p class="formal"> \( x = y \iff \forall \phi : \phi(x) \leftrightarrow \phi(y) \) </li>
+                    <li class="t1-3"> <span class="symbol"> \( < \) </span> <p class="caption"> Less than inequality: asserts that a number is strictly lesser than another.</p> <p class="formal"> \( x < y \iff \exist \epsilon > 0 : x + \epsilon = y \) </li>
+
+                        <li class="t1-3"> <span class="symbol"> \( > \)</span> <p class="caption"> Greater than inequality: asserts that a number is strictly greater than another.</p> <p class="formal"> \( x > y \iff \exist \epsilon > 0 : x - \epsilon = y \) </li>
+
             </div>
 
             <div id="dict_terms">
@@ -65,7 +69,6 @@
                     <p><span class="key" style="margin-right: 0.1rem;">n</span> Notes </p>
                     <p><span class="key" style="margin-right: 0.1rem;">p</span> Plus Grid </p>
                     <p><span class="key" style="margin-right: 0.1rem;">x</span> Delete Grid </p>
-
                 </div>
             </div>
         </dialog>

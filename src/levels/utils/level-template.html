@@ -44,17 +44,23 @@
 
             <div id="dict_box">
                 <div id="dict_symbols">
-                    <li class="t1-1"> <span class="symbol"> \( = \) </span> <p class="caption"> Asserts that two objects are equal.</p> <p class="formal"> \( x = y \iff \forall \phi : \phi(x) \leftrightarrow \phi(y) \) </li>
-
-                        <li class="t1-3"> <span class="symbol"> \( < \) </span> <p class="caption"> Asserts that a number is strictly lesser than another.</p> <p class="formal"> \( x < y \iff \exist \epsilon > 0 : x + \epsilon = y \) </li>
-
-                            <li class="t1-3"> <span class="symbol"> \( > \)</span> <p class="caption"> Asserts that a number is strictly greater than another.</p> <p class="formal"> \( x > y \iff \exist \epsilon > 0 : x - \epsilon = y \) </li>
-                                <li class="t1-6"> <span class="symbol"> \( \leq \)</span> <p class="caption"> Asserts that a number is strictly greater than another.</p> <p class="formal"> \( x > y \iff \exist \epsilon > 0 : x - \epsilon = y \) </li>
+                    <li class="t1-1"> <span class="symbol" style="font-size: 1rem"> \( [i,j] \) </span> <p class="caption">References the entry at the \(i\)-th row and \(j\)-th column of the level's matrix. Note that more conventional notation is \(A[i,j]\) or \(A_{i,j}\), but the matrix is elided here for concision.</p> <p class="formal"> </p> </li>
+                    <li class="t1-1"> <span class="symbol"> \( = \) </span> <p class="caption"> Asserts that two objects are equal.</p> <p class="formal"> \( x = y \iff \forall \phi : \phi(x) \leftrightarrow \phi(y) \) </p> </li>
+                    
+                    <li class="t1-3"> <span class="symbol"> \( < \) </span> <p class="caption"> Asserts that a number is strictly less than another.</p> <p class="formal"> \( x < y \iff \exist \epsilon > 0 : x + \epsilon = y \) </p> </li>
+                    <li class="t1-3"> <span class="symbol"> \( > \)</span> <p class="caption"> Asserts that a number is strictly greater than another.</p> <p class="formal"> \( x > y \iff \exist \epsilon > 0 : x - \epsilon = y \) </p> </li>
+                    <li class="t1-5"> <span class="symbol"> \( \neq \)</span> <p class="caption"> Asserts that two objects are not equal.</p> <p class="formal"> \( x \neq y \iff \exist \phi : \phi(x) \nleftrightarrow \phi(y) \) </li>
+                        <li class="t1-7"> <span class="symbol"> \( \leq \)</span> <p class="caption"> Asserts that a number is less than or equal to another.</p> <p class="formal"> \( x \leq y \iff (\exist \epsilon > 0 : x + \epsilon = y) \lor (x = y) \) </p> </li>
+                    <li class="t1-7"> <span class="symbol"> \( \geq \)</span> <p class="caption"> Asserts that a number is greater than or equal to another.</p> <p class="formal"> \( x \geq y \iff (\exist \epsilon > 0 : x - \epsilon = y) \lor (x = y) \) </p> </li>
+                    <li class="t2-1"> <span class="symbol"> \( \land \)</span> <p class="caption"> Joins two propositions into one which is only true when both of its conjuncts are true.</p> <p class="formal"> \( v(p) = T, v(q) = T \vdash p \land q \) </p> </li>
+                    <li class="t2-2"> <span class="symbol"> \( \lor \)</span> <p class="caption"> Joins two propositions into one which is true when one of its disjuncts is true.</p> <p class="formal"> \( v(p) = T \vdash p \lor q, v(q) = T \vdash p \lor q \) </p> </li>
+                    <li class="t2-3"> <span class="symbol"> \( \lnot \)</span> <p class="caption">Negates the truth value of a proposition. </p> <p class="formal"> \( v(p) = F \vdash \neg p \) </p> </li>
 
                 </div>
 
                 <div id="dict_terms">
-                    <li class="t1-1"> <span class="term"> Matrix </span> <p class="caption"> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </li>
+                    <li class="t1-1"> <p class="caption"> <span class="term"> Matrix </span> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </li>
+                        <li class="t1-1">  <p class="caption"> <span class="term"> Proposition </span> Logical entity bearing a truth value (true or false); can be expressed with formal expressions.</p> <p class="formal"> </li>
 
                 </div>
 

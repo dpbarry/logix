@@ -300,19 +300,25 @@
   #dict_box {
     overflow-y: scroll;
     max-height: 60vh;
-    padding-left: min(1vw, 0.4em);
-    padding-right: min(1vw, 0.4rem);
+    scrollbar-width: none;
+    width: 102%;
+    position: relative;
+    right: 1%;
   }
 
   #dict_headings:has(#symbols input:checked) ~ #dict_box #dict_symbols { display: flex; }
   #dict_headings:has(#terms input:checked) ~ #dict_box #dict_terms { display: flex; }
   #dict_headings:has(#general input:checked) ~ #dict_box #dict_general { display: flex; }
 
+  #dict_headings:has(#general input:checked) ~ #dict_box {
+    box-sizing: border-box;
+    padding-left: min(1vw, 0.4em);
+    padding-right: min(1vw, 0.4rem);
+  }
+
 
   #dict_headings {
     display: flex;
-    padding-left: 15px;
-    padding-right: 15px;
     justify-content: space-evenly;
     margin-bottom: 10px;
     
@@ -353,10 +359,57 @@
   p {
     margin: 0;
     text-align: left;
-    font-size: clamp(0.25rem, calc(1.7vh + 0.7vw), 1.2rem);
+    font-size: clamp(0.25rem, calc(1.7vh + 0.7vw), 1.1rem);
   }
   
-  #dict_symbols, #dict_terms {
+  #dict_symbols {
+    flex-direction: column;
+    
+    li {
+      list-style-type: none;
+      display: grid;
+      grid-template-columns: min-content 1fr;
+      grid-template-rows: min-content min-content;
+      align-items: center;  
+      justify-content: center;
+      align-items: center;
+      grid-template-columns: 2.75rem 1fr; 
+
+      .symbol {
+        width: min-content;
+        display: flex;
+        font-size: 1.5rem;
+
+        align-items: center;
+        justify-content: center;
+        grid-column: 1;
+        grid-row: 1 / -1;
+        height: 100%;
+        border-right: 1px solid var(--baseColor);
+        box-sizing: border-box;
+        transition: background-color 0.12s;
+        min-width: 2.75rem;
+        padding-right: 3px;  
+      }
+      .caption {
+        font-style: italic;
+        grid-column: 2;
+        padding-top: 7px;
+        padding-left: 7px;
+        transition: background-color 0.12s;
+        padding-right: 5px;
+      }
+
+      .formal {
+        padding-left: 10px;
+        grid-column: 2;
+        padding-bottom: 7px;
+        transition: background-color 0.12s;
+      }
+    }
+  }
+
+  #dict_terms {
     flex-direction: column;
     li {
       list-style-type: none;
@@ -366,100 +419,82 @@
       align-items: center;  
       justify-content: center;
       align-items: center;
-      
-      
       .caption {
         font-style: italic;
         grid-column: 2;
         padding-top: 7px;
-        padding-left: 10px;
         transition: background-color 0.12s;
       }
-
-      .symbol, .term {
+      .term {
         width: min-content;
-        display: flex;
-        align-items: center;
+        font-style: normal;
+        font-weight: 480;
         grid-column: 1;
-        grid-row: 1 / -1;
+        grid-row: 1;
         height: 100%;
-        border-right: 1px solid var(--baseColor);
-        padding-right: 10px;
+        display: block;
+        padding: 0;
+        box-sizing: border-box;
         transition: background-color 0.12s;
       }
-      .formal {
-        padding-left: 10px;
-        grid-column: 2;
-        padding-bottom: 7px;
-        transition: background-color 0.12s;
-      }
-    }
-
-    @media (pointer: fine) and (hover: hover) {
-      .symbol:hover, .term:hover {
-        background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
-        & ~ * {
-          background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
-        }
-      }
-
-      .symbol:has(~ *:hover), .term:has(~ *:hover) {
-        background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
-      }
-      .caption:has(~ *:hover) {
-        background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
-      }
-      .caption:hover {
-        background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
-        & ~ * {
-          background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
-        }
-      }
-
-      .formal:hover {
-        background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
+      .term {
+        font-size: 1.25rem;
       }
     }
   }
-
-  #dict_symbols {
-
-    .symbol {
-      font-size: 1.5rem;
-    }
-  }
-
-  #dict_terms {
-    .term {
-      font-size: 1.25rem;
-    }
-  }
-
-  #dict_general {
-    flex-direction: column;
-    strong { font-weight: 600;}
-    #keycontrols, #cloudnote {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    #keysbox {
-      max-height: 44vh;
-      box-sizing: border-box;
-      width: 100%;
-      display: flex;    
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 15px;
-      
-      p {
-        margin: 0;
-        font-weight: 350;
-        width: fit-content;
-        text-align: justify;
+  @media (pointer: fine) and (hover: hover) {
+    .symbol:hover, .term:hover {
+      background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
+      & ~ * {
+        background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
       }
     }
 
+    .symbol:has(~ *:hover), .term:has(~ *:hover) {
+      background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
+    }
+    .caption:has(~ *:hover) {
+      background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
+    }
+    .caption:hover {
+      background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
+      & ~ * {
+        background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
+      }
+    }
+
+    .formal:hover {
+      background: light-dark(#eaeaea, color-mix(in hsl, var(--bgColor) 40%, #333 60%));
+    }
   }
+}
+
+
+#dict_general {
+  flex-direction: column;
+  strong { font-weight: 600;}
+  #keycontrols, #cloudnote {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  #keysbox {
+    max-height: 44vh;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;    
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    
+    p {
+      margin: 0;
+      font-weight: 350;
+      width: fit-content;
+      text-align: justify;
+    }
+  }
+
+}
 }
 
 span.key {

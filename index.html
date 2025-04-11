@@ -204,7 +204,6 @@
          history.pushState({loc:path}, "");
        }
        let openDialog = document.querySelector("dialog[open]");
-       console.log(openDialog);
        if (openDialog) {
          openDialog.classList.add("hide");
          openDialog.addEventListener("transitionend", closeDialog); 

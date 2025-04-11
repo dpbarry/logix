@@ -27,6 +27,8 @@
 
   --hueShiftIcons: unset;
 
+  --dialogWidth: min(80vw, 500px);
+
   color-scheme: light;
   color: black;
 
@@ -328,7 +330,7 @@ dialog {
     label:first-child {margin-right: 10px;}
 
     input {
-     position: absolute; opacity: 0;
+      position: absolute; opacity: 0;
     }
   }
   .theme {
@@ -411,7 +413,7 @@ dialog {
 
   .tristate {
     width: 70px;
-   
+    
   }
   .tristate::before {
     font-family: "Source Serif 4";

@@ -882,9 +882,7 @@ function initLevel() {
                 && document.activeElement !== document.body
                 && !tabbed
                 || toolClicked
-               ) {
-                console.log(document.activeElement);
-                
+               ) {                
                 this.focus({preventScroll: true});
             } else {
                 let r = this.querySelector(".ripple");

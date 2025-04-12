@@ -28,7 +28,8 @@ function showModal(id) {
 
     if (id==="settings_dialog") {
         setTimeout( ()=> {
-            document.querySelector("#litlight").parentNode.focus();
+            
+            document.querySelector("#" + (cacheTheme || "litlight")).parentNode.focus();
             
         }, 100);
     }

@@ -512,6 +512,15 @@ function setupHome(page) {
         }
     };
 
+    page.querySelector("#about_dialog h1").onclick = () => {
+        aboutClickCount++;
+        if (aboutClickCount >= 5) {
+            hackLevel();
+        }
+        clearAboutClickCount = setTimeout( () => aboutClickCount = 0, 5000);
+    };
+
+
 
     screen.orientation.addEventListener("change", scrollFadeCards);
 
@@ -535,53 +544,7 @@ function setupHome(page) {
             rightnav.click();
         }
     })
-    page.querySelector("#about_dialog h1").onclick = () => {
-        aboutClickCount++;
-        console.log(aboutClickCount);
-        if (aboutClickCount >= 5) {
-            hackLevel();
-        }
-        clearAboutClickCount = setTimeout( () => aboutClickCount = 0, 5000);
-    };
-    
-    document.addEventListener("keydown", async (event) => {
-        typed += event.key.toLowerCase();
-        if (typed.includes("dean")) {
-            typed = "";
-            hackLevel();
-        }
-        if (typed.length > 100) 
-            typed = typed.slice(-96);
-    });
+
+
 }
 
-//// HAXXXXX ////
-
-let aboutClickCount = 0;
-let clearAboutClickCount;
-let typed = "";
-
-async function hackLevel() {
-    clearTimeout(clearAboutClickCount);
-    aboutClickCount = 0;
-    let difficulty = prompt("Which difficulty?");
-    difficulty = difficulty ? difficulty.toLowerCase().trim() : "training";
-
-    if (!["training", "normal", "difficult", "extreme"].includes(difficulty)) {
-        alert("Not a valid difficulty.")
-        return;
-    }
-    
-    const level = prompt(`What is the last ${difficulty[0].toUpperCase() + difficulty.substring(1)} level you completed?`);
-    if (!level) return;
-
-    var response = await fetch(`src/levels/${difficulty[0].toUpperCase() + level.replace(".", "-")}.html`);
-    if (!response.ok) {
-        alert("That level does not (yet) exist.");
-        window.location.reload(true);
-        return;
-    }
-
-    localStorage.setItem("highest" + difficulty[0].toUpperCase() + difficulty.substring(1), level);
-    window.location.reload(true);
-}

@@ -452,6 +452,7 @@ function initLevel() {
 
 
     level.querySelector("#notes_dialog").addEventListener("open", (e) => {
+        if (hacking) return;
         setTimeout(()=>{
             e.target.querySelector("textarea").focus();
             
@@ -1497,9 +1498,30 @@ function initLevel() {
     [...level.querySelector("#dict_headings").children].forEach(h => {
         h.onclick = () =>  verticalScroll(dict, 7);
     });
-    level.querySelector("#dict_box").addEventListener("scroll", (e) => {
+    dict.addEventListener("scroll", (e) => {
         verticalScroll(dict, 7);
     } );
+
+
+    level.querySelectorAll("#dict_symbols li, #dict_terms li").forEach( li => {
+        if (li.className.startsWith("t") && (parseFloat(li.className[1] + "." +  li.className.substring(3)) - 0.1).toFixed(4) <= parseFloat(localStorage.getItem("highestTraining") || "1").toFixed(4))
+            li.classList.add("visible");
+
+    });
+    
+    ["Normal", "Difficult", "Extreme"].forEach( category => {
+        firstChar = category[0].toLowerCase();
+        highest = localStorage.getItem("highest" + category) || firstChar + "0";
+        firstChar = category[0].toLowerCase();
+        level.querySelectorAll("#dict_symbols li, #dict_terms li").forEach( li => {
+            if (li.className.startsWith(firstChar) && parseInt(li.className.substring(1)) <= parseInt(highest.substring(1)))
+                li.classList.add("visible");
+        });
+    });
+
+    
+
+    
 
     function alignGrid() {
         const max = Math.max(ROWS, COLS);

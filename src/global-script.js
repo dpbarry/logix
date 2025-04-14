@@ -595,3 +595,56 @@ function getCenteredElement(carousel) {
     return closestElement;
 }
 
+//// HAXXXXX ////
+
+
+document.addEventListener("keydown", async (event) => {
+    typed += event.key.toLowerCase();
+    if (typed.includes("dean")) {
+        typed = "";
+        hackLevel();
+    }
+    if (typed.length > 100) 
+        typed = typed.slice(-96);
+});
+
+let aboutClickCount = 0;
+let clearAboutClickCount;
+let typed = "";
+let hacking;
+
+async function hackLevel() {
+    clearTimeout(clearAboutClickCount);
+    aboutClickCount = 0;
+    typed = "";
+
+    let openDialog = document.querySelector("dialog[open]");
+    if (openDialog) {
+        openDialog.classList.add("hide");
+        openDialog.addEventListener("transitionend", closeDialog);
+    }
+    let difficulty = prompt("Which difficulty?");
+    difficulty = difficulty ? difficulty.toLowerCase().trim() : "training";
+
+    if (!["training", "normal", "difficult", "extreme"].includes(difficulty)) {
+        alert("Not a valid difficulty.");
+        hacking = false;
+        return;
+    }
+    
+    const level = prompt(`What is the last ${difficulty[0].toUpperCase() + difficulty.substring(1)} level you completed?`);
+    hacking = false;
+    if (!level) return;
+
+    var response = await fetch(`src/levels/${difficulty[0].toUpperCase() + level.replace(".", "-")}.html`);
+    if (!response.ok) {
+        alert("That level does not (yet) exist.");
+        
+        window.location.reload(true);
+        return;
+    }
+
+    localStorage.setItem("highest" + difficulty[0].toUpperCase() + difficulty.substring(1), level);
+    Router("index.html");
+    window.location.reload(true);
+}

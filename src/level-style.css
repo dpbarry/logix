@@ -284,7 +284,7 @@
 
   #dict_symbols, #dict_terms, #dict_general {
     display: none;
-    transition: left 0.125s ease-out, opacity 0.125s;
+    transition: left 0.1s ease-out, opacity 0.04s;
     opacity: 1;
     position: relative;
     left: 0;
@@ -292,7 +292,7 @@
 
     @starting-style {
       opacity: 0;
-      left: -7px;
+      left: -10px;
     }
   }
 
@@ -359,6 +359,10 @@
     margin: 0;
     text-align: left;
     font-size: clamp(0.25rem, calc(1.7vh + 0.7vw), 1.1rem);
+  }
+
+  #dict_symbols li:not(.visible), #dict_terms li:not(.visible) {
+    display: none;
   }
   
   #dict_symbols {

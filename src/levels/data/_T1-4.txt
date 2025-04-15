@@ -7,4 +7,4 @@ cols=2
 given=?,?,?,?
 propositions=[1,1] \mathbin{/} [1,2] = [2,2] - 2@[1,1] + [1,2] = [2,1] + [2,2]@[1,2] \cdot [2,1] = 2 - [2,2]
 solution=1,-1,-1,1
-info=<p>If you want to keep track of your deductions and don’t have paper, you can jot down notes via the notepad icon in the menu. While you’re there, check out the dictionary for definitions and general info. Be warned that some definitions will make use of symbols from future stages. </p>
+info=<p>If you want to keep track of your deductions and don’t have paper, you can jot down notes via the notepad icon in the menu. While you’re there, check out the dictionary for definitions and general info.  Be warned that some definitions will make use of symbols from future stages. As you progress, the dictionary will expand. </p>

@@ -136,7 +136,7 @@ function initLevel() {
         throttleGrid = true;
         let gridNum = currentGrid; // just to avoid a change midway
 
-        setTimeout( () => {throttleGrid = false;}, 400);
+        setTimeout( () => {throttleGrid = false;}, 700);
         let newGrid = document.createElement("div");
         let gridData = new Map();
         gridStorage.set(gridNum+1, gridData);
@@ -175,18 +175,14 @@ function initLevel() {
         gridCarousel.insertBefore(newGrid, level.querySelector("#g" + (gridNum+1)));
 
         initCells(gridNum);
-
-        gridCarousel.scrollBy(
-            {
-                top: 0,
-                left: newGrid.clientWidth,
-                behavior: "smooth"
-            }
-        );
-
+        
         updateGridbar(gridNum);
 
-        
+        // Inexplicably, without making this async, it would fail to
+        // scroll *only* for g3 *only* in landscape mode *only* when
+        // clicking the plus sign rather than typing. Horrorbug.
+        // (Something to do with the grid snapping)
+        setTimeout( () => jumpToGrid(null, gridNum), 0);
 
         setTimeout( () => noGridUpdate = false, 1000);
     };
@@ -246,7 +242,7 @@ function initLevel() {
     function jumpToGrid(e, store=null) {
         let num = store || parseInt(e.target.id.substring(2));
         let diff = num - currentGrid;
-        
+
         gridCarousel.scrollBy(
             {
                 top: 0,
@@ -258,7 +254,7 @@ function initLevel() {
     }
 
     let scrolling = false;
-    gridCarousel.onscroll = () => {
+    gridCarousel.onscroll = (e) => {
         if (!scrolling) {
             [...gridCarousel.children].forEach(g => {
                 [...g.children].forEach(span => {
@@ -340,8 +336,6 @@ function initLevel() {
 
             render.innerText = roman(i-1);
         }
-
-
         
     }
 
@@ -1435,8 +1429,9 @@ function initLevel() {
         }
 
         if (e.key === "ArrowDown") {
+            let box = level.querySelector("dialog[open] #dict_box, dialog[open] #level_info") || propositions.parentNode;
             e.preventDefault();
-            propositions.parentNode.scrollBy(
+            box.scrollBy(
                 {
                     top: level.querySelector("#propositions li").clientHeight,
                     left: 0,
@@ -1446,8 +1441,9 @@ function initLevel() {
         }
 
         if (e.key === "ArrowUp") {
+            let box = level.querySelector("dialog[open] #dict_box, dialog[open] #level_info") || propositions.parentNode;
             e.preventDefault();
-            propositions.parentNode.scrollBy(
+            box.scrollBy(
                 {
                     top: -1 * level.querySelector("#propositions li").clientHeight,
                     left: 0,

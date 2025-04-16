@@ -222,6 +222,7 @@
   h1 {margin-bottom: 10px;}
   padding-bottom: 22px;
 }
+
 #level_info {
   padding-left: min(2vw, 0.8rem);
   padding-right: min(2vw, 0.8rem);
@@ -279,6 +280,7 @@
   h1 {margin-bottom: 8px;}
   padding-bottom: 20px;
 
+  width: min(80vw, 705px);
   font-weight: 350;
   font-size: 1.15rem;
 
@@ -381,7 +383,7 @@
       .symbol {
         width: min-content;
         display: flex;
-        font-size: 1.5rem;
+        font-size: 1.45rem;
 
         align-items: center;
         justify-content: center;
@@ -1567,8 +1569,8 @@ html:has(#tools_toggle:checked:not(.top)) {
       display: flex;
       flex-direction: column;
     }
-
   }
+  
   #domain {
     left: var(--axisFontSize);
     width: 100%;

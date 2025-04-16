@@ -13,10 +13,10 @@
         <ul>
             <input id="menu_checkbox" type="checkbox" tabindex="-1">
             <span id="chevron"></span>
-            <li id="info" class="dialog_button" onclick="setTimeout( () => { showModal('info_dialog') }, 2);"></li>
-            <li id="dictionary" class="dialog_button" onclick="setTimeout( () => { showModal('dictionary_dialog') }, 2);"></li>
-            <li id="notes" class="dialog_button" onclick="setTimeout( () => { showModal('notes_dialog') }, 2);" "=""></li>
-            <li id="settings" class="dialog_button" onclick="setTimeout( () => { showModal('settings_dialog') }, 2);"></li>
+            <li id="info" class="dialog_button" onclick="setTimeout( () =&gt; { showModal('info_dialog') }, 2);"></li>
+            <li id="dictionary" class="dialog_button" onclick="setTimeout( () =&gt; { showModal('dictionary_dialog') }, 2);"></li>
+            <li id="notes" class="dialog_button" onclick="setTimeout( () =&gt; { showModal('notes_dialog') }, 2);" "=""></li>
+            <li id="settings" class="dialog_button" onclick="setTimeout( () =&gt; { showModal('settings_dialog') }, 2);"></li>
         </ul>
         <dialog id="info_dialog">
             <a class="close"></a>
@@ -49,13 +49,24 @@
                     
                     <li class="t1-3"> <span class="symbol"> \( &lt; \) </span> <p class="caption"> Asserts that a number is strictly less than another.</p> <p class="formal"> \( x &lt; y \iff \exist \epsilon &gt; 0 : x + \epsilon = y \) </p> </li>
                     <li class="t1-3"> <span class="symbol"> \( &gt; \)</span> <p class="caption"> Asserts that a number is strictly greater than another.</p> <p class="formal"> \( x &gt; y \iff \exist \epsilon &gt; 0 : x - \epsilon = y \) </p> </li>
-                    <li class="t1-5"> <span class="symbol"> \( \neq \)</span> <p class="caption"> Asserts that two objects are not equal.</p> <p class="formal"> \( x \neq y \iff \exist \phi : \phi(x) \nleftrightarrow \phi(y) \) </p></li>
-                        <li class="t1-7"> <span class="symbol"> \( \leq \)</span> <p class="caption"> Asserts that a number is less than or equal to another.</p> <p class="formal"> \( x \leq y \iff (\exist \epsilon &gt; 0 : x + \epsilon = y) \lor (x = y) \) </p> </li>
+                    <li class="t1-5"> <span class="symbol"> \( \neq \)</span> <p class="caption"> Asserts that two objects are not equal.</p> <p class="formal"> \( x \neq y \iff \exist \phi : \phi(x) \nleftrightarrow \phi(y) \) </p> </li>
+                    <li class="t1-7"> <span class="symbol"> \( \leq \)</span> <p class="caption"> Asserts that a number is less than or equal to another.</p> <p class="formal"> \( x \leq y \iff (\exist \epsilon &gt; 0 : x + \epsilon = y) \lor (x = y) \) </p> </li>
                     <li class="t1-7"> <span class="symbol"> \( \geq \)</span> <p class="caption"> Asserts that a number is greater than or equal to another.</p> <p class="formal"> \( x \geq y \iff (\exist \epsilon &gt; 0 : x - \epsilon = y) \lor (x = y) \) </p> </li>
-                    <li class="t2-1"> <span class="symbol"> \( \land \)</span> <p class="caption"> Joins two propositions into one which is only true when both of its conjuncts are true.</p> <p class="formal"> \( v(p) = T, v(q) = T \vdash p \land q \) </p> </li>
-                    <li class="t2-2"> <span class="symbol"> \( \lor \)</span> <p class="caption"> Joins two propositions into one which is true when one of its disjuncts is true.</p> <p class="formal"> \( v(p) = T \vdash p \lor q, v(q) = T \vdash p \lor q \) </p> </li>
-                    <li class="t2-3"> <span class="symbol"> \( \lnot \)</span> <p class="caption">Negates the truth value of a proposition. </p> <p class="formal"> \( v(p) = F \vdash \neg p \) </p> </li>
+
+                    <li class="t2-3"> <span class="symbol"> \( \equiv \)</span> <p class="caption">Asserts that two formulae are logically equivalent, often via syntactic properties.</p> <p class="formal"> \( v(p) = v(q) \vdash p \equiv q \) </p> </li>
+                    
+                    <li class="t2-1"> <span class="symbol"> \( \top \)</span> <p class="caption"> The verum, a constant representing positive truth value.</p> <p class="formal"> \( \top \equiv T \equiv 1 \) </p> </li>
+                    <li class="t2-1"> <span class="symbol"> \( \bot \)</span> <p class="caption"> The falsum, a constant representing negative truth value.</p> <p class="formal"> \( \bot \equiv F \equiv 0 \) </p> </li>
+
+                    <li class="t2-1"> <span class="symbol"> \( \land \)</span> <p class="caption"> Joins two propositions into one which is only true when both of its conjuncts are true.</p> <p class="formal"> \( p \equiv \top, q \equiv \top \vdash p \land q \) </p> </li>
+                    <li class="t2-2"> <span class="symbol"> \( \lor \)</span> <p class="caption"> Joins two propositions into one which is true when one of its disjuncts is true.</p> <p class="formal"> \( p \equiv \top \vdash p \lor q, q \equiv \top \vdash p \lor q \) </p> </li>
+                    <li class="t2-3"> <span class="symbol"> \( \lnot \)</span> <p class="caption">Negates the truth value of a proposition. </p> <p class="formal"> \( p \equiv \bot \vdash \neg p \) </p> </li>
+                    <li class="t2-4"> <span class="symbol"> \( \to \)</span> <p class="caption">Asserts that when a proposition is true, so is the other.</p> <p class="formal"> \( p \equiv \bot \vdash p \to q, q \equiv \top \vdash p \to q\) </p> </li>
+                    <li class="t2-4"> <span class="symbol"> \( \gets \)</span> <p class="caption">Asserts that a proposition is true when the other is.</p> <p class="formal"> \( q \equiv \bot \vdash p \gets q, p \equiv \top \vdash p \gets q\) </p> </li>
+                    <li class="t2-5"> <span class="symbol"> \( \leftrightarrow \)</span> <p class="caption">Asserts that a proposition is true if and only if the other is as well. Or: \(\Longleftrightarrow\)</p> <p class="formal"> \( p \equiv \bot \equiv q \vdash p \leftrightarrow q, p \equiv \top \equiv q \vdash p \leftrightarrow q\) </p> </li>
+
                 </div>
+
 
                 <div id="dict_terms">
                     <li class="t1-1"> <p class="caption"> <span class="term"> Matrix </span> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </p></li>

@@ -1,10 +1,10 @@
 levelNumber=2.5
 difficulty=Training
 nextLevel=T2-6
-domain=
-rows=1
-cols=4
-given=?,2,?,?
-propositions=[1,1] = 1 \to [1,2] = 2 @ [1,2] = 2 \to [1,3] = 3 @ [1,3] = 3 \to [1,4] = 4 @ [1,1] = [1,4]
-solution=4,.,3,4
+domain=3,4,5
+rows=2
+cols=2
+given=?,?,?,?
+propositions=[1,1] = [1,2] - 1 @ [1,2] < [2,1] \leftrightarrow [2,1] < [1,2] @ [2,2] = [2,1] + 1
+solution=3,4,4,5
 info= <p> This level contains the final logical connective of this chapter, \(\leftrightarrow\). Whereas \(\to\) is the material conditional, \(\leftrightarrow\) is the material biconditional. It declares a state of bi-implication, i.e. equivalency. This relationship is often translated to “if and only if” or “iff.” \(p \leftrightarrow q\) is only true when \(p\) and \(q\) both have the same truth value, be it true or false. As hinted by the symbol, this is logically equivalent to \((p \to q) \land (p \gets q)\).  </p>

@@ -622,7 +622,7 @@ html:has(#wrap_cards:hover) {
 
   .trainstage.dropped {
     box-shadow: 0 2px 3px hsl(120 8% 86% / 1), 0 0 2px hsl(120 8% 91% / 1);
-    background: light-dark(hsl(120 25% 80%), hsl(120 20% 10%));
+    background: light-dark(hsl(120 25% 80%), hsl(120 28% 9%));
     border: 1px solid light-dark(#888, #000);
 
     & + * > .level-button.locked {

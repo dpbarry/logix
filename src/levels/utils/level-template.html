@@ -44,7 +44,7 @@
 
             <div id="dict_box">
                 <div id="dict_symbols">
-                    <li class="t1-1"> <span class="symbol" style="font-size: 1rem"> \( [i,j] \) </span> <p class="caption">References the entry at the \(i\)-th row and \(j\)-th column of the level's matrix. Note that more conventional notation is \(A[i,j]\) or \(A_{i,j}\), but the matrix is elided here for concision.</p> <p class="formal"> </p> </li>
+                    <li class="t1-1"> <span class="symbol" style="font-size: 1rem"> \( [i,j] \) </span> <p class="caption">References the entry at the \(i\)-th row and \(j\)-th column of the level’s matrix. Note that more conventional notation is \(A[i,j]\) or \(A_{i,j}\), but the matrix is elided here for concision.</p> <p class="formal"> </p> </li>
                     <li class="t1-1"> <span class="symbol"> \( = \) </span> <p class="caption"> Asserts that two objects are equal.</p> <p class="formal"> \( x = y \iff \forall \phi : \phi(x) \leftrightarrow \phi(y) \) </p> </li>
                     
                     <li class="t1-3"> <span class="symbol"> \( < \) </span> <p class="caption"> Asserts that a number is strictly less than another.</p> <p class="formal"> \( x < y \iff \exist \epsilon > 0 : x + \epsilon = y \) </p> </li>
@@ -54,9 +54,9 @@
                     <li class="t1-7"> <span class="symbol"> \( \geq \)</span> <p class="caption"> Asserts that a number is greater than or equal to another.</p> <p class="formal"> \( x \geq y \iff (\exist \epsilon > 0 : x - \epsilon = y) \lor (x = y) \) </p> </li>
 
                     <li class="t2-3"> <span class="symbol"> \( \equiv \)</span> <p class="caption">Asserts that two formulae are logically equivalent, often via syntactic properties.</p> <p class="formal"> \( v(p) = v(q) \vdash p \equiv q \) </p> </li>
-                     
-                    <li class="t2-1"> <span class="symbol"> \( \top \)</span> <p class="caption"> The verum, a constant representing positive truth value.</p> <p class="formal"> \( \top \equiv T \equiv 1 \) </p> </li>
-                    <li class="t2-1"> <span class="symbol"> \( \bot \)</span> <p class="caption"> The falsum, a constant representing negative truth value.</p> <p class="formal"> \( \bot \equiv F \equiv 0 \) </p> </li>
+                    
+                    <li class="t2-1"> <span class="symbol"> \( \top \)</span> <p class="caption"> The verum, a constant representing positive truth value.</p> <p class="formal"> \( \top \equiv \textbf{T} \equiv 1 \) </p> </li>
+                    <li class="t2-1"> <span class="symbol"> \( \bot \)</span> <p class="caption"> The falsum, a constant representing negative truth value.</p> <p class="formal"> \( \bot \equiv \textbf{F} \equiv 0 \) </p> </li>
 
                     <li class="t2-1"> <span class="symbol"> \( \land \)</span> <p class="caption"> Joins two propositions into one which is only true when both of its conjuncts are true.</p> <p class="formal"> \( p \equiv \top, q \equiv \top \vdash p \land q \) </p> </li>
                     <li class="t2-2"> <span class="symbol"> \( \lor \)</span> <p class="caption"> Joins two propositions into one which is true when one of its disjuncts is true.</p> <p class="formal"> \( p \equiv \top \vdash p \lor q, q \equiv \top \vdash p \lor q \) </p> </li>
@@ -69,8 +69,11 @@
 
 
                 <div id="dict_terms">
-                    <li class="t1-1"> <p class="caption"> <span class="term"> Matrix </span> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </li>
-                        <li class="t1-1">  <p class="caption"> <span class="term"> Proposition </span> Logical entity bearing a truth value (true or false); can be expressed with formal expressions.</p> <p class="formal"> </li>
+                    <li class="t1-1"> <p class="caption"> <span class="term"> Matrix </span> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </p> </li>
+                    <li class="t1-1">  <p class="caption"> <span class="term"> Proposition </span> Logical entity bearing a truth value (true or false); can be expressed with formal expressions.</p> <p class="formal"> </p> </li>
+                    <li class="t1-3">  <p class="caption"> <span class="term"> Predicate </span> A relation on \(n\) arguments asserting some sort of property or relationship. When the arguments are provided, it forms a proposition. E.g., \(\textrm{Likes(Alice, Bob)}\), \(\textrm{Prime(7)}\), or \(n = 5\), with the lattermost predicate being in infix position.</p> <p class="formal"> </li>
+                        <li class="t1-5">  <p class="caption"> <span class="term"> Relation Chaining </span> Shorthand method in which multiple statements involving infix predicates can be strung together. E.g. \(x < y < z \Longleftrightarrow x < y \land y < z \). Note that this doesn’t imply transitivity when the relation is intransitive. </p> <p class="formal"> </p></li>
+                        <li class="t2-1">  <p class="caption"> <span class="term"> Logical Connective </span> An operator upon logical terms. Despite the name, they can be unary (just one argument; e.g. \(\neg\)) or even nullary (\(\top, \bot\)).</p> <p class="formal"> </li>
 
                 </div>
 

@@ -1,7 +1,7 @@
 
-        ROWS = 1;
-        COLS = 4;
-        DOMAIN = [0];
-        SOLUTION = [[4,null,3,4]];
+        ROWS = 2;
+        COLS = 2;
+        DOMAIN = [3,4,5];
+        SOLUTION = [[3,4],[4,5]];
         NEXT_LEVEL = "T2-6";
        

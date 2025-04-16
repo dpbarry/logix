@@ -1,5 +1,6 @@
 async function parseDataFile(text) {
-    const lines = text.split('\n').reduce((acc, line) => {
+    let mode = text.includes('\r') ? '\r\n' : '\n';
+    const lines = text.split(mode).reduce((acc, line) => {
         const match = line.match(/^([^=]+)=(.*)$/); // Match key and value
         if (match) {
             const key = match[1].trim(); // Capture group 1: key

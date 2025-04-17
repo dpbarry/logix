@@ -32,19 +32,15 @@ function setupHome(page) {
     page.querySelectorAll(".card").forEach( c => {
         let category = "highest" + c.id[0].toUpperCase() + c.id.substring(1);
         if (localStorage.getItem(category)) {
-            c.querySelectorAll(".level-button").forEach( (b) => {
+            c.querySelectorAll(".level-button").forEach( async (b) => {
                 highest = parseFloat(localStorage.getItem(category));
                 strHighest = localStorage.getItem(category);
                 if (c.id === "training") {
-                    if (parseFloat(b.id[1] + "." +  b.id.substring(3)) <= highest) {
+                    if (parseFloat(b.id.substring(1).replace('-', '.')) <= highest) {
                         b.classList.add("solved");
                         b.classList.remove("locked");
-                    } else if ((parseFloat(b.id[1] + "." +  b.id.substring(3)) - 0.1).toFixed(4) == highest) {
+                    } else if (latestGrid(category.substring(7), strHighest) == b.id.substring(1).replace('-', '.')) {
                         b.classList.remove("locked");
-                    } else if (!page.querySelector("#T" + strHighest[0] + "-" + (1 + parseInt(strHighest.substring(2))))) {
-                        if (parseInt(b.id[1]) === parseInt((""+highest)[0]) + 1 && b.id.substring(3) == 1) {
-                            b.classList.remove("locked");
-                        }
                     }
                 } else if (parseFloat(b.id.substring(1)) <= highest) {
                     b.classList.remove("locked");
@@ -103,7 +99,7 @@ function setupHome(page) {
     page.querySelector(".dropped").tabIndex = -1;
 
     page.querySelectorAll(".level-button:not(.locked)").forEach((b) => {
-        
+
         b.onclick = function (e) {
             if ((mobileView || cardView) && !(e.target.closest(".card").classList.contains("upcard"))) return;
             
@@ -124,7 +120,8 @@ function setupHome(page) {
 
 
     page.querySelectorAll(".level-button").forEach(b => {
-        b.tabIndex = -1;
+        b.tabIndex = -1;   
+
 
         b.addEventListener("pointerdown", (e) => {
             if (mobileView && cardView && !e.target.closest(".card").classList.contains("upcard")) return;

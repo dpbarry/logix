@@ -1102,14 +1102,19 @@ html:has(#tools_toggle:checked:not(.top)) {
     li {
       transform: 0;
       transition: transform 0.2s;
-      @starting-style {
-        transform: translateY(170%);
-      }
+      
+      
       &.dismiss {
         transition: transform 0.05s;
         transform: translateY(500%);
       }
     }
+  }
+}
+
+.grid:not(.preventAnimation)  span ul li { 
+  @starting-style {
+    transform: translateY(170%);
   }
 }
 

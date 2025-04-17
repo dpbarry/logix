@@ -9,6 +9,8 @@ const CANCELOUT_TOGGLE = document.querySelector("#cancelout_toggle");
 const THEMES = document.querySelectorAll(".theme");
 const TOOLS_TOGGLE = document.querySelector("#tools_toggle");
 
+const parser = new DOMParser();
+
 
 function showModal(id) {
     openingModal = true;
@@ -131,7 +133,9 @@ function initDialogs() {
 
     });
 
-    if (localStorage.getItem("highestTraining") && (localStorage.getItem("highestTraining").charAt(0) !== "1" || localStorage.getItem("highestTraining") === "1.6")) {
+
+
+    if (localStorage.getItem("highestTraining") && (localStorage.getItem("highestTraining").charAt(0) !== "1" || ["1.6", "1.7"].includes(localStorage.getItem("highestTraining")))) {
         document.getElementById("hideMatrixTools").removeAttribute("checked");
     } else {
         document.getElementById("hideMatrixTools").checked = true;
@@ -500,6 +504,33 @@ document.addEventListener('keydown', (e) => {
 });
 
 
+let homeSource, homePageObj;
+
+async function memHome() {
+    homeSource = await (await fetch('src/home.html')).text();
+    homePageObj = parser.parseFromString(homeSource, 'text/html');
+}
+
+memHome();
+
+function latestGrid(diff, level) {
+    
+    let nextLevel;
+    if (diff === "Training") {
+        nextLevel = homePageObj.querySelector(`#${diff[0]}${level[0] + "-" + ""+(parseInt(level.substring(2)) + 1)}`);
+        if (!nextLevel && level[0] === "5") return level;
+        if (!nextLevel) {
+            nextLevel = homePageObj.querySelector(`#${diff[0]}${parseInt(level[0]) + 1}-1`);
+        }
+    } else {
+        nextLevel = homePageObj.querySelector(`#${diff[0]}${level+1}`);
+    }
+
+
+    return nextLevel.id.substring(1).replace('-', '.') || level;
+    
+}
+
 function verticalScroll(el, moe) {
     el.style.overflowY = "auto";
     const isScrollable = (el.scrollHeight > el.clientHeight + 1);
@@ -599,60 +630,24 @@ function observedMap(map, callback) {
     return new Proxy(map, {
         get(target, prop, receiver) {
             if (prop === Symbol.iterator) {
-                return function (...args) {
-                    return receiver.entries()[Symbol.iterator](...args);
-                };
+                return Map.prototype[Symbol.iterator].bind(target);
             }
-            if (['set','delete','clear','get','entries','forEach','keys','values'].includes(prop)) {
+            if (prop === 'size') {
+                return target.size;
+            }
+
+            if (['entries', 'keys', 'values', 'forEach'].includes(prop)) {
+                return Map.prototype[prop].bind(target);
+            }
+            if (['set', 'delete', 'clear', 'get'].includes(prop)) {
                 return function (...args) {
+                    // do the real operation
                     const result = Reflect.apply(target[prop], target, args);
+                    // notify
                     callback(prop, args, target);
+                    // if get() returned a nested Map, wrap it too
                     if (prop === 'get' && result instanceof Map) {
                         return observedMap(result, callback);
-                    }
-                    if (prop === 'entries') {
-                        const origIter = result;
-                        return {
-                            [Symbol.iterator]() {
-                                return {
-                                    next() {
-                                        const { value, done } = origIter.next();
-                                        if (done) return { done };
-                                        const [key, val] = value;
-                                        if (val instanceof Map) value[1] = observedMap(val, callback);
-                                        return { value, done };
-                                    }
-                                };
-                            }
-                        };
-                    }
-                    if (prop === 'forEach') {
-                        const userFn = args[0], thisArg = args[1];
-                        Reflect.apply(Map.prototype.forEach, target, [
-                            (v, k, m) => {
-                                const wrapped = v instanceof Map ? observedMap(v, callback) : v;
-                                return userFn.call(thisArg, wrapped, k, m);
-                            },
-                            thisArg
-                        ]);
-                        return;
-                    }
-                    if (['keys','values'].includes(prop)) {
-                        const origIter = Reflect.apply(target[prop], target, args);
-                        return {
-                            [Symbol.iterator]() {
-                                return {
-                                    next() {
-                                        const { value, done } = origIter.next();
-                                        if (done) return { done };
-                                        const out = prop === 'values' && value instanceof Map
-                                              ? observedMap(value, callback)
-                                              : value;
-                                        return { value: out, done };
-                                    }
-                                };
-                            }
-                        };
                     }
                     return result;
                 };
@@ -660,6 +655,47 @@ function observedMap(map, callback) {
             return Reflect.get(target, prop, receiver);
         }
     });
+}
+
+const serialize = (data) => {
+    if (data instanceof Node) {
+        return new XMLSerializer().serializeToString(data);
+    }
+
+    if (data instanceof Map) {
+        const newMap = new Map();
+        for (let [key, value] of data.entries()) {
+            newMap.set(key, serialize(value));
+        }
+        return newMap;
+    }
+
+    if (Array.isArray(data)) {
+        return data.map(item => serialize(item));
+    }
+
+    if (typeof data === 'object' && data !== null) {
+        const result = {};
+        for (let key in data) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+                result[key] = serialize(data[key]);
+            }
+        }
+        return result;
+    }
+    return data;
+};
+
+
+function mapify(obj) {
+    if (obj && typeof obj === 'object' && !Array.isArray(obj) && Object.keys(obj).length) {
+        const m = new Map(Object.entries(obj));
+        for (const [k, v] of m) {
+            m.set(k, mapify(v));
+        }
+        return m;
+    }
+    return obj;
 }
 
 Map.prototype.toJSON = function() {
@@ -716,11 +752,10 @@ async function hackLevel() {
     if (!response.ok) {
         alert("That level does not (yet) exist.");
         
-        window.location.reload(true);
-        return;
     }
 
     localStorage.setItem("highest" + difficulty[0].toUpperCase() + difficulty.substring(1), level);
+    localStorage.removeItem("gridStorage" + difficulty[0].toUpperCase() + difficulty.substring(1));
     Router("index.html");
     window.location.reload(true);
 }

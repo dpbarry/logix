@@ -12,7 +12,7 @@ function initLevel() {
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
     const thisLevel = level.querySelector("#level").innerText;
     const thisDifficulty = level.querySelector("#difficulty").innerText;
-    const cacheHighestLevel = localStorage.getItem("highest" + thisDifficulty) || 0;
+    const cacheHighestLevel = localStorage.getItem("highest" + thisDifficulty) || "0";
     level.style.setProperty('--rows', ROWS);
     level.style.setProperty('--cols', COLS);
     
@@ -48,27 +48,77 @@ function initLevel() {
 
     let throttleGrid = false;
 
-
-    const updateGridStorage = (method, args, madp) => {
-        localStorage.setItem(`gridStorage${thisDifficulty}`, JSON.stringify(madp));
+    let gridStorage;
+    
+    const updateGridStorage = (method, args, obj) => {
+        localStorage.setItem(`gridStorage${thisDifficulty}`, JSON.stringify(serialize(gridStorage)));
     };
 
-    let cacheGridStorage = localStorage.getItem(`gridStorage${thisDifficulty}`);
 
-    if (cacheGridStorage && thisLevel === cacheHighestLevel) {
-
+    
+    let _cacheGridStorage = localStorage.getItem(`gridStorage${thisDifficulty}`);
+    let cacheGridStorage = _cacheGridStorage ? new observedMap(
+        new Map(mapify(JSON.parse(_cacheGridStorage))), updateGridStorage) : null;
+    
+    if (thisLevel === latestGrid(thisDifficulty, cacheHighestLevel)) {
+        if (cacheGridStorage) {
+            gridStorage = observedMap(new Map(cacheGridStorage), updateGridStorage);
+            reviveGrids();
+        }
+        else {
+            gridStorage = observedMap(new Map(), updateGridStorage);
+            cleanStart();
+        }
+    } else {
+        gridStorage = new Map();
+        cleanStart();
     }
 
-        const gridStorage = observedMap(new Map(), updateGridStorage);
 
-    let firstGrid = new Map();
-    gridStorage.set(1, firstGrid);
-    firstGrid.set("undo", []);
-    firstGrid.set("redo", []);
+    function cleanStart() {
+        let firstGrid = new Map();
+        gridStorage.set(1, firstGrid);
+        firstGrid.set("undo", []);
+        firstGrid.set("redo", []);
 
-    initCells(1);
-    firstGrid.set("values", new Map([...cellList()].map(k => [k.id, null])));
+        initCells(1);
+        firstGrid.set("values", new Map([...cellList()].map(k => [k.id, null])));
+    }
 
+    function reviveGrids() {
+        let clone = new observedMap(new Map(), updateGridStorage);
+        gridStorage.forEach((v,k) => {
+            clone.set(parseInt(k), v);
+        });
+        gridStorage = clone;
+        initCells(1);
+
+        level.querySelector("#g1").classList.add("preventAnimation");
+        setTimeout( () => level.querySelector("#g1").classList.remove("preventAnimation"), 350);
+
+        cellList().forEach( c => {
+            
+            let val = gridStorage.get(1).get("values").get(c.id);
+
+            if (!val) return;
+            if (val && !parseInt(val)) {
+                let ul = document.createElement("ul");
+                val.map(x => parser.parseFromString(x, "text/xml").querySelector("li")).forEach(li => ul.appendChild(li));
+                c.appendChild(ul);
+            }
+            else {
+                c.firstChild.innerText = val.trim();
+            }                       
+        });
+        for (let i = 2; i <= gridStorage.size; ++i) {
+            let newGrid = document.createElement("div");
+            newGrid.classList.add("grid");
+            newGrid.id = `g${i}`;
+            gridCarousel.appendChild(newGrid);
+            
+            initCells(i);
+        }
+    }
     function initCells(gridNum) {
         let newGrid = gridStorage.get(gridNum);
         
@@ -143,6 +193,8 @@ function initLevel() {
     function endPress() {
         clearTimeout(holdTimer);
     }
+
+    
 
     function createNewGrid(dupe=false) {
         if (scrolling || throttleGrid) return;
@@ -485,7 +537,8 @@ function initLevel() {
         text.classList.remove("dismiss");
         text.innerText = text.innerText.substring(0, text.innerText.length-1);
         text.removeEventListener("animationend", endDismiss);
-        values().set(e.target.parentNode.id, text.innerText);
+        if (!text.parentNode.querySelector("ul"))
+            values().set(e.target.parentNode.id, text.innerText);
     }
 
     function endDismissWipe(e) {
@@ -497,7 +550,8 @@ function initLevel() {
         text.classList.remove("dismiss");
         text.innerText = "";
         text.removeEventListener("animationend", endDismissWipe);
-        values().set(e.target.parentNode.id, "");
+        if (!text.parentNode.querySelector("ul li"))
+            values().set(e.target.parentNode.id, "");
     }
 
 
@@ -524,20 +578,20 @@ function initLevel() {
                 opts = document.createElement("ul");
                 opts.appendChild(newLi);
                 cell.appendChild(opts);
-                return;
-            }
+            } else {
 
-            let match = Array.from(opts.children).find( x => x.innerText.trim() === value.trim());
-            if (match) {
-                match.classList.add("dismiss");
-                match.addEventListener("transitionend", endDismiss);
-                if (!CANCELOUT_TOGGLE.checked) {
+                let match = Array.from(opts.children).find( x => x.innerText.trim() === value.trim());
+                if (match) {
+                    match.classList.add("dismiss");
+                    match.addEventListener("transitionend", endDismiss);
+                    if (!CANCELOUT_TOGGLE.checked) {
+                        opts.appendChild(newLi);
+                    }
+                } else {
                     opts.appendChild(newLi);
                 }
-            } else {
-                opts.appendChild(newLi);
             }
-            
+            values().set(cell.id, [...cell.querySelectorAll('li')]);
             return;
         }
 
@@ -565,8 +619,6 @@ function initLevel() {
         }, 1); // ensure dismiss handler has been removed
 
         values().set(cell.id, value);
-        let x = JSON.stringify(gridStorage);
-        console.log(x);
         checkGrid();
     }
 
@@ -746,7 +798,7 @@ function initLevel() {
 
     function checkGrid() {
         let flag = true;
-
+        
         values().forEach((value, key) => {
             let row = parseInt(key.charAt(1));
             let col = parseInt(key.charAt(3));

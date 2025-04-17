@@ -595,6 +595,82 @@ function getCenteredElement(carousel) {
     return closestElement;
 }
 
+function observedMap(map, callback) {
+    return new Proxy(map, {
+        get(target, prop, receiver) {
+            if (prop === Symbol.iterator) {
+                return function (...args) {
+                    return receiver.entries()[Symbol.iterator](...args);
+                };
+            }
+            if (['set','delete','clear','get','entries','forEach','keys','values'].includes(prop)) {
+                return function (...args) {
+                    const result = Reflect.apply(target[prop], target, args);
+                    callback(prop, args, target);
+                    if (prop === 'get' && result instanceof Map) {
+                        return observedMap(result, callback);
+                    }
+                    if (prop === 'entries') {
+                        const origIter = result;
+                        return {
+                            [Symbol.iterator]() {
+                                return {
+                                    next() {
+                                        const { value, done } = origIter.next();
+                                        if (done) return { done };
+                                        const [key, val] = value;
+                                        if (val instanceof Map) value[1] = observedMap(val, callback);
+                                        return { value, done };
+                                    }
+                                };
+                            }
+                        };
+                    }
+                    if (prop === 'forEach') {
+                        const userFn = args[0], thisArg = args[1];
+                        Reflect.apply(Map.prototype.forEach, target, [
+                            (v, k, m) => {
+                                const wrapped = v instanceof Map ? observedMap(v, callback) : v;
+                                return userFn.call(thisArg, wrapped, k, m);
+                            },
+                            thisArg
+                        ]);
+                        return;
+                    }
+                    if (['keys','values'].includes(prop)) {
+                        const origIter = Reflect.apply(target[prop], target, args);
+                        return {
+                            [Symbol.iterator]() {
+                                return {
+                                    next() {
+                                        const { value, done } = origIter.next();
+                                        if (done) return { done };
+                                        const out = prop === 'values' && value instanceof Map
+                                              ? observedMap(value, callback)
+                                              : value;
+                                        return { value: out, done };
+                                    }
+                                };
+                            }
+                        };
+                    }
+                    return result;
+                };
+            }
+            return Reflect.get(target, prop, receiver);
+        }
+    });
+}
+
+Map.prototype.toJSON = function() {
+    const obj = {};
+    for (const [k, v] of this) {
+        obj[k] = v && typeof v.toJSON === 'function' ? v.toJSON() : v;
+    }
+    return obj;
+};
+
+
 //// HAXXXXX ////
 
 

@@ -12,6 +12,7 @@ function initLevel() {
     const level = Array.from(document.body.querySelectorAll(".page")).pop();
     const thisLevel = level.querySelector("#level").innerText;
     const thisDifficulty = level.querySelector("#difficulty").innerText;
+    const cacheHighestLevel = localStorage.getItem("highest" + thisDifficulty) || 0;
     level.style.setProperty('--rows', ROWS);
     level.style.setProperty('--cols', COLS);
     
@@ -46,8 +47,20 @@ function initLevel() {
     const redoStack = () => gridStorage.get(currentGrid).get("redo");
 
     let throttleGrid = false;
-    
-    const gridStorage = new Map();
+
+
+    const updateGridStorage = (method, args, madp) => {
+        localStorage.setItem(`gridStorage${thisDifficulty}`, JSON.stringify(madp));
+    };
+
+    let cacheGridStorage = localStorage.getItem(`gridStorage${thisDifficulty}`);
+
+    if (cacheGridStorage && thisLevel === cacheHighestLevel) {
+
+    }
+
+        const gridStorage = observedMap(new Map(), updateGridStorage);
+
     let firstGrid = new Map();
     gridStorage.set(1, firstGrid);
     firstGrid.set("undo", []);
@@ -290,7 +303,9 @@ function initLevel() {
 
     deleteGridButton.onclick = () => deleteGrid(currentGrid);
     function deleteGrid(num) {
-        if (scrolling || throttleGrid) return;
+        // scroll is disrupted by inserting/dismissing process
+        if (scrolling || throttleGrid || level.querySelector(".insert, .dismiss")) return;
+        throttleGrid = true;
         let grid = level.querySelector("#g" + num);
         grid.classList.add("deleting");
         jumpToGrid(null, (num === gridbar.children.length) ? num - 1 : num + 1);
@@ -336,6 +351,8 @@ function initLevel() {
 
             render.innerText = roman(i-1);
         }
+
+        setTimeout( () => {gridStorage.delete(num); throttleGrid = false}, 500);
         
     }
 
@@ -548,6 +565,8 @@ function initLevel() {
         }, 1); // ensure dismiss handler has been removed
 
         values().set(cell.id, value);
+        let x = JSON.stringify(gridStorage);
+        console.log(x);
         checkGrid();
     }
 
@@ -749,7 +768,6 @@ function initLevel() {
     function success() {
         highlight("not-a-cell");
 
-        let cacheHighestLevel = localStorage.getItem("highest" + thisDifficulty) || 0;
         if (parseFloat(cacheHighestLevel) < parseFloat(thisLevel)) {
             localStorage.setItem("highest" + thisDifficulty, thisLevel);
         }

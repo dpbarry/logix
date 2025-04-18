@@ -875,7 +875,8 @@ html:has(#tools_toggle:checked:not(.top)) {
     cursor: pointer;
     opacity: 0.45;
     pointer-events: all;
-    transition: opacity 0.1s, font-weight 0.1s;
+    transition-property: opacity, font-weight;
+    transition-duration: 0.1s;
     z-index: 2;
     padding: 5px;
     text-align: center;
@@ -884,7 +885,8 @@ html:has(#tools_toggle:checked:not(.top)) {
       @starting-style {opacity: 0;}
     }
     &.new {
-      animation: riseIn 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.1)  forwards;
+      animation: riseIn cubic-bezier(0.175, 0.885, 0.32, 1.1)  forwards;
+      animation-duration: 0.32s;
     }
     &.chosen:not(.first) {
       opacity: 1;
@@ -987,7 +989,7 @@ html:has(#tools_toggle:checked:not(.top)) {
     font-family: "computer modern serif";
     text-align: center;
     outline: 2px solid transparent; /* For crosshairs */
-    transition: background-color .1s ease-in-out, border .1s ease-in-out, outline-color 0.1s ease, color 0.1s ease-in-out, transform 0.8s ease;
+    transition: background-color .1s ease-in-out, border-color .1s ease-in-out, outline-color 0.1s ease, color 0.1s ease-in-out, transform 0.8s ease;
     
     width: 100%;
     height: 100%;
@@ -1112,16 +1114,26 @@ html:has(#tools_toggle:checked:not(.top)) {
   }
 }
 
-.grid:not(.preventAnimation)  span ul li { 
+#grid_carousel:not(.preventAnimation) {
+  span ul li { 
+    @starting-style {
+      transform: translateY(170%);
+    }
+  }
+}
+
+:root:has(#grid_carousel.preventAnimation) .visible-items-overlay span {
+  animation-duration: 0s !important;
+  transition-duration: 0.00000001s;
   @starting-style {
-    transform: translateY(170%);
+    opacity: 1;
   }
 }
 
 .grid.correct {
   perspective: 300px;
   span {
-    transition: background-color .2s ease-in, border .2s, outline-color .1s ease, scale .2s;
+    transition: background-color .2s ease-in, border-color .2s, scale .2s;
     pointer-events: none;
     cursor: default;
     background-color: transparent;

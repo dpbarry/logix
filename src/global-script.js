@@ -636,6 +636,11 @@ function observedMap(map, callback) {
                 return target.size;
             }
 
+            if (prop === "unobserve") {
+                callback = (a,b,c) => {};
+                return;
+            }
+
             if (['entries', 'keys', 'values', 'forEach'].includes(prop)) {
                 return Map.prototype[prop].bind(target);
             }
@@ -751,11 +756,13 @@ async function hackLevel() {
     var response = await fetch(`src/levels/${difficulty[0].toUpperCase() + level.replace(".", "-")}.html`);
     if (!response.ok) {
         alert("That level does not (yet) exist.");
-        
+        window.location.reload();
+        return;
     }
 
     localStorage.setItem("highest" + difficulty[0].toUpperCase() + difficulty.substring(1), level);
     localStorage.removeItem("gridStorage" + difficulty[0].toUpperCase() + difficulty.substring(1));
+        localStorage.removeItem("notes" + difficulty[0].toUpperCase() + difficulty.substring(1));
     Router("index.html");
     window.location.reload(true);
 }

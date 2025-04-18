@@ -9,7 +9,7 @@ let MENU_TOGGLE = null;
 
 
 function initLevel() {
-    const level = Array.from(document.body.querySelectorAll(".page")).pop();
+    const level = Array.from(document.body.querySelectorAll(".page.level")).pop();
     const thisLevel = level.querySelector("#level").innerText;
     const thisDifficulty = level.querySelector("#difficulty").innerText;
     const cacheHighestLevel = localStorage.getItem("highest" + thisDifficulty) || "0";
@@ -20,7 +20,7 @@ function initLevel() {
 
     MENU_TOGGLE = level.querySelector("#menu_checkbox");
     const info = level.querySelector("#level_info");
-    const notes = level.querySelector("#wrapnotes");
+    const notes = level.querySelector("#wrapnotes textarea");
     const dict = level.querySelector("#dict_box");
     const propositions = level.querySelector("#propositions");
     const domain = level.querySelector("#domain");
@@ -49,8 +49,14 @@ function initLevel() {
     let throttleGrid = false;
 
     let gridStorage;
-    
-    const updateGridStorage = (method, args, obj) => {
+    let gridBar = level.querySelector("#gridbar");
+    let overlay = document.createElement("div");
+    const overlayMapping = new Map();
+    const animatedMap = new Map();
+    overlay.className = "visible-items-overlay";
+
+    level.appendChild(overlay);
+    let updateGridStorage = (method, args, obj) => {
         localStorage.setItem(`gridStorage${thisDifficulty}`, JSON.stringify(serialize(gridStorage)));
     };
 
@@ -59,11 +65,12 @@ function initLevel() {
     let _cacheGridStorage = localStorage.getItem(`gridStorage${thisDifficulty}`);
     let cacheGridStorage = _cacheGridStorage ? new observedMap(
         new Map(mapify(JSON.parse(_cacheGridStorage))), updateGridStorage) : null;
-    
+
     if (thisLevel === latestGrid(thisDifficulty, cacheHighestLevel)) {
         if (cacheGridStorage) {
             gridStorage = observedMap(new Map(cacheGridStorage), updateGridStorage);
             reviveGrids();
+            notes.value = localStorage.getItem(`notes${thisDifficulty}`) || "";
         }
         else {
             gridStorage = observedMap(new Map(), updateGridStorage);
@@ -72,8 +79,7 @@ function initLevel() {
     } else {
         gridStorage = new Map();
         cleanStart();
-    }
-
+    } 
 
     function cleanStart() {
         let firstGrid = new Map();
@@ -90,14 +96,16 @@ function initLevel() {
         gridStorage.forEach((v,k) => {
             clone.set(parseInt(k), v);
         });
+        
         gridStorage = clone;
-        initCells(1);
 
-        level.querySelector("#g1").classList.add("preventAnimation");
-        setTimeout( () => level.querySelector("#g1").classList.remove("preventAnimation"), 350);
+        initCells(1);
+        updateWrapdo();
+
+        gridCarousel.classList.add("preventAnimation");
+        setTimeout( () => gridCarousel.classList.remove("preventAnimation"), 500);
 
         cellList().forEach( c => {
-            
             let val = gridStorage.get(1).get("values").get(c.id);
 
             if (!val) return;
@@ -114,9 +122,38 @@ function initLevel() {
             let newGrid = document.createElement("div");
             newGrid.classList.add("grid");
             newGrid.id = `g${i}`;
+            gridStorage.get(1).get("cells").forEach( cell => {
+                let newSpan = document.createElement("span");
+                let newP = document.createElement("p");
+                newSpan.appendChild(newP);
+                newGrid.appendChild(newSpan);
+            });
             gridCarousel.appendChild(newGrid);
-            
             initCells(i);
+
+            updateGridbar(i);
+            alignGridBar();
+            let j=0;
+            gridStorage.get(i).get("cells").forEach( cell => {
+                
+                if (gridStorage.get(1).get("cells")[j].classList.contains("given")) {
+                    cell.querySelector("p").innerText = gridStorage.get(1).get("cells")[j].querySelector("p").innerText;
+                    cell.classList.add("given");
+                } else  {
+                    let val = gridStorage.get(i).get("values").get(cell.id);
+                    if (val && !parseInt(val)) {
+                        let ul = document.createElement("ul");
+                        val.map(x => parser.parseFromString(x, "text/xml").querySelector("li")).forEach(li => ul.appendChild(li));
+                        cell.appendChild(ul);
+                    } else {
+                        cell.querySelector("p").innerText = gridStorage.get(i).get("values").get(cell.id) || "";
+                    }            
+                }
+                j++;
+                
+            });
+            
+            
         }
     }
     function initCells(gridNum) {
@@ -252,7 +289,6 @@ function initLevel() {
         setTimeout( () => noGridUpdate = false, 1000);
     };
 
-    let gridBar = level.querySelector("#gridbar");
     function updateGridbar(num) {        
 
         if (gridbar.children.length === 0) {
@@ -339,6 +375,12 @@ function initLevel() {
             deleteGridButton.classList.add("usable");
         }
 
+        updateWrapdo();
+
+        
+    };
+
+    function updateWrapdo() {
         if (undoStack().length) {
             undoButton.classList.add("usable");
         } else {
@@ -349,9 +391,7 @@ function initLevel() {
         } else {
             redoButton.classList.remove("usable");
         }
-
-        
-    };
+    }
 
     deleteGridButton.onclick = () => deleteGrid(currentGrid);
     function deleteGrid(num) {
@@ -364,7 +404,12 @@ function initLevel() {
         setTimeout (() => {
             grid.remove();
             gridCarousel.dispatchEvent(new Event("scroll"));
-            
+            gridStorage.forEach( (v,k) => {
+                if (k <= num) return;
+                gridStorage.set(k-1, v);
+            });
+            gridStorage.delete(gridStorage.size);
+            throttleGrid = false
             setTimeout( () => {
                 gridCarousel.dispatchEvent(new Event("scrollend"));
 
@@ -402,10 +447,7 @@ function initLevel() {
             render.id = "rn" + (-1 + parseInt(render.id.substring(2)));
 
             render.innerText = roman(i-1);
-        }
-
-        setTimeout( () => {gridStorage.delete(num); throttleGrid = false}, 500);
-        
+        }        
     }
 
     function alignGridBar() {
@@ -521,6 +563,10 @@ function initLevel() {
             
         }, 10);
     });
+
+    level.querySelector("#notes_dialog textarea").oninput = (e) => {
+        localStorage.setItem(`notes${thisDifficulty}`, e.target.value);
+    }
 
     function endInsert(e) {
         e.target.classList.remove("insert");
@@ -721,12 +767,7 @@ function initLevel() {
         }
     }
 
-    let overlay = document.createElement("div");
-    const overlayMapping = new Map();
-    const animatedMap = new Map();
-    overlay.className = "visible-items-overlay";
 
-    level.appendChild(overlay);
     
     function updateVisibleItems() {
         if (!gridBar.children.length) return;
@@ -791,7 +832,6 @@ function initLevel() {
     }
     
     gridBar.addEventListener("scroll", updateVisibleItems);
-    window.addEventListener("resize", updateVisibleItems);
     
     updateVisibleItems();
 
@@ -822,6 +862,10 @@ function initLevel() {
 
         if (parseFloat(cacheHighestLevel) < parseFloat(thisLevel)) {
             localStorage.setItem("highest" + thisDifficulty, thisLevel);
+            localStorage.removeItem("gridStorage" + thisDifficulty);
+            localStorage.removeItem("notes" + thisDifficulty);
+
+            gridStorage.unobserve();
         }
         
         level.querySelector("#g" + currentGrid).classList.add("correct");
@@ -1203,6 +1247,7 @@ function initLevel() {
 
 
     window.onresize = function(event) {
+        updateVisibleItems();
         verticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
         verticalScroll(dict, 7);
@@ -1210,6 +1255,7 @@ function initLevel() {
     }
 
     screen.orientation.addEventListener("change", (event) => {
+        updateVisibleItems();
         verticalScroll(propositions.parentNode, 7);
         horizontalScroll(domain, 7);
         verticalScroll(dict, 7);

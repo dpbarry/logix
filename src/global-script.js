@@ -649,11 +649,7 @@ function observedMap(map, callback) {
                     // do the real operation
                     const result = Reflect.apply(target[prop], target, args);
                     // notify
-                    callback(prop, args, target);
-                    // if get() returned a nested Map, wrap it too
-                    if (prop === 'get' && result instanceof Map) {
-                        return observedMap(result, callback);
-                    }
+                    callback(prop, args, target);            
                     return result;
                 };
             }
@@ -669,9 +665,11 @@ const serialize = (data) => {
 
     if (data instanceof Map) {
         const newMap = new Map();
+        try {
         for (let [key, value] of data.entries()) {
             newMap.set(key, serialize(value));
         }
+        } catch {console.log(data)}
         return newMap;
     }
 

@@ -50,12 +50,10 @@ function initLevel() {
 
     let gridStorage;
     let gridBar = level.querySelector("#gridbar");
-    let overlay = document.createElement("div");
+    let overlay = level.querySelector("#visible-items");
     const overlayMapping = new Map();
     const animatedMap = new Map();
-    overlay.className = "visible-items-overlay";
 
-    level.appendChild(overlay);
     let updateGridStorage = (method, args, obj) => {
         localStorage.setItem(`gridStorage${thisDifficulty}`, JSON.stringify(serialize(gridStorage)));
     };
@@ -68,9 +66,22 @@ function initLevel() {
 
     if (thisLevel === latestGrid(thisDifficulty, cacheHighestLevel)) {
         if (cacheGridStorage) {
-            gridStorage = observedMap(new Map(cacheGridStorage), updateGridStorage);
-            reviveGrids();
-            notes.value = localStorage.getItem(`notes${thisDifficulty}`) || "";
+            // important to avoid continuing with corrupted cached data
+            // e.g. by starting a level and quickly refreshing
+            try {
+                cacheGridStorage.forEach((v) => {
+                    v.get("cells");
+                    v.get("values");
+                    v.get("undo");
+                    v.get("redo");
+                });
+                gridStorage = cacheGridStorage;
+                reviveGrids();
+                notes.value = localStorage.getItem(`notes${thisDifficulty}`) || "";
+            } catch {
+                gridStorage = observedMap(new Map(), updateGridStorage);
+                cleanStart();
+            }
         }
         else {
             gridStorage = observedMap(new Map(), updateGridStorage);
@@ -130,9 +141,10 @@ function initLevel() {
             });
             gridCarousel.appendChild(newGrid);
             initCells(i);
-
-            updateGridbar(i);
-            alignGridBar();
+            
+            updateGridBar(i, true);
+            level.querySelector("#n1").classList.add("chosen");
+            animatedMap.set("n"+i, true);
             let j=0;
             gridStorage.get(i).get("cells").forEach( cell => {
                 
@@ -278,7 +290,7 @@ function initLevel() {
 
         initCells(gridNum);
         
-        updateGridbar(gridNum);
+        updateGridBar(gridNum);
 
         // Inexplicably, without making this async, it would fail to
         // scroll *only* for g3 *only* in landscape mode *only* when
@@ -289,14 +301,14 @@ function initLevel() {
         setTimeout( () => noGridUpdate = false, 1000);
     };
 
-    function updateGridbar(num) {        
+    function updateGridBar(num, noscroll=false) {        
 
-        if (gridbar.children.length === 0) {
+        if (gridBar.children.length === 0) {
             let first = document.createElement("span");
             first.classList.add("node");
             first.id = "n1";
             first.innerText = "I";
-            gridbar.appendChild(first);
+            gridBar.appendChild(first);
         }
 
         let node = document.createElement("span");
@@ -305,10 +317,10 @@ function initLevel() {
         node.innerText = roman(num);
 
         
-        if (gridbar.children.length >= num) {
-            for (i = gridbar.children.length; i >= num; i--) {
-                gridbar.querySelector("#n" + i).id = "n" + (i + 1);
-                gridbar.querySelector("#n" + (i + 1)).innerText =  roman(i + 1);
+        if (gridBar.children.length >= num) {
+            for (i = gridBar.children.length; i >= num; i--) {
+                gridBar.querySelector("#n" + i).id = "n" + (i + 1);
+                gridBar.querySelector("#n" + (i + 1)).innerText =  roman(i + 1);
 
                 render = overlayMapping.get("n" + i);
                 if (!render) continue;
@@ -321,17 +333,16 @@ function initLevel() {
                 render.innerText = roman(i+1);
             }
         }
-        gridbar.insertBefore(node, gridbar.querySelector("#n" + ++num));
-        
+        gridBar.insertBefore(node, gridBar.querySelector("#n" + ++num));
 
         let scroller = setInterval(() => {
             updateVisibleItems();
 
             if (overlayMapping.get("n" + num)) clearTimeout(scroller);
 
-            gridbar.scrollBy({
+            gridBar.scrollBy({
                 top: 0,
-                left: 5
+                left: noscroll ? 0 : 5
             });
         }, 10);
         setTimeout( () => {
@@ -400,7 +411,7 @@ function initLevel() {
         throttleGrid = true;
         let grid = level.querySelector("#g" + num);
         grid.classList.add("deleting");
-        jumpToGrid(null, (num === gridbar.children.length) ? num - 1 : num + 1);
+        jumpToGrid(null, (num === gridBar.children.length) ? num - 1 : num + 1);
         setTimeout (() => {
             grid.remove();
             gridCarousel.dispatchEvent(new Event("scroll"));
@@ -423,7 +434,7 @@ function initLevel() {
         animatedMap.delete("n" + num);
         overlayMapping.delete("n" + num);
 
-        if (gridbar.children.length === 1) {
+        if (gridBar.children.length === 1) {
             level.querySelector("#n" + 1).remove();
             overlayMapping.get("n" + 1).remove();
             animatedMap.delete("n" + 1);
@@ -433,8 +444,8 @@ function initLevel() {
         
         for (i = num + 1; i <= gridBar.children.length + 1; i++) {
             level.querySelector("#g" + i).id = "g"+(-1 + parseInt(level.querySelector("#g" + i).id.substring(1)));
-            gridbar.querySelector("#n" + i).id = "n" + (i - 1);
-            gridbar.querySelector("#n" + (i - 1)).innerText =  roman(i - 1);
+            gridBar.querySelector("#n" + i).id = "n" + (i - 1);
+            gridBar.querySelector("#n" + (i - 1)).innerText =  roman(i - 1);
             animatedMap.set("n" + (i - 1), true);
 
             render = overlayMapping.get("n" + i);
@@ -772,19 +783,13 @@ function initLevel() {
     function updateVisibleItems() {
         if (!gridBar.children.length) return;
         const gridRect = gridBar.getBoundingClientRect();
-        
-        // Position the overlay exactly over gridBar's visible area
-        overlay.style.left = gridRect.left + "px";
-        overlay.style.top = gridRect.top + "px";
-        overlay.style.width = gridRect.width + "px";
-        overlay.style.height = gridRect.height + "px";
-        // Determine visible items (horizontal check)
+
         const visibleItems = [...gridBar.children].filter(item => {
             const itemRect = item.getBoundingClientRect();
             return (itemRect.right > gridRect.left && itemRect.left < gridRect.right);
         });
-        
-        // Remove spans for items that are no longer visible
+
+
         overlayMapping.forEach((span, item) => {
             if (!visibleItems.includes(level.querySelector("#"+item))) {
                 span.remove();
@@ -1003,7 +1008,7 @@ function initLevel() {
                     this.style.transition = "none";
                     setTimeout( () => this.style.transition = temp, 10);
                 }
-                
+
                 domainList.forEach((domain) => {
                     domain.blur();
 
@@ -1012,7 +1017,7 @@ function initLevel() {
                 });
             }
             
-        }.bind(this), 1);
+        }.bind(this), 6);
     }
 
     DYNAMIC_TOGGLE.onchange = () => {
@@ -1142,7 +1147,6 @@ function initLevel() {
     }
 
     function chamberInput (e) {
-
         let button = e.target;
         button.classList.remove("retain");
 
@@ -1180,6 +1184,7 @@ function initLevel() {
     }
 
     function releaseInput (e) {
+        if (this.classList.contains("retain")) { this.classList.remove("retain"); return }
         if (document.activeElement === this || openingModal) {this.classList.add("retain"); return;}
         setTimeout(function () {
             domainActive = false;

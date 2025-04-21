@@ -137,6 +137,8 @@
 
      verticalScroll(document.getElementById("configs"), 7);
 
+
+     let barPosition;
      async function goLevel(path) {
        let flag = path.charAt(0);
 
@@ -171,7 +173,7 @@
          initDialogs();
          initLevel();
        }, 1);
-       
+
        document.fonts.ready.then(() => {
          oldPage.classList.add("slideout");
          
@@ -179,6 +181,7 @@
            newPage.style.display = "block";
 
            setTimeout(function() {
+             barPosition = newPage.querySelector("#gridbar").getBoundingClientRect();
              verticalScroll(newPage.querySelector("#prop_container"), 7);
              horizontalScroll(newPage.querySelector('#domain'), 7);
              verticalScroll(newPage.querySelector("#keysbox"), 7);

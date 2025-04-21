@@ -839,35 +839,51 @@ html:has(#tools_toggle:checked:not(.top)) {
 
 }
 
-#gridbar {
+#wrapgridbar {
   position: absolute;
   top: -9.5px;
-  width: calc(var(--gridWidth) * 0.55);
+  width: calc(var(--gridWidth) * 0.75);
   height: 20px;  
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 15px; 
-  overflow-x: scroll;
 
-  z-index: -1;
+  z-index: 2;
+
+  span {    padding: 5px;  }
+}
+#gridbar {
+  position: absolute;
+  height: 20px;  
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 15px; 
+
+  z-index: 1;
+  overflow-x: scroll;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
 
-  span {visibility: hidden; }
+  span {visibility: hidden; z-index: -1; }
   
 
 }
 
-.visible-items-overlay {
-  position: fixed;
+#visible-items {
+  position: absolute;
   display: flex;
   justify-content: center;
   gap: 15px;
-  overflow: visible;
+  height: 20px;
+  overflow-x: visible;
   align-items: center;
   z-index: 1;
   pointer-events: none;
   span {
     display: block;
+    visibility: visible;
     position: relative;
     color: var(--baseColor);
     font-family: "Source Serif 4";
@@ -878,7 +894,6 @@ html:has(#tools_toggle:checked:not(.top)) {
     transition-property: opacity, font-weight;
     transition-duration: 0.1s;
     z-index: 2;
-    padding: 5px;
     text-align: center;
 
     &.new, &.first {
@@ -906,7 +921,7 @@ html:has(#tools_toggle:checked:not(.top)) {
   #delgrid:hover{
     opacity: 1;
   }
-  .visible-items-overlay span:hover {
+  #visible-items span:hover {
     opacity: 1;
   }
 }
@@ -1122,9 +1137,9 @@ html:has(#tools_toggle:checked:not(.top)) {
   }
 }
 
-:root:has(#grid_carousel.preventAnimation) .visible-items-overlay span {
-  animation-duration: 0s !important;
-  transition-duration: 0.00000001s;
+:root:has(#grid_carousel.preventAnimation) #visible-items span {
+  animation-duration: 0.0001s !important;
+  transition-duration: 0.00000001s !important;
   @starting-style {
     opacity: 1;
   }

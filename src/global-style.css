@@ -231,7 +231,7 @@ html:has(dialog[open]) #overlay {
   opacity: 0.5;
 }
 html:has(dialog.hide) #overlay {
-  transition: opacity .15s cubic-bezier(0.39, 0.58, 0.57, 1);
+  transition: opacity .1s cubic-bezier(0.39, 0.58, 0.57, 1);
   opacity: 0 !important;
 }
 

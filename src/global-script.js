@@ -33,7 +33,7 @@ function showModal(id) {
             
             document.querySelector("#" + (cacheTheme || "litlight")).parentNode.focus();
             
-        }, 100);
+        }, 0);
     }
 }
 

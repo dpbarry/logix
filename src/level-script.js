@@ -1619,6 +1619,10 @@ function initLevel() {
         verticalScroll(dict, 7);
     } );
 
+    level.querySelectorAll("input[name='dict_header']").forEach(i =>
+        i.onchange = () => dict.scrollTo(0,0)
+    );
+
 
     level.querySelectorAll("#dict_symbols li, #dict_terms li").forEach( li => {
         if (li.className.startsWith("t") && (parseFloat(li.className[1] + "." +  li.className.substring(3)) - 0.1).toFixed(4) <= parseFloat(localStorage.getItem("highestTraining") || "1").toFixed(4))

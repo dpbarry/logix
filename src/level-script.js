@@ -86,12 +86,17 @@ function initLevel() {
         else {
             gridStorage = observedMap(new Map(), updateGridStorage);
             cleanStart();
+            if (info.children.length) {
+                level.querySelector("#info").classList.add("readme");
+            }
         }
     } else {
         gridStorage = new Map();
-        cleanStart();
+        successStart();
     } 
 
+    level.querySelector("#g1").classList.add("current");
+    
     function cleanStart() {
         let firstGrid = new Map();
         gridStorage.set(1, firstGrid);
@@ -100,6 +105,39 @@ function initLevel() {
 
         initCells(1);
         firstGrid.set("values", new Map([...cellList()].map(k => [k.id, null])));
+    }
+
+    function successStart() {
+        let firstGrid = new Map();
+        gridStorage.set(1, firstGrid);
+        firstGrid.set("undo", []);
+        firstGrid.set("redo", []);
+        firstGrid.set("values", new Map());
+        initCells(1);
+        cellList().forEach( c => {
+            let row = parseInt(c.id.charAt(1));
+            let col = parseInt(c.id.charAt(3));
+            let val = SOLUTION[row - 1][col - 1];
+            firstGrid.get("values").set(c.id, val);
+            c.firstChild.innerText = (val !== null) ? val : c.firstChild.innerText;
+            c.style.animationDelay = "0s";
+            c.tabIndex = -1;
+            c.onfocus = null;
+            c.onblur = null;
+        });
+
+        level.querySelector("#g1").classList.add("forceSolved");
+        if (parseFloat(cacheHighestLevel).toFixed(3) < 1.6) {
+            domain.classList.add("correct");
+            domainList[0].firstChild.style.animationDuration = "0s";
+            domainList[0].querySelector("p").innerText = "Onwards...";
+            domainList[0].onclick = () => {
+                setTimeout( () => {
+                    Router(NEXT_LEVEL);
+                }, 100);
+
+            };
+        }
     }
 
     function reviveGrids() {
@@ -376,6 +414,9 @@ function initLevel() {
         }
         scrolling = true;
         currentGrid = parseInt(getCenteredElement(gridCarousel).id.substring(1));
+
+        level.querySelectorAll(".grid").forEach(g => {if (parseInt(g.id.substring(1)) === currentGrid) g.classList.add("current"); else g.classList.remove('current'); })
+
         alignGridBar();
 
         
@@ -468,7 +509,7 @@ function initLevel() {
         newNode.classList.add("chosen");
         level.querySelectorAll(`#gridbar span:not(#n${currentGrid})`).forEach(s => {s.classList.remove("chosen");});
 
-        
+
         
         const containerScrollLeft = gridBar.scrollLeft;
         const containerVisibleRight = containerScrollLeft + gridBar.clientWidth;
@@ -542,27 +583,24 @@ function initLevel() {
             MENU_TOGGLE.checked = true;
         else {
             MENU_TOGGLE.checked = false;
-            if (info.children.length) {
-                level.querySelector("#info").classList.add("readme");
-            }
+
         }
     } else if (thisDifficulty === "Training" && thisLevel === "1.1") {
         MENU_TOGGLE.checked = true;
-        setTimeout(()=> {
-            level.querySelector("#info").click();
-            
-        }, 425);
+        if (cacheHighestLevel === "0")
+            setTimeout(()=> {
+                level.querySelector("#info").click();
+                
+            }, 425);
         level.style.setProperty('--noInfo', "0px");
-    } else if (info.children.length) {
-        level.querySelector("#info").classList.add("readme");
     }
-    
     if (!info.children.length) {
         level.querySelector("#info").remove();
         level.style.setProperty('--noInfo', "-54px");
     } else {
         level.style.setProperty('--noInfo', "0px");
     }
+    
 
     
 
@@ -869,8 +907,9 @@ function initLevel() {
             localStorage.setItem("highest" + thisDifficulty, thisLevel);
             localStorage.removeItem("gridStorage" + thisDifficulty);
             localStorage.removeItem("notes" + thisDifficulty);
-
-            gridStorage.unobserve();
+            try {
+                gridStorage.unobserve();
+            } catch {}
         }
         
         level.querySelector("#g" + currentGrid).classList.add("correct");
@@ -1017,7 +1056,7 @@ function initLevel() {
                 });
             }
             
-        }.bind(this), 6);
+        }.bind(this), 5);
     }
 
     DYNAMIC_TOGGLE.onchange = () => {

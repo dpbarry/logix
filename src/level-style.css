@@ -293,7 +293,7 @@
 
     @starting-style {
       opacity: 0;
-      left: -10px;
+      left: -8px;
     }
   }
 
@@ -1145,7 +1145,7 @@ html:has(#tools_toggle:checked:not(.top)) {
   }
 }
 
-.grid.correct {
+.grid.correct, .grid.forceSolved{
   perspective: 300px;
   span {
     transition: background-color .2s ease-in, border-color .2s, scale .2s;
@@ -1157,9 +1157,18 @@ html:has(#tools_toggle:checked:not(.top)) {
     animation: correctFlash 1.15s forwards;
     transform-style: preserve-3d;
   }
-  
 }
 
+.grid.forceSolved {
+  span {transition: none !important; animation: none !important; background-color: transparent !important; border-color: transparent !important; color: var(--correctColor) !important; & .ripple { display: none;}}
+}
+
+#wrap_main:has(.grid.current.forceSolved) #propositions .entry {
+  &:hover, &.noticed { color: var(--baseColor); }
+  pointer-events: none;
+}
+
+#wrap_axis_grid:has(.grid.forceSolved) .cue {font-weight: 290 !important;}
 @keyframes fade {
   from { bottom: 12px; opacity: 0; }
   to { bottom: 0px; opacity: 1; }

@@ -1168,7 +1168,7 @@ html:has(#tools_toggle:checked:not(.top)) {
   pointer-events: none;
 }
 
-#wrap_axis_grid:has(.grid.forceSolved) .cue {font-weight: 290 !important;}
+#wrap_axis_grid:has(.grid.forceSolved.current) .cue {font-weight: 290 !important;}
 @keyframes fade {
   from { bottom: 12px; opacity: 0; }
   to { bottom: 0px; opacity: 1; }

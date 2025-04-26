@@ -4,7 +4,7 @@ Given a system of propositions, derive the resulting matrix.
 Play here: https://dpbarry.github.io/logix/
 
 
-### Design strategy
+### *Design strategy*
  **<ins>Frameworkless</ins>**:  minimize overhead by only using vanilla HTML/CSS/JS
 
 **<ins>Single-Page Application</ins>**: statically emulate an app experience with DOM overwriting & the History API

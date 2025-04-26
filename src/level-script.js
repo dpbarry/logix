@@ -1010,6 +1010,7 @@ function initLevel() {
 			entry.parentNode.style.pointerEvents = "none";
 		});
 	}
+	let debounced = 0;
 
 	// Lock the current cell
 	function lockCell() {

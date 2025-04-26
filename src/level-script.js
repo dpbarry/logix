@@ -9,78 +9,77 @@ let tabbed = false;
 let MENU_TOGGLE = null;
 
 function initLevel() {
-	const levelElem = Array.from(
-		document.body.querySelectorAll('.page.level')
-	).pop();
-	const thisLevel = levelElem.querySelector('#level').innerText;
-	const thisDifficulty = levelElem.querySelector('#difficulty').innerText;
-	const cacheHighestLevel =
-		localStorage.getItem('highest' + thisDifficulty) || '0';
+	// Always query level instead of document because there can be two levels at once during page transition
+	const level = Array.from(document.body.querySelectorAll('.page.level')).pop(); 
+	
+	const thisLevel = level.querySelector('#level').innerText;
+	const thisDifficulty = level.querySelector('#difficulty').innerText;
+	const cacheHighestLevel = localStorage.getItem('highest' + thisDifficulty) || '0';
 
-	levelElem.style.setProperty('--rows', ROWS);
-	levelElem.style.setProperty('--cols', COLS);
+	level.style.setProperty('--rows', ROWS);
+	level.style.setProperty('--cols', COLS);
+	// Uses ROWS/COLS to adjust CSS of grid
+	alignGrid(); 
 
-	alignGrid();
+	
+	const MENU_TOGGLE = level.querySelector('#menu_checkbox');
 
-	MENU_TOGGLE = levelElem.querySelector('#menu_checkbox');
-	const info = levelElem.querySelector('#level_info');
-	const notes = levelElem.querySelector('#wrapnotes textarea');
-	const dict = levelElem.querySelector('#dict_box');
-	const propositions = levelElem.querySelector('#propositions');
-	const domainElem = levelElem.querySelector('#domain');
-	let currentGrid = 1;
+	const info = level.querySelector('#level_info'); // i.e., the text container
+	const notes = level.querySelector('#wrapnotes textarea'); // the textarea
+	const dict = level.querySelector('#dict_box'); // the scrollable wrapper
+	
+	const propositions = level.querySelector('#propositions');
+	const entryList = [...level.querySelectorAll('.entry')].map((x) => x.firstChild);
 
-	const domainList = domainElem.querySelectorAll('button');
-	const entryList = Array.from(
-		levelElem.querySelectorAll('.entry')
-	).map((x) => x.firstChild);
-	const MAXLENGTH = Math.max(
-		...DOMAIN.map((num) => num.toString().length)
-	);
+	const domain = level.querySelector('#domain');
+	const domainList = domain.querySelectorAll('button');
+	const gridCarousel = level.querySelector('#grid_carousel');
 
+	const undoButton = level.querySelector('#undo');
+	const redoButton = level.querySelector('#redo');
+	const pencilButton = level.querySelector('#pencil');
+	const addGridButton = level.querySelector('#nextgrid');
+	const deleteGridButton = level.querySelector('#delgrid');
+
+	const gridBar = level.querySelector('#gridbar');
+	const overlay = level.querySelector('#visible-items');
+
+	// Convenience functions to retrieve attributes of the current grid
+	const cellList = () => gridStorage.get(currentGrid).get('cells');
+	const values = () => gridStorage.get(currentGrid).get('values');
+	const undoStack = () => gridStorage.get(currentGrid).get('undo');
+	const redoStack = () => gridStorage.get(currentGrid).get('redo');
+
+	// For restricting keyboard input
+	const MAXLENGTH = Math.max(...DOMAIN.map((num) => num.toString().length)); 
+
+	// Flags
 	let cellActive = false;
 	let domainActive = false;
 	let candidateMode = false;
 
-	const undoButton = levelElem.querySelector('#undo');
-	const redoButton = levelElem.querySelector('#redo');
-	const pencilButton = levelElem.querySelector('#pencil');
-	const addGridButton = levelElem.querySelector('#nextgrid');
-	const deleteGridButton = levelElem.querySelector('#delgrid');
+	let gridStorage; // Keeps track of concurrent grids, potentially saved to cache	
 
-	const gridCarousel = levelElem.querySelector('#grid_carousel');
-	const cellList = () =>
-		gridStorage.get(currentGrid).get('cells');
-	const values = () =>
-		gridStorage.get(currentGrid).get('values');
-	const undoStack = () =>
-		gridStorage.get(currentGrid).get('undo');
-	const redoStack = () =>
-		gridStorage.get(currentGrid).get('redo');
-
-	let throttleGrid = false;
-
-	let gridStorage;
-	const gridBar = levelElem.querySelector('#gridbar');
-	const overlay = levelElem.querySelector('#visible-items');
+	// Tracks the visibility of grid labels
 	const overlayMapping = new Map();
 	const animatedMap = new Map();
+	
+	// Tracks the current grid
+	let currentGrid = 1;
 
+	// Handler for observedMaps (i.e., the cached gridStorage)
 	const updateGridStorage = (method, args, obj) => {
 		localStorage.setItem(
 			`gridStorage${thisDifficulty}`,
-			JSON.stringify(serialize(gridStorage))
+			JSON.stringify(serialize(gridStorage)) // store the entire gridStorage object as JSON w/ elements serialized
 		);
 	};
 
-	const _cacheGridStorage =
-		localStorage.getItem(`gridStorage${thisDifficulty}`);
-	const cacheGridStorage = _cacheGridStorage ?
-		new observedMap(
-			new Map(mapify(JSON.parse(_cacheGridStorage))),
-			updateGridStorage
-		) :
-		null;
+	const fetchCacheGridStorage = localStorage.getItem(`gridStorage${thisDifficulty}`);
+	const cacheGridStorage = 
+		fetchCacheGridStorage 
+		? new observedMap(new Map(mapify(JSON.parse(fetchCacheGridStorage))), updateGridStorage)
+		: null;
 
 	if (thisLevel === latestGrid(thisDifficulty, cacheHighestLevel)) {
 		if (cacheGridStorage) {
@@ -104,7 +103,7 @@ function initLevel() {
 			gridStorage = observedMap(new Map(), updateGridStorage);
 			cleanStart();
 			if (info.children.length) {
-				levelElem.querySelector('#info').classList.add('readme');
+				level.querySelector('#info').classList.add('readme');
 			}
 		}
 	} else {
@@ -112,7 +111,7 @@ function initLevel() {
 		successStart();
 	}
 
-	levelElem.querySelector('#g1').classList.add('current');
+	level.querySelector('#g1').classList.add('current');
 
 	function cleanStart() {
 		const firstGrid = new Map();
@@ -150,9 +149,9 @@ function initLevel() {
 			c.onblur = null;
 		});
 
-		levelElem.querySelector('#g1').classList.add('forceSolved');
+		level.querySelector('#g1').classList.add('forceSolved');
 		if (parseFloat(cacheHighestLevel).toFixed(3) < 1.6) {
-			domainElem.classList.add('correct');
+			domain.classList.add('correct');
 			domainList[0].firstChild.style.animationDuration =
 				'0s';
 			domainList[0].querySelector('p').innerText = 'Onwards...';
@@ -219,7 +218,7 @@ function initLevel() {
 			initCells(i);
 
 			updateGridBar(i, true);
-			levelElem.querySelector('#n1').classList.add('chosen');
+			level.querySelector('#n1').classList.add('chosen');
 			animatedMap.set(`n${i}`, true);
 
 			let j = 0;
@@ -315,6 +314,8 @@ function initLevel() {
 	function endPress() {
 		clearTimeout(holdTimer);
 	}
+
+		let throttleGrid = false;
 
 	function createNewGrid(dupe = false) {
 		if (scrolling || throttleGrid) return;

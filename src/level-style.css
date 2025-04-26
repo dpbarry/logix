@@ -111,7 +111,6 @@
   button:first-child.activated p {
     color: white;
     bottom: 6px !important;
-    zoom: 0.99 !important;
     font-size: 2.25rem;
     animation: stayDown 0s 0.2s forwards;
   }
@@ -1498,8 +1497,6 @@ html:has(#tools_toggle:checked:not(.top)) {
     background-color: var(--focusColor);
     bottom: 6px;
 
-
-    zoom: 0.99;
   }
 
 
@@ -1511,9 +1508,6 @@ html:has(#tools_toggle:checked:not(.top)) {
 
 
     bottom: 6px;
-
-
-    zoom: 0.99;
   }
 
 

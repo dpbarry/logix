@@ -1400,7 +1400,7 @@ html:has(#tools_toggle:checked:not(.top)) {
 #domain {
   padding: 0;
   display: flex;
-  overflow: auto;
+  overflow: visible;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
   align-items: center;

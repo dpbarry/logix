@@ -102,7 +102,8 @@ function initLevel() {
 	} else {
 	    gridStorage = observedMap(new Map(), updateGridStorage);
 	    cleanStart();
-	    if (info.children.length) {
+	    if (info.children.length && thisLevel !== "1.1") {
+                console.log(123);
 		level.querySelector('#info').classList.add('readme');
 	    }
 	}
@@ -1095,7 +1096,7 @@ function initLevel() {
 		    domain.onblur = releaseInput;
 		});
 	    }
-	}.bind(this), 10);
+	}.bind(this), 5);
     }
 
     // --- Toggles for Settings --- 

@@ -910,7 +910,6 @@ function initLevel() {
 	let flag = true;
 
 	values().forEach((value, key) => {
-            console.log(value, key, SOLUTION)
 	    let row = parseInt(key.charAt(1));
 	    let col = parseInt(key.charAt(3));
 	    if (value != SOLUTION[row - 1][col - 1]) {

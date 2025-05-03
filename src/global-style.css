@@ -1,7 +1,5 @@
 * {
   -webkit-tap-highlight-color: transparent;
-  
-  -webkit-user-select: none;
   -webkit-user-drag: none;
   user-select: none;
   &:focus {outline: none;}

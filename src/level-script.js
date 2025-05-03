@@ -103,7 +103,6 @@ function initLevel() {
 	    gridStorage = observedMap(new Map(), updateGridStorage);
 	    cleanStart();
 	    if (info.children.length && thisLevel !== "1.1") {
-                console.log(123);
 		level.querySelector('#info').classList.add('readme');
 	    }
 	}
@@ -911,9 +910,10 @@ function initLevel() {
 	let flag = true;
 
 	values().forEach((value, key) => {
+            console.log(value, key, SOLUTION)
 	    let row = parseInt(key.charAt(1));
 	    let col = parseInt(key.charAt(3));
-	    if (parseInt(value) !== SOLUTION[row - 1][col - 1]) {
+	    if (value != SOLUTION[row - 1][col - 1]) {
 		flag = false;
 	    }
 	});

@@ -1566,7 +1566,6 @@ function initLevel() {
     });
 
 
-    // Global keydown event listener
     document.onkeydown = (e) => {
 	const hideMatrixTools = document.getElementById("hideMatrixTools").checked;
 	const toolsToggle = TOOLS_TOGGLE.checked;
@@ -1575,6 +1574,10 @@ function initLevel() {
 	const propositionHeight = level.querySelector("#propositions li").clientHeight;
 
 	switch (e.key) {
+        case "m":
+            console.log("d")
+            MENU_TOGGLE.click();
+            break;
 	case "u":
 	    undo();
 	    break;
@@ -1583,9 +1586,8 @@ function initLevel() {
 	    break;
 	case "c":
 	    candidateToggle();
-	    break;
+	    break;            
 	case "p":
-	case "P":
 	    if (!hideMatrixTools && toolsToggle) {
 		createNewGrid(e.key === "P");
 	    }

@@ -286,13 +286,16 @@ function initLevel() {
     }
 
     entryList.forEach((entry) => {
-	entry.addEventListener("mouseover", noticeCell);
-	entry.addEventListener("mouseleave", () => deAxisCue("#y" + entry.id.charAt(1), "#x" + entry.id.charAt(3)));
-	entry.addEventListener("mouseover", () => {
-	    if (DYNAMIC_TOGGLE.checked) axisCue("#y" + entry.id.charAt(1), "#x" + entry.id.charAt(3));
-	});
-	entry.addEventListener("mouseleave", removeNoticeCell);
-	entry.addEventListener("pointerdown", jumpToCell);
+        if (!entry.parentNode.classList.contains("variable")) {
+            entry.addEventListener("mouseover", noticeCell);
+            entry.addEventListener("mouseleave", removeNoticeCell);
+	    entry.addEventListener("pointerdown", jumpToCell);
+            entry.addEventListener("mouseleave", () => deAxisCue("#y" + entry.id.charAt(1), "#x" + entry.id.charAt(3)));
+	    entry.addEventListener("mouseover", () => {
+	        if (DYNAMIC_TOGGLE.checked) axisCue("#y" + entry.id.charAt(1), "#x" + entry.id.charAt(3));
+	    });
+        }
+
     });
 
     addGridButton.onclick = () => createNewGrid(false);
@@ -1138,6 +1141,7 @@ function initLevel() {
 	entryList.forEach((entry) => {
 	    let yNum = level.querySelector("#y" + entry.id.charAt(1));
 	    let xNum = level.querySelector("#x" + entry.id.charAt(3));
+            if (!xNum || !yNum) return;
 	    if (entry.id === "e" + id.charAt(1) + "e" + id.charAt(3)) {
 		if (DYNAMIC_TOGGLE.checked) entry.parentNode.classList.add("highlight");
 		pair = [yNum, xNum];
@@ -1157,8 +1161,8 @@ function initLevel() {
 	let yNum = level.querySelector(y);
 	let xNum = level.querySelector(x);
 
-	yNum.classList.add("cue");
-	xNum.classList.add("cue");
+	if (yNum) yNum.classList.add("cue");
+	if (xNum) xNum.classList.add("cue");
     }
 
     // De-cue the axis
@@ -1166,8 +1170,8 @@ function initLevel() {
 	let yNum = level.querySelector(y);
 	let xNum = level.querySelector(x);
 
-	yNum.classList.remove("cue");
-	xNum.classList.remove("cue");
+	if (yNum) yNum.classList.remove("cue");
+	if (xNum) xNum.classList.remove("cue");
     }
 
     // Notice and remove entry for the highlighted cells
@@ -1221,6 +1225,7 @@ function initLevel() {
 
     // Remove the highlighted cell notice
     function removeNoticeCell(event) {
+        if (this.id.startsWith("v")) return;
 	removeNoticeEntry(this);
 	let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
 	level.querySelector("#" + cell).classList.remove("noticed");
@@ -1344,21 +1349,25 @@ function initLevel() {
 
     level.querySelector('#prop_container').addEventListener('scroll', (e) => {
 	const el = e.currentTarget;
-	verticalScroll(el, 7);
+	verticalScroll(el);
     });
+
+    domain.onscroll = () => horizontalScroll(domain);
 
     window.onresize = function() {
 	updateVisibleItems();
-	verticalScroll(propositions.parentNode, 7);
-	verticalScroll(dict, 7);
-	verticalScroll(info, 7);
+	verticalScroll(propositions.parentNode);
+	verticalScroll(dict);
+	verticalScroll(info);
+        horizontalScroll(domain);
     };
 
     screen.orientation.addEventListener("change", () => {
 	updateVisibleItems();
-	verticalScroll(propositions.parentNode, 7);
-	verticalScroll(dict, 7);
-	verticalScroll(info, 7);
+	verticalScroll(propositions.parentNode);
+	verticalScroll(dict);
+	verticalScroll(info);
+        horizontalScroll(domain);
     });
 
     let rippleStack = [];
@@ -1672,16 +1681,16 @@ function initLevel() {
     // Info and dictionary scroll handling
     info.parentNode.addEventListener("open", () => {
 	info.scroll(0, 0);
-	verticalScroll(info, 7);
+	verticalScroll(info);
     });
-    info.addEventListener("scroll", () => verticalScroll(info, 7));
+    info.addEventListener("scroll", () => verticalScroll(info));
 
-    dict.closest("dialog").addEventListener("open", () => verticalScroll(dict, 7));
-    dict.addEventListener("scroll", () => verticalScroll(dict, 7));
+    dict.closest("dialog").addEventListener("open", () => verticalScroll(dict));
+    dict.addEventListener("scroll", () => verticalScroll(dict));
 
     // Dict header click handling
     [...level.querySelector("#dict_headings").children].forEach(h => {
-	h.onclick = () => verticalScroll(dict, 7);
+	h.onclick = () => verticalScroll(dict);
     });
 
     // Dict input change event for reset scroll

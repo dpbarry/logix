@@ -64,16 +64,20 @@
                     <li class="t2-4"> <span class="symbol"> \( \to \)</span> <p class="caption">Asserts that when a proposition is true, so is the other.</p> <p class="formal"> \( p \equiv \bot \vdash p \to q, q \equiv \top \vdash p \to q\) </p> </li>
                     <li class="t2-4"> <span class="symbol"> \( \gets \)</span> <p class="caption">Asserts that a proposition is true when the other is.</p> <p class="formal"> \( q \equiv \bot \vdash p \gets q, p \equiv \top \vdash p \gets q\) </p> </li>
                     <li class="t2-5"> <span class="symbol"> \( \leftrightarrow \)</span> <p class="caption">Asserts that a proposition is true if and only if the other is as well. Also \(\Longleftrightarrow\)</p> <p class="formal"> \( p \equiv \bot \equiv q \vdash p \leftrightarrow q, p \equiv \top \equiv q \vdash p \leftrightarrow q\) </p> </li>
-
+                    <li class="t2-7"> <span class="symbol"> \( \ldots \)</span> <p class="caption">Elides a sequence of terms following a clear pattern. For example, the numbers 1 through 10 could be written as: </p> <p class="formal"> \(1, 2, 3, \ldots, 9, 10 \) </p> </li>
+                    <li class="t3-1"> <span class="symbol"> \( \exist \)</span> <p class="caption"> Asserts that there exists an object in the domain of discourse which satisfies the following property.</p> <p class="formal"> \( (\exist x \in \set{x_1, x_2, \ldots, x_n} : \phi(x)) \iff (\phi(x_1) \lor \phi(x_2) \lor \cdots \lor \phi(x_n)) \)</p> </li>
                 </div>
 
 
                 <div id="dict_terms">
                     <li class="t1-1"> <p class="caption"> <span class="term"> Matrix </span> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </p> </li>
                     <li class="t1-1">  <p class="caption"> <span class="term"> Proposition </span> Logical entity bearing a truth value (true or false); can be expressed with formal expressions.</p> <p class="formal"> </p> </li>
-                    <li class="t1-3">  <p class="caption"> <span class="term"> Predicate </span> A relation on \(n\) arguments asserting some sort of property or relationship. When the arguments are provided, it forms a proposition. Examples: \(\textrm{Likes(Alice, Bob)}\), \(\textrm{Prime(7)}\), or \(n = 5\), with the lattermost predicate being in infix position.</p> <p class="formal"> </p></li>
-                        <li class="t1-5">  <p class="caption"> <span class="term"> Relation Chaining </span> Shorthand method in which multiple statements involving infix predicates can be strung together. E.g. \(x &lt; y &lt; z \Longleftrightarrow x &lt; y \land y &lt; z \). Note that this doesn’t imply transitivity when the relation is intransitive. </p> <p class="formal"> </p></li>
-                        <li class="t2-1">  <p class="caption"> <span class="term"> Logical Connective </span> An operator upon logical terms. Despite the name, they can be unary (just one argument; e.g. \(\neg\)) or even nullary (\(\top, \bot\)).</p> <p class="formal"> </p></li>
+                    <li class="t1-3">  <p class="caption"> <span class="term"> Predicate </span> A relation on \(n\) arguments asserting some sort of property or relationship. When the arguments are provided, it forms a proposition. Examples: \(\textrm{Likes(Alice, Bob)}\), \(\textrm{Prime(7)}\), or \(n = 5\), with the lattermost predicate being in infix position.</p> <p class="formal"></p> </li>
+                    <li class="t1-5">  <p class="caption"> <span class="term"> Relation Chaining </span> Shorthand method in which multiple statements involving infix predicates can be strung together. E.g. \(x &lt; y &lt; z \Longleftrightarrow x &lt; y \land y &lt; z \). Note that this doesn’t imply transitivity when the relation is intransitive. </p> <p class="formal"> </p></li>
+                    <li class="t2-1">  <p class="caption"> <span class="term"> Logical Connective </span> An operator upon logical terms. Despite the name, they can be unary (just one argument; e.g. \(\neg\)) or even nullary (\(\top, \bot\)).</p> <p class="formal"> </p></li>
+                    <li class="t3-1">  <p class="caption"> <span class="term"> Quantifier </span> An operator that introduces a bound variable and defines its upcoming usage in a formula in terms of either an existential or universal relationship to the domain of discourse. </p> <p class="formal"> </p></li>
+                    <li class="t3-1">  <p class="caption"> <span class="term"> Domain of Discourse </span> The set of entities relevant in some sort of formal discussion, to which mentioned variables can be assumed to belong. </p> <p class="formal"> </p></li>
+
 
                 </div>
 
@@ -114,7 +118,7 @@
             <ul id="propositions">
 
                 
-            <li>\([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] &lt; [\htmlClass{entry}{\htmlId{e1e4}{1,4}}]\)</li><li>\([\htmlClass{entry}{\htmlId{e1e4}{1,4}}] &lt; [\htmlClass{entry}{\htmlId{e1e2}{1,2}}]\)</li><li>\([\htmlClass{entry}{\htmlId{e1e2}{1,2}}] &gt; [\htmlClass{entry}{\htmlId{e1e3}{1,3}}]\)</li><li>\([\htmlClass{entry}{\htmlId{e1e3}{1,3}}] &gt; [\htmlClass{entry}{\htmlId{e1e4}{1,4}}]\)</li></ul>
+            <li>\([\htmlClass{entry }{\htmlId{e1e1}{1,1}}] &lt; [\htmlClass{entry }{\htmlId{e1e4}{1,4}}]\)</li><li>\([\htmlClass{entry }{\htmlId{e1e4}{1,4}}] &lt; [\htmlClass{entry }{\htmlId{e1e2}{1,2}}]\)</li><li>\([\htmlClass{entry }{\htmlId{e1e2}{1,2}}] &gt; [\htmlClass{entry }{\htmlId{e1e3}{1,3}}]\)</li><li>\([\htmlClass{entry }{\htmlId{e1e3}{1,3}}] &gt; [\htmlClass{entry }{\htmlId{e1e4}{1,4}}]\)</li></ul>
         </div>
 
         

@@ -1,0 +1,10 @@
+levelNumber=3.1
+difficulty=Training
+nextLevel=T3-2
+domain=1,2,3,4,5
+rows=2
+cols=3
+given=1,2,?,?,3,4
+propositions=\exist i,j : [i,j] = 2@\exist i,j : [i,j] = 4@[2,1] < [1,3]
+solution=.,.,4,2,.,.
+info=<p>So far we have only seen logical formulas that directly reference concrete numbers or entries. However, this chapter introduces <b>variables</b>, which “stand in” for other entities. An example is \(x = 5\), but this formula does not denote a proposition; that is, it cannot be verified to be true or false because \(x\) is undefined. In order for a formula to be considered a “sentence” (corresponding to a proposition), any variables it has must be bound. This can be accomplished with <b>quantifiers</b>.</p><p>There are two main quantifiers: \(\exist\) and \(\forall\). They both rely on a background <i>domain of discourse</i>: the range of entities that a variable might represent. This can be defined in various ways; in Logix you will either see the quantified variable precede a set-inclusion (starting Chapter 4) or, as in this chapter, the variable’s symbol itself will tacitly define the domain. For example, the variables \(i\) and \(j\) will always correspond to the current matrix’s set of row indices \(I\) and column indices \(J\) respectively.</p> <p>This level introduces the “Existential Quantifier,” so named because it singles out the existence of some object which fulfills the following predicate. E.g., in the domain of natural numbers \(\exist x : x = 5\) states that there exists a natural number \(x\) such that that number is equal to 5. As it happens, this is a true statement. </p><p>This level uses a shorthand relying on the generalization \(\exist x \exist y : P(x,y) \iff \exist x,y : P(x,y)\). 

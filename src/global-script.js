@@ -531,7 +531,7 @@ function latestGrid(diff, level) {
     
 }
 
-function verticalScroll(el, moe) {
+function verticalScroll(el, moe=7) {
     el.style.overflowY = "auto";
     const isScrollable = (el.scrollHeight > el.clientHeight + 1);
     if (!isScrollable) {
@@ -563,7 +563,7 @@ function verticalScroll(el, moe) {
 
 
 
-function horizontalScroll(el, moe) {
+function horizontalScroll(el, moe=7) {
     const isScrollable = (el.scrollWidth > el.clientWidth + 1);
 
     if (!isScrollable) {

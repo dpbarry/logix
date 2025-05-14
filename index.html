@@ -135,7 +135,7 @@
        sessionStorage.setItem("loc", "index.html");
      }
 
-     verticalScroll(document.getElementById("configs"), 7);
+     verticalScroll(document.getElementById("configs"));
 
 
      async function goLevel(path) {
@@ -180,8 +180,9 @@
            newPage.style.display = "block";
 
            setTimeout(function() {
-             verticalScroll(newPage.querySelector("#prop_container"), 7);
-             verticalScroll(newPage.querySelector("#keysbox"), 7);
+             verticalScroll(newPage.querySelector("#prop_container"));
+             verticalScroll(newPage.querySelector("#keysbox"));
+             horizontalScroll(domain);
            }, 31);
          }, 10);
 

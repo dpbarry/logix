@@ -49,22 +49,22 @@ async function generateHTMLFile(levelNumber, difficulty, rows, cols, given, prop
     if (levelNumber !== "1.1" || difficulty !== "Training") {
         page.getElementById("menu_checkbox").removeAttribute('checked');
     }
-    
+    let varCounter = 1;
     for (let i =0; i < propositions.length; i++) {
-        let varCounter = 1;
-
         // identify entries to wrap in spans
         const pattern = /\[\s*([^\[\],]+)\s*,\s*([^\[\],]+)\s*\]/g;
 
         propositions[i] = propositions[i].replace(pattern, (match, n,m) => {
             let id;
+            let className = "";
             if (!isNaN(n) && !isNaN(m)) {
                 id = `e${n}e${m}`;
             } else {
                 id = `v${varCounter++}`;
+                className = "variable";
             }
 
-            return `[\\htmlClass{entry}{\\htmlId{${id}}{${n.trim()},${m.trim()}}}]`;
+            return `[\\htmlClass{entry ${className}}{\\htmlId{${id}}{${n.trim()},${m.trim()}}}]`;
         });
 
         li = page.createElement("li");

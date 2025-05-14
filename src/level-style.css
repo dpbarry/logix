@@ -1241,7 +1241,12 @@ html:has(#tools_toggle:checked:not(.top)) {
       z-index: 2;
       transition: color 0.1s, filter 0.1s;
 
-      .mspace { margin-right: 0 !important; }      
+      .mspace { margin-right: 0 !important; }
+
+      &.variable {
+        pointer-events: none;
+        cursor: default;
+      }
     }
 
 
@@ -1313,7 +1318,7 @@ html:has(#tools_toggle:checked:not(.top)) {
 
 #toolbar {
   display: flex;
-  width: 90vw;
+  width: 95vw;
   flex-basis: 100%;
 
   #pencil, #undo, #redo {
@@ -1400,7 +1405,7 @@ html:has(#tools_toggle:checked:not(.top)) {
 #domain {
   padding: 0;
   display: flex;
-  overflow: visible;
+  overflow: scroll;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
   align-items: center;
@@ -1415,7 +1420,7 @@ html:has(#tools_toggle:checked:not(.top)) {
     transition: all 0.3s !important;
   }
   button {
-    width: 100%;
+    flex-grow: 1;
     min-width: max(40px, 8vh);
     height: 60px;
     position: relative;
@@ -1724,10 +1729,10 @@ html:has(#tools_toggle:checked:not(.top)) {
   }
 
   #domain {
-    width: 90vw;
+    width: 95vw;
     flex-direction: row;
-    flex-basis: 100%;
-    gap: 5px;
+    column-gap: 5px;
+    row-gap: 2px;
   }
 
   

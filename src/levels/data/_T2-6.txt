@@ -1,0 +1,10 @@
+levelNumber=2.6
+difficulty=Training
+nextLevel=T2-7
+domain=1,2,3,4
+rows=3
+cols=2
+given=?,?,?,?,6,?
+propositions=[1,1] = [2,2] \leftrightarrow [1,2] \neq [2,1]@[1,2] = [3,2] \mathbin{/} 2 \lor [1,2] = [3,2] \mathbin{/} 3@[3,1] \neq [3,2] \to [1,1] < [1,2]@[2,1] \neq [2,2] \land [2,2] = [1,2] + 1
+solution=1,2,2,3,.,4
+info=

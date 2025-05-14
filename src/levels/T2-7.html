@@ -1,0 +1,163 @@
+<body><div class="page level">
+    <span id="backtab_catch" tabindex="0"></span>
+
+    <div id="wrap_home_level">
+        <button id="home" tabindex="-1"></button>
+
+        <h1 id="level" onclick="">2.7</h1>
+
+        <p id="difficulty">Training</p>
+    </div>
+    <div id="overlay"></div>
+    <div id="menu">
+        <ul>
+            <input id="menu_checkbox" type="checkbox" tabindex="-1">
+            <span id="chevron"></span>
+            <li id="info" class="dialog_button" onclick="setTimeout( () => { showModal('info_dialog') }, 2);"></li>
+            <li id="dictionary" class="dialog_button" onclick="setTimeout( () => { showModal('dictionary_dialog') }, 2);"></li>
+            <li id="notes" class="dialog_button" onclick="setTimeout( () => { showModal('notes_dialog') }, 2);" "=""></li>
+            <li id="settings" class="dialog_button" onclick="setTimeout( () => { showModal('settings_dialog') }, 2);"></li>
+        </ul>
+        <dialog id="info_dialog">
+            <a class="close"></a>
+            <h1>Info</h1>
+            <div id="level_info" data-masksize="80"><p>It's time to put together everything you've learned so far!</p><p><i>Note:</i> a proposition in this level employs ellipsis (\(\ldots\)), which is a shorthand used to simplify a long sequence of terms following an obvious pattern. The next chapter will introduce another tool that allows for even more concise representations. </p></div>
+        </dialog>
+        <dialog id="dictionary_dialog">
+            <a class="close"></a>
+            <h1>Dictionary</h1>
+
+            <div id="dict_headings">
+                <label id="symbols">
+                    Symbols
+                    <input type="radio" name="dict_header" checked="">
+                </label>
+                <label id="terms">
+                    Terms
+                    <input type="radio" name="dict_header">
+                </label>
+                <label id="general">
+                    General
+                    <input type="radio" name="dict_header">
+                </label>
+            </div>
+
+            <div id="dict_box">
+                <div id="dict_symbols">
+                    <li class="t1-1"> <span class="symbol" style="font-size: 1rem"> \( [i,j] \) </span> <p class="caption">References the entry at the \(i\)-th row and \(j\)-th column of the level’s matrix. Note that more conventional notation is \(A[i,j]\) or \(A_{i,j}\), but the matrix is elided here for concision.</p> <p class="formal"> </p> </li>
+                    <li class="t1-1"> <span class="symbol"> \( = \) </span> <p class="caption"> Asserts that two objects are equal.</p> <p class="formal"> \( x = y \iff \forall \phi : \phi(x) \leftrightarrow \phi(y) \) </p> </li>
+                    
+                    <li class="t1-3"> <span class="symbol"> \( &lt; \) </span> <p class="caption"> Asserts that a number is strictly less than another.</p> <p class="formal"> \( x &lt; y \iff \exist \epsilon &gt; 0 : x + \epsilon = y \) </p> </li>
+                    <li class="t1-3"> <span class="symbol"> \( &gt; \)</span> <p class="caption"> Asserts that a number is strictly greater than another.</p> <p class="formal"> \( x &gt; y \iff \exist \epsilon &gt; 0 : x - \epsilon = y \) </p> </li>
+                    <li class="t1-5"> <span class="symbol"> \( \neq \)</span> <p class="caption"> Asserts that two objects are not equal.</p> <p class="formal"> \( x \neq y \iff \exist \phi : \phi(x) \nleftrightarrow \phi(y) \) </p> </li>
+                    <li class="t1-7"> <span class="symbol"> \( \leq \)</span> <p class="caption"> Asserts that a number is less than or equal to another.</p> <p class="formal"> \( x \leq y \iff (\exist \epsilon &gt; 0 : x + \epsilon = y) \lor (x = y) \) </p> </li>
+                    <li class="t1-7"> <span class="symbol"> \( \geq \)</span> <p class="caption"> Asserts that a number is greater than or equal to another.</p> <p class="formal"> \( x \geq y \iff (\exist \epsilon &gt; 0 : x - \epsilon = y) \lor (x = y) \) </p> </li>
+
+                    <li class="t2-3"> <span class="symbol"> \( \equiv \)</span> <p class="caption">Asserts that two formulae are logically equivalent, often via syntactic properties.</p> <p class="formal"> \( v(p) = v(q) \vdash p \equiv q \) </p> </li>
+                    
+                    <li class="t2-1"> <span class="symbol"> \( \top \)</span> <p class="caption"> The verum, a constant representing positive truth value.</p> <p class="formal"> \( \top \equiv \textbf{T} \equiv 1 \) </p> </li>
+                    <li class="t2-1"> <span class="symbol"> \( \bot \)</span> <p class="caption"> The falsum, a constant representing negative truth value.</p> <p class="formal"> \( \bot \equiv \textbf{F} \equiv 0 \) </p> </li>
+
+                    <li class="t2-1"> <span class="symbol"> \( \land \)</span> <p class="caption"> Joins two propositions into one which is only true when both of its conjuncts are true.</p> <p class="formal"> \( p \equiv \top, q \equiv \top \vdash p \land q \) </p> </li>
+                    <li class="t2-2"> <span class="symbol"> \( \lor \)</span> <p class="caption"> Joins two propositions into one which is true when one of its disjuncts is true.</p> <p class="formal"> \( p \equiv \top \vdash p \lor q, q \equiv \top \vdash p \lor q \) </p> </li>
+                    <li class="t2-3"> <span class="symbol"> \( \lnot \)</span> <p class="caption">Negates the truth value of a proposition. </p> <p class="formal"> \( p \equiv \bot \vdash \neg p \) </p> </li>
+                    <li class="t2-4"> <span class="symbol"> \( \to \)</span> <p class="caption">Asserts that when a proposition is true, so is the other.</p> <p class="formal"> \( p \equiv \bot \vdash p \to q, q \equiv \top \vdash p \to q\) </p> </li>
+                    <li class="t2-4"> <span class="symbol"> \( \gets \)</span> <p class="caption">Asserts that a proposition is true when the other is.</p> <p class="formal"> \( q \equiv \bot \vdash p \gets q, p \equiv \top \vdash p \gets q\) </p> </li>
+                    <li class="t2-5"> <span class="symbol"> \( \leftrightarrow \)</span> <p class="caption">Asserts that a proposition is true if and only if the other is as well. Also \(\Longleftrightarrow\)</p> <p class="formal"> \( p \equiv \bot \equiv q \vdash p \leftrightarrow q, p \equiv \top \equiv q \vdash p \leftrightarrow q\) </p> </li>
+
+                </div>
+
+
+                <div id="dict_terms">
+                    <li class="t1-1"> <p class="caption"> <span class="term"> Matrix </span> Mathematical structure representing \(n \times m\) entries across \(n\) rows and \(m\) columns. </p> <p class="formal"> </p> </li>
+                    <li class="t1-1">  <p class="caption"> <span class="term"> Proposition </span> Logical entity bearing a truth value (true or false); can be expressed with formal expressions.</p> <p class="formal"> </p> </li>
+                    <li class="t1-3">  <p class="caption"> <span class="term"> Predicate </span> A relation on \(n\) arguments asserting some sort of property or relationship. When the arguments are provided, it forms a proposition. Examples: \(\textrm{Likes(Alice, Bob)}\), \(\textrm{Prime(7)}\), or \(n = 5\), with the lattermost predicate being in infix position.</p> <p class="formal"> </p></li>
+                        <li class="t1-5">  <p class="caption"> <span class="term"> Relation Chaining </span> Shorthand method in which multiple statements involving infix predicates can be strung together. E.g. \(x &lt; y &lt; z \Longleftrightarrow x &lt; y \land y &lt; z \). Note that this doesn’t imply transitivity when the relation is intransitive. </p> <p class="formal"> </p></li>
+                        <li class="t2-1">  <p class="caption"> <span class="term"> Logical Connective </span> An operator upon logical terms. Despite the name, they can be unary (just one argument; e.g. \(\neg\)) or even nullary (\(\top, \bot\)).</p> <p class="formal"> </p></li>
+
+                </div>
+
+                <div id="dict_general">
+                    <p id="keycontrols"> <strong>Key controls:</strong> use <span class="key" style="padding-top: 0; padding-bottom: 0;">tab</span> to cycle through the entries, the number keys to select numbers, and the following keys for the UI: </p> 
+                    <div id="keysbox">
+                        <p><span class="key" style="margin-right: 0.1rem;">c</span> Candidate Mode </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">u</span> Undo </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">r</span> Redo </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">h</span> Home </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">m</span> Menu Toggle </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">s</span> Settings </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">i</span> Info </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">d</span> Dictionary </p> 
+                        <p><span class="key" style="margin-right: 0.1rem;">n</span> Notes </p>
+                        <p><span class="key" style="margin-right: 0.1rem;">p</span> Plus Grid </p>
+                        <p><span class="key" style="margin-right: 0.1rem;">P</span> Dupe Grid </p>
+                        <p><span class="key" style="margin-right: 0.1rem;">x</span> Delete Grid </p>
+                    </div>
+                    <p id="cloudnote"> <strong>Saving progress:</strong> Logix saves your work for the most recently unlocked level in each difficulty. Note that this is stored on your browser, so resetting your cache will lose your progress. In that case, or to synchronize multiple devices, go to the homepage, click the info button, and then click on the “About” heading five times to open a window that lets you skip to the level you left off on. </p> 
+
+                </div>
+            </div>
+        </dialog>
+        
+        
+        
+        <dialog id="notes_dialog">
+            <a class="close"></a>
+            <h1>Notes</h1>
+            <div id="wrapnotes"><textarea placeholder="Type here..." spellcheck="false"></textarea></div>
+        </dialog>
+    </div>
+
+    <div id="wrap_main">
+
+        <div id="prop_container">
+            <ul id="propositions">
+
+                
+            <li>\([\htmlClass{entry}{\htmlId{e1e3}{1,3}}] = [\htmlClass{entry}{\htmlId{e3e3}{3,3}}] - 2\)</li><li>\([\htmlClass{entry}{\htmlId{e2e2}{2,2}}] &gt; [\htmlClass{entry}{\htmlId{e3e2}{3,2}}] \lor [\htmlClass{entry}{\htmlId{e2e2}{2,2}}] &lt; [\htmlClass{entry}{\htmlId{e3e2}{3,2}}]\)</li><li>\([\htmlClass{entry}{\htmlId{e3e1}{3,1}}] \neq [\htmlClass{entry}{\htmlId{e1e1}{1,1}}] \land [\htmlClass{entry}{\htmlId{e3e1}{3,1}}] \neq [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] \land \cdots \land [\htmlClass{entry}{\htmlId{e3e1}{3,1}}] \neq [\htmlClass{entry}{\htmlId{e3e3}{3,3}}]\)</li><li>\(([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] \leq [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] \land [\htmlClass{entry}{\htmlId{e3e1}{3,1}}] &lt; [\htmlClass{entry}{\htmlId{e3e2}{3,2}}]) \lor ([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] \geq [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] \land [\htmlClass{entry}{\htmlId{e3e1}{3,1}}] &gt; [\htmlClass{entry}{\htmlId{e3e2}{3,2}}])\)</li><li>\(([\htmlClass{entry}{\htmlId{e1e1}{1,1}}] = [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] \lor [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] = [\htmlClass{entry}{\htmlId{e1e3}{1,3}}]) \leftrightarrow ([\htmlClass{entry}{\htmlId{e1e2}{1,2}}] = [\htmlClass{entry}{\htmlId{e2e1}{2,1}}] \lor [\htmlClass{entry}{\htmlId{e2e2}{2,2}}] = [\htmlClass{entry}{\htmlId{e2e3}{2,3}}])\)</li><li>\(\neg([\htmlClass{entry}{\htmlId{e1e2}{1,2}}] \neq [\htmlClass{entry}{\htmlId{e2e1}{2,1}}] \to [\htmlClass{entry}{\htmlId{e1e2}{1,2}}] \neq [\htmlClass{entry}{\htmlId{e3e3}{3,3}}])\)</li><li>\([\htmlClass{entry}{\htmlId{e3e2}{3,2}}] &lt; [\htmlClass{entry}{\htmlId{e3e1}{3,1}}] \lor [\htmlClass{entry}{\htmlId{e3e2}{3,2}}] = [\htmlClass{entry}{\htmlId{e3e1}{3,1}}]\)</li><li>\([\htmlClass{entry}{\htmlId{e2e1}{2,1}}] &gt; [\htmlClass{entry}{\htmlId{e2e3}{2,3}}]\)</li></ul>
+        </div>
+
+        
+        <div id="wrap_grid_domain">
+
+            <div id="wrap_axis_grid">
+                <div id="y-axis">
+                    
+                <span id="y1">1</span><span id="y2">2</span><span id="y3">3</span></div>
+
+                <div id="wrap_grids">
+                    <div id="wrapgridbar">
+                        <div id="gridbar"></div>
+                        <div id="visible-items"></div>
+                    </div>
+                    <div id="grid_carousel" tabindex="-1">
+                    <div class="grid" id="g1"><span><p></p></span><span class="given"><p>9</p></span><span><p></p></span><span><p></p></span><span><p></p></span><span><p></p></span><span><p></p></span><span><p></p></span><span><p></p></span></div></div>
+                    <button id="nextgrid" tabindex="-1"></button>
+                    <button id="delgrid" tabindex="-1"></button>
+                </div>
+                <div id="x-axis">
+                    
+                <span id="x1">1</span><span id="x2">2</span><span id="x3">3</span></div>
+            </div>
+
+            
+            <div id="wrap_toolbar_domain">
+                <div id="toolbar">
+                    <button id="pencil" class="usable" tabindex="-1"> </button>
+
+                    <div id="wrapdo">
+
+                        <button id="undo" tabindex="-1"></button>
+                        <button id="redo" tabindex="-1"></button>
+                    </div>
+                </div>
+                <div id="domain">
+                    
+                <button tabindex="-1"><p>6</p></button><button tabindex="-1"><p>7</p></button><button tabindex="-1"><p>8</p></button><button tabindex="-1"><p>9</p></button></div>
+            </div>
+        </div>
+    </div>
+
+    <span id="tab_catch" tabindex="0"></span>
+</div>
+</body>

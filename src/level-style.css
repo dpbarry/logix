@@ -30,7 +30,7 @@
   --fullGridHeight: calc(var(--gridHeight) + 2 * var(--gridPadding));
 
   --cellFontSize: clamp(0.5rem, calc(9.75vh * var(--fontFactor)), calc(6rem * var(--fontFactor)));
-  --propFontSize: clamp(1.5rem, calc(2.5vh + 1vw), 2.1rem);
+  --propFontSize: clamp(1.5rem, 2vw, 2rem);
 
   --noInfo: 0;
 }
@@ -1557,7 +1557,7 @@ html:has(#tools_toggle:checked:not(.top)) {
   
   #prop_container {
     min-width: 40vw;
-    width: min-content;
+    width: fit-content;
     max-width: 80vw;
     min-height: 50vh;
     max-height: 85vh;

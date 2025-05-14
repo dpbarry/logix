@@ -75,11 +75,20 @@ function initLevel() {
 	);
     };
 
+
+
+
+
+    
     const fetchCacheGridStorage = localStorage.getItem(`gridStorage${thisDifficulty}`);
-    const cacheGridStorage = 
-	  fetchCacheGridStorage 
-	  ? new observedMap(new Map(mapify(JSON.parse(fetchCacheGridStorage))), updateGridStorage)
-	  : null;
+    const cacheGridStorage = fetchCacheGridStorage
+          ? new observedMap(
+              new Map(mapify(htmlify(JSON.parse(fetchCacheGridStorage)))),
+              updateGridStorage
+          )
+          : null;
+
+    console.log(cacheGridStorage);
 
     if (thisLevel === latestGrid(thisDifficulty, cacheHighestLevel)) {
 	if (cacheGridStorage) {
@@ -177,6 +186,7 @@ function initLevel() {
 	    500
 	);
 
+
 	cellList().forEach((c) => {
 	    const val = gridStorage
 		  .get(1)
@@ -184,21 +194,16 @@ function initLevel() {
 		  .get(c.id);
 	    if (!val) return;
 
-	    if (val && !parseInt(val, 10)) {
+	    if (val && !parseInt(val)) {
 		const ul = document.createElement('ul');
-		val
-		    .map((x) =>
-			parser
-			    .parseFromString(x, 'text/xml')
-			    .querySelector('li')
-		    )
-		    .forEach((li) => ul.appendChild(li));
+		[...val.children].forEach((li) => ul.appendChild(li));
 		c.appendChild(ul);
 	    } else {
 		c.firstChild.innerText = val.trim();
 	    }
 	});
 
+        
 
 	for (let i = 2; i <= gridStorage.size; i++) {
 	    const newGrid = document.createElement('div');
@@ -666,7 +671,11 @@ function initLevel() {
 
     function endDismiss(e) {
 	if (e.target.nodeName === "LI") {
+            let id = e.target.parentNode.parentNode.id;
+            let ul = e.target.parentNode;
 	    e.target.remove();
+            values().set(id, ul);
+            console.log(values());
 	    return;
 	}
 	const text = e.target;
@@ -681,6 +690,7 @@ function initLevel() {
 
     function endDismissWipe(e) {
 	if (e.target.nodeName === "LI") {
+            values().set(e.target.parentNode.parentNode.id, null);
 	    e.target.parentNode.remove();
 	    return;
 	}
@@ -718,7 +728,10 @@ function initLevel() {
 		const match = Array.from(opts.children).find(x => x.innerText.trim() === value.trim());
 		if (match) {
 		    match.classList.add("dismiss");
-		    match.addEventListener("transitionend", endDismiss);
+                    if (opts.children.length > 1)
+		        match.addEventListener("transitionend", endDismiss);
+                    else
+                        match.addEventListener("transitionend", endDismissWipe);
 		    if (!CANCELOUT_TOGGLE.checked) {
 			opts.appendChild(newLi);
 		    }
@@ -726,7 +739,7 @@ function initLevel() {
 		    opts.appendChild(newLi);
 		}
 	    }
-	    values().set(cell.id, [...cell.querySelectorAll('li')]);
+	    values().set(cell.id, opts);
 	    return;
 	}
 
@@ -1572,10 +1585,9 @@ function initLevel() {
 	const gridWidth = level.querySelector(".grid").clientWidth;
 	const box = level.querySelector("dialog[open] #dict_box, dialog[open] #level_info") || propositions.parentNode;
 	const propositionHeight = level.querySelector("#propositions li").clientHeight;
-
+        if (e.ctrlKey) return;
 	switch (e.key) {
         case "m":
-            console.log("d")
             MENU_TOGGLE.click();
             break;
 	case "u":

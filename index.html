@@ -138,7 +138,6 @@
      verticalScroll(document.getElementById("configs"), 7);
 
 
-     let barPosition;
      async function goLevel(path) {
        let flag = path.charAt(0);
 
@@ -181,7 +180,6 @@
            newPage.style.display = "block";
 
            setTimeout(function() {
-             barPosition = newPage.querySelector("#gridbar").getBoundingClientRect();
              verticalScroll(newPage.querySelector("#prop_container"), 7);
              verticalScroll(newPage.querySelector("#keysbox"), 7);
            }, 31);

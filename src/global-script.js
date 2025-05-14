@@ -666,9 +666,9 @@ const serialize = (data) => {
     if (data instanceof Map) {
         const newMap = new Map();
         try {
-        for (let [key, value] of data.entries()) {
-            newMap.set(key, serialize(value));
-        }
+            for (let [key, value] of data.entries()) {
+                newMap.set(key, serialize(value));
+            }
         } catch {console.log(data)}
         return newMap;
     }
@@ -689,6 +689,21 @@ const serialize = (data) => {
     return data;
 };
 
+function htmlify(x) {
+    if (typeof x === 'string' && x.trim().startsWith('<')) {
+        const el = parser.parseFromString(x, 'text/html').body.firstElementChild;
+        return el ?? x;
+    }
+    if (Array.isArray(x)) {
+        return x.map(htmlify);
+    }
+    if (x && typeof x === 'object' && !(x instanceof Element)) {
+        return Object.fromEntries(
+            Object.entries(x).map(([k, v]) => [k, htmlify(v)])
+        );
+    }
+    return x;
+}
 
 function mapify(obj) {
     if (obj && typeof obj === 'object' && !Array.isArray(obj) && Object.keys(obj).length) {
@@ -760,7 +775,7 @@ async function hackLevel() {
 
     localStorage.setItem("highest" + difficulty[0].toUpperCase() + difficulty.substring(1), level);
     localStorage.removeItem("gridStorage" + difficulty[0].toUpperCase() + difficulty.substring(1));
-        localStorage.removeItem("notes" + difficulty[0].toUpperCase() + difficulty.substring(1));
+    localStorage.removeItem("notes" + difficulty[0].toUpperCase() + difficulty.substring(1));
     Router("index.html");
     window.location.reload(true);
 }

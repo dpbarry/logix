@@ -1420,7 +1420,7 @@ html:has(#tools_toggle:checked:not(.top)) {
     transition: all 0.3s !important;
   }
   button {
-    flex-grow: 1;
+    width: 100%;
     min-width: max(40px, 8vh);
     height: 60px;
     position: relative;

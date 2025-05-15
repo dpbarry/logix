@@ -88,7 +88,6 @@ function initLevel() {
           )
           : null;
 
-    console.log(cacheGridStorage);
 
     if (thisLevel === latestGrid(thisDifficulty, cacheHighestLevel)) {
 	if (cacheGridStorage) {
@@ -678,7 +677,6 @@ function initLevel() {
             let ul = e.target.parentNode;
 	    e.target.remove();
             values().set(id, ul);
-            console.log(values());
 	    return;
 	}
 	const text = e.target;

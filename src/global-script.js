@@ -362,7 +362,7 @@ function updateTheme() {
 
     } else if (theme.id === "litdark") {
 
-        ROOT.style.setProperty('--bgColor', 'hsl(50, 18%, 6%)');
+        ROOT.style.setProperty('--bgColor', 'hsl(50, 18%, 3%)');
         ROOT.style.setProperty('--baseColor', 'hsl(50, 0%, 87%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(50, 20%, 45%)');
 
@@ -392,7 +392,7 @@ function updateTheme() {
 
     } else if (theme.id === "frostdark") {
 
-        ROOT.style.setProperty('--bgColor', 'hsl(200, 18%, 6%)');
+        ROOT.style.setProperty('--bgColor', 'hsl(200, 18%, 3%)');
         ROOT.style.setProperty('--baseColor', 'hsl(200, 0%, 87%)');
         ROOT.style.setProperty('--bracketColor', 'hsl(200, 20%, 45%)');
 

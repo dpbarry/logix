@@ -1,0 +1,10 @@
+levelNumber=3.3
+difficulty=Training
+nextLevel=T3-4
+domain=1,2,3,4
+rows=3
+cols=2
+given=?,?,?,?,?,?
+propositions=\forall i : [i,1] > [i,2]@\exist i,j : i \neq j \land [i,j] = [j,i]@\forall i > 1, j : [i,j] < [i-1, j]
+solution=
+info=

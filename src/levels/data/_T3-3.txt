@@ -6,5 +6,5 @@ rows=3
 cols=2
 given=?,?,?,?,?,?
 propositions=\forall i : [i,1] > [i,2]@\exist i,j : i \neq j \land [i,j] = [j,i]@\forall i > 1, j : [i,j] < [i-1, j]
-solution=
+solution=4,3,3,2,2,1
 info=

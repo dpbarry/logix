@@ -1,0 +1,10 @@
+levelNumber=3.4
+difficulty=Training
+nextLevel=T3-5
+domain=0,1,2,3
+rows=3
+cols=3
+given=2,?,?,?,?,?,?,?,2
+propositions=\forall i,j : [i,1] + [i,2] + [i,3] = [1,j] + [2,j] + [3,j]@\exist i,j : \forall i',j' : [i,j] > [i',j']
+solution=.,0,1,0,3,0,1,0,.
+info=

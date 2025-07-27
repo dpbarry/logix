@@ -1213,7 +1213,8 @@ function initLevel() {
 	if (!DYNAMIC_TOGGLE.checked) return;
 	noticeEntry(this);
 	let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
-	let td = level.querySelector("#" + cell);
+	let td = level.querySelector("#g" + currentGrid + " #" + cell);
+        
 	td.classList.add("noticed");
 
 	if (td.classList.contains("given")) {

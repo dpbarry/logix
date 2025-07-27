@@ -1227,7 +1227,7 @@ function initLevel() {
         if (this.id.startsWith("v")) return;
 	removeNoticeEntry(this);
 	let cell = "c" + this.id.charAt(1) + "-" + this.id.charAt(3);
-	level.querySelector("#" + cell).classList.remove("noticed");
+        level.querySelector("#g" + currentGrid + " #" + cell).classList.remove("noticed");
     }
 
     // Jump to the specified cell

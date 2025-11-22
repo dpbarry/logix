@@ -197,6 +197,8 @@ function initLevel() {
 		const ul = document.createElement('ul');
 		[...val.children].forEach((li) => ul.appendChild(li));
 		c.appendChild(ul);
+		// Update the values Map to point to the new DOM element attached to the cell
+		gridStorage.get(1).get('values').set(c.id, ul);
 	    } else {
 		c.firstChild.innerText = val.trim();
 	    }
@@ -234,8 +236,10 @@ function initLevel() {
 		    let val = gridStorage.get(i).get("values").get(cell.id);
 		    if (val && !parseInt(val)) {
 			let ul = document.createElement("ul");
-			val.map(x => parser.parseFromString(x, "text/xml").querySelector("li")).forEach(li => ul.appendChild(li));
+			[...val.children].forEach((li) => ul.appendChild(li));
 			cell.appendChild(ul);
+			// Update the values Map to point to the new DOM element attached to the cell
+			gridStorage.get(i).get("values").set(cell.id, ul);
 		    } else {
 			cell.querySelector("p").innerText = gridStorage.get(i).get("values").get(cell.id) || "";
 		    }

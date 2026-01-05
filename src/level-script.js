@@ -964,6 +964,14 @@ function initLevel() {
 
 	if (flag) {
 	    throttleGrid = true;
+	    // Immediately lock cells to prevent input during victory delay
+	    cellList().forEach((cell) => {
+		cell.tabIndex = -1;
+		cell.onfocus = function() { this.blur(); };
+		cell.onblur = null;
+		cell.removeEventListener("keydown", inp);
+	    });
+	    document.activeElement.blur();
 	    setTimeout(success, 200);
 	}
     }

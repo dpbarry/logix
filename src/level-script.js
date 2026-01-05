@@ -110,9 +110,6 @@ function initLevel() {
 	} else {
 	    gridStorage = observedMap(new Map(), updateGridStorage);
 	    cleanStart();
-	    if (info.children.length && thisLevel !== "1.1") {
-		level.querySelector('#info').classList.add('readme');
-	    }
 	}
     } else {
 	gridStorage = new Map();
@@ -650,11 +647,41 @@ function initLevel() {
 	level.style.setProperty('--noInfo', "0px");
     }
 
+    const infoButton = level.querySelector("#info");
+    const infoReadKey = `infoRead_${thisDifficulty}_${thisLevel}`;
+
     if (!info.children.length) {
-	level.querySelector("#info").remove();
+	infoButton.remove();
 	level.style.setProperty('--noInfo', "-54px");
     } else {
 	level.style.setProperty('--noInfo', "0px");
+
+	const hasBeenRead = localStorage.getItem(infoReadKey);
+
+	// Add "readme" class if info hasn't been read yet (unless level 1.1 which auto-opens)
+	if (!hasBeenRead && thisLevel !== "1.1") {
+	    infoButton.classList.add('readme');
+	}
+
+	// Add "new" indicator badge if info hasn't been read yet
+	if (!hasBeenRead) {
+	    const newBadge = document.createElement('span');
+	    newBadge.classList.add('info-new-badge');
+	    infoButton.appendChild(newBadge);
+	}
+
+	// Mark info as read when opened and remove badge + readme class
+	const originalOnclick = infoButton.onclick;
+	infoButton.onclick = function() {
+	    const badge = infoButton.querySelector('.info-new-badge');
+	    if (badge) {
+		badge.classList.add('fade-out');
+		setTimeout(() => badge.remove(), 300);
+	    }
+	    infoButton.classList.remove('readme');
+	    localStorage.setItem(infoReadKey, 'true');
+	    if (originalOnclick) originalOnclick.call(this);
+	};
     }
 
     // Notes dialog

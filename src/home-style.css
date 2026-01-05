@@ -33,14 +33,13 @@ html:has(#wrap_cards:hover) {
 }
 
 #settings.home {
-  background: url("../assets/SETTINGS.svg");
-  right: clamp(0.5rem, 2.75vmin, 1.5rem); 
+  right: clamp(0.5rem, 2.75vmin, 1.5rem);
+  &::before { background-image: url("../assets/SETTINGS.svg"); }
 }
 
 #about {
-
-  background: url("../assets/INFO.svg");
   left: clamp(0.5rem, 2.75vmin, 1.5rem);
+  &::before { background-image: url("../assets/INFO.svg"); }
 }
 :root.dark #mcgill { filter: invert(0.9); }
 

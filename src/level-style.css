@@ -551,17 +551,17 @@ span.key {
 @supports (field-sizing: content) {
   #wrapnotes textarea {field-sizing: content; min-height: 30vh;}
 }
-#menu {
-  position: absolute;
+  #menu {
+    position: absolute;
 
-  display: flex;
+    display: flex;
 
-  width: max-content;
-  z-index: 2;
-  
-  top: clamp(0.5rem, 1.5vmin, 1rem); 
-  right: clamp(0.5rem, 1.5vmin, 1rem); 
-  /* Align #chevron */
+    width: max-content;
+    z-index: 2;
+
+    top: clamp(0.5rem, 1.5vmin, 1rem);
+    right: clamp(0.5rem, 1.5vmin, 1rem);
+    /* Align #chevron */
   text-align: center;
 
   #menu_checkbox {
@@ -658,23 +658,42 @@ span.key {
 
 
   #info {
-    background-image: url("../assets/INFO.svg"); width: 39px;
+    width: 39px;
     right: 0;
-    transition: right 0.2s ease, scale 0.3s 0.3s cubic-bezier(0.375, 0.885, 0.72, 1.15)
-    , rotate 0.3s 0.4s ease;
-    
-    scale: 1;
-    rotate: 0;
-    &.readme {
-      @starting-style {
-        scale: 0;
-        rotate: 50deg;
-      }
+    /* Match ul transition timing for seamless menu collapse/expand */
+    transition: right 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
+
+    &::before { background-image: url("../assets/INFO.svg"); }
+  }
+
+  #info .info-new-badge {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: light-dark(var(--emphasisColor), var(--darkShade));
+    border: 2px solid var(--bgColor);
+    box-sizing: border-box;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1;
+
+    @starting-style {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    &.fade-out {
+      opacity: 0;
+      transform: scale(0);
     }
   }
-  #dictionary { background-image: url("../assets/DICTIONARY.svg"); width: 41px; }
-  #notes { background-image: url("../assets/NOTES.svg"); width: 33.5px; }
-  #settings { background-image: url("../assets/SETTINGS.svg"); width: 39px; }
+
+  #dictionary { width: 41px; &::before { background-image: url("../assets/DICTIONARY.svg"); } }
+  #notes { width: 33.5px; &::before { background-image: url("../assets/NOTES.svg"); } }
+  #settings { width: 39px; &::before { background-image: url("../assets/SETTINGS.svg"); } }
 
 
   #menu_checkbox:not(:checked) ~ #info.readme {
@@ -779,8 +798,8 @@ span.key {
 html:has(#hideMatrixTools:checked, #tools_toggle:not(:checked)) {
   #nextgrid, #delgrid {
     display: none;
+    margin-bottom: 0;
   }
-  { margin-bottom: 0;}
 }
 
 html:has(#tools_toggle:checked:not(.top)) {
@@ -1556,7 +1575,7 @@ html:has(#tools_toggle:checked:not(.top)) {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(calc(-50.1% - 10px), -50%); // balance the floating undo/redo
+    transform: translate(calc(-50.1% - 10px), -50%); /* balance the floating undo/redo */
   }
 
   
@@ -1669,9 +1688,7 @@ html:has(#tools_toggle:checked:not(.top)) {
     width: 100%;
   }
 
-  #domain {
-    margin-top: -5px;
-  }
+
 
   #wrap_grid_domain {
     flex: 1;

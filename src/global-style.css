@@ -154,6 +154,7 @@ body, .page {
   cursor: pointer;
 
   z-index: 1;
+  background: transparent;
 
   opacity: 1;
   transition: opacity 0.05s, transform 0.1s;

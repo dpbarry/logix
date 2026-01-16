@@ -55,6 +55,7 @@
   gap: 0px;
 
   overflow: visible;
+  mask-image: none !important;
 
   button:not(:first-child) {
     transition: width 0.6s ease, min-width 0.6s ease;
